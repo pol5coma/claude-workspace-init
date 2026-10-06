@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "id": "testing",
+  "type": "skill",
+  "name": "Testing",
+  "description": "Helps Claude select and run the smallest relevant test scope before escalating to the full suite.",
+  "tags": ["testing", "quality"],
+  "recommendation": {
+    "project_types": ["backend", "frontend", "fullstack", "ai", "cli", "library", "data_ml"],
+    "technologies": ["pytest", "vitest", "jest", "playwright", "cypress", "mocha", "go test", "cargo test"]
+  },
+  "dependencies": [],
+  "conflicts": []
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "id": "safety-guard",
+  "type": "hook",
+  "name": "Safety Guard",
+  "description": "Blocks clearly destructive commands (database resets, force pushes, infra destroy, dangerous rm) and edits to protected files before they run.",
+  "tags": ["safety", "default"],
+  "default_selected": true,
+  "dependencies": [],
+  "conflicts": [],
+  "requirements": {
+    "notes": ["Requires python3 on PATH."]
+  }
+}

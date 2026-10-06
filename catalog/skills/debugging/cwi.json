@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "id": "debugging",
+  "type": "skill",
+  "name": "Debugging",
+  "description": "Systematic reproduce → isolate → hypothesize → fix → regression-test workflow for bugs and failing tests.",
+  "tags": ["debugging", "quality"],
+  "recommendation": {
+    "project_types": ["backend", "frontend", "fullstack", "ai", "cli", "library", "data_ml"],
+    "technologies": []
+  },
+  "dependencies": [],
+  "conflicts": []
+}

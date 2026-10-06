@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "id": "github",
+  "type": "mcp",
+  "name": "GitHub",
+  "description": "GitHub's remote MCP server: issues, pull requests, code search and Actions from Claude.",
+  "tags": ["github", "vcs"],
+  "recommendation": {
+    "project_types": [],
+    "technologies": ["github actions"],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": [],
+  "requirements": {
+    "env": [
+      {
+        "name": "GITHUB_TOKEN",
+        "description": "GitHub personal access token with the scopes you want Claude to use."
+      }
+    ]
+  }
+}

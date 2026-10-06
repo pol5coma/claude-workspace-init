@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "id": "backend-development",
+  "type": "skill",
+  "name": "Backend development",
+  "description": "Conventions for API endpoints, validation, persistence and migrations, with framework references loaded on demand.",
+  "tags": ["backend", "api"],
+  "recommendation": {
+    "project_types": ["backend", "fullstack"],
+    "technologies": ["fastapi","nextjs","nodejs","django", "flask", "express", "nestjs", "fastify", "hono", "sqlalchemy", "prisma"]
+  },
+  "dependencies": [],
+  "conflicts": []
+}

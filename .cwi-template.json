@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "package": "claude-workspace-init",
+  "description": "Marks this directory as an uninitialized CWI template. Removed by cwi init after a successful run.",
+  "bootstrap_paths": [
+    "catalog",
+    "templates",
+    "src/cwi",
+    "tests",
+    "pyproject.toml",
+    "uv.lock",
+    ".python-version",
+    "CWI_SPEC.md",
+    "CWI_IMPLEMENTATION_GUIDE.md",
+    "USAGE.md",
+    ".cwi-template.json"
+  ]
+}

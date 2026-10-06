@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "id": "post-edit-validation",
+  "type": "hook",
+  "name": "Post-edit Validation",
+  "description": "After Claude edits a file, runs the project's own formatter/linter on that file only and returns problems to Claude.",
+  "tags": ["quality", "default"],
+  "default_selected": true,
+  "dependencies": [],
+  "conflicts": [],
+  "requirements": {
+    "notes": ["Requires python3 on PATH. Uses only tools already configured in the project."]
+  }
+}

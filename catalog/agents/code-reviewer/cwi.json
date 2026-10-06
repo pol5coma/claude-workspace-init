@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "id": "code-reviewer",
+  "type": "agent",
+  "name": "Code reviewer",
+  "description": "Reviews a diff for correctness, readability and test coverage; runs the project's quality checks.",
+  "tags": ["review", "quality"],
+  "recommendation": {
+    "project_types": ["backend", "frontend", "fullstack", "ai", "cli", "library", "data_ml"],
+    "technologies": []
+  },
+  "dependencies": ["script:run-quality-checks"],
+  "conflicts": []
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "id": "run-quality-checks",
+  "type": "script",
+  "name": "Run quality checks",
+  "description": "Runs only the linters, type checkers and tests the project is configured for (ruff, mypy, pytest, eslint, prettier, tsc).",
+  "tags": [
+    "quality",
+    "ci"
+  ],
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "ruff",
+      "mypy",
+      "pytest",
+      "eslint",
+      "prettier",
+      "vitest",
+      "jest"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

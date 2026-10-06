@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "id": "frontend-development",
+  "type": "skill",
+  "name": "Frontend development",
+  "description": "Conventions for components, state, data fetching, accessibility and styling, with framework references loaded on demand.",
+  "tags": ["frontend", "ui"],
+  "recommendation": {
+    "project_types": ["frontend", "fullstack"],
+    "technologies": ["react", "next.js", "vue", "nuxt", "svelte", "sveltekit", "angular", "vite"]
+  },
+  "dependencies": [],
+  "conflicts": []
+}
