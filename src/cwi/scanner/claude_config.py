@@ -18,6 +18,7 @@ def detect_claude_config(ctx: ScanContext) -> ExistingClaudeConfig:
     agents = sorted(p.stem for p in agents_dir.rglob("*.md")) if agents_dir.is_dir() else []
     return ExistingClaudeConfig(
         claude_md=ctx.is_file(paths.rel(paths.CLAUDE_MD)),
+        agents_md=ctx.is_file(paths.rel(paths.AGENTS_MD)),
         claude_local_md=ctx.is_file(paths.rel(paths.CLAUDE_LOCAL_MD)),
         settings=ctx.is_file(paths.rel(paths.SETTINGS_FILE)),
         settings_local=ctx.is_file(paths.rel(paths.SETTINGS_LOCAL_FILE)),

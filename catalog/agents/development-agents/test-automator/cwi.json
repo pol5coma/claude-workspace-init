@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "test-automator",
+  "type": "agent",
+  "name": "Test automator",
+  "description": "Use this agent when you need to build, implement, or enhance automated test frameworks, create test scripts, or integrate testing into CI/CD pipelines. Specifically:\\ \\",
+  "dependencies": [],
+  "conflicts": []
+}

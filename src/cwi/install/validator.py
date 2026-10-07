@@ -52,9 +52,8 @@ def validate_installation(root: Path, plan: InstallationPlan) -> None:
             and not (root / paths.rel(paths.SKILLS_DIR) / cid / "SKILL.md").is_file()
         ):
             problems.append(f"skill {cid}: SKILL.md missing")
-        if (
-            kind == CapabilityType.AGENT.value
-            and not (root / paths.rel(paths.AGENTS_DIR) / f"{cid}.md").is_file()
+        if kind == CapabilityType.AGENT.value and not any(
+            (root / paths.rel(paths.AGENTS_DIR)).rglob(f"{cid}.md")
         ):
             problems.append(f"agent {cid}: definition missing")
 
@@ -80,6 +79,11 @@ def validate_installation(root: Path, plan: InstallationPlan) -> None:
         and not (root / paths.rel(paths.CLAUDE_MD)).is_file()
     ):
         problems.append("CLAUDE.md missing")
+    if (
+        plan.agents_md_mode in (ClaudeMdMode.CREATE, ClaudeMdMode.REPLACE, ClaudeMdMode.MERGE)
+        and not (root / paths.rel(paths.AGENTS_MD)).is_file()
+    ):
+        problems.append("AGENTS.md missing")
 
     state_path = root / paths.rel(paths.STATE_FILE)
     if not state_path.is_file():

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "accessibility-tester",
+  "type": "agent",
+  "name": "Accessibility tester",
+  "description": "Use this agent when you need comprehensive accessibility testing, WCAG compliance verification, or assessment of assistive technology support. Specifically:\\ \\",
+  "recommendation": {
+    "project_types": [
+      "frontend",
+      "fullstack"
+    ],
+    "technologies": []
+  },
+  "dependencies": [],
+  "conflicts": []
+}

@@ -11,6 +11,7 @@ from pathlib import PurePosixPath as P
 # --- Claude Code project contract ---------------------------------------------------------
 CLAUDE_MD = P("CLAUDE.md")
 CLAUDE_LOCAL_MD = P("CLAUDE.local.md")
+AGENTS_MD = P("AGENTS.md")  # cross-tool instructions (agents.md standard); CLAUDE.md imports it
 CLAUDE_DIR = P(".claude")
 SKILLS_DIR = CLAUDE_DIR / "skills"
 AGENTS_DIR = CLAUDE_DIR / "agents"
@@ -83,6 +84,8 @@ IGNORED_SCAN_DIRS: frozenset[str] = frozenset(
     }
 )
 
+GROUP_MANIFEST = "group.json"
+
 CATALOG_TYPE_DIRS: dict[str, str] = {
     "skill": "skills",
     "agent": "agents",
@@ -90,6 +93,12 @@ CATALOG_TYPE_DIRS: dict[str, str] = {
     "hook": "hooks",
     "mcp": "mcp",
 }
+
+
+def agent_file(agent_id: str, group: str | None = None) -> str:
+    """Install target of an agent definition; families install into a subfolder."""
+    base = f"{AGENTS_DIR}/{group}" if group else str(AGENTS_DIR)
+    return f"{base}/{agent_id}.md"
 
 
 def rel(path: P | str) -> str:

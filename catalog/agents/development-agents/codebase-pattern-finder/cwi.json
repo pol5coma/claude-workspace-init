@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "codebase-pattern-finder",
+  "type": "agent",
+  "name": "Codebase pattern finder",
+  "description": "Specialist for finding code patterns and examples in the codebase, providing concrete implementations that can serve as templates for new work",
+  "dependencies": [],
+  "conflicts": []
+}

@@ -48,7 +48,7 @@ CWI walks you through a few short screens. Press **Enter** to accept the suggest
 | Step | What you see | What to do |
 | --- | --- | --- |
 | 1. Project | Detected stack, for an existing project. A few questions, for a new project. | Confirm, or edit what is wrong. |
-| 2. CLAUDE.md | A short proposed `CLAUDE.md` with safety rules, stack, commands and an architecture pointer. | Accept, edit the commands, or add a global instruction. |
+| 2. Instructions | Where the instructions live: `AGENTS.md` plus a `CLAUDE.md` that imports it (recommended), or `CLAUDE.md` only. Then a short proposal with safety rules, stack, commands and an architecture pointer. | Accept, edit the commands, or add a global instruction. |
 | 3. Capabilities | Five lists: Skills, Agents, Scripts, MCP and Hooks. Recommended items are already ticked. | **Space** toggles an item and **Enter** continues. |
 | 4. Preview | Every file CWI will create, change or delete. | Choose **Apply**, **Review changes** to see diffs, **Back** or **Cancel**. |
 
@@ -58,7 +58,8 @@ Nothing is written before you choose **Apply**. **Cancel** leaves the project ex
 
 ```text
 my-app/
-├── CLAUDE.md                 short, project-wide instructions
+├── AGENTS.md                 short, project-wide instructions for any coding agent
+├── CLAUDE.md                 imports AGENTS.md (@AGENTS.md) + Claude-only notes
 ├── .mcp.json                 only if you picked an MCP server
 ├── scripts/                  only if you picked a script
 └── .claude/
@@ -89,10 +90,18 @@ git add -A && git commit -m "Set up Claude Code workspace"
 Run `cwi init` again whenever you want to:
 
 - **Change your selection.** Untick a capability and CWI removes the files it installed for it.
-- **Refresh CLAUDE.md** after your stack changes.
+- **Refresh AGENTS.md and CLAUDE.md** after your stack changes.
 - **Check your workspace.** CWI warns you if one of its files was edited.
 
 CWI never overwrites a file you changed without asking. It never deletes files it did not create. Running it twice with the same answers changes nothing.
+
+### AGENTS.md and CLAUDE.md
+
+`AGENTS.md` is the open standard that Codex, Cursor, Gemini CLI, GitHub Copilot and Claude Code read. CWI writes the shared instructions there. Claude Code ignores `AGENTS.md` whenever a `CLAUDE.md` exists, so CWI also writes a `CLAUDE.md` whose first line is `@AGENTS.md`. That line imports the shared file. Put Claude-only notes below it.
+
+If you already have a `CLAUDE.md`, CWI adds the `@AGENTS.md` line at the top and leaves the rest untouched. Sections your `CLAUDE.md` already has are not repeated in `AGENTS.md`. An existing `AGENTS.md` is never overwritten without asking. You choose to keep, merge, replace or skip it.
+
+Prefer a single file? Choose **CLAUDE.md only** on the instructions screen.
 
 ### If you need an MCP token
 
@@ -223,8 +232,52 @@ Add these options to any `add` command:
 | `--tech fastapi,react` | Ticked when these technologies are detected. |
 | *(none)* | Listed, but the user ticks it manually. |
 | `--depends script:run-quality-checks` | Also installs this capability when it is selected. |
+| `--group dev-agents --group-default backend` | Put it in a family and tick it for backend projects through that family. See [Families](#families-groups). |
 
 Without `--yes`, CWI asks these questions for you.
+
+### Families (groups)
+
+A family is a folder that groups related capabilities, for example `development-agents`. Families can also make a set of members preselected for a project type. For example, choosing **Backend** in `cwi init` ticks the backend members of `development-agents`.
+
+```text
+catalog/agents/development-agents/
+├── group.json                 family name + defaults per project type
+├── debugger/
+│   ├── cwi.json
+│   └── payload/.claude/agents/development-agents/debugger.md
+└── test-automator/...
+```
+
+Grouped agents install into `.claude/agents/<family>/`. Claude Code finds agents in subfolders too.
+
+```bash
+# Add an agent to a family. The family is created if it does not exist.
+cwi catalog add agent terraform-expert.md --group devops-agents --group-default backend,fullstack
+
+# Create an empty family
+cwi catalog group create agent product-agents --name "Product agents"
+
+# Choose which members are ticked for one project type (replaces the list for that type)
+cwi catalog group defaults agent development-agents backend debugger,test-automator,refactoring-specialist
+```
+
+You can also edit `group.json` directly:
+
+```json
+{
+  "schema_version": 1,
+  "id": "development-agents",
+  "type": "agent",
+  "name": "Development agents",
+  "defaults": {
+    "backend": ["debugger", "test-automator"],
+    "frontend": ["accessibility-tester", "debugger"]
+  }
+}
+```
+
+Run `cwi catalog validate` after editing it by hand.
 
 ### Other catalog commands
 

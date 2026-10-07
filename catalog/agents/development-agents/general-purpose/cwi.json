@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "general-purpose",
+  "type": "agent",
+  "name": "General purpose",
+  "description": "Default agent for handling complex, multi-step tasks with automatic delegation capabilities",
+  "dependencies": [],
+  "conflicts": []
+}

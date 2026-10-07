@@ -65,7 +65,15 @@ def _looks_like_cwi_catalog(directory: Path) -> bool:
         for cap_dir in child.iterdir():
             if cap_dir.name in _JUNK:
                 continue
-            if not cap_dir.is_dir() or not (cap_dir / "cwi.json").is_file():
+            if not cap_dir.is_dir() or cap_dir.is_symlink():
+                return False
+            if (cap_dir / paths.GROUP_MANIFEST).is_file():
+                for member in cap_dir.iterdir():
+                    if member.name in _JUNK or member.name == paths.GROUP_MANIFEST:
+                        continue
+                    if not member.is_dir() or not (member / "cwi.json").is_file():
+                        return False
+            elif not (cap_dir / "cwi.json").is_file():
                 return False
     return True
 

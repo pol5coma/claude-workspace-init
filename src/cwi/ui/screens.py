@@ -11,11 +11,22 @@ from rich.syntax import Syntax
 from cwi import paths
 from cwi.catalog.dependency_resolver import find_conflicts, resolve
 from cwi.catalog.recommender import recommend
-from cwi.claude_md.generator import default_spec, estimate_size, load_template, render_claude_md
+from cwi.claude_md.generator import (
+    CLAUDE_IMPORT_FILE,
+    add_agents_import,
+    default_spec,
+    drop_sections,
+    estimate_size,
+    has_agents_import,
+    load_template,
+    render_claude_md,
+)
 from cwi.claude_md.merger import classify_instruction, merge_claude_md
 from cwi.domain.enums import SELECTION_ORDER, ClaudeMdMode, ProjectType
 from cwi.domain.errors import UserCancelled
 from cwi.domain.models import (
+    LAYOUT_AGENTS,
+    LAYOUT_CLAUDE,
     Catalog,
     ClaudeMdDecision,
     CWIState,
@@ -29,7 +40,7 @@ from cwi.planning.planner import FileDecision, McpDecision
 from cwi.profile import build_new_profile, profile_from_scan, uncertain_detections
 from cwi.state.hashing import sha256_file
 from cwi.ui import render
-from cwi.ui.prompts import Option, Prompter
+from cwi.ui.prompts import Option, Prompter, heading
 
 OTHER = "__other__"
 SKIP = "__skip__"
@@ -541,22 +552,13 @@ def _additional_instructions(console: Console, prompter: Prompter) -> list[str]:
     return instructions
 
 
-def configure_claude_md(
+def _build_spec(
     console: Console,
     prompter: Prompter,
-    root: Path,
     profile: ProjectProfile,
-    state: CWIState | None,
     architecture_candidates: list[str],
-) -> tuple[ClaudeMdDecision, ProjectProfile]:
-    console.rule("CLAUDE.md")
-    path = root / paths.rel(paths.CLAUDE_MD)
-    exists = path.is_file()
-    if not exists and not prompter.confirm(
-        "claude_md.create", "Create a minimal CLAUDE.md?", default=True
-    ):
-        return ClaudeMdDecision(mode=ClaudeMdMode.SKIP), profile
-
+):
+    """Ask for the shared instruction content (spec sections 7.1 to 7.5)."""
     spec = default_spec(profile)
 
     # 7.1 Safety net
@@ -607,7 +609,7 @@ def configure_claude_md(
     options += [Option(OTHER, "Another path…"), Option(SKIP, "No architecture pointer")]
     pointer = prompter.select(
         "claude_md.architecture",
-        "Should Claude consult architecture docs before structural changes?",
+        "Should the agent consult architecture docs before structural changes?",
         options,
         default=candidates[0] if candidates else SKIP,
     )
@@ -623,69 +625,179 @@ def configure_claude_md(
 
     # 7.5 Additional critical instructions
     spec.additional_instructions = _additional_instructions(console, prompter)
+    return spec, profile
 
-    generated = render_claude_md(spec, load_template(root))
-    size = estimate_size(generated)
-    render.claude_md_preview(console, generated, size)
 
-    if not exists:
-        return ClaudeMdDecision(
-            mode=ClaudeMdMode.CREATE, spec=spec, generated=generated, content=generated
-        ), profile
-
+def _decide_generated_file(
+    console: Console,
+    prompter: Prompter,
+    path: Path,
+    label: str,
+    generated: str,
+    state: CWIState | None,
+    key: str,
+) -> tuple[ClaudeMdMode, str | None]:
+    """Create, or ask what to do with an existing instruction file. Never silently overwrites."""
+    if not path.is_file():
+        return ClaudeMdMode.CREATE, generated
     current = path.read_text(encoding="utf-8")
-    record = state.managed_files.get(paths.rel(paths.CLAUDE_MD)) if state else None
+    record = state.managed_files.get(label) if state else None
     cwi_owned_unmodified = record is not None and sha256_file(path) == record.sha256
     if current == generated:
-        render.note(console, "Existing CLAUDE.md already matches the generated version.")
-        return ClaudeMdDecision(mode=ClaudeMdMode.KEEP, spec=spec, generated=generated), profile
+        render.note(console, f"Existing {label} already matches the generated version.")
+        return ClaudeMdMode.KEEP, None
 
     console.print(
-        "[bold]Existing CLAUDE.md detected.[/bold]"
+        f"[bold]Existing {label} detected.[/bold]"
         + (" [dim](created by CWI, unmodified)[/dim]" if cwi_owned_unmodified else "")
     )
     default = "replace" if cwi_owned_unmodified else "merge"
     while True:
         choice = prompter.select(
-            "claude_md.existing",
+            key,
             "What should CWI do with it?",
             [
                 Option("keep", "Keep current file"),
                 Option("merge", "Review proposed merge (adds only missing sections)"),
                 Option("replace", "Replace with generated version"),
-                Option("skip", "Skip CLAUDE.md configuration"),
+                Option("skip", f"Skip {label} configuration"),
                 Option("diff", "Show diff (current → generated)"),
             ],
             default=default,
         )
         if choice == "diff":
             console.print(
-                Syntax(unified_diff(current, generated, "CLAUDE.md") or "(no differences)", "diff")
+                Syntax(unified_diff(current, generated, label) or "(no differences)", "diff")
             )
             continue
         if choice == "keep":
-            return ClaudeMdDecision(mode=ClaudeMdMode.KEEP, spec=spec, generated=generated), profile
+            return ClaudeMdMode.KEEP, None
         if choice == "skip":
-            return ClaudeMdDecision(mode=ClaudeMdMode.SKIP, spec=spec, generated=generated), profile
+            return ClaudeMdMode.SKIP, None
         if choice == "replace":
-            return ClaudeMdDecision(
-                mode=ClaudeMdMode.REPLACE, spec=spec, generated=generated, content=generated
-            ), profile
+            return ClaudeMdMode.REPLACE, generated
         merged = merge_claude_md(current, generated)
         if not merged.changed:
             render.note(
-                console, "CLAUDE.md already has every proposed section; it is kept unchanged."
+                console, f"{label} already has every proposed section; it is kept unchanged."
             )
-            return ClaudeMdDecision(mode=ClaudeMdMode.KEEP, spec=spec, generated=generated), profile
-        console.print(Syntax(unified_diff(current, merged.content, "CLAUDE.md"), "diff"))
+            return ClaudeMdMode.KEEP, None
+        console.print(Syntax(unified_diff(current, merged.content, label), "diff"))
         render.note(
             console,
             "Existing sections are kept untouched: " + (", ".join(merged.kept_sections) or "none"),
         )
-        if prompter.confirm("claude_md.merge.confirm", "Use the merged version?", default=True):
-            return ClaudeMdDecision(
-                mode=ClaudeMdMode.MERGE, spec=spec, generated=generated, content=merged.content
-            ), profile
+        if prompter.confirm(f"{key}.merge.confirm", "Use the merged version?", default=True):
+            return ClaudeMdMode.MERGE, merged.content
+
+
+def _decide_claude_import(
+    console: Console, prompter: Prompter, path: Path, state: CWIState | None
+) -> tuple[ClaudeMdMode, str | None]:
+    """CLAUDE.md in the AGENTS.md layout: it must import AGENTS.md so Claude Code reads it."""
+    if not path.is_file():
+        return ClaudeMdMode.CREATE, CLAUDE_IMPORT_FILE
+    current = path.read_text(encoding="utf-8")
+    if has_agents_import(current):
+        return ClaudeMdMode.KEEP, None
+    label = paths.rel(paths.CLAUDE_MD)
+    record = state.managed_files.get(label) if state else None
+    cwi_owned_unmodified = record is not None and sha256_file(path) == record.sha256
+    console.print(
+        "[bold]Existing CLAUDE.md detected.[/bold] Claude Code ignores AGENTS.md when CLAUDE.md "
+        "exists, unless CLAUDE.md imports it with `@AGENTS.md`."
+        + (" [dim](created by CWI, unmodified)[/dim]" if cwi_owned_unmodified else "")
+    )
+    while True:
+        choice = prompter.select(
+            "claude_md.import",
+            "What should CWI do with CLAUDE.md?",
+            [
+                Option("import", "Add `@AGENTS.md` at the top (keeps everything else)"),
+                Option("replace", "Replace with an import-only CLAUDE.md"),
+                Option("keep", "Keep as is (Claude Code will not read AGENTS.md)"),
+                Option("diff", "Show diff for the import"),
+            ],
+            default="replace" if cwi_owned_unmodified else "import",
+        )
+        if choice == "diff":
+            console.print(Syntax(unified_diff(current, add_agents_import(current), label), "diff"))
+            continue
+        if choice == "keep":
+            render.warning(
+                console, "CLAUDE.md kept without the import: Claude Code will not load AGENTS.md."
+            )
+            return ClaudeMdMode.KEEP, None
+        if choice == "replace":
+            return ClaudeMdMode.REPLACE, CLAUDE_IMPORT_FILE
+        return ClaudeMdMode.MERGE, add_agents_import(current)
+
+
+def configure_claude_md(
+    console: Console,
+    prompter: Prompter,
+    root: Path,
+    profile: ProjectProfile,
+    state: CWIState | None,
+    architecture_candidates: list[str],
+) -> tuple[ClaudeMdDecision, ProjectProfile]:
+    console.rule("Agent instructions")
+    claude_path = root / paths.rel(paths.CLAUDE_MD)
+    agents_path = root / paths.rel(paths.AGENTS_MD)
+    previous_layout = state.instructions_layout if state else None
+    layout = prompter.select(
+        "instructions.layout",
+        "Where should the project instructions live?",
+        [
+            Option(
+                LAYOUT_AGENTS,
+                "AGENTS.md for every coding agent + CLAUDE.md importing it (recommended)",
+            ),
+            Option(LAYOUT_CLAUDE, "CLAUDE.md only"),
+        ],
+        default=previous_layout or LAYOUT_AGENTS,
+    )
+    main_label = "AGENTS.md" if layout == LAYOUT_AGENTS else "CLAUDE.md"
+    main_path = agents_path if layout == LAYOUT_AGENTS else claude_path
+    if not main_path.is_file() and not prompter.confirm(
+        "claude_md.create", f"Create a minimal {main_label}?", default=True
+    ):
+        return ClaudeMdDecision(mode=ClaudeMdMode.SKIP, layout=layout), profile
+
+    spec, profile = _build_spec(console, prompter, profile, architecture_candidates)
+    generated = render_claude_md(spec, load_template(root))
+
+    if layout == LAYOUT_CLAUDE:
+        render.claude_md_preview(console, generated, estimate_size(generated), "CLAUDE.md")
+        mode, content = _decide_generated_file(
+            console, prompter, claude_path, "CLAUDE.md", generated, state, "claude_md.existing"
+        )
+        return ClaudeMdDecision(
+            mode=mode, spec=spec, generated=generated, content=content, layout=layout
+        ), profile
+
+    claude_mode, claude_content = _decide_claude_import(console, prompter, claude_path, state)
+    final_claude = (
+        claude_content
+        if claude_content is not None
+        else (claude_path.read_text(encoding="utf-8") if claude_path.is_file() else "")
+    )
+    shared = drop_sections(generated, final_claude)  # never duplicate sections CLAUDE.md keeps
+    if shared != generated:
+        render.note(console, "Sections already present in CLAUDE.md are not repeated in AGENTS.md.")
+    render.claude_md_preview(console, shared, estimate_size(shared), "AGENTS.md")
+    agents_mode, agents_content = _decide_generated_file(
+        console, prompter, agents_path, "AGENTS.md", shared, state, "agents_md.existing"
+    )
+    return ClaudeMdDecision(
+        mode=claude_mode,
+        spec=spec,
+        generated=shared,
+        content=claude_content,
+        layout=layout,
+        agents_mode=agents_mode,
+        agents_content=agents_content,
+    ), profile
 
 
 # ---------------------------------------------------------------------------------------------
@@ -712,7 +824,12 @@ def select_capabilities(
         console.rule(f"Select {cap_type.title}")
         render.capability_table(console, cap_type, caps, recs, installed)
         options = []
+        current_group: str | None = None
         for cap in caps:
+            if cap.group != current_group and cap.group is not None:
+                group = catalog.group(cap_type, cap.group)
+                options.append(heading(f"── {group.name if group else cap.group} ──"))
+            current_group = cap.group
             rec = recs[cap.ref]
             if prior is not None:
                 checked = cap.ref in prior

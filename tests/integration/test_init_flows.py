@@ -47,7 +47,8 @@ def test_new_project_questions_create_workspace(tmp_repo, real_catalog):
     outcome, prompter, _ = run(root, answers, catalog=real_catalog)
     assert outcome.applied
     assert "profile.confirm" not in prompter.asked  # new project: questions, not scan confirmation
-    claude_md = (root / "CLAUDE.md").read_text()
+    assert (root / "CLAUDE.md").read_text().startswith("@AGENTS.md")
+    claude_md = (root / "AGENTS.md").read_text()
     assert "Backend:\n- Python\n- FastAPI\n- uv\n- PostgreSQL" in claude_md
     assert "- React" in claude_md and "- Vite" in claude_md
     assert "Infrastructure:\n- Docker" in claude_md
@@ -104,7 +105,7 @@ def test_existing_fastapi_project(tmp_repo, real_catalog):
         "mcp:github",
     } <= set(plan.selected_capabilities)
     assert "skill:frontend-development" not in plan.selected_capabilities
-    claude_md = (root / "CLAUDE.md").read_text()
+    claude_md = (root / "AGENTS.md").read_text()
     assert "- Test: `uv run pytest`" in claude_md
     assert "read `docs/architecture.md` before making structural changes" in claude_md
     mcp = load_json(root / ".mcp.json")
@@ -114,10 +115,13 @@ def test_existing_fastapi_project(tmp_repo, real_catalog):
     assert (root / "app" / "main.py").read_text().startswith("from fastapi import FastAPI")
 
 
+CLAUDE_ONLY = {"instructions.layout": "claude"}
+
+
 def test_existing_claude_md_is_merged_not_overwritten(tmp_repo, real_catalog):
     root = tmp_repo("existing-claude-config")
     original = (root / "CLAUDE.md").read_text()
-    run(root, catalog=real_catalog)
+    run(root, CLAUDE_ONLY, catalog=real_catalog)
     merged = (root / "CLAUDE.md").read_text()
     assert merged.startswith(original.rstrip())
     assert "## Conventions" in merged and "## Safety" in merged
@@ -127,16 +131,84 @@ def test_existing_claude_md_is_merged_not_overwritten(tmp_repo, real_catalog):
 def test_existing_claude_md_keep_or_skip(tmp_repo, real_catalog, choice):
     root = tmp_repo("existing-claude-config")
     original = (root / "CLAUDE.md").read_text()
-    run(root, {"claude_md.existing": choice}, catalog=real_catalog)
+    run(root, {**CLAUDE_ONLY, "claude_md.existing": choice}, catalog=real_catalog)
     assert (root / "CLAUDE.md").read_text() == original
 
 
 def test_existing_claude_md_replace(tmp_repo, real_catalog):
     root = tmp_repo("existing-claude-config")
-    run(root, {"claude_md.existing": "replace"}, catalog=real_catalog)
+    run(root, {**CLAUDE_ONLY, "claude_md.existing": "replace"}, catalog=real_catalog)
     text = (root / "CLAUDE.md").read_text()
     assert "## Conventions" not in text
     assert text.startswith("# existing-claude-config — Project Instructions")
+
+
+# ---------------------------------------------------------------------------------------------
+# AGENTS.md layout (default)
+# ---------------------------------------------------------------------------------------------
+
+
+def test_agents_layout_imports_into_existing_claude_md(tmp_repo, real_catalog):
+    root = tmp_repo("existing-claude-config")
+    original = (root / "CLAUDE.md").read_text()
+    run(root, catalog=real_catalog)
+    claude = (root / "CLAUDE.md").read_text()
+    assert claude.startswith("@AGENTS.md\n\n")
+    assert claude.endswith(original)  # user content untouched below the import
+    agents = (root / "AGENTS.md").read_text()
+    assert "## Safety" in agents and "## Stack" in agents
+    assert "## Conventions" not in agents
+
+
+def test_agents_layout_does_not_duplicate_claude_sections(tmp_repo, real_catalog):
+    root = tmp_repo("existing-claude-config")
+    (root / "CLAUDE.md").write_text("# Payments\n\n## Safety\n\nOur own safety rules.\n")
+    run(root, catalog=real_catalog)
+    assert "## Safety" not in (root / "AGENTS.md").read_text()
+    assert "Our own safety rules." in (root / "CLAUDE.md").read_text()
+
+
+def test_agents_layout_keep_claude_md_warns(tmp_repo, real_catalog):
+    root = tmp_repo("existing-claude-config")
+    original = (root / "CLAUDE.md").read_text()
+    _, _, output = run(root, {"claude_md.import": "keep"}, catalog=real_catalog)
+    assert (root / "CLAUDE.md").read_text() == original
+    assert "will not load AGENTS.md" in output
+    assert (root / "AGENTS.md").is_file()
+
+
+def test_existing_agents_md_never_overwritten(tmp_repo, real_catalog):
+    root = tmp_repo("python-fastapi")
+    (root / "AGENTS.md").write_text(
+        "# Team agents guide\n\n## Conventions\n\n- Use conventional commits.\n"
+    )
+    _, prompter, _ = run(root, catalog=real_catalog)
+    assert "agents_md.existing" in prompter.asked
+    agents = (root / "AGENTS.md").read_text()
+    assert agents.startswith("# Team agents guide")  # default merge keeps the user's file first
+    assert "## Safety" in agents
+    root2 = tmp_repo("react-vite")
+    (root2 / "AGENTS.md").write_text("# Mine\n")
+    run(root2, {"agents_md.existing": "keep"}, catalog=real_catalog)
+    assert (root2 / "AGENTS.md").read_text() == "# Mine\n"
+    assert (root2 / "CLAUDE.md").read_text().startswith("@AGENTS.md")
+
+
+def test_switch_from_claude_only_to_agents_layout(tmp_repo, real_catalog):
+    root = tmp_repo("python-fastapi")
+    run(root, CLAUDE_ONLY, catalog=real_catalog)
+    assert "## Safety" in (root / "CLAUDE.md").read_text()
+    assert not (root / "AGENTS.md").exists()
+    run(root, {"instructions.layout": "agents"}, catalog=real_catalog)
+    # CWI-owned, unmodified CLAUDE.md is replaced by the import; content moves to AGENTS.md.
+    assert (root / "CLAUDE.md").read_text().startswith("@AGENTS.md")
+    assert "## Safety" not in (root / "CLAUDE.md").read_text()
+    assert "## Safety" in (root / "AGENTS.md").read_text()
+    state = StateRepository(root).load()
+    assert state.instructions_layout == "agents"
+    first = tree(root)
+    run(root, catalog=real_catalog)  # saved layout is the default on rerun
+    assert tree(root) == first
 
 
 def test_existing_settings_preserved_and_hooks_merged_once(tmp_repo, real_catalog):
@@ -312,9 +384,10 @@ def test_limited_mode_without_catalog(tmp_repo, real_catalog):
         failing(fail_on=".claude/settings.json"),
         failing(fail_on=".mcp.json"),
         failing(fail_on="CLAUDE.md"),
+        failing(fail_on="AGENTS.md"),
         failing(fail_on=".claude/cwi-state.json"),
     ],
-    ids=["first", "middle", "late", "settings", "mcp", "claude-md", "state"],
+    ids=["first", "middle", "late", "settings", "mcp", "claude-md", "agents-md", "state"],
 )
 def test_failed_apply_restores_repository(tmp_repo, real_catalog, factory):
     root = tmp_repo("existing-claude-config")
@@ -386,7 +459,7 @@ def test_template_init_leaves_minimal_claude_workspace(tmp_path):
     assert "new.type" in prompter.asked  # the template itself is not an application
     assert outcome.plan.cleanup_template
     remaining = sorted(p.relative_to(root).as_posix() for p in root.iterdir())
-    assert remaining == [".claude", ".gitignore", "CLAUDE.md", "README.MD", "scripts"]
+    assert remaining == [".claude", ".gitignore", "AGENTS.md", "CLAUDE.md", "README.MD", "scripts"]
     claude = sorted(p.relative_to(root).as_posix() for p in (root / ".claude").iterdir())
     assert claude == [
         ".claude/agents",

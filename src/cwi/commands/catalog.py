@@ -80,6 +80,20 @@ ForceOpt = Annotated[
 YesOpt = Annotated[
     bool, typer.Option("--yes", "-y", help="Do not ask questions; use flags and defaults.")
 ]
+GroupOpt = Annotated[
+    str | None,
+    typer.Option(
+        "--group",
+        help="Family folder, e.g. development-agents. Agents install into .claude/agents/<group>/.",
+    ),
+]
+GroupDefaultOpt = Annotated[
+    str | None,
+    typer.Option(
+        "--group-default",
+        help="Preselect it for these project types through its family (needs --group).",
+    ),
+]
 
 
 def _prompter(yes: bool) -> Prompter:
@@ -97,8 +111,12 @@ def _metadata(
     tech: str | None,
     depends: list[str] | None,
     conflicts: list[str] | None,
+    group: str | None = None,
+    group_default: str | None = None,
     ask_recommendation: bool = True,
 ) -> Metadata:
+    if group_default and not group:
+        raise AuthoringError("--group-default needs --group")
     meta = Metadata(
         id=cid,
         name=name,
@@ -108,6 +126,8 @@ def _metadata(
         technologies=parse_list(tech),
         dependencies=list(depends or []),
         conflicts=list(conflicts or []),
+        group=group,
+        group_defaults=parse_project_types(group_default),
     )
     if not prompter.interactive or not ask_recommendation:
         return meta
@@ -142,7 +162,12 @@ def _ask_description(prompter: Prompter, meta: Metadata, what: str) -> None:
         meta.description = value or None
 
 
-def _finish(catalog: Path, built: BuiltCapability, force: bool) -> None:
+def _finish(
+    catalog: Path, built: BuiltCapability, force: bool, meta: Metadata | None = None
+) -> None:
+    if meta is not None:
+        built.group = meta.group
+        built.group_defaults = list(meta.group_defaults)
     for warning in built.warnings:
         console.print(f"[yellow]! {warning}[/yellow]")
     target = write_capability(catalog, built, force=force)
@@ -189,6 +214,8 @@ def add_skill(
     tech: TechOpt = None,
     depends: DependsOpt = None,
     conflicts: ConflictsOpt = None,
+    group: GroupOpt = None,
+    group_default: GroupDefaultOpt = None,
     catalog: CatalogOpt = Path("catalog"),
     force: ForceOpt = False,
     yes: YesOpt = False,
@@ -207,6 +234,8 @@ def add_skill(
             tech=tech,
             depends=depends,
             conflicts=conflicts,
+            group=group,
+            group_default=group_default,
         )
         built = build_skill(path, meta, ref or [], script or [])
         if built.agent_frontmatter and not prompter.interactive:
@@ -236,7 +265,7 @@ def add_skill(
                 )
             else:
                 built = build_skill(path, meta, ref or [], script or [], convert_tools=True)
-        _finish(catalog, built, force)
+        _finish(catalog, built, force, meta)
 
     _run(go)
 
@@ -258,6 +287,8 @@ def add_agent(
     tech: TechOpt = None,
     depends: DependsOpt = None,
     conflicts: ConflictsOpt = None,
+    group: GroupOpt = None,
+    group_default: GroupDefaultOpt = None,
     catalog: CatalogOpt = Path("catalog"),
     force: ForceOpt = False,
     yes: YesOpt = False,
@@ -275,8 +306,10 @@ def add_agent(
             tech=tech,
             depends=depends,
             conflicts=conflicts,
+            group=group,
+            group_default=group_default,
         )
-        _finish(catalog, build_agent(path, meta, script or []), force)
+        _finish(catalog, build_agent(path, meta, script or []), force, meta)
 
     _run(go)
 
@@ -308,6 +341,8 @@ def add_hook(
     tech: TechOpt = None,
     depends: DependsOpt = None,
     conflicts: ConflictsOpt = None,
+    group: GroupOpt = None,
+    group_default: GroupDefaultOpt = None,
     catalog: CatalogOpt = Path("catalog"),
     force: ForceOpt = False,
     yes: YesOpt = False,
@@ -326,6 +361,8 @@ def add_hook(
             tech=tech,
             depends=depends,
             conflicts=conflicts,
+            group=group,
+            group_default=group_default,
         )
         _ask_description(prompter, meta, "hook")
         _finish(
@@ -355,6 +392,8 @@ def add_script(
     tech: TechOpt = None,
     depends: DependsOpt = None,
     conflicts: ConflictsOpt = None,
+    group: GroupOpt = None,
+    group_default: GroupDefaultOpt = None,
     catalog: CatalogOpt = Path("catalog"),
     force: ForceOpt = False,
     yes: YesOpt = False,
@@ -373,9 +412,11 @@ def add_script(
             tech=tech,
             depends=depends,
             conflicts=conflicts,
+            group=group,
+            group_default=group_default,
         )
         _ask_description(prompter, meta, "script")
-        _finish(catalog, build_script(files, meta), force)
+        _finish(catalog, build_script(files, meta), force, meta)
 
     _run(go)
 
@@ -409,6 +450,8 @@ def add_mcp(
     tech: TechOpt = None,
     depends: DependsOpt = None,
     conflicts: ConflictsOpt = None,
+    group: GroupOpt = None,
+    group_default: GroupDefaultOpt = None,
     catalog: CatalogOpt = Path("catalog"),
     force: ForceOpt = False,
     yes: YesOpt = False,
@@ -427,6 +470,8 @@ def add_mcp(
             tech=tech,
             depends=depends,
             conflicts=conflicts,
+            group=group,
+            group_default=group_default,
         )
         _ask_description(prompter, meta, "MCP server")
         built = build_mcp(
@@ -439,7 +484,7 @@ def add_mcp(
             env=env or [],
             transport=transport,
         )
-        _finish(catalog, built, force)
+        _finish(catalog, built, force, meta)
 
     _run(go)
 
@@ -454,7 +499,8 @@ def list_capabilities(catalog: CatalogOpt = Path("catalog")) -> None:
         except CatalogError as exc:
             raise AuthoringError(str(exc)) from exc
         table = Table(title=f"CWI catalog ({len(loaded.capabilities)})")
-        for column in ("Reference", "Name", "Default", "Recommended for", "Depends on"):
+        table.add_column("Reference", no_wrap=True)
+        for column in ("Group", "Default", "Recommended for", "Depends on"):
             table.add_column(column)
         for cap in loaded.capabilities:
             rec = cap.manifest.recommendation
@@ -504,5 +550,89 @@ def remove(
             raise UserCancelled("Cancelled. Nothing was removed.")
         target = remove_capability(catalog, ref, force=force)
         console.print(f"[green]✓ Removed {ref}[/green]  [dim]{target}[/dim]")
+
+    _run(go)
+
+
+group_app = typer.Typer(help="Manage capability families (groups).", no_args_is_help=True)
+catalog_app.add_typer(group_app, name="group")
+
+
+def _cap_type(value: str):
+    from cwi.domain.enums import CapabilityType
+
+    value = value.lower().rstrip("s") if value.lower() != "mcp" else "mcp"
+    try:
+        return CapabilityType(value)
+    except ValueError as exc:
+        raise AuthoringError("Type must be one of: skill, agent, script, hook, mcp") from exc
+
+
+@group_app.command("create")
+def group_create(
+    cap_type: Annotated[
+        str, typer.Argument(metavar="TYPE", help="skill, agent, script, hook or mcp.")
+    ],
+    group: Annotated[str, typer.Argument(help="Family id, e.g. devops-agents.")],
+    name: NameOpt = None,
+    description: DescOpt = None,
+    catalog: CatalogOpt = Path("catalog"),
+) -> None:
+    """Create an empty family folder with its group.json."""
+    from cwi.authoring.groups import ensure_group
+
+    def go() -> None:
+        path = ensure_group(
+            catalog.resolve(), _cap_type(cap_type), group, name=name, description=description
+        )
+        console.print(
+            f"[green]✓ Group ready[/green]  [dim]{path}[/dim]  Add members with --group {group}."
+        )
+
+    _run(go)
+
+
+@group_app.command("defaults")
+def group_defaults(
+    cap_type: Annotated[
+        str, typer.Argument(metavar="TYPE", help="skill, agent, script, hook or mcp.")
+    ],
+    group: Annotated[str, typer.Argument(help="Family id.")],
+    project_type: Annotated[
+        str, typer.Argument(help="Project type: " + ",".join(t.value for t in ProjectType))
+    ],
+    members: Annotated[
+        str,
+        typer.Argument(
+            help="Comma-separated member ids to preselect for that project type ('' clears)."
+        ),
+    ],
+    catalog: CatalogOpt = Path("catalog"),
+) -> None:
+    """Set which family members are preselected for one project type."""
+    from cwi.authoring.groups import group_dir, read_group, write_group
+
+    def go() -> None:
+        kind = _cap_type(cap_type)
+        types = parse_project_types(project_type)
+        if len(types) != 1:
+            raise AuthoringError("Pass exactly one project type")
+        path = group_dir(catalog.resolve(), kind, group)
+        data = read_group(path)
+        ids = sorted(set(parse_list(members)))
+        defaults = dict(data.get("defaults") or {})
+        if ids:
+            defaults[types[0].value] = ids
+        else:
+            defaults.pop(types[0].value, None)
+        before = dict(data)
+        data["defaults"] = dict(sorted(defaults.items()))
+        write_group(path, data)
+        try:
+            load_catalog(catalog.resolve())
+        except CatalogError as exc:
+            write_group(path, before)
+            raise AuthoringError(f"Not saved: {exc}") from exc
+        console.print(f"[green]✓ {group}: {types[0].value} → {', '.join(ids) or '(none)'}[/green]")
 
     _run(go)

@@ -162,16 +162,18 @@ def commands_table(console: Console, prof: ProjectProfile) -> None:
     console.print(table)
 
 
-def claude_md_preview(console: Console, content: str, size: SizeReport) -> None:
+def claude_md_preview(
+    console: Console, content: str, size: SizeReport, label: str = "CLAUDE.md"
+) -> None:
     console.print(
         Panel(
-            Syntax(content, "markdown", word_wrap=True), title="CLAUDE.md (proposed)", expand=False
+            Syntax(content, "markdown", word_wrap=True), title=f"{label} (proposed)", expand=False
         )
     )
     style = {"compact": "green", "review": "yellow", "large": "red"}[size.verdict]
     mark = "✓" if size.verdict == "compact" else "!"
     console.print(
-        f"[bold]CLAUDE.md[/bold]  {size.lines} lines · ~{size.estimated_tokens} estimated tokens  "
+        f"[bold]{label}[/bold]  {size.lines} lines · ~{size.estimated_tokens} estimated tokens  "
         f"[{style}]{mark} {size.message}[/{style}]"
     )
 
@@ -191,7 +193,12 @@ def capability_table(
     table.add_column("Capability", style="bold")
     table.add_column("Description")
     table.add_column("Why", style="green")
+    current_group: str | None = None
     for cap in caps:
+        if cap.group is not None and cap.group != current_group:
+            table.add_section()
+            table.add_row(f"[bold cyan]{cap.group}/[/bold cyan]", "", "")
+        current_group = cap.group
         rec = recs.get(cap.ref)
         why_parts = []
         if cap.ref in installed:
@@ -227,12 +234,17 @@ def env_requirements(
 def plan_summary(console: Console, plan: InstallationPlan, catalog: Catalog | None) -> None:
     console.print(Rule("Claude Workspace Plan"))
     lines: list[str] = [f"[bold]Project[/bold]\n  {plan.profile.summary()}"]
-    if plan.claude_md_mode is not None:
-        touched = any(op.target == "CLAUDE.md" for op in plan.operations)
-        mode = plan.claude_md_mode.value.upper()
+    for label, file_mode in (
+        ("AGENTS.md", plan.agents_md_mode),
+        ("CLAUDE.md", plan.claude_md_mode),
+    ):
+        if file_mode is None:
+            continue
+        touched = any(op.target == label for op in plan.operations)
+        mode = file_mode.value.upper()
         if not touched:
             mode = "UNCHANGED" if mode not in ("SKIP", "KEEP") else mode
-        lines.append(f"[bold]CLAUDE.md[/bold]\n  {mode}")
+        lines.append(f"[bold]{label}[/bold]\n  {mode}")
 
     by_type: dict[CapabilityType, list[str]] = {t: [] for t in SELECTION_ORDER}
     for ref in plan.selected_capabilities:

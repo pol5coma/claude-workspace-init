@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "architect-reviewer",
+  "type": "agent",
+  "name": "Architect reviewer",
+  "description": "Use this agent when you need to evaluate system design decisions, architectural patterns, and technology choices at the macro level. Specifically:\\ \\",
+  "dependencies": [],
+  "conflicts": []
+}

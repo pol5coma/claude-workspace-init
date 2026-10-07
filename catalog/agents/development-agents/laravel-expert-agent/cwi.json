@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "laravel-expert-agent",
+  "type": "agent",
+  "name": "Laravel expert agent",
+  "description": "Expert Laravel development assistant specializing in modern Laravel 12+ applications with Eloquent, Artisan, testing, and best practices",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "laravel"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

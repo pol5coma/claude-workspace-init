@@ -16,6 +16,7 @@ from cwi.domain.models import Capability, Catalog
 RESERVED_TARGETS = {
     paths.rel(paths.CLAUDE_MD),
     paths.rel(paths.CLAUDE_LOCAL_MD),
+    paths.rel(paths.AGENTS_MD),
     paths.rel(paths.SETTINGS_FILE),
     paths.rel(paths.SETTINGS_LOCAL_FILE),
     paths.rel(paths.MCP_FILE),
@@ -46,7 +47,7 @@ def _allowed_prefixes(cap: Capability) -> tuple[str, ...]:
         return (f"{paths.SKILLS_DIR}/{cid}/",)
     if cap.type == CapabilityType.AGENT:
         return (
-            f"{paths.AGENTS_DIR}/{cid}.md",
+            paths.agent_file(cid, cap.group),
             f"{paths.CLAUDE_SCRIPTS_DIR}/{cid}/",
         )
     if cap.type == CapabilityType.SCRIPT:
@@ -77,7 +78,7 @@ def _check_payload(cap: Capability, errors: list[str]) -> None:
         else:
             _check_frontmatter(cap, skill_md, errors, expect_name=cap.id)
     elif cap.type == CapabilityType.AGENT:
-        agent_md = f"{paths.AGENTS_DIR}/{cap.id}.md"
+        agent_md = paths.agent_file(cap.id, cap.group)
         if agent_md not in cap.payload_files:
             errors.append(f"{where}: missing payload {agent_md}")
         else:
@@ -242,6 +243,19 @@ def _check_target_collisions(catalog: Catalog, errors: list[str]) -> None:
                 servers.setdefault(name, cap.ref)
 
 
+def _check_groups(catalog: Catalog, errors: list[str]) -> None:
+    for group in catalog.groups:
+        members = {
+            c.id for c in catalog.capabilities if c.type == group.type and c.group == group.id
+        }
+        for project_type, ids in group.defaults.items():
+            for cid in ids:
+                if cid not in members:
+                    errors.append(
+                        f"group {group.id}: defaults.{project_type.value} lists '{cid}', which is not a member of the group"
+                    )
+
+
 def validate_catalog(catalog: Catalog) -> None:
     """Raise CatalogError listing every problem found in the catalog."""
     errors: list[str] = []
@@ -255,6 +269,7 @@ def validate_catalog(catalog: Catalog) -> None:
         _check_payload(cap, errors)
     _check_refs_and_cycles(catalog, errors)
     _check_target_collisions(catalog, errors)
+    _check_groups(catalog, errors)
     if errors:
         bullet = "\n  - "
         raise CatalogError("Invalid CWI catalog:" + bullet + bullet.join(errors))

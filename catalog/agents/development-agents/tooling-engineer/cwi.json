@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "tooling-engineer",
+  "type": "agent",
+  "name": "Tooling engineer",
+  "description": "Use this agent when you need to build or enhance developer tools including CLIs, code generators, build tools, and IDE extensions. Specifically:\\ \\",
+  "dependencies": [],
+  "conflicts": []
+}

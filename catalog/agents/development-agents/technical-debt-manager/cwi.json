@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "technical-debt-manager",
+  "type": "agent",
+  "name": "Technical debt manager",
+  "description": "Expert technical debt analyst for code health, maintainability, and strategic refactoring planning. Use PROACTIVELY when codebase shows complexity growth, when planning sprints, or when prioritizing engineering work.",
+  "dependencies": [],
+  "conflicts": []
+}

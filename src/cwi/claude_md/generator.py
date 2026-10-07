@@ -136,3 +136,38 @@ def estimate_size(text: str) -> SizeReport:
     return SizeReport(
         lines=lines, characters=chars, estimated_tokens=tokens, verdict=verdict, message=message
     )
+
+
+# ---------------------------------------------------------------------------------------------
+# AGENTS.md layout
+# ---------------------------------------------------------------------------------------------
+
+AGENTS_IMPORT = "@AGENTS.md"
+CLAUDE_IMPORT_FILE = (
+    f"{AGENTS_IMPORT}\n\n"
+    "<!-- Shared instructions for every coding agent live in AGENTS.md.\n"
+    "     Add Claude Code-specific notes below this line. -->\n"
+)
+
+
+def has_agents_import(text: str) -> bool:
+    return any(line.strip() == AGENTS_IMPORT for line in text.splitlines())
+
+
+def add_agents_import(text: str) -> str:
+    """Prepend the AGENTS.md import to an existing CLAUDE.md, keeping everything else."""
+    if has_agents_import(text):
+        return text
+    return f"{AGENTS_IMPORT}\n\n{text.lstrip()}" if text.strip() else CLAUDE_IMPORT_FILE
+
+
+def drop_sections(generated: str, existing: str) -> str:
+    """Remove generated sections whose heading already exists in `existing` (no duplication)."""
+    from cwi.claude_md.merger import _norm, split_sections
+
+    preamble, sections = split_sections(generated)
+    _, present = split_sections(existing)
+    taken = {_norm(h) for h, _ in present}
+    kept = [block for heading, block in sections if _norm(heading) not in taken]
+    body = "\n\n".join([preamble.rstrip(), *kept]).strip()
+    return body + "\n"

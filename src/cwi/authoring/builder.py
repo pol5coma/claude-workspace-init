@@ -57,6 +57,10 @@ class Metadata:
     dependencies: list[str] = field(default_factory=list)
     conflicts: list[str] = field(default_factory=list)
     tags: list[str] = field(default_factory=list)
+    group: str | None = None  # family folder, e.g. "development-agents"
+    group_defaults: list[ProjectType] = field(
+        default_factory=list
+    )  # preselect for these types via the family
 
 
 @dataclass
@@ -68,6 +72,8 @@ class BuiltCapability:
     payload: dict[str, Path | str] = field(default_factory=dict)
     fragments: dict[str, dict[str, Any]] = field(default_factory=dict)
     warnings: list[str] = field(default_factory=list)
+    group: str | None = None
+    group_defaults: list[ProjectType] = field(default_factory=list)
     agent_frontmatter: bool = (
         False  # a "skill" whose frontmatter has `tools:` is almost surely an agent
     )
@@ -167,7 +173,8 @@ def _manifest(
             "project_types": [t.value for t in meta.project_types],
             "technologies": [t.lower() for t in meta.technologies],
         }
-        if meta.require_technology:
+        # Technologies without project types are the only relevance signal: let them preselect alone.
+        if meta.require_technology or (meta.technologies and not meta.project_types):
             rec["require_technology"] = True
         manifest["recommendation"] = rec
     manifest["dependencies"] = list(meta.dependencies)
@@ -299,7 +306,7 @@ def build_agent(source: Path, meta: Metadata, scripts: list[Path]) -> BuiltCapab
     if not front.get("description"):
         updates["description"] = description
     built = BuiltCapability(CapabilityType.AGENT, cid, {})
-    built.payload[f"{paths.AGENTS_DIR}/{cid}.md"] = set_frontmatter(text, updates)
+    built.payload[paths.agent_file(cid, meta.group)] = set_frontmatter(text, updates)
     for script in scripts:
         script = _require_file(script, "Script")
         built.payload[f"{paths.CLAUDE_SCRIPTS_DIR}/{cid}/{script.name}"] = script

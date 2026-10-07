@@ -8,11 +8,13 @@ from typing import Any
 
 from pydantic import ValidationError as PydanticValidationError
 
+from cwi import paths
 from cwi.domain.enums import CapabilityType
 from cwi.domain.errors import CatalogError
 from cwi.domain.models import (
     SUPPORTED_CATALOG_SCHEMA,
     Capability,
+    CapabilityGroup,
     CapabilityManifest,
     Catalog,
 )
@@ -75,7 +77,59 @@ def _list_payload(payload_dir: Path) -> list[str]:
     return files
 
 
-def load_capability(capability_dir: Path) -> Capability:
+def load_group(group_dir: Path, cap_type: CapabilityType) -> CapabilityGroup:
+    path = group_dir / paths.GROUP_MANIFEST
+    data = _read_json(path)
+    if not isinstance(data, dict):
+        raise CatalogError(f"Group manifest must be a JSON object: {path}")
+    if data.get("schema_version") != SUPPORTED_CATALOG_SCHEMA:
+        raise CatalogError(
+            f"Unsupported catalog schema version: {data.get('schema_version')} ({path}).\n"
+            f"This CWI version supports schema version {SUPPORTED_CATALOG_SCHEMA}. Upgrade CWI before continuing."
+        )
+    try:
+        group = CapabilityGroup.model_validate(data)
+    except PydanticValidationError as exc:
+        problems = "; ".join(
+            f"{'.'.join(str(p) for p in err['loc'])}: {err['msg']}" for err in exc.errors()
+        )
+        raise CatalogError(f"Invalid group manifest {path}: {problems}") from exc
+    if group.id != group_dir.name:
+        raise CatalogError(
+            f"{group_dir}: group id '{group.id}' does not match directory name '{group_dir.name}'"
+        )
+    if group.type != cap_type:
+        raise CatalogError(
+            f"{group_dir}: group type '{group.type}' does not match directory '{cap_type.plural}/'"
+        )
+    return group
+
+
+def _capability_dirs(type_dir: Path) -> list[tuple[Path, str | None]]:
+    """(capability_dir, group) pairs. A folder with group.json is a family of capabilities."""
+    found: list[tuple[Path, str | None]] = []
+    for child in sorted(type_dir.iterdir()):
+        if child.name.startswith(".") or not child.is_dir():
+            continue
+        if child.is_symlink():
+            raise CatalogError(f"Catalog directory is a symlink: {child}")
+        if (child / paths.GROUP_MANIFEST).is_file():
+            if (child / MANIFEST_NAME).exists():
+                raise CatalogError(
+                    f"{child}: a folder cannot be both a capability (cwi.json) and a group (group.json)"
+                )
+            for member in sorted(child.iterdir()):
+                if member.name.startswith(".") or not member.is_dir():
+                    continue
+                if (member / paths.GROUP_MANIFEST).exists():
+                    raise CatalogError(f"{member}: groups cannot be nested")
+                found.append((member, child.name))
+        else:
+            found.append((child, None))
+    return found
+
+
+def load_capability(capability_dir: Path, group: str | None = None) -> Capability:
     if capability_dir.is_symlink():
         raise CatalogError(f"Catalog capability directory is a symlink: {capability_dir}")
     manifest = load_manifest(capability_dir / MANIFEST_NAME)
@@ -91,6 +145,7 @@ def load_capability(capability_dir: Path) -> Capability:
     return Capability(
         manifest=manifest,
         source_dir=capability_dir,
+        group=group,
         payload_files=_list_payload(payload_dir),
         settings_fragment=settings_fragment,
         mcp_fragment=mcp_fragment,
@@ -102,14 +157,20 @@ def load_catalog(catalog_root: Path, *, validate: bool = True) -> Catalog:
     if not catalog_root.is_dir():
         raise CatalogError(f"Catalog directory not found: {catalog_root}")
     capabilities: list[Capability] = []
+    groups: list[CapabilityGroup] = []
     for cap_type in CapabilityType:
         type_dir = catalog_root / cap_type.plural
         if not type_dir.is_dir():
             continue
-        for capability_dir in sorted(type_dir.iterdir()):
-            if capability_dir.name.startswith(".") or not capability_dir.is_dir():
-                continue
-            capability = load_capability(capability_dir)
+        for child in sorted(type_dir.iterdir()):
+            if (
+                child.is_dir()
+                and not child.name.startswith(".")
+                and (child / paths.GROUP_MANIFEST).is_file()
+            ):
+                groups.append(load_group(child, cap_type))
+        for capability_dir, group in _capability_dirs(type_dir):
+            capability = load_capability(capability_dir, group)
             if capability.type != cap_type:
                 raise CatalogError(
                     f"{capability_dir}: manifest type '{capability.type}' does not match "
@@ -121,7 +182,7 @@ def load_catalog(catalog_root: Path, *, validate: bool = True) -> Catalog:
                     f"directory name '{capability_dir.name}'"
                 )
             capabilities.append(capability)
-    catalog = Catalog(root=catalog_root, capabilities=capabilities)
+    catalog = Catalog(root=catalog_root, capabilities=capabilities, groups=groups)
     if validate:
         from cwi.catalog.validator import validate_catalog
 

@@ -15,6 +15,7 @@ from cwi import __version__, paths
 from cwi.domain.enums import SELECTION_ORDER, CapabilityType, ClaudeMdMode, OperationType
 from cwi.domain.errors import ConflictError, PlanError
 from cwi.domain.models import (
+    LAYOUT_AGENTS,
     Capability,
     Catalog,
     ClaudeMdDecision,
@@ -38,6 +39,8 @@ from cwi.state.hashing import sha256_file, sha256_text
 from cwi.state.repository import StateRepository
 
 CLAUDE_MD_OWNER = "claude-md"
+AGENTS_MD_OWNER = "agents-md"
+INSTRUCTION_OWNERS = {CLAUDE_MD_OWNER, AGENTS_MD_OWNER}
 STATE_OWNER = "cwi-state"
 
 # Directories that are never removed even when CWI empties them.
@@ -444,24 +447,24 @@ def _plan_mcp(b: _Builder, mcp_caps: list[Capability], removed: list[str]) -> No
 # ---------------------------------------------------------------------------------------------
 
 
-def _plan_claude_md(b: _Builder) -> None:
-    decision = b.inputs.claude_md
-    rel = paths.rel(paths.CLAUDE_MD)
+def _plan_instruction_file(
+    b: _Builder, rel: str, mode: ClaudeMdMode | None, content: str | None, owner: str
+) -> None:
+    """CLAUDE.md / AGENTS.md: create, merge or replace exactly as the user decided."""
     path = b.abs(rel)
     prev = (b.inputs.state.managed_files if b.inputs.state else {}).get(rel)
     exists = path.is_file()
     current_hash = sha256_file(path) if exists else None
 
-    if decision.mode in (ClaudeMdMode.KEEP, ClaudeMdMode.SKIP) or decision.content is None:
+    if mode is None or mode in (ClaudeMdMode.KEEP, ClaudeMdMode.SKIP) or content is None:
         if prev is not None and exists and current_hash == prev.sha256:
             b.managed[rel] = prev
         return
-    content = decision.content
     new_hash = sha256_text(content)
-    if decision.mode in (ClaudeMdMode.CREATE, ClaudeMdMode.REPLACE) or (
+    if mode in (ClaudeMdMode.CREATE, ClaudeMdMode.REPLACE) or (
         prev and current_hash == prev.sha256
     ):
-        b.managed[rel] = ManagedFile(owner=CLAUDE_MD_OWNER, sha256=new_hash)
+        b.managed[rel] = ManagedFile(owner=owner, sha256=new_hash)
     if exists and current_hash == new_hash:
         return
     b.ops.append(
@@ -471,13 +474,28 @@ def _plan_claude_md(b: _Builder) -> None:
             before_hash=current_hash,
             after_content=content,
             after_hash=new_hash,
-            owner=CLAUDE_MD_OWNER,
+            owner=owner,
             reason={
-                ClaudeMdMode.CREATE: "create minimal CLAUDE.md",
-                ClaudeMdMode.MERGE: "append missing CLAUDE.md sections",
-                ClaudeMdMode.REPLACE: "replace CLAUDE.md with generated version",
-            }.get(decision.mode, "update CLAUDE.md"),
+                ClaudeMdMode.CREATE: f"create minimal {rel}",
+                ClaudeMdMode.MERGE: f"update {rel} (existing content kept)",
+                ClaudeMdMode.REPLACE: f"replace {rel} with generated version",
+            }.get(mode, f"update {rel}"),
         )
+    )
+
+
+def _plan_claude_md(b: _Builder) -> None:
+    decision = b.inputs.claude_md
+    if decision.layout == LAYOUT_AGENTS:
+        _plan_instruction_file(
+            b,
+            paths.rel(paths.AGENTS_MD),
+            decision.agents_mode,
+            decision.agents_content,
+            AGENTS_MD_OWNER,
+        )
+    _plan_instruction_file(
+        b, paths.rel(paths.CLAUDE_MD), decision.mode, decision.content, CLAUDE_MD_OWNER
     )
 
 
@@ -488,6 +506,8 @@ def _plan_state(b: _Builder, selected: list[str]) -> CWIState:
         initialized_at=previous.initialized_at if previous else b.inputs.now,
         profile=b.inputs.profile,
         claude_md_mode=b.inputs.claude_md.mode,
+        agents_md_mode=b.inputs.claude_md.agents_mode,
+        instructions_layout=b.inputs.claude_md.layout,
         selected_capabilities=selected,
         managed_files=dict(sorted(b.managed.items())),
         settings_hooks=dict(sorted(b.settings_hooks.items())),
@@ -503,6 +523,17 @@ def _plan_state(b: _Builder, selected: list[str]) -> CWIState:
         )
     ):
         state.claude_md_mode = previous.claude_md_mode
+    if (
+        previous is not None
+        and previous.agents_md_mode
+        and b.inputs.claude_md.agents_mode
+        in (
+            ClaudeMdMode.KEEP,
+            ClaudeMdMode.SKIP,
+            None,
+        )
+    ):
+        state.agents_md_mode = previous.agents_md_mode
     content = StateRepository.serialize(state)
     rel = paths.rel(paths.STATE_FILE)
     path = b.abs(rel)
@@ -540,7 +571,7 @@ def _build(inputs: PlanInputs) -> tuple[InstallationPlan | None, list[FileDecisi
         selected = _ordered(previous)
         if state:
             b.managed.update(
-                {k: v for k, v in state.managed_files.items() if v.owner != CLAUDE_MD_OWNER}
+                {k: v for k, v in state.managed_files.items() if v.owner not in INSTRUCTION_OWNERS}
             )
             b.settings_hooks.update(state.settings_hooks)
             b.mcp_servers.update(state.mcp_servers)
@@ -600,6 +631,7 @@ def _build(inputs: PlanInputs) -> tuple[InstallationPlan | None, list[FileDecisi
         removed_capabilities=removed,
         kept_capabilities=[r for r in selected if r in previous],
         claude_md_mode=inputs.claude_md.mode,
+        agents_md_mode=inputs.claude_md.agents_mode,
         operations=operations,
         warnings=list(dict.fromkeys(b.warnings)),
         env_requirements=env,

@@ -3,7 +3,14 @@
 from __future__ import annotations
 
 from cwi.domain.enums import ProjectType
-from cwi.domain.models import Capability, Catalog, ProjectProfile, Recommendation, normalize_tech
+from cwi.domain.models import (
+    Capability,
+    CapabilityGroup,
+    Catalog,
+    ProjectProfile,
+    Recommendation,
+    normalize_tech,
+)
 
 TYPE_MATCH_SCORE = 10
 TECH_MATCH_SCORE = 5
@@ -28,7 +35,9 @@ def _canonical(tech: str) -> str:
     return t
 
 
-def score_capability(cap: Capability, profile: ProjectProfile) -> Recommendation:
+def score_capability(
+    cap: Capability, profile: ProjectProfile, group: CapabilityGroup | None = None
+) -> Recommendation:
     score = 0
     reasons: list[str] = []
     rules = cap.manifest.recommendation
@@ -52,6 +61,10 @@ def score_capability(cap: Capability, profile: ProjectProfile) -> Recommendation
             else:
                 score = 0
                 type_hit = False
+
+    if group is not None and cap.id in group.defaults.get(profile.project_type, []):
+        score += TYPE_MATCH_SCORE
+        reasons.append(f"{group.name} default for {profile.project_type.label.lower()} projects")
 
     if tech_names:
         reasons.append(" + ".join(tech_names) + " detected")
@@ -86,7 +99,10 @@ def _display_names(profile: ProjectProfile) -> dict[str, str]:
 
 
 def recommend(catalog: Catalog, profile: ProjectProfile) -> dict[str, Recommendation]:
-    return {cap.ref: score_capability(cap, profile) for cap in catalog.capabilities}
+    return {
+        cap.ref: score_capability(cap, profile, catalog.group(cap.type, cap.group))
+        for cap in catalog.capabilities
+    }
 
 
 def is_application(profile: ProjectProfile) -> bool:

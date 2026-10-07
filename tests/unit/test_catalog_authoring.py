@@ -365,7 +365,8 @@ def test_refuses_when_catalog_already_invalid(catalog, sources):
 def test_list_validate_remove(catalog):
     result = cli("list", "--catalog", str(catalog))
     assert result.exit_code == 0 and "skill:testing" in result.stdout
-    assert "Catalog valid: 10" in cli("validate", "--catalog", str(catalog)).stdout
+    count = len(load_catalog(catalog).capabilities)
+    assert f"Catalog valid: {count}" in cli("validate", "--catalog", str(catalog)).stdout
 
     result = cli("remove", "script:run-quality-checks", "--catalog", str(catalog), "--yes")
     assert result.exit_code == 1 and "required by agent:code-reviewer" in result.stdout
@@ -402,3 +403,27 @@ def test_new_capability_is_installed_by_init(catalog, sources, tmp_repo):
     run(root, catalog=catalog)
     assert (root / ".claude/skills/house-style/SKILL.md").is_file()
     assert json.loads((root / ".claude/cwi-state.json").read_text())["selected_capabilities"][0]
+
+
+def test_tech_only_recommendation_preselects(catalog, sources):
+    from cwi.catalog.recommender import recommend
+    from cwi.domain.models import ProjectProfile
+
+    (sources / "pw.md").write_text("---\nname: pw\ndescription: Playwright helper\n---\nx\n")
+    assert (
+        cli(
+            "add",
+            "agent",
+            str(sources / "pw.md"),
+            "--tech",
+            "playwright",
+            "--catalog",
+            str(catalog),
+            "--yes",
+        ).exit_code
+        == 0
+    )
+    loaded = load_catalog(catalog)
+    assert loaded.get("agent:pw").manifest.recommendation.require_technology
+    assert recommend(loaded, ProjectProfile(test_tools=["Playwright"]))["agent:pw"].preselected
+    assert not recommend(loaded, ProjectProfile())["agent:pw"].preselected

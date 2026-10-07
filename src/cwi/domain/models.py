@@ -44,6 +44,7 @@ class DetectedCommand(BaseModel):
 
 class ExistingClaudeConfig(BaseModel):
     claude_md: bool = False
+    agents_md: bool = False
     claude_local_md: bool = False
     settings: bool = False
     settings_local: bool = False
@@ -56,6 +57,7 @@ class ExistingClaudeConfig(BaseModel):
     def any(self) -> bool:
         return bool(
             self.claude_md
+            or self.agents_md
             or self.claude_local_md
             or self.settings
             or self.settings_local
@@ -222,11 +224,37 @@ class CapabilityManifest(BaseModel):
         return f"{self.type.value}:{self.id}"
 
 
+class CapabilityGroup(BaseModel):
+    """A family of capabilities of one type, stored as catalog/<type>/<group>/<id>/.
+
+    `defaults` maps a project type to the member ids preselected for that type.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    schema_version: int
+    id: str
+    type: CapabilityType
+    name: str
+    description: str = ""
+    defaults: dict[ProjectType, list[str]] = Field(default_factory=dict)
+
+    @field_validator("id")
+    @classmethod
+    def _valid_id(cls, value: str) -> str:
+        import re
+
+        if not re.fullmatch(r"[a-z0-9][a-z0-9-]*", value):
+            raise ValueError("id must be lowercase letters, digits and hyphens")
+        return value
+
+
 class Capability(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     manifest: CapabilityManifest
     source_dir: Path
+    group: str | None = None  # family folder name, e.g. "development-agents"
     payload_files: list[str] = Field(default_factory=list)  # POSIX paths relative to payload/
     settings_fragment: dict[str, Any] | None = None
     mcp_fragment: dict[str, Any] | None = None
@@ -253,6 +281,12 @@ class Catalog(BaseModel):
 
     root: Path
     capabilities: list[Capability] = Field(default_factory=list)
+    groups: list[CapabilityGroup] = Field(default_factory=list)
+
+    def group(self, cap_type: CapabilityType, group_id: str | None) -> CapabilityGroup | None:
+        if group_id is None:
+            return None
+        return next((g for g in self.groups if g.type == cap_type and g.id == group_id), None)
 
     def get(self, ref: str) -> Capability | None:
         for cap in self.capabilities:
@@ -269,7 +303,11 @@ class Catalog(BaseModel):
         return cap
 
     def by_type(self, cap_type: CapabilityType) -> list[Capability]:
-        return sorted((c for c in self.capabilities if c.type == cap_type), key=lambda c: c.id)
+        # Ungrouped capabilities first, then each family alphabetically.
+        return sorted(
+            (c for c in self.capabilities if c.type == cap_type),
+            key=lambda c: (c.group is not None, c.group or "", c.id),
+        )
 
     @property
     def refs(self) -> list[str]:
@@ -310,11 +348,20 @@ class SizeReport(BaseModel):
     message: str
 
 
+LAYOUT_AGENTS = "agents"  # AGENTS.md holds shared instructions, CLAUDE.md imports it
+LAYOUT_CLAUDE = "claude"  # everything in CLAUDE.md
+
+
 class ClaudeMdDecision(BaseModel):
+    """What to do with the instruction files. `mode`/`content` always describe CLAUDE.md."""
+
     mode: ClaudeMdMode
     spec: ClaudeMdSpec | None = None
     generated: str | None = None  # rendered candidate
-    content: str | None = None  # final content to write (None = do not touch)
+    content: str | None = None  # final CLAUDE.md content to write (None = do not touch)
+    layout: str = LAYOUT_CLAUDE
+    agents_mode: ClaudeMdMode | None = None  # AGENTS.md, only with LAYOUT_AGENTS
+    agents_content: str | None = None
 
 
 # ---------------------------------------------------------------------------------------------
@@ -357,6 +404,8 @@ class CWIState(BaseModel):
     initialized_at: str
     profile: ProjectProfile | None = None
     claude_md_mode: ClaudeMdMode | None = None
+    agents_md_mode: ClaudeMdMode | None = None
+    instructions_layout: str | None = None
     selected_capabilities: list[str] = Field(default_factory=list)
     managed_files: dict[str, ManagedFile] = Field(default_factory=dict)
     settings_hooks: dict[str, list[HookEntryRef]] = Field(default_factory=dict)
@@ -375,6 +424,7 @@ class InstallationPlan(BaseModel):
     removed_capabilities: list[str] = Field(default_factory=list)  # deselected, CWI-owned
     kept_capabilities: list[str] = Field(default_factory=list)  # already installed
     claude_md_mode: ClaudeMdMode | None = None
+    agents_md_mode: ClaudeMdMode | None = None
     operations: list[PlannedOperation] = Field(default_factory=list)
     warnings: list[str] = Field(default_factory=list)
     env_requirements: dict[str, list[EnvRequirement]] = Field(default_factory=dict)

@@ -13,6 +13,11 @@ class Option:
     value: Any
     label: str
     checked: bool = False
+    separator: bool = False  # visual heading inside a list; never selectable
+
+
+def heading(label: str) -> Option:
+    return Option(value=None, label=label, separator=True)
 
 
 class Prompter(Protocol):
@@ -48,7 +53,7 @@ class AutoPrompter:
 
     def checkbox(self, key: str, message: str, options: list[Option]) -> list[Any]:
         self.asked.append(key)
-        return self.overrides.get(key, [o.value for o in options if o.checked])
+        return self.overrides.get(key, [o.value for o in options if o.checked and not o.separator])
 
     def confirm(self, key: str, message: str, default: bool = True) -> bool:
         self.asked.append(key)
@@ -80,7 +85,7 @@ class ScriptedPrompter(AutoPrompter):
 
     def checkbox(self, key: str, message: str, options: list[Option]) -> list[Any]:
         self.asked.append(key)
-        return self._take(key, [o.value for o in options if o.checked])
+        return self._take(key, [o.value for o in options if o.checked and not o.separator])
 
     def confirm(self, key: str, message: str, default: bool = True) -> bool:
         self.asked.append(key)
@@ -125,10 +130,16 @@ class InquirerPrompter:
 
     def checkbox(self, key: str, message: str, options: list[Option]) -> list[Any]:
         from InquirerPy.base.control import Choice
+        from InquirerPy.separator import Separator
 
-        if not options:
+        if not any(not o.separator for o in options):
             return []
-        choices = [Choice(value=o.value, name=o.label, enabled=o.checked) for o in options]
+        choices = [
+            Separator(o.label)
+            if o.separator
+            else Choice(value=o.value, name=o.label, enabled=o.checked)
+            for o in options
+        ]
         return self._run(
             self._inquirer.checkbox(
                 message=message,

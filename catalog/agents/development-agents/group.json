@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "id": "development-agents",
+  "type": "agent",
+  "name": "Development agents",
+  "description": "Agents for day-to-day development, maintenance, review and testing. Adapted from davila7/claude-code-templates (MIT).",
+  "defaults": {
+    "ai": [
+      "architect-reviewer",
+      "codebase-explorer",
+      "debugger",
+      "error-detective",
+      "refactoring-specialist",
+      "test-automator"
+    ],
+    "backend": [
+      "architect-reviewer",
+      "codebase-explorer",
+      "debugger",
+      "dependency-manager",
+      "error-detective",
+      "performance-engineer",
+      "refactoring-specialist",
+      "test-automator"
+    ],
+    "cli": [
+      "cli-developer",
+      "debugger",
+      "dependency-manager",
+      "refactoring-specialist",
+      "test-automator"
+    ],
+    "data_ml": [
+      "debugger",
+      "performance-engineer",
+      "test-automator"
+    ],
+    "frontend": [
+      "accessibility-tester",
+      "codebase-explorer",
+      "debugger",
+      "dependency-manager",
+      "performance-engineer",
+      "refactoring-specialist",
+      "test-automator"
+    ],
+    "fullstack": [
+      "accessibility-tester",
+      "architect-reviewer",
+      "codebase-explorer",
+      "debugger",
+      "dependency-manager",
+      "error-detective",
+      "performance-engineer",
+      "refactoring-specialist",
+      "test-automator"
+    ],
+    "library": [
+      "architect-reviewer",
+      "debugger",
+      "dependency-manager",
+      "refactoring-specialist",
+      "test-automator",
+      "unused-code-cleaner"
+    ]
+  }
+}

@@ -4,7 +4,7 @@ An opinionated Claude Code workspace bootstrapper.
 
 > Start with everything available. Finish with only what the project needs.
 
-This repository ships a catalog of reusable Claude Code capabilities: skills, agents, scripts, hooks and MCP servers. Nothing in `catalog/` is active. Running `cwi init` scans the project or asks a few questions, writes a minimal `CLAUDE.md`, and lets you pick capabilities. It previews every change before applying it, then installs only what you selected.
+This repository ships a catalog of reusable Claude Code capabilities: skills, agents, scripts, hooks and MCP servers. Nothing in `catalog/` is active. Running `cwi init` scans the project or asks a few questions, writes a minimal `AGENTS.md` (imported by `CLAUDE.md`), and lets you pick capabilities. It previews every change before applying it, then installs only what you selected.
 
 For a step-by-step guide, see [USAGE.md](USAGE.md).
 
@@ -26,7 +26,8 @@ cwi init
 After a successful run the project contains only the Claude workspace:
 
 ```text
-CLAUDE.md
+AGENTS.md              shared instructions for any coding agent (agents.md standard)
+CLAUDE.md              @AGENTS.md import + Claude-only notes
 .claude/
   settings.json        merged hooks
   cwi-state.json       CWI ownership record (paths, owners, hashes; no secrets)
@@ -67,7 +68,7 @@ Without a TTY and without `--yes`, CWI prints the plan and applies nothing.
 
 1. **Scan.** It reads manifests only and never executes project code. It detects languages, frameworks, package managers, databases, infrastructure, test tools, commands and existing Claude configuration. Every detection keeps its evidence and a confidence level.
 2. **Profile.** For an existing project you confirm, edit or rescan the detected profile. For a new project you answer a few progressive questions.
-3. **CLAUDE.md.** CWI proposes compact Safety, Stack, Commands and Architecture sections, with no empty sections, and shows an estimated size. An existing file is never silently overwritten. You choose keep, merge, replace or skip, and merge only appends missing sections.
+3. **Instructions.** By default, CWI writes compact Safety, Stack, Commands and Architecture sections to `AGENTS.md`, with no empty sections, and shows an estimated size. `CLAUDE.md` imports it with `@AGENTS.md`, because Claude Code ignores `AGENTS.md` when a `CLAUDE.md` exists. You can choose "CLAUDE.md only" instead. Existing files are never silently overwritten. CWI adds the import line to your `CLAUDE.md`, and for `AGENTS.md` you choose keep, merge, replace or skip.
 4. **Select.** You pick Skills, Agents, Scripts, MCP servers and Hooks. Recommendations are deterministic, explained and preselected. Dependencies are confirmed and conflicts always need a choice.
 5. **Plan and preview.** CWI builds the full operation list, with diffs for every existing file it would change. Cancelling at this point changes nothing.
 6. **Apply.** The apply is transactional, with backups in `.cwi/backups/` and atomic writes. Results are validated before cleanup, and any failure restores the repository.
@@ -85,6 +86,7 @@ Re-running `cwi init` with the same answers produces the same repository state. 
 | Skill | `frontend-development` | Component, state and accessibility conventions, with React, Next.js, Vue and Svelte references. |
 | Agent | `code-reviewer` | Diff review plus the project's configured quality checks. |
 | Agent | `security-reviewer` | Security review plus an offline dependency inventory. |
+| Agents | `development-agents/` family, 35 agents | Development, maintenance, review and testing. Each project type preselects a subset. Adapted from davila7/claude-code-templates (MIT). |
 | Script | `run-quality-checks` | Runs only the linters, type checkers and tests the project is configured for. |
 | Hook | `safety-guard` | Recommended by default. Blocks destructive commands and edits to protected files. |
 | Hook | `post-edit-validation` | Recommended by default. Formats and lints only the edited file with the project's own tools. |
@@ -140,6 +142,8 @@ Common options:
 - `--type` and `--tech` recommend it only for matching projects.
 - `--id` and `--description` override what is read from the file.
 - `--force` replaces an existing capability with the same reference.
+- `--group <family>` stores it in a family folder such as `catalog/agents/development-agents/<id>/`. Grouped agents install into `.claude/agents/<family>/`.
+- `--group-default backend,fullstack` preselects it for those project types through the family's `group.json`. Edit the per-type lists with `cwi catalog group defaults`.
 
 Without `--yes`, the command asks for anything missing. A file with `tools:` in its frontmatter is an agent, so `add skill` refuses it and suggests `add agent`.
 

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "playwright-tester",
+  "type": "agent",
+  "name": "Playwright tester",
+  "description": "Testing mode for Playwright tests",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "playwright"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}
