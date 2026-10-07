@@ -134,3 +134,13 @@ def test_installed_by_init_and_works(tmp_repo, real_catalog):
         [sys.executable, str(installed), str(root)], capture_output=True, text=True
     )
     assert json.loads(result.stdout)["next"] == "discovery:code"
+
+
+def test_reports_diagrams(project):
+    assert status(project)["diagrams"] == []
+    write(project, "docs/diagrams/architecture-app/app.html", "<html></html>")
+    write(project, ".archify/workflow-x-1/x.html", "<html></html>")
+    assert status(project)["diagrams"] == [
+        "docs/diagrams/architecture-app/app.html",
+        ".archify/workflow-x-1/x.html",
+    ]

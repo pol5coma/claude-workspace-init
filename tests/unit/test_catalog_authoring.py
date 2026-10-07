@@ -427,3 +427,31 @@ def test_tech_only_recommendation_preselects(catalog, sources):
     assert loaded.get("agent:pw").manifest.recommendation.require_technology
     assert recommend(loaded, ProjectProfile(test_tools=["Playwright"]))["agent:pw"].preselected
     assert not recommend(loaded, ProjectProfile())["agent:pw"].preselected
+
+
+def test_add_skill_folder_with_exclude(catalog, sources):
+    folder = sources / "diagrams"
+    for rel in ("SKILL.md", "bin/run.mjs", "test/a.test.mjs", "examples/x.json", "src/b.spec.mjs"):
+        (folder / rel).parent.mkdir(parents=True, exist_ok=True)
+        (folder / rel).write_text(
+            "---\nname: diagrams\ndescription: d\n---\n" if rel == "SKILL.md" else "x"
+        )
+    result = cli(
+        "add",
+        "skill",
+        str(folder),
+        "--exclude",
+        "test",
+        "--exclude",
+        "*.spec.mjs",
+        "--catalog",
+        str(catalog),
+        "--yes",
+    )
+    assert result.exit_code == 0, result.stdout
+    files = load_catalog(catalog).get("skill:diagrams").payload_files
+    assert sorted(files) == [
+        ".claude/skills/diagrams/SKILL.md",
+        ".claude/skills/diagrams/bin/run.mjs",
+        ".claude/skills/diagrams/examples/x.json",
+    ]

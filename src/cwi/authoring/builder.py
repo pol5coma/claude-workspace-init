@@ -132,9 +132,21 @@ def _read_text(path: Path) -> str:
         raise AuthoringError(f"Cannot read {path}: {exc}") from exc
 
 
-def _iter_tree(directory: Path):
+def _excluded(rel: Path, patterns: list[str]) -> bool:
+    import fnmatch
+
+    posix = rel.as_posix()
+    return any(
+        fnmatch.fnmatch(posix, pattern) or any(fnmatch.fnmatch(part, pattern) for part in rel.parts)
+        for pattern in patterns
+    )
+
+
+def _iter_tree(directory: Path, exclude: list[str] | None = None):
     for path in sorted(directory.rglob("*")):
         rel = path.relative_to(directory)
+        if exclude and _excluded(rel, exclude):
+            continue
         if path.is_symlink():
             raise AuthoringError(f"Symlinks are not allowed in catalog payloads: {path}")
         if (
@@ -231,13 +243,16 @@ def build_skill(
     scripts: list[Path],
     *,
     convert_tools: bool = False,
+    exclude: list[str] | None = None,
 ) -> BuiltCapability:
     source = source.expanduser()
     if source.is_dir():
         skill_md = source / "SKILL.md"
         if not skill_md.is_file():
             raise AuthoringError(f"No SKILL.md inside {source}")
-        extra_files = [(rel, path) for rel, path in _iter_tree(source) if rel != "SKILL.md"]
+        extra_files = [
+            (rel, path) for rel, path in _iter_tree(source, exclude) if rel != "SKILL.md"
+        ]
         default_name = source.name
     else:
         skill_md = _require_file(source, "Skill file")

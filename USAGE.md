@@ -127,6 +127,15 @@ How `kickoff` behaves in each situation:
 - **New project.** It looks for requirements documents, for example `docs/requirements/` or files named PRD, brief or requirements. It proposes using them or asks where they are. Without documents it interviews you. The result is the architecture, the stack decision and an ordered backlog in `docs/specs/README.md`, starting with `project-setup`.
 - **Project in progress.** It continues the feature `in progress`, implements the next `ready` spec in backlog order, or finishes a draft spec.
 
+**Diagrams with archify.** The `archify` skill is installed by default and needs Node.js 18+. The workflow skills offer it at the moments where it helps. None of these steps is ever required:
+
+- **`project-discovery`:** when the architecture is written, an architecture diagram based on the real code.
+- **`kickoff`:** when the architecture exists but has no diagram yet, it offers to create one.
+- **`feature-spec`:** a workflow, sequence, dataflow or state diagram when a feature's flow is not obvious.
+- **`feature-workflow`:** after a structural change, it offers to refresh the diagram and link it in the PR.
+
+Diagrams are saved in `docs/diagrams/<type>-<slug>/`, versioned with the docs. You can also ask for one at any time, for example "make a sequence diagram of the checkout flow". To use archify in every project, outside CWI, link your global install: `ln -s ~/.agents/skills/archify ~/.claude/skills/archify`.
+
 It is resumable. Run `/kickoff` any time and it continues from the current state of the files: spec `Status:` lines and the backlog. You can also call `project-discovery`, `feature-spec` or `feature-workflow` directly.
 
 Until the architecture is written, `docs/architecture.md` keeps a `cwi:architecture-template` marker. `feature-spec` and `feature-workflow` refuse to start while that marker is there. Every skill stops and asks when something is unclear, contradictory or missing an important decision. Claude Code shows which agent is running in its own interface.

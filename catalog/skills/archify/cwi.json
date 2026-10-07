@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "id": "archify",
+  "type": "skill",
+  "name": "Archify",
+  "description": "Interactive HTML diagrams (architecture, workflow, sequence, dataflow, lifecycle) from requirements or repository evidence. Requires Node.js 18+.",
+  "default_selected": true,
+  "dependencies": [],
+  "conflicts": [],
+  "requirements": {
+    "commands": [
+      "node"
+    ],
+    "notes": [
+      "Requires Node.js 18+ on PATH (no npm install needed)."
+    ]
+  },
+  "tags": [
+    "diagrams",
+    "architecture",
+    "documentation"
+  ]
+}

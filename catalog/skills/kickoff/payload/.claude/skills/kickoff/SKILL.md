@@ -21,7 +21,7 @@ Run the status script (read-only):
 python3 "${CLAUDE_SKILL_DIR}/scripts/project-status.py"
 ```
 
-It prints JSON: `architecture` (missing / template / defined + path), `code` (is there source code), `requirements` (candidate requirement documents), `specs` (each with status and open questions), `backlog` (ordered items from `docs/specs/README.md`) and `next` (the recommended step).
+It prints JSON: `architecture` (missing / template / defined + path), `code` (is there source code), `requirements` (candidate requirement documents), `specs` (each with status and open questions), `backlog` (ordered items from `docs/specs/README.md`), `diagrams` (existing HTML diagrams) and `next` (the recommended step).
 
 Show the user a short status summary (3–6 lines), for example:
 
@@ -39,6 +39,8 @@ Map `next` to an action, explain it in one sentence, and ask the user to confirm
 | `spec:<slug>` | Use the **feature-spec** skill for `<slug>`: finish the draft or resolve its open questions, or write it if it does not exist yet. |
 | `spec:new` | No backlog and no specs. Ask what feature the user wants to build. If requirement documents exist, offer to derive an ordered backlog from them with project-discovery first. |
 | `done` | Every spec is done. Summarize what was delivered and ask what comes next. |
+
+**Optional diagram.** If `architecture` is `defined`, `diagrams` is empty and the **archify** skill is installed, offer once (before the next step, never blocking): "Generate an architecture diagram with archify?" Store it in `docs/diagrams/architecture-<slug>/` and link it from the architecture doc.
 
 The user can always override: if they ask for a specific feature or phase, do that, but warn if it skips an earlier step (for example, specs before the architecture exists).
 

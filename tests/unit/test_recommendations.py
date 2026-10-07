@@ -62,6 +62,7 @@ def test_unknown_project_gets_only_defaults(catalog):
         "hook:post-edit-validation",
         "skill:project-discovery",
         "skill:kickoff",
+        "skill:archify",
     }
 
 
@@ -116,3 +117,12 @@ def test_kickoff_pulls_in_the_workflow_skills(catalog):
         "skill:feature-spec",
         "skill:feature-workflow",
     }
+
+
+def test_archify_is_default_and_declares_node(catalog):
+    cap = catalog.require("skill:archify")
+    assert cap.manifest.default_selected
+    assert cap.manifest.requirements.commands == ["node"]
+    assert not any("/test/" in f for f in cap.payload_files)
+    assert ".claude/skills/archify/bin/archify.mjs" in cap.payload_files
+    assert ".claude/skills/archify/LICENSE" in cap.payload_files

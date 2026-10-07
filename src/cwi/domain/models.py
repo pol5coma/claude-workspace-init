@@ -190,6 +190,7 @@ class Requirements(BaseModel):
 
     env: list[EnvRequirement] = Field(default_factory=list)
     notes: list[str] = Field(default_factory=list)
+    commands: list[str] = Field(default_factory=list)  # executables needed at runtime, e.g. "node"
 
 
 SUPPORTED_CATALOG_SCHEMA = 1
@@ -324,6 +325,16 @@ class Recommendation(BaseModel):
     def reason_text(self) -> str:
         return "; ".join(self.reasons)
 
+    @property
+    def label(self) -> str:
+        """'Recommended default', or 'Recommended: <reasons>'."""
+        if not self.reasons:
+            return "Recommended"
+        if self.reasons[0] == "Recommended default":
+            rest = "; ".join(self.reasons[1:])
+            return "Recommended default" + (f": {rest}" if rest else "")
+        return f"Recommended: {self.reason_text}"
+
 
 # ---------------------------------------------------------------------------------------------
 # CLAUDE.md
@@ -437,6 +448,8 @@ class InstallationPlan(BaseModel):
     operations: list[PlannedOperation] = Field(default_factory=list)
     warnings: list[str] = Field(default_factory=list)
     env_requirements: dict[str, list[EnvRequirement]] = Field(default_factory=dict)
+    requirement_notes: dict[str, list[str]] = Field(default_factory=dict)  # ref -> notes
+    required_commands: dict[str, list[str]] = Field(default_factory=dict)  # ref -> executables
     state: CWIState
     cleanup_template: bool = False
 

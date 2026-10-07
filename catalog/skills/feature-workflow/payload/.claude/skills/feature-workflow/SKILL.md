@@ -70,6 +70,7 @@ If something breaks and the cause is unclear, switch to the **debugging** skill 
 - Fix confirmed findings, re-run tests, commit.
 - Update `docs/architecture.md` (structure or versions changed), the glossary and the spec status (`done`).
 - After `project-setup` or any dependency upgrade: update the versions table in `docs/architecture.md` and tell the user to run `cwi init` and choose **Rescan**, so the Stack in AGENTS.md lists the real versions.
+- If the feature changed the architecture (new component, integration, data store or flow) and **archify** is installed, offer to regenerate the architecture diagram and link it in the PR. Diagrams live in `docs/diagrams/<type>-<slug>/` (tell archify to use that folder) so they are versioned with the docs.
 - Write the PR description: what and why, how to test, risks, and which acceptance criteria are covered by which tests.
 
 ## Done means

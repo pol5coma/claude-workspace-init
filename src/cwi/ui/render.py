@@ -248,7 +248,7 @@ def capability_table(
         if cap.ref in installed:
             why_parts.append("installed")
         if rec and rec.preselected:
-            why_parts.append(("Recommended: " + rec.reason_text) if rec.reasons else "Recommended")
+            why_parts.append(rec.label)
         deps = ", ".join(d.split(":", 1)[1] for d in cap.manifest.dependencies)
         description = cap.manifest.description + (f" [dim](requires {deps})[/dim]" if deps else "")
         table.add_row(cap.id, description, "; ".join(why_parts))
@@ -273,6 +273,22 @@ def env_requirements(
                 expand=False,
             )
         )
+
+
+def tool_requirements(console: Console, plan: InstallationPlan, which=None) -> None:
+    """Runtime notes and missing executables for the selected capabilities. Never blocks."""
+    import shutil
+
+    which = which or shutil.which
+    for ref, cmds in sorted(plan.required_commands.items()):
+        missing = [c for c in cmds if which(c) is None]
+        if missing:
+            notes = " ".join(plan.requirement_notes.get(ref, []))
+            warning(
+                console,
+                f"{ref} needs {', '.join(f'`{c}`' for c in missing)}, which is not on PATH. "
+                f"It is installed anyway; install the tool before using it. {notes}".rstrip(),
+            )
 
 
 def plan_summary(console: Console, plan: InstallationPlan, catalog: Catalog | None) -> None:

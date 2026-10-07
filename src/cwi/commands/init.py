@@ -244,6 +244,7 @@ def run_init(options: InitOptions) -> InitOutcome:
             render.plan_summary(console, plan, catalog)
             if plan.env_requirements:
                 render.env_requirements(console, plan.env_requirements, catalog)
+            render.tool_requirements(console, plan, options.which)
             render.operations_table(console, plan)
             render.diffs(console, plan, root)
             render.success(console, plan, dry_run=True)

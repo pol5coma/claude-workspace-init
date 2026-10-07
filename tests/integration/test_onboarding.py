@@ -154,3 +154,23 @@ def test_progress_callback_once_per_operation(tmp_repo, real_catalog):
     execute_plan(plan, root, progress=lambda done, total, op: seen.append((done, total)))
     assert [d for d, _ in seen] == list(range(1, len(plan.operations) + 1))
     assert {t for _, t in seen} == {len(plan.operations)}
+
+
+def test_warns_when_required_command_missing(tmp_repo, real_catalog, monkeypatch):
+    import shutil
+
+    real_which = shutil.which
+    monkeypatch.setattr(shutil, "which", lambda name: None if name == "node" else real_which(name))
+    root = tmp_repo("react-vite")
+    outcome, _, output = run(root, catalog=real_catalog)
+    assert outcome.applied  # never blocks
+    assert "skill:archify needs `node`" in output
+    assert (root / ".claude/skills/archify/bin/archify.mjs").is_file()
+
+
+def test_no_warning_when_command_present(tmp_repo, real_catalog, monkeypatch):
+    import shutil
+
+    monkeypatch.setattr(shutil, "which", lambda name: f"/usr/bin/{name}")
+    _, _, output = run(tmp_repo("react-vite"), catalog=real_catalog)
+    assert "needs `node`" not in output

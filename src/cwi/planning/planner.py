@@ -626,6 +626,14 @@ def _build(inputs: PlanInputs) -> tuple[InstallationPlan | None, list[FileDecisi
     for cap in caps:
         if cap.manifest.requirements.env:
             env[cap.ref] = list(cap.manifest.requirements.env)
+    notes = {
+        c.ref: list(c.manifest.requirements.notes) for c in caps if c.manifest.requirements.notes
+    }
+    commands = {
+        c.ref: list(c.manifest.requirements.commands)
+        for c in caps
+        if c.manifest.requirements.commands
+    }
 
     if b.decisions:
         return None, b.decisions
@@ -664,6 +672,8 @@ def _build(inputs: PlanInputs) -> tuple[InstallationPlan | None, list[FileDecisi
         operations=operations,
         warnings=list(dict.fromkeys(b.warnings)),
         env_requirements=env,
+        requirement_notes=notes,
+        required_commands=commands,
         state=state_obj,
         cleanup_template=any(op.owner == "cwi-template" for op in cleanup_ops),
     )

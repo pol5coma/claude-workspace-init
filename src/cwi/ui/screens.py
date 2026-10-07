@@ -867,17 +867,7 @@ def select_capabilities(
                 checked = cap.ref in installed
             else:
                 checked = rec.preselected
-            hint = (
-                "installed"
-                if cap.ref in installed
-                else (
-                    f"Recommended: {rec.reason_text}"
-                    if rec.preselected and rec.reasons
-                    else "Recommended"
-                    if rec.preselected
-                    else ""
-                )
-            )
+            hint = "installed" if cap.ref in installed else (rec.label if rec.preselected else "")
             options.append(Option(cap.ref, f"{cap.id:<24} {hint}".rstrip(), checked))
         chosen = prompter.checkbox(f"select.{cap_type.value}", f"Select {cap_type.title}", options)
         selected.extend(chosen)
@@ -1015,6 +1005,7 @@ def preview(
     render.plan_summary(console, plan, catalog)
     if plan.env_requirements:
         render.env_requirements(console, plan.env_requirements, catalog)
+    render.tool_requirements(console, plan)
     if not plan.has_changes:
         return "noop"
     while True:

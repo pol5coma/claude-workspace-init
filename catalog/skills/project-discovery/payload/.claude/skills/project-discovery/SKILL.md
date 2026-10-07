@@ -51,4 +51,5 @@ Then follow the matching path.
 
 1. Show a short summary of what you will write; write it only after the user agrees.
 2. Delete the `cwi:architecture-template` line at the top of `docs/architecture.md`.
-3. Tell the user the next step: **feature-spec** for the first feature in the backlog (`project-setup` for a new project). If the **kickoff** skill is installed, suggest `/kickoff` to continue in order.
+3. **Diagram (optional).** If the **archify** skill is installed, offer to generate the architecture diagram from `docs/architecture.md` and the code (repository evidence). Diagrams live in `docs/diagrams/<type>-<slug>/` (tell archify to use that folder) so they are versioned with the docs. Link it from the Overview of `docs/architecture.md`. If Node.js is missing, say so and skip.
+4. Tell the user the next step: **feature-spec** for the first feature in the backlog (`project-setup` for a new project). If the **kickoff** skill is installed, suggest `/kickoff` to continue in order.

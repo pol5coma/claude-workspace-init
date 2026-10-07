@@ -216,6 +216,13 @@ def add_skill(
     conflicts: ConflictsOpt = None,
     group: GroupOpt = None,
     group_default: GroupDefaultOpt = None,
+    exclude: Annotated[
+        list[str] | None,
+        typer.Option(
+            "--exclude",
+            help="Skip files/folders matching this pattern when copying a folder (repeatable), e.g. test.",
+        ),
+    ] = None,
     catalog: CatalogOpt = Path("catalog"),
     force: ForceOpt = False,
     yes: YesOpt = False,
@@ -237,7 +244,7 @@ def add_skill(
             group=group,
             group_default=group_default,
         )
-        built = build_skill(path, meta, ref or [], script or [])
+        built = build_skill(path, meta, ref or [], script or [], exclude=exclude or [])
         if built.agent_frontmatter and not prompter.interactive:
             raise AuthoringError(
                 "This file has `tools:` in its frontmatter, so it is an agent definition. "
@@ -264,7 +271,9 @@ def add_skill(
                     path if path.is_file() else path / "SKILL.md", meta, script or []
                 )
             else:
-                built = build_skill(path, meta, ref or [], script or [], convert_tools=True)
+                built = build_skill(
+                    path, meta, ref or [], script or [], convert_tools=True, exclude=exclude or []
+                )
         _finish(catalog, built, force, meta)
 
     _run(go)

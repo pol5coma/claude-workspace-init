@@ -21,8 +21,9 @@ If there is no architecture doc, or `docs/architecture.md` still contains `cwi:a
    - Use glossary terms exactly; add new business terms to the glossary.
    - List data model, migration and API changes explicitly, or write "None".
 4. **Never invent business rules.** Anything the user did not state and the code does not show goes under **Open questions**, not into the criteria.
-5. **Confirm.** Show the user a short summary (goal, criteria count, open questions) and set `Status: ready` only after they agree and no open question blocks implementation.
-6. **Next.** Make sure the feature is in the `## Backlog` list of `docs/specs/README.md`. Suggest **feature-workflow** to implement it, or `/kickoff` to continue in order.
+5. **Diagram when the flow is not obvious.** For a multi-step workflow, an API call sequence, a data pipeline or a state machine, and if the **archify** skill is installed, offer a workflow, sequence, dataflow or lifecycle diagram. Diagrams live in `docs/diagrams/<type>-<slug>/` (tell archify to use that folder) so they are versioned with the docs. Link it from the spec. Skip it for simple CRUD.
+6. **Confirm.** Show the user a short summary (goal, criteria count, open questions) and set `Status: ready` only after they agree and no open question blocks implementation.
+7. **Next.** Make sure the feature is in the `## Backlog` list of `docs/specs/README.md`. Suggest **feature-workflow** to implement it, or `/kickoff` to continue in order.
 
 ## Quality bar
 

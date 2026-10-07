@@ -213,6 +213,15 @@ def backlog(root: Path) -> list[str]:
     return items
 
 
+def diagrams(root: Path) -> list[str]:
+    found: list[str] = []
+    for base in ("docs/diagrams", ".archify"):
+        folder = root / base
+        if folder.is_dir():
+            found += sorted(p.relative_to(root).as_posix() for p in folder.rglob("*.html"))
+    return found
+
+
 def decide(state: dict) -> str:
     arch = state["architecture"]["state"]
     if arch in ("missing", "template"):
@@ -252,6 +261,7 @@ def main() -> int:
         "requirements": requirements(root),
         "specs": specs(root),
         "backlog": backlog(root),
+        "diagrams": diagrams(root),
     }
     state["next"] = decide(state)
     print(json.dumps(state, indent=2))
