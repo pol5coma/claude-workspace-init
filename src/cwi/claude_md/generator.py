@@ -10,6 +10,11 @@ from cwi.claude_md.defaults import ALWAYS_DANGEROUS, DANGEROUS_COMMANDS_BY_TECH,
 from cwi.domain.models import ClaudeMdSpec, ProjectProfile, SizeReport
 
 COMPACT_TOKENS = 800
+DOCS_ARCHITECTURE = "docs/architecture.md"
+DOCS_GLOSSARY = "docs/domain/glossary.md"
+DOCS_SPECS = "docs/specs/"
+DOCS_DECISIONS = "docs/decisions/"
+ARCHITECTURE_TEMPLATE_MARKER = "cwi:architecture-template"
 REVIEW_TOKENS = 1500
 
 
@@ -84,6 +89,12 @@ def render_sections(spec: ClaudeMdSpec) -> list[tuple[str, str]]:
                 f"{group}:\n" + "\n".join(f"- {item}" for item in items)
                 for group, items in stack.items()
             )
+        if spec.version_rule:
+            body += (
+                "\n\nWrite code for these versions. When an API differs between versions, check the "
+                "official documentation for the version in use; never introduce APIs from another "
+                "major version."
+            )
         sections.append(("Stack", body))
 
     if spec.commands:
@@ -96,7 +107,31 @@ def render_sections(spec: ClaudeMdSpec) -> list[tuple[str, str]]:
             body = "\n\n".join(f"{group}:\n" + "\n".join(lines) for group, lines in groups.items())
         sections.append(("Commands", body))
 
-    if spec.architecture_pointer:
+    if spec.docs_index:
+        architecture = (spec.architecture_pointer or DOCS_ARCHITECTURE).strip()
+        sections.append(
+            (
+                "Project docs",
+                "\n".join(
+                    [
+                        f"- Architecture and versions: `{architecture}`. Read it before structural changes.",
+                        f"- Business vocabulary: `{DOCS_GLOSSARY}`.",
+                        f"- Feature specs: `{DOCS_SPECS}`. Read the spec before implementing a feature; "
+                        "if there is none, write one first.",
+                        f"- Decisions: `{DOCS_DECISIONS}`. Record significant design decisions there.",
+                        *(
+                            [
+                                f"- If `{architecture}` still contains `{ARCHITECTURE_TEMPLATE_MARKER}`, "
+                                "run the `kickoff` skill (or `project-discovery`) before writing specs or code."
+                            ]
+                            if spec.architecture_template
+                            else []
+                        ),
+                    ]
+                ),
+            )
+        )
+    elif spec.architecture_pointer:
         pointer = spec.architecture_pointer.strip()
         sections.append(
             (

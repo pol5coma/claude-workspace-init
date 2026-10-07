@@ -27,6 +27,7 @@ After a successful run the project contains only the Claude workspace:
 
 ```text
 AGENTS.md              shared instructions for any coding agent (agents.md standard)
+docs/                  optional skeleton: architecture + versions, glossary, specs, decisions
 CLAUDE.md              @AGENTS.md import + Claude-only notes
 .claude/
   settings.json        merged hooks
@@ -74,6 +75,8 @@ Without a TTY and without `--yes`, CWI prints the plan and applies nothing.
 6. **Apply.** The apply is transactional, with backups in `.cwi/backups/` and atomic writes. Results are validated before cleanup, and any failure restores the repository.
 7. **Clean.** CWI removes only resources it owns. User files are never deleted.
 
+It finishes by pointing you to `claude "/kickoff"`, and can open Claude Code with it already started. `kickoff` then runs `project-discovery`, `feature-spec` and `feature-workflow` in order. See [USAGE.md](USAGE.md#after-cwi-init-run-kickoff-in-claude-code).
+
 Re-running `cwi init` with the same answers produces the same repository state. Modified CWI-managed files are detected by hash and never overwritten without asking.
 
 ## Bundled catalog
@@ -83,6 +86,10 @@ Re-running `cwi init` with the same answers produces the same repository state. 
 | Skill | `testing` | Smallest relevant test scope first. Includes a related-test finder script. |
 | Skill | `debugging` | Reproduce, isolate, hypothesize, fix, then add a regression test. |
 | Skill | `backend-development` | API, persistence and migration conventions, with FastAPI, Django and Express references. |
+| Skill | `kickoff` | Selected by default. The entry point in Claude Code: it checks the project state and runs discovery, specs and implementation in order. It is resumable. |
+| Skill | `project-discovery` | Selected by default. It is the first step after `cwi init` and defines the architecture: it finds an existing one, analyzes the code, or builds one from your requirements. |
+| Skill | `feature-spec` | Turns a request into `docs/specs/<feature>.md` with testable acceptance criteria and open questions. |
+| Skill | `feature-workflow` | Implements a feature from its spec: branch, plan, test-first slices, verification, independent review. |
 | Skill | `frontend-development` | Component, state and accessibility conventions, with React, Next.js, Vue and Svelte references. |
 | Agent | `code-reviewer` | Diff review plus the project's configured quality checks. |
 | Agent | `security-reviewer` | Security review plus an offline dependency inventory. |

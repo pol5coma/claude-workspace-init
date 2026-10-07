@@ -38,6 +38,50 @@ def header(console: Console, version: str) -> None:
     )
 
 
+STAGES = (
+    "Workspace",
+    "Scan",
+    "Project profile",
+    "Instructions & docs",
+    "Capabilities",
+    "Review plan",
+    "Apply",
+    "Next steps",
+)
+
+
+def stage(console: Console, number: int, title: str | None = None) -> None:
+    """Section header so the user always knows where they are in cwi init."""
+    name = title or STAGES[number - 1]
+    console.print()
+    console.rule(f"[bold cyan]Step {number}/{len(STAGES)} · {name}[/bold cyan]", align="left")
+
+
+def next_steps(console: Console, steps: list[tuple[str, str, str]], command: str | None) -> None:
+    """steps: (status, skill, what it does). status is 'next', 'done' or 'later'."""
+    marks = {
+        "next": "[bold green]→[/bold green]",
+        "done": "[green]✓[/green]",
+        "later": "[dim]·[/dim]",
+    }
+    lines = [f"{marks[status]} [bold]{skill}[/bold]  {text}" for status, skill, text in steps]
+    if command:
+        hint = (
+            "Start in Claude Code (kickoff runs these steps in order and resumes where you left off):"
+            if "/kickoff" in command
+            else "Start it in Claude Code:"
+        )
+        lines += ["", hint, f"  [cyan]{command}[/cyan]"]
+    console.print(
+        Panel(
+            "\n".join(lines),
+            title="Work with Claude Code in this order",
+            border_style="green",
+            expand=False,
+        )
+    )
+
+
 def step(console: Console, message: str) -> None:
     console.print(f"{CHECK} {message}")
 

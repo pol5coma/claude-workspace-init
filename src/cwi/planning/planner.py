@@ -40,6 +40,7 @@ from cwi.state.repository import StateRepository
 
 CLAUDE_MD_OWNER = "claude-md"
 AGENTS_MD_OWNER = "agents-md"
+DOCS_OWNER = "docs"
 INSTRUCTION_OWNERS = {CLAUDE_MD_OWNER, AGENTS_MD_OWNER}
 STATE_OWNER = "cwi-state"
 
@@ -108,6 +109,7 @@ class _Builder:
     decisions: list[FileDecision | McpDecision] = field(default_factory=list)
     settings_hooks: dict[str, list[HookEntryRef]] = field(default_factory=dict)
     mcp_servers: dict[str, ManagedFile] = field(default_factory=dict)
+    docs_scaffolded: list[str] = field(default_factory=list)
 
     @property
     def root(self) -> Path:
@@ -484,6 +486,31 @@ def _plan_instruction_file(
     )
 
 
+def _plan_docs(b: _Builder) -> list[str]:
+    """Create the docs skeleton files that are missing. Docs belong to the user afterwards:
+    they are not hash-tracked, existing files are never touched, and a scaffolded file the user
+    deleted is not recreated."""
+    previous = set(b.inputs.state.docs_scaffolded) if b.inputs.state else set()
+    created: list[str] = []
+    for rel, content in sorted(b.inputs.claude_md.docs_scaffold.items()):
+        path = b.abs(rel)
+        if path.exists() or rel in previous:
+            continue
+        b.ensure_parent_dirs(rel)
+        b.ops.append(
+            PlannedOperation(
+                type=OperationType.CREATE,
+                target=rel,
+                after_content=content,
+                after_hash=sha256_text(content),
+                owner=DOCS_OWNER,
+                reason="create project docs skeleton",
+            )
+        )
+        created.append(rel)
+    return sorted(previous | set(created))
+
+
 def _plan_claude_md(b: _Builder) -> None:
     decision = b.inputs.claude_md
     if decision.layout == LAYOUT_AGENTS:
@@ -508,6 +535,7 @@ def _plan_state(b: _Builder, selected: list[str]) -> CWIState:
         claude_md_mode=b.inputs.claude_md.mode,
         agents_md_mode=b.inputs.claude_md.agents_mode,
         instructions_layout=b.inputs.claude_md.layout,
+        docs_scaffolded=b.docs_scaffolded,
         selected_capabilities=selected,
         managed_files=dict(sorted(b.managed.items())),
         settings_hooks=dict(sorted(b.settings_hooks.items())),
@@ -589,6 +617,7 @@ def _build(inputs: PlanInputs) -> tuple[InstallationPlan | None, list[FileDecisi
         _plan_payload(b, cap)
     _plan_removals(b, removed)
     _plan_claude_md(b)
+    b.docs_scaffolded = _plan_docs(b)
     if catalog is not None:
         _plan_settings(b, [c for c in caps if c.type == CapabilityType.HOOK], removed)
         _plan_mcp(b, [c for c in caps if c.type == CapabilityType.MCP], removed)

@@ -103,6 +103,64 @@ If you already have a `CLAUDE.md`, CWI adds the `@AGENTS.md` line at the top and
 
 Prefer a single file? Choose **CLAUDE.md only** on the instructions screen.
 
+### After `cwi init`: run `/kickoff` in Claude Code
+
+`cwi init` only provisions the workspace and runs no AI. To start working, open Claude Code in the project and run:
+
+```bash
+claude "/kickoff"
+```
+
+In an interactive terminal, `cwi init` offers to do this for you when it finishes.
+
+`kickoff` is the "init" inside Claude Code. It reads the project state with a read-only script, shows a short status, proposes the next step, and asks before starting it. It always works in this order:
+
+| Order | Skill it runs | When |
+| --- | --- | --- |
+| 1 | `project-discovery` | The architecture is missing or still the CWI template. |
+| 2 | `feature-spec` | A feature has no spec yet, or its spec is a draft or has open questions. |
+| 3 | `feature-workflow` | A spec is `ready`. A spec that is `in progress` is resumed first. |
+
+How `kickoff` behaves in each situation:
+
+- **Existing project with code and no architecture doc.** It asks whether the architecture is documented somewhere. If not, it analyzes the code, delegating to `codebase-explorer`, and writes `docs/architecture.md`, the glossary and the implicit decisions.
+- **New project.** It looks for requirements documents, for example `docs/requirements/` or files named PRD, brief or requirements. It proposes using them or asks where they are. Without documents it interviews you. The result is the architecture, the stack decision and an ordered backlog in `docs/specs/README.md`, starting with `project-setup`.
+- **Project in progress.** It continues the feature `in progress`, implements the next `ready` spec in backlog order, or finishes a draft spec.
+
+It is resumable. Run `/kickoff` any time and it continues from the current state of the files: spec `Status:` lines and the backlog. You can also call `project-discovery`, `feature-spec` or `feature-workflow` directly.
+
+Until the architecture is written, `docs/architecture.md` keeps a `cwi:architecture-template` marker. `feature-spec` and `feature-workflow` refuse to start while that marker is there. Every skill stops and asks when something is unclear, contradictory or missing an important decision. Claude Code shows which agent is running in its own interface.
+
+### Project docs: where requirements and architecture live
+
+`cwi init` offers to create a `docs/` skeleton. It only creates missing files and never overwrites yours:
+
+```text
+docs/
+├── architecture.md        structure, data flow, integrations + "Stack & versions" table
+├── domain/glossary.md     business terms
+├── specs/                 one spec per feature (start from specs/_template.md)
+└── decisions/             short records of significant design decisions
+```
+
+`AGENTS.md` only holds short pointers to these files, so Claude and every agent know where to look without loading them every session. If you delete a scaffolded file, a later `cwi init` won't recreate it.
+
+**Versions.** The Stack section lists the versions the project really uses, read from the lockfiles, for example `Next.js 15.1` and `React 19.0`. It ends with a rule: write code for these versions, and check the official docs for that version when an API differs. Keep the table in `docs/architecture.md` up to date when you upgrade.
+
+### Building a feature
+
+With the `feature-spec` and `feature-workflow` skills installed, which are recommended for every application type:
+
+1. "Write the spec for <feature>." Claude asks clarifying questions and writes `docs/specs/<feature>.md` with acceptance criteria. Unknowns go to *Open questions* instead of being invented.
+2. "Implement <feature>." Claude works through these phases:
+   - baseline on a feature branch
+   - explore the code
+   - plan, which you approve
+   - test-first slices, one commit each
+   - verify the result
+   - independent review with `code-reviewer`, plus `security-reviewer` when needed
+   - write the PR description and update the docs
+
 ### If you need an MCP token
 
 Some MCP servers need a token, for example GitHub needs `GITHUB_TOKEN`. CWI tells you which one. Set it in your shell, not in the repo:

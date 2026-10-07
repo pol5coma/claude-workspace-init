@@ -58,6 +58,7 @@ def test_single_group_renders_flat():
     sections = dict(
         render_sections(
             spec(
+                version_rule=False,
                 stack={"Project": ["Go"]},
                 commands=[
                     DetectedCommand(
@@ -140,3 +141,42 @@ def test_classify_instruction():
     advice = classify_instruction(long_procedure)
     assert advice.scoped and advice.destination == "Skill"
     assert classify_instruction("Every new API endpoint needs rate limiting").scoped
+
+
+def test_version_rule_follows_stack():
+    text = render_claude_md(spec(stack={"Frontend": ["Next.js 15.1", "React 19.0"]}))
+    assert "- Next.js 15.1" in text
+    assert "Write code for these versions." in text
+    assert "Write code for these versions." not in render_claude_md(
+        spec(safety=["x"])
+    )  # no stack, no rule
+
+
+def test_project_docs_section_replaces_architecture():
+    text = render_claude_md(spec(docs_index=True, architecture_pointer="ARCHITECTURE.md"))
+    assert "## Project docs" in text and "## Architecture\n" not in text
+    assert (
+        "`ARCHITECTURE.md`" in text
+        and "`docs/specs/`" in text
+        and "`docs/domain/glossary.md`" in text
+    )
+    assert "## Project docs" not in render_claude_md(spec(architecture_pointer="docs/a.md"))
+
+
+def test_scaffold_files():
+    from cwi.claude_md.docs import scaffold_files
+
+    profile = ProjectProfile(stack={"Frontend": ["TypeScript 5.5", "Vite"]})
+    files = scaffold_files(profile, "demo")
+    assert set(files) == {
+        "docs/architecture.md",
+        "docs/domain/glossary.md",
+        "docs/specs/README.md",
+        "docs/specs/_template.md",
+        "docs/decisions/README.md",
+        "docs/decisions/0000-template.md",
+    }
+    assert "| Frontend | TypeScript | 5.5 |" in files["docs/architecture.md"]
+    assert "| Frontend | Vite | <!-- set the version in use --> |" in files["docs/architecture.md"]
+    assert "## Acceptance criteria" in files["docs/specs/_template.md"]
+    assert "docs/architecture.md" not in scaffold_files(profile, "demo", include_architecture=False)

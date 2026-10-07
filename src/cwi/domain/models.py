@@ -338,6 +338,11 @@ class ClaudeMdSpec(BaseModel):
     commands: list[DetectedCommand] = Field(default_factory=list)
     architecture_pointer: str | None = None
     additional_instructions: list[str] = Field(default_factory=list)
+    docs_index: bool = False  # render "Project docs" (architecture, glossary, specs, decisions)
+    version_rule: bool = True  # tell agents to code for the versions listed in Stack
+    architecture_template: bool = (
+        False  # architecture doc is the CWI template: point to project-discovery
+    )
 
 
 class SizeReport(BaseModel):
@@ -362,6 +367,9 @@ class ClaudeMdDecision(BaseModel):
     layout: str = LAYOUT_CLAUDE
     agents_mode: ClaudeMdMode | None = None  # AGENTS.md, only with LAYOUT_AGENTS
     agents_content: str | None = None
+    docs_scaffold: dict[str, str] = Field(
+        default_factory=dict
+    )  # path -> content, created if missing
 
 
 # ---------------------------------------------------------------------------------------------
@@ -406,6 +414,7 @@ class CWIState(BaseModel):
     claude_md_mode: ClaudeMdMode | None = None
     agents_md_mode: ClaudeMdMode | None = None
     instructions_layout: str | None = None
+    docs_scaffolded: list[str] = Field(default_factory=list)  # never recreated once deleted
     selected_capabilities: list[str] = Field(default_factory=list)
     managed_files: dict[str, ManagedFile] = Field(default_factory=dict)
     settings_hooks: dict[str, list[HookEntryRef]] = Field(default_factory=dict)

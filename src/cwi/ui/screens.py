@@ -11,8 +11,10 @@ from rich.syntax import Syntax
 from cwi import paths
 from cwi.catalog.dependency_resolver import find_conflicts, resolve
 from cwi.catalog.recommender import recommend
+from cwi.claude_md.docs import architecture_is_template, scaffold_files
 from cwi.claude_md.generator import (
     CLAUDE_IMPORT_FILE,
+    DOCS_ARCHITECTURE,
     add_agents_import,
     default_spec,
     drop_sections,
@@ -43,6 +45,7 @@ from cwi.ui import render
 from cwi.ui.prompts import Option, Prompter, heading
 
 OTHER = "__other__"
+SCAFFOLD = "__scaffold__"
 SKIP = "__skip__"
 
 
@@ -555,6 +558,7 @@ def _additional_instructions(console: Console, prompter: Prompter) -> list[str]:
 def _build_spec(
     console: Console,
     prompter: Prompter,
+    root: Path,
     profile: ProjectProfile,
     architecture_candidates: list[str],
 ):
@@ -596,7 +600,7 @@ def _build_spec(
     spec.commands = review_commands(console, prompter, spec.commands)
     profile = profile.model_copy(update={"commands": spec.commands})
 
-    # 7.4 Architecture pointer
+    # 7.4 Project docs: architecture, requirements and decisions (pointers only in the instructions)
     candidates = list(
         dict.fromkeys(
             [
@@ -605,27 +609,47 @@ def _build_spec(
             ]
         )
     )
-    options = [Option(c, f"Point to {c}") for c in candidates]
-    options += [Option(OTHER, "Another path…"), Option(SKIP, "No architecture pointer")]
-    pointer = prompter.select(
+    options = [
+        Option(
+            SCAFFOLD,
+            "Create docs/ skeleton: architecture + versions, glossary, specs, decisions (recommended)",
+        )
+    ]
+    options += [
+        Option(c, f"Point to existing {c} (and create the rest of docs/)") for c in candidates
+    ]
+    options += [
+        Option(OTHER, "Point to another path…"),
+        Option(SKIP, "No project docs"),
+    ]
+    choice = prompter.select(
         "claude_md.architecture",
-        "Should the agent consult architecture docs before structural changes?",
+        "Where do architecture, requirements and decisions live?",
         options,
-        default=candidates[0] if candidates else SKIP,
+        default=candidates[0] if candidates else SCAFFOLD,
     )
-    if pointer == OTHER:
-        pointer = (
+    scaffold: dict[str, str] = {}
+    if choice == OTHER:
+        choice = (
             prompter.text(
                 "claude_md.architecture.path", "Path to architecture documentation:"
             ).strip()
             or SKIP
         )
-    spec.architecture_pointer = None if pointer == SKIP else pointer
+        spec.architecture_pointer = None if choice == SKIP else choice
+    elif choice == SKIP:
+        spec.architecture_pointer = None
+    else:
+        existing = None if choice == SCAFFOLD else choice
+        spec.docs_index = True
+        spec.architecture_pointer = existing or DOCS_ARCHITECTURE
+        spec.architecture_template = architecture_is_template(root / spec.architecture_pointer)
+        scaffold = scaffold_files(profile, root.name, include_architecture=existing is None)
     profile = profile.model_copy(update={"architecture_doc": spec.architecture_pointer})
 
     # 7.5 Additional critical instructions
     spec.additional_instructions = _additional_instructions(console, prompter)
-    return spec, profile
+    return spec, profile, scaffold
 
 
 def _decide_generated_file(
@@ -764,7 +788,7 @@ def configure_claude_md(
     ):
         return ClaudeMdDecision(mode=ClaudeMdMode.SKIP, layout=layout), profile
 
-    spec, profile = _build_spec(console, prompter, profile, architecture_candidates)
+    spec, profile, scaffold = _build_spec(console, prompter, root, profile, architecture_candidates)
     generated = render_claude_md(spec, load_template(root))
 
     if layout == LAYOUT_CLAUDE:
@@ -773,7 +797,12 @@ def configure_claude_md(
             console, prompter, claude_path, "CLAUDE.md", generated, state, "claude_md.existing"
         )
         return ClaudeMdDecision(
-            mode=mode, spec=spec, generated=generated, content=content, layout=layout
+            mode=mode,
+            spec=spec,
+            generated=generated,
+            content=content,
+            layout=layout,
+            docs_scaffold=scaffold,
         ), profile
 
     claude_mode, claude_content = _decide_claude_import(console, prompter, claude_path, state)
@@ -797,6 +826,7 @@ def configure_claude_md(
         layout=layout,
         agents_mode=agents_mode,
         agents_content=agents_content,
+        docs_scaffold=scaffold,
     ), profile
 
 

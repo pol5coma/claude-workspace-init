@@ -8,6 +8,7 @@ from typing import Any
 from cwi import paths
 from cwi.domain.enums import Confidence
 from cwi.scanner.context import ScanContext, join
+from cwi.scanner.versions import py_lock_index
 
 # dependency name -> (category, display name)
 PY_PACKAGES: dict[str, tuple[str, str]] = {
@@ -117,30 +118,44 @@ def normalize_requirement(spec: str) -> str | None:
     return match.group(1).lower().replace("_", "-").replace(".", "-")
 
 
-def _collect_pyproject_deps(data: dict[str, Any]) -> list[str]:
-    deps: list[str] = []
+def _collect_pyproject_deps(data: dict[str, Any]) -> list[tuple[str, str]]:
+    """(normalized name, raw specifier) for every declared dependency."""
+    raw: list[str] = []
     project = data.get("project", {}) or {}
-    deps.extend(project.get("dependencies", []) or [])
+    raw.extend(project.get("dependencies", []) or [])
     for group in (project.get("optional-dependencies", {}) or {}).values():
-        deps.extend(group or [])
+        raw.extend(group or [])
     for group in (data.get("dependency-groups", {}) or {}).values():
-        deps.extend(item for item in (group or []) if isinstance(item, str))
+        raw.extend(item for item in (group or []) if isinstance(item, str))
     tool = data.get("tool", {}) or {}
     uv = tool.get("uv", {}) or {}
-    deps.extend(uv.get("dev-dependencies", []) or [])
+    raw.extend(uv.get("dev-dependencies", []) or [])
     poetry = tool.get("poetry", {}) or {}
-    deps.extend((poetry.get("dependencies", {}) or {}).keys())
-    deps.extend((poetry.get("dev-dependencies", {}) or {}).keys())
-    for group in (poetry.get("group", {}) or {}).values():
-        deps.extend(((group or {}).get("dependencies", {}) or {}).keys())
-    names = []
-    for dep in deps:
+    poetry_tables = [poetry.get("dependencies", {}) or {}, poetry.get("dev-dependencies", {}) or {}]
+    poetry_tables += [
+        ((g or {}).get("dependencies", {}) or {}) for g in (poetry.get("group", {}) or {}).values()
+    ]
+    for table in poetry_tables:
+        for name, value in table.items():
+            version = (
+                value
+                if isinstance(value, str)
+                else (value or {}).get("version", "")
+                if isinstance(value, dict)
+                else ""
+            )
+            # Poetry "^1.2" means compatible-with, like pip's ~=.
+            raw.append(
+                f"{name}{'~=' + version.lstrip('^~') if version and version[0] in '^~' else ('==' + version if version and version[0].isdigit() else '')}"
+            )
+    result = []
+    for dep in raw:
         if not isinstance(dep, str):
             continue
         name = normalize_requirement(dep)
         if name and name != "python":
-            names.append(name)
-    return names
+            result.append((name, dep))
+    return result
 
 
 def _python_version(requires: str | None) -> str | None:
@@ -186,10 +201,12 @@ def detect_python(ctx: ScanContext, unit_path: str) -> bool:
     unit = ctx.unit(unit_path)
     unit.has_manifest = True
     deps: dict[str, str] = {}  # name -> source
+    specs: dict[str, str] = {}  # name -> raw specifier
 
     if pyproject is not None:
-        for name in _collect_pyproject_deps(pyproject):
+        for name, spec in _collect_pyproject_deps(pyproject):
             deps.setdefault(name, f"{pyproject_rel} dependency")
+            specs.setdefault(name, spec)
         requires = (pyproject.get("project", {}) or {}).get("requires-python")
         version = _python_version(requires)
         poetry_python = ((pyproject.get("tool", {}) or {}).get("poetry", {}) or {}).get(
@@ -225,6 +242,7 @@ def detect_python(ctx: ScanContext, unit_path: str) -> bool:
             name = normalize_requirement(line)
             if name:
                 deps.setdefault(name, f"{rel} requirement")
+                specs.setdefault(name, line)
 
     pv_rel = join(unit_path, ".python-version")
     if not unit.language_version and pv_rel not in ctx.ignored_paths and ctx.is_file(pv_rel):
@@ -262,6 +280,7 @@ def detect_python(ctx: ScanContext, unit_path: str) -> bool:
         ctx.add_for(unit, "frameworks", "Django", join(unit_path, "manage.py"))
         unit.backend = True
 
+    locks = py_lock_index(ctx, unit_path)
     for name, source in sorted(deps.items()):
         mapping = PY_PACKAGES.get(name)
         if mapping is None:
@@ -272,6 +291,9 @@ def detect_python(ctx: ScanContext, unit_path: str) -> bool:
             continue
         ctx.add_for(unit, category, display, source)
         if category == "frameworks":
+            version = locks.resolve(name, specs.get(name), python=True)
+            if version:
+                unit.framework_versions.setdefault(display, version)
             if display in BACKEND_FRAMEWORKS:
                 unit.backend = True
             if display in AI_FRAMEWORKS:

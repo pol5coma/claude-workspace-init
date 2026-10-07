@@ -237,7 +237,10 @@ def build_stack(ctx: ScanContext) -> dict[str, list[str]]:
             (f for f in unit.frameworks if f not in ("Pydantic",)),
             key=lambda f: (_framework_rank(f), unit.frameworks.index(f)),
         )
-        items.extend(frameworks)
+        items.extend(
+            f"{f} {unit.framework_versions[f]}" if f in unit.framework_versions else f
+            for f in frameworks
+        )
         items.extend(unit.databases)
         unit_dbs.update(unit.databases)
         items.extend(pm for pm in unit.package_managers if pm not in ("npm", "pip"))

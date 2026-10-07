@@ -57,7 +57,12 @@ def test_recommendations_are_deterministic(catalog):
 
 def test_unknown_project_gets_only_defaults(catalog):
     recs = recommend(catalog, ProjectProfile())
-    assert preselected(recs) == {"hook:safety-guard", "hook:post-edit-validation"}
+    assert preselected(recs) == {
+        "hook:safety-guard",
+        "hook:post-edit-validation",
+        "skill:project-discovery",
+        "skill:kickoff",
+    }
 
 
 def test_github_requires_evidence(catalog):
@@ -95,3 +100,19 @@ def test_resolve_unknown_ref_fails(tmp_path):
     catalog = load_catalog(minimal_catalog(tmp_path))
     with pytest.raises(CatalogError):
         resolve(["skill:nope"], catalog)
+
+
+def test_feature_skills_recommended_for_applications(catalog):
+    recs = recommend(catalog, fastapi_profile())
+    assert recs["skill:feature-spec"].preselected
+    assert recs["skill:feature-workflow"].preselected
+    assert not recommend(catalog, ProjectProfile())["skill:feature-workflow"].preselected
+
+
+def test_kickoff_pulls_in_the_workflow_skills(catalog):
+    resolution = resolve(["skill:kickoff"], catalog)
+    assert set(resolution.added) == {
+        "skill:project-discovery",
+        "skill:feature-spec",
+        "skill:feature-workflow",
+    }

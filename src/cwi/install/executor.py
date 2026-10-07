@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from collections.abc import Callable
 from pathlib import Path
 
 from cwi.domain.enums import OperationType
@@ -90,19 +91,32 @@ def _apply(fs: FileSystem, tx: Transaction, op: PlannedOperation) -> bool:
 
 
 def execute_plan(
-    plan: InstallationPlan, root: Path, fs: FileSystem | None = None
+    plan: InstallationPlan,
+    root: Path,
+    fs: FileSystem | None = None,
+    progress: Callable[[int, int, PlannedOperation], None] | None = None,
 ) -> ExecutionResult:
     fs = fs or FileSystem(root)
     root = fs.root
     _check_preconditions(fs, plan)
     tx = Transaction(root=root, fs=fs)
     applied: list[PlannedOperation] = []
+    total = len(plan.operations)
+    done = 0
+
+    def report(op: PlannedOperation) -> None:
+        nonlocal done
+        done += 1
+        if progress is not None:
+            progress(done, total, op)
+
     tx.begin()
     try:
         for op in plan.operations:
             if op.is_delete:
                 continue
             log.debug("apply %s %s", op.type, op.target)
+            report(op)
             if _apply(fs, tx, op):
                 applied.append(op)
         validate_installation(root, plan)
@@ -110,6 +124,7 @@ def execute_plan(
             if not op.is_delete:
                 continue
             log.debug("apply %s %s", op.type, op.target)
+            report(op)
             if _apply(fs, tx, op):
                 applied.append(op)
         validate_cleanup(root, plan)

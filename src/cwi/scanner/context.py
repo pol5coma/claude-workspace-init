@@ -35,6 +35,7 @@ class Unit:
     language: str | None = None
     language_version: str | None = None
     frameworks: list[str] = field(default_factory=list)
+    framework_versions: dict[str, str] = field(default_factory=dict)  # display name -> "15.1"
     databases: list[str] = field(default_factory=list)
     package_managers: list[str] = field(default_factory=list)
     test_tools: list[str] = field(default_factory=list)

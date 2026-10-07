@@ -107,7 +107,12 @@ def test_existing_fastapi_project(tmp_repo, real_catalog):
     assert "skill:frontend-development" not in plan.selected_capabilities
     claude_md = (root / "AGENTS.md").read_text()
     assert "- Test: `uv run pytest`" in claude_md
-    assert "read `docs/architecture.md` before making structural changes" in claude_md
+    assert "- Architecture and versions: `docs/architecture.md`." in claude_md
+    assert "Write code for these versions." in claude_md
+    assert (root / "docs/specs/_template.md").is_file()
+    assert (
+        (root / "docs/architecture.md").read_text().startswith("# Architecture")
+    )  # user's doc untouched
     mcp = load_json(root / ".mcp.json")
     assert mcp["mcpServers"]["github"]["headers"]["Authorization"] == "Bearer ${GITHUB_TOKEN}"
     assert "GITHUB_TOKEN" in output
@@ -209,6 +214,53 @@ def test_switch_from_claude_only_to_agents_layout(tmp_repo, real_catalog):
     first = tree(root)
     run(root, catalog=real_catalog)  # saved layout is the default on rerun
     assert tree(root) == first
+
+
+# ---------------------------------------------------------------------------------------------
+# Project docs skeleton
+# ---------------------------------------------------------------------------------------------
+
+
+def test_docs_skeleton_created_for_new_project(tmp_repo, real_catalog):
+    root = tmp_repo("react-vite")
+    run(root, catalog=real_catalog)
+    for rel in (
+        "docs/architecture.md",
+        "docs/domain/glossary.md",
+        "docs/specs/_template.md",
+        "docs/decisions/0000-template.md",
+    ):
+        assert (root / rel).is_file(), rel
+    assert "| Frontend | React | 18.3 |" in (root / "docs/architecture.md").read_text()
+    agents = (root / "AGENTS.md").read_text()
+    assert "## Project docs" in agents and "- React 18.3" in agents
+
+
+def test_docs_never_overwritten_or_recreated(tmp_repo, real_catalog):
+    root = tmp_repo("react-vite")
+    run(root, catalog=real_catalog)
+    (root / "docs/domain/glossary.md").write_text("# Our glossary\n")
+    (root / "docs/decisions/0000-template.md").unlink()
+    first = tree(root)
+    run(root, catalog=real_catalog)
+    assert tree(root) == first  # edits kept, deleted file not recreated
+    assert (root / "docs/domain/glossary.md").read_text() == "# Our glossary\n"
+
+
+def test_existing_architecture_doc_is_reused(tmp_repo, real_catalog):
+    root = tmp_repo("react-vite")
+    (root / "ARCHITECTURE.md").write_text("# Ours\n")
+    run(root, catalog=real_catalog)
+    assert not (root / "docs/architecture.md").exists()
+    assert (root / "docs/specs/README.md").is_file()
+    assert "`ARCHITECTURE.md`" in (root / "AGENTS.md").read_text()
+
+
+def test_no_project_docs_option(tmp_repo, real_catalog):
+    root = tmp_repo("react-vite")
+    run(root, {"claude_md.architecture": "__skip__"}, catalog=real_catalog)
+    assert not (root / "docs").exists()
+    assert "## Project docs" not in (root / "AGENTS.md").read_text()
 
 
 def test_existing_settings_preserved_and_hooks_merged_once(tmp_repo, real_catalog):
@@ -459,7 +511,15 @@ def test_template_init_leaves_minimal_claude_workspace(tmp_path):
     assert "new.type" in prompter.asked  # the template itself is not an application
     assert outcome.plan.cleanup_template
     remaining = sorted(p.relative_to(root).as_posix() for p in root.iterdir())
-    assert remaining == [".claude", ".gitignore", "AGENTS.md", "CLAUDE.md", "README.MD", "scripts"]
+    assert remaining == [
+        ".claude",
+        ".gitignore",
+        "AGENTS.md",
+        "CLAUDE.md",
+        "README.MD",
+        "docs",
+        "scripts",
+    ]
     claude = sorted(p.relative_to(root).as_posix() for p in (root / ".claude").iterdir())
     assert claude == [
         ".claude/agents",

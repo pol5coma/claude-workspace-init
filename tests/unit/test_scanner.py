@@ -37,7 +37,10 @@ def test_python_fastapi_detection(tmp_repo):
         "uv run fastapi dev app/main.py",
         False,
     ) in commands  # convention: suggested only
-    assert scan.stack["Backend"][:2] == ["Python 3.12", "FastAPI"]
+    assert scan.stack["Backend"][:2] == [
+        "Python 3.12",
+        "FastAPI 0.115",
+    ]  # exact version from uv.lock
 
 
 def test_env_example_values_never_leak(tmp_repo):
@@ -145,3 +148,39 @@ def test_scan_does_not_execute_code(tmp_path):
     scan_project(tmp_path)
     assert not marker.exists()
     assert not (Path(tmp_path) / "executed").exists()
+
+
+def test_version_resolution(tmp_path):
+    from cwi.scanner.versions import js_spec_version, py_spec_version, short
+
+    assert short("15.1.3") == "15.1" and short("19") == "19" and short(None) is None
+    assert js_spec_version("^15.1.0") == "15.1" and js_spec_version("~5.4.2") == "5.4"
+    assert js_spec_version("latest") is None and js_spec_version(">=1 <2") is None
+    assert (
+        py_spec_version("fastapi==0.115.6") == "0.115" and py_spec_version("django~=5.1") == "5.1"
+    )
+    assert py_spec_version("fastapi>=0.115") is None  # a lower bound is not the version in use
+
+
+def test_package_lock_beats_manifest_range(tmp_path):
+    (tmp_path / "package.json").write_text(
+        '{"dependencies": {"next": "^14.0.0", "react": "^18.2.0"}}'
+    )
+    (tmp_path / "package-lock.json").write_text(
+        '{"lockfileVersion": 3, "packages": {"node_modules/next": {"version": "14.2.15"}}}'
+    )
+    stack = scan_project(tmp_path).stack["Frontend"]
+    assert "Next.js 14.2" in stack and "React 18.2" in stack
+
+
+def test_pnpm_and_yarn_locks(tmp_path):
+    a = tmp_path / "a"
+    a.mkdir()
+    (a / "package.json").write_text('{"dependencies": {"vue": "*"}}')
+    (a / "pnpm-lock.yaml").write_text("packages:\n  vue@3.5.12:\n    resolution: {}\n")
+    assert "Vue 3.5" in scan_project(a).stack["Frontend"]
+    b = tmp_path / "b"
+    b.mkdir()
+    (b / "package.json").write_text('{"dependencies": {"svelte": "*"}}')
+    (b / "yarn.lock").write_text('"svelte@*":\n  version "5.1.9"\n')
+    assert "Svelte 5.1" in scan_project(b).stack["Frontend"]

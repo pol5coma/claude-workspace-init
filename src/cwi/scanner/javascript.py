@@ -7,6 +7,7 @@ from typing import Any
 
 from cwi.domain.enums import Confidence
 from cwi.scanner.context import ScanContext, Unit, join
+from cwi.scanner.versions import js_lock_index
 
 # package -> (category, display)
 JS_PACKAGES: dict[str, tuple[str, str]] = {
@@ -145,9 +146,13 @@ def detect_javascript(ctx: ScanContext, unit_path: str) -> bool:
     unit.has_manifest = True
 
     deps: dict[str, str] = {}
+    specs: dict[str, str] = {}
     for section in ("dependencies", "devDependencies", "peerDependencies", "optionalDependencies"):
-        for name in data.get(section) or {}:
+        for name, spec in (data.get(section) or {}).items():
             deps.setdefault(name, f"{pkg_rel} {section}")
+            if isinstance(spec, str):
+                specs.setdefault(name, spec)
+    locks = js_lock_index(ctx, unit_path, list(deps))
 
     manager, manager_source, from_lock = package_manager_for(ctx, unit_path, data)
     ctx.add_for(
@@ -160,6 +165,8 @@ def detect_javascript(ctx: ScanContext, unit_path: str) -> bool:
 
     typescript = "typescript" in deps or ctx.is_file(join(unit_path, "tsconfig.json"))
     unit.language = "TypeScript" if typescript else "JavaScript"
+    if typescript and "typescript" in deps:
+        unit.language_version = locks.resolve("typescript", specs.get("typescript"))
     ctx.add(
         "languages",
         unit.language,
@@ -180,6 +187,10 @@ def detect_javascript(ctx: ScanContext, unit_path: str) -> bool:
             continue  # already represented by the TypeScript language
         ctx.add_for(unit, category, display, source)
         _classify(ctx, unit, display, source)
+        if category == "frameworks":
+            version = locks.resolve(name, specs.get(name))
+            if version:
+                unit.framework_versions.setdefault(display, version)
 
     if data.get("workspaces"):
         ctx.monorepo_signals.append(f"{pkg_rel} workspaces")
