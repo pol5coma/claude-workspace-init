@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "id": "feature-spec",
+  "type": "skill",
+  "name": "Feature spec",
+  "description": "Turn a feature request into a written spec in docs/specs/<feature-slug>.md before any code is written. Use when the user describes a new feature, change request or user story, or asks to \"spec\", \"define\" or \"plan\" a feature.",
+  "recommendation": {
+    "project_types": [
+      "backend",
+      "frontend",
+      "fullstack",
+      "ai",
+      "cli",
+      "library",
+      "data_ml"
+    ],
+    "technologies": []
+  },
+  "dependencies": [],
+  "conflicts": []
+}

@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "id": "project-discovery",
+  "type": "skill",
+  "name": "Project discovery",
+  "description": "First step after cwi init. Defines the project architecture before any spec or code - finds existing architecture docs, analyzes existing code, or builds the architecture from requirements documents - and fills docs/architecture.md, the glossary and the feature backlog. Use when starting work on a project, when docs/architecture.md contains cwi:architecture-template, or when asked to document or define the architecture.",
+  "default_selected": true,
+  "dependencies": [],
+  "conflicts": []
+}

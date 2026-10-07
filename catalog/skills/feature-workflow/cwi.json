@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "id": "feature-workflow",
+  "type": "skill",
+  "name": "Feature workflow",
+  "description": "Implement a feature end to end from its spec: baseline, explore, plan, test-first slices with small commits, verification and an independent review before the PR. Use when asked to implement, build or develop a feature or user story.",
+  "recommendation": {
+    "project_types": [
+      "backend",
+      "frontend",
+      "fullstack",
+      "ai",
+      "cli",
+      "library",
+      "data_ml"
+    ],
+    "technologies": []
+  },
+  "dependencies": [],
+  "conflicts": []
+}
