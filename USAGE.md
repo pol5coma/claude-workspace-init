@@ -1,217 +1,323 @@
 # Using CWI
 
-CWI sets up Claude Code for a project in one command. You pick what you need from a catalog of skills, agents, hooks, scripts and MCP servers. CWI installs only those, and the project stays clean.
+A complete, step-by-step guide. For the overview, see the [README](README.MD).
 
-This guide covers three tasks:
+**Contents**
 
-1. [Install CWI](#1-install-cwi) (once per machine)
-2. [Set up a project](#2-set-up-a-project) (new or existing)
-3. [Add things to the catalog](#3-add-things-to-the-catalog) (for maintainers of this template)
+1. [Install CWI](#1-install-cwi): once per machine
+2. [Set up a project](#2-set-up-a-project): `cwi init`
+3. [Work in Claude Code](#3-work-in-claude-code-kickoff): `/kickoff`
+4. [Add things to the catalog](#4-add-things-to-the-catalog): for maintainers of this template
+5. [Reference](#5-reference): the catalog in detail, what gets preselected, the Safety Guard rules
+6. [Troubleshooting](#6-troubleshooting)
 
 ---
 
 ## 1. Install CWI
 
-You need [uv](https://docs.astral.sh/uv/) and Python 3.12 or newer.
+You need:
+
+| Requirement | Why | Check |
+| --- | --- | --- |
+| [uv](https://docs.astral.sh/uv/) | Installs and runs the `cwi` CLI | `uv --version` |
+| Python 3.12+ | CWI is written in Python. uv can provide it. | `python3 --version` |
+| [Claude Code](https://code.claude.com) | Where the workspace is used | `claude --version` |
+| Node.js 18+ *(optional)* | Only for the `archify` diagram skill | `node --version` |
 
 ```bash
-git clone <this-repo-url> ~/tools/claude-workspace-init
+git clone https://github.com/pol5coma/claude-workspace-init ~/tools/claude-workspace-init
 uv tool install -e ~/tools/claude-workspace-init
-cwi --version
+cwi --version          # cwi 0.1.0
 ```
 
-Install it this way, as a tool. When CWI sets up a project created from this template, it deletes its own source code from that project. The installed `cwi` command keeps working.
+> **Why install it as a tool?** CWI's catalog stays in its own folder, and every project points to it. When you start a project *from the template*, CWI deletes its own source from that project. The installed `cwi` command keeps working.
+
+To update CWI later, run `git -C ~/tools/claude-workspace-init pull`. The editable install picks up the change.
 
 ---
 
 ## 2. Set up a project
 
-### Option A: start a new project from the template
+```mermaid
+flowchart TD
+    Q{"Do you already<br/>have a project?"}
+    Q -- "Yes" --> A["cd my-project<br/>cwi init --catalog ~/tools/claude-workspace-init/catalog"]
+    Q -- "No, start from scratch" --> B["git clone …/claude-workspace-init my-app<br/>cd my-app && cwi init"]
+    A --> S["8 guided steps · preview · apply"]
+    B --> S
+    S --> K["claude /kickoff"]
+```
+
+### Option A: a project you already have
+
+The catalog is **not copied** into your project. Only what you select is installed.
 
 ```bash
-git clone <this-repo-url> my-app
+cd ~/projects/my-project
+git status                                                   # commit first, so `git diff` shows what CWI added
+cwi init --catalog ~/tools/claude-workspace-init/catalog --dry-run   # see the plan, write nothing
+cwi init --catalog ~/tools/claude-workspace-init/catalog              # run it
+```
+
+### Option B: a new project from the template
+
+```bash
+git clone https://github.com/pol5coma/claude-workspace-init my-app
 cd my-app
+mkdir -p docs/requirements && cp ~/somewhere/*.md docs/requirements/   # optional: your requirements
 cwi init
 ```
 
-### Option B: add Claude Code to an existing project
+After a successful run CWI removes its own files: `catalog/`, `templates/`, `src/cwi/`, `tests/`, `pyproject.toml`, `uv.lock`, `.python-version`, `USAGE.md`, the spec docs and the template marker. Only your workspace remains.
 
-```bash
-cd my-existing-project
-cwi init --catalog ~/tools/claude-workspace-init/catalog
-```
+### The 8 steps
 
-### What happens next
-
-CWI walks you through a few short screens. Press **Enter** to accept the suggestion on any screen.
+Press **Enter** to accept the suggestion on any screen. **Space** toggles items in a list.
 
 | Step | What you see | What to do |
 | --- | --- | --- |
-| 1. Project | Detected stack, for an existing project. A few questions, for a new project. | Confirm, or edit what is wrong. |
-| 2. Instructions | Where the instructions live: `AGENTS.md` plus a `CLAUDE.md` that imports it (recommended), or `CLAUDE.md` only. Then a short proposal with safety rules, stack, commands and an architecture pointer. | Accept, edit the commands, or add a global instruction. |
-| 3. Capabilities | Five lists: Skills, Agents, Scripts, MCP and Hooks. Recommended items are already ticked. | **Space** toggles an item and **Enter** continues. |
-| 4. Preview | Every file CWI will create, change or delete. | Choose **Apply**, **Review changes** to see diffs, **Back** or **Cancel**. |
+| **1 · Workspace** | The project folder. If you run CWI inside a git subfolder, it asks which root to use. Shows a notice if you have uncommitted changes. | Confirm |
+| **2 · Scan** | Reads manifests and lockfiles. It never runs your code. | Nothing |
+| **3 · Project profile** | **Existing project:** the detected type and stack with versions, for example "Full-stack · Python 3.12 · FastAPI 0.115 · React 19.0". **New project:** a few questions about what you are building, languages, frameworks, database, testing and infrastructure. | **Confirm**, **Edit**, **View evidence** (why each item was detected) or **Rescan** |
+| **4 · Instructions & docs** | Where instructions live: **AGENTS.md + CLAUDE.md** (recommended) or **CLAUDE.md only**. Then the safety rules, the essential commands, the docs skeleton and any extra global instruction. Shows the size of the result. | Accept, or edit commands and the list of protected commands |
+| **5 · Capabilities** | Five lists: Skills, Agents (grouped by family), Scripts, MCP, Hooks. Recommended items are ticked, and each shows **why**. | Tick or untick. Dependencies and conflicts are asked about. |
+| **6 · Review plan** | Every file to create, update or delete, and any warnings. Required tokens, such as `GITHUB_TOKEN`, and missing tools, such as `node`, are listed here. | **Apply**, **Review changes** (diffs), **Show all operations**, **Back** or **Cancel** |
+| **7 · Apply** | Progress such as "Applying 12/25 · .claude/agents/…". Writes are transactional: if anything fails, everything is rolled back. | Wait |
+| **8 · Next steps** | The order to work in, and the exact command. | Accept **"Open Claude Code now and start kickoff?"** |
 
-Nothing is written before you choose **Apply**. **Cancel** leaves the project exactly as it was.
+Nothing is written before **Apply**. **Cancel** leaves the project exactly as it was.
 
-### What you end up with
+### Existing files are safe
 
-```text
-my-app/
-├── AGENTS.md                 short, project-wide instructions for any coding agent
-├── CLAUDE.md                 imports AGENTS.md (@AGENTS.md) + Claude-only notes
-├── .mcp.json                 only if you picked an MCP server
-├── scripts/                  only if you picked a script
-└── .claude/
-    ├── settings.json         your hooks
-    ├── cwi-state.json        CWI's record of what it installed (no secrets)
-    ├── skills/
-    ├── agents/
-    └── hooks/
-```
-
-In a project created from the template, CWI also deletes the catalog and its own files. Commit the result:
-
-```bash
-git add -A && git commit -m "Set up Claude Code workspace"
-```
-
-### Useful flags
-
-| Command | When to use it |
+| You already have | What CWI does |
 | --- | --- |
-| `cwi init --dry-run` | See what would happen. Writes nothing. |
-| `cwi init --yes` | Accept every suggestion with no questions. Good for scripts and CI. |
-| `cwi init --root ../other-app` | Set up a different folder. |
-| `cwi init --verbose` | Show details when something fails. |
+| `CLAUDE.md` | Adds `@AGENTS.md` at the top and keeps everything else. Sections you already have are not repeated in `AGENTS.md`. |
+| `AGENTS.md` | Asks: **keep**, **merge** (adds only missing sections), **replace** or **skip**. **Show diff** is always available. |
+| `.claude/settings.json` | Merges the hooks. Your permissions, env and other hooks stay. |
+| `.mcp.json` | Adds new servers. A server with the same name and a different config asks: keep or replace. |
+| A file CWI wants to install, such as `.claude/agents/x.md` | Asks: keep yours or replace it. |
+| `docs/architecture.md` or other docs | Never touched. Only missing docs are created. |
 
-### Running it again
+### Flags
 
-Run `cwi init` again whenever you want to:
+| Command | Use it to |
+| --- | --- |
+| `cwi init --dry-run` | See the full plan. Writes nothing. |
+| `cwi init --yes` | Accept every default with no questions. Good for scripts. |
+| `cwi init --catalog PATH` | Use a catalog outside the project. You need this for existing projects. |
+| `cwi init --root PATH` | Set up another folder. |
+| `cwi init --verbose` | Show debug logs and tracebacks. |
 
-- **Change your selection.** Untick a capability and CWI removes the files it installed for it.
-- **Refresh AGENTS.md and CLAUDE.md** after your stack changes.
-- **Check your workspace.** CWI warns you if one of its files was edited.
+### Running `cwi init` again
 
-CWI never overwrites a file you changed without asking. It never deletes files it did not create. Running it twice with the same answers changes nothing.
+Run it whenever you want to:
 
-### AGENTS.md and CLAUDE.md
+- **Change the selection.** Untick a capability and CWI removes **only the files it installed** for it. A file you edited is never deleted without asking.
+- **Refresh the instructions.** Choose **Rescan** on the profile screen to update the stack and versions after an upgrade.
+- **Check the workspace.** CWI warns about any of its files you edited since installing.
 
-`AGENTS.md` is the open standard that Codex, Cursor, Gemini CLI, GitHub Copilot and Claude Code read. CWI writes the shared instructions there. Claude Code ignores `AGENTS.md` whenever a `CLAUDE.md` exists, so CWI also writes a `CLAUDE.md` whose first line is `@AGENTS.md`. That line imports the shared file. Put Claude-only notes below it.
+With the same answers, a rerun changes nothing ("Workspace already up to date").
 
-If you already have a `CLAUDE.md`, CWI adds the `@AGENTS.md` line at the top and leaves the rest untouched. Sections your `CLAUDE.md` already has are not repeated in `AGENTS.md`. An existing `AGENTS.md` is never overwritten without asking. You choose to keep, merge, replace or skip it.
+---
 
-Prefer a single file? Choose **CLAUDE.md only** on the instructions screen.
+## 3. Work in Claude Code: `/kickoff`
 
-### After `cwi init`: run `/kickoff` in Claude Code
-
-`cwi init` only provisions the workspace and runs no AI. To start working, open Claude Code in the project and run:
+`cwi init` only provisions the workspace and runs no AI. The work happens in Claude Code, and **`/kickoff`** is the single entry point:
 
 ```bash
 claude "/kickoff"
 ```
 
-In an interactive terminal, `cwi init` offers to do this for you when it finishes.
+### What `/kickoff` does
 
-`kickoff` is the "init" inside Claude Code. It reads the project state with a read-only script, shows a short status, proposes the next step, and asks before starting it. It always works in this order:
-
-| Order | Skill it runs | When |
-| --- | --- | --- |
-| 1 | `project-discovery` | The architecture is missing or still the CWI template. |
-| 2 | `feature-spec` | A feature has no spec yet, or its spec is a draft or has open questions. |
-| 3 | `feature-workflow` | A spec is `ready`. A spec that is `in progress` is resumed first. |
-
-How `kickoff` behaves in each situation:
-
-- **Existing project with code and no architecture doc.** It asks whether the architecture is documented somewhere. If not, it analyzes the code, delegating to `codebase-explorer`, and writes `docs/architecture.md`, the glossary and the implicit decisions.
-- **New project.** It looks for requirements documents, for example `docs/requirements/` or files named PRD, brief or requirements. It proposes using them or asks where they are. Without documents it interviews you. The result is the architecture, the stack decision and an ordered backlog in `docs/specs/README.md`, starting with `project-setup`.
-- **Project in progress.** It continues the feature `in progress`, implements the next `ready` spec in backlog order, or finishes a draft spec.
-
-**Diagrams with archify.** The `archify` skill is installed by default and needs Node.js 18+. The workflow skills offer it at the moments where it helps. None of these steps is ever required:
-
-- **`project-discovery`:** when the architecture is written, an architecture diagram based on the real code.
-- **`kickoff`:** when the architecture exists but has no diagram yet, it offers to create one.
-- **`feature-spec`:** a workflow, sequence, dataflow or state diagram when a feature's flow is not obvious.
-- **`feature-workflow`:** after a structural change, it offers to refresh the diagram and link it in the PR.
-
-Diagrams are saved in `docs/diagrams/<type>-<slug>/`, versioned with the docs. You can also ask for one at any time, for example "make a sequence diagram of the checkout flow". To use archify in every project, outside CWI, link your global install: `ln -s ~/.agents/skills/archify ~/.claude/skills/archify`.
-
-It is resumable. Run `/kickoff` any time and it continues from the current state of the files: spec `Status:` lines and the backlog. You can also call `project-discovery`, `feature-spec` or `feature-workflow` directly.
-
-Until the architecture is written, `docs/architecture.md` keeps a `cwi:architecture-template` marker. `feature-spec` and `feature-workflow` refuse to start while that marker is there. Every skill stops and asks when something is unclear, contradictory or missing an important decision. Claude Code shows which agent is running in its own interface.
-
-### Project docs: where requirements and architecture live
-
-`cwi init` offers to create a `docs/` skeleton. It only creates missing files and never overwrites yours:
-
-```text
-docs/
-├── architecture.md        structure, data flow, integrations + "Stack & versions" table
-├── domain/glossary.md     business terms
-├── specs/                 one spec per feature (start from specs/_template.md)
-└── decisions/             short records of significant design decisions
+```mermaid
+flowchart TD
+    S["/kickoff<br/>reads project state<br/>(read-only script)"] --> A{"Architecture<br/>defined?"}
+    A -- "No · there is code" --> D1["project-discovery<br/>analyze the code with codebase-explorer"]
+    A -- "No · new project" --> D2["project-discovery<br/>requirements docs or interview"]
+    A -- "Yes" --> P{"A spec<br/>in progress?"}
+    D1 --> S
+    D2 --> S
+    P -- "Yes" --> W["feature-workflow<br/>resume it"]
+    P -- "No" --> R{"A spec<br/>ready?"}
+    R -- "Yes" --> W2["feature-workflow<br/>next in backlog order"]
+    R -- "No" --> F["feature-spec<br/>finish a draft, or spec the next backlog item"]
+    W --> S
+    W2 --> S
+    F --> S
 ```
 
-`AGENTS.md` only holds short pointers to these files, so Claude and every agent know where to look without loading them every session. If you delete a scaffolded file, a later `cwi init` won't recreate it.
+1. **Reads the state** with a read-only script: the architecture (missing, template or defined), whether there is code, requirement documents, specs with their status and open questions, the backlog and existing diagrams.
+2. **Shows a short status** and **proposes the next step**. Nothing starts without your OK.
+3. **Runs that step** by delegating to the right skill, then checks the state again and proposes the next one.
 
-**Versions.** The Stack section lists the versions the project really uses, read from the lockfiles, for example `Next.js 15.1` and `React 19.0`. It ends with a rule: write code for these versions, and check the official docs for that version when an API differs. Keep the table in `docs/architecture.md` up to date when you upgrade.
+It is **resumable**. The state lives in the files, in each spec's `Status:` line and the `## Backlog` list, so running `/kickoff` tomorrow continues where you stopped.
 
-### Building a feature
+> **Order is enforced.** Until the architecture is written, `docs/architecture.md` keeps a `cwi:architecture-template` marker. `feature-spec` and `feature-workflow` refuse to start while it is there.
 
-With the `feature-spec` and `feature-workflow` skills installed, which are recommended for every application type:
+### Step 1: architecture with `project-discovery`
 
-1. "Write the spec for <feature>." Claude asks clarifying questions and writes `docs/specs/<feature>.md` with acceptance criteria. Unknowns go to *Open questions* instead of being invented.
-2. "Implement <feature>." Claude works through these phases:
-   - baseline on a feature branch
-   - explore the code
-   - plan, which you approve
-   - test-first slices, one commit each
-   - verify the result
-   - independent review with `code-reviewer`, plus `security-reviewer` when needed
-   - write the PR description and update the docs
+It starts by asking **"Is the architecture already defined?"**
 
-### If you need an MCP token
+| Your answer | What happens |
+| --- | --- |
+| **Yes, here is the path** | Uses that document and links it from `AGENTS.md`. |
+| **Yes, find it** | Searches `ARCHITECTURE.md`, `docs/**/architecture*`, ADR folders and README sections, then you confirm which one. |
+| **No, there is code** | Delegates to `codebase-explorer`. Fills `docs/architecture.md` (overview, structure, data flow, integrations, conventions), checks versions against the lockfiles, seeds the glossary and lists implicit decisions. |
+| **No, new project** | Uses your requirements, for example `docs/requirements/`, PRD or brief files, or interviews you. Writes the glossary, a proposed architecture, `docs/decisions/0001-stack.md` and an ordered backlog that starts with `project-setup`. |
 
-Some MCP servers need a token, for example GitHub needs `GITHUB_TOKEN`. CWI tells you which one. Set it in your shell, not in the repo:
+Every contradiction or gap becomes a question for you. It never invents business rules. At the end it offers an **architecture diagram** made with archify.
+
+### Step 2: specs with `feature-spec`
+
+Turns a feature into `docs/specs/<feature>.md`, based on `docs/specs/_template.md`:
+
+```markdown
+# Checkout
+Status: ready
+
+## Goal
+## User stories
+## Acceptance criteria        ← Given / When / Then, each one testable
+## Edge cases
+## Out of scope
+## Data and API changes
+## Open questions             ← unknowns go here, never into the criteria
+```
+
+It asks clarifying questions first, and marks the spec `ready` only when you agree.
+
+### Step 3: build with `feature-workflow`
+
+```mermaid
+flowchart LR
+    B["Baseline<br/>branch + tests/lint"] --> E["Explore<br/>codebase-explorer"]
+    E --> P["Plan<br/>slices · you approve"]
+    P --> I["Implement<br/>test first · 1 commit per slice"]
+    I --> V["Verify<br/>full suite · run the app"]
+    V --> R["Review<br/>code-reviewer · security-reviewer"]
+    R --> PR["PR + docs<br/>spec → done"]
+```
+
+**Ask, don't assume.** It stops and asks whenever:
+- a requirement is unclear, ambiguous or contradictory;
+- an important decision is missing (data model, public API, security, a new dependency, UX behaviour);
+- the spec and the code disagree;
+- the plan must change.
+
+It never commits to `main`, never force-pushes, and asks before anything destructive. After `project-setup` or an upgrade, it reminds you to run `cwi init` → **Rescan** so the stack versions in `AGENTS.md` stay accurate.
+
+You can also call any of these skills directly: `/project-discovery`, `/feature-spec`, `/feature-workflow`.
+
+### Diagrams with `archify`
+
+Installed by default. It needs Node.js 18+, and CWI warns you if `node` is missing. The workflow skills offer it, and it is never required:
+
+| When | Skill | Diagram |
+| --- | --- | --- |
+| The architecture is written | `project-discovery` | Architecture, from the real code |
+| The architecture exists but has no diagram yet | `kickoff` | Architecture (offered once) |
+| A feature has a non-trivial flow | `feature-spec` | Workflow, sequence, dataflow or lifecycle |
+| A feature changed the structure | `feature-workflow` | Refreshed architecture, linked in the PR |
+
+Diagrams are saved in `docs/diagrams/<type>-<slug>/` and versioned with your docs. You can also ask at any time, for example "make a sequence diagram of the login flow". To use archify outside CWI in every project, link a global install: `ln -s ~/.agents/skills/archify ~/.claude/skills/archify`.
+
+### `AGENTS.md`, `CLAUDE.md` and versions
+
+`AGENTS.md` is the [open standard](https://agents.md) read by Codex, Cursor, Gemini CLI, GitHub Copilot and Claude Code. Claude Code ignores it when a `CLAUDE.md` exists, so CWI writes a `CLAUDE.md` whose first line imports it:
+
+```markdown
+@AGENTS.md
+
+<!-- Shared instructions for every coding agent live in AGENTS.md.
+     Add Claude Code-specific notes below this line. -->
+```
+
+A generated `AGENTS.md` looks like this:
+
+```markdown
+## Safety
+Never perform destructive database operations … without explicit user approval.
+Commands that always require explicit approval: `git push --force`, `git reset --hard`, `rm -rf`.
+
+## Stack
+Frontend:
+- TypeScript 5.5
+- React 18.3
+- Vite 5.4
+
+Write code for these versions. When an API differs between versions, check the official
+documentation for the version in use; never introduce APIs from another major version.
+
+## Commands
+- Run: `npm run dev`
+- Test: `npm test`
+
+## Project docs
+- Architecture and versions: `docs/architecture.md`. Read it before structural changes.
+- Business vocabulary: `docs/domain/glossary.md`.
+- Feature specs: `docs/specs/`. Read the spec before implementing a feature; if there is none, write one first.
+- Decisions: `docs/decisions/`. Record significant design decisions there.
+```
+
+Versions come from the lockfiles (`package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `uv.lock`, `poetry.lock`). A loose range such as `>=0.115` shows no version, because it would be a guess.
+
+### Hooks you get by default
+
+| Hook | When | What it does |
+| --- | --- | --- |
+| `safety-guard` | Before every Bash command and file edit | Blocks clearly destructive operations and protected files. Claude gets the reason and asks you. [Rules](#safety-guard-rules) |
+| `post-edit-validation` | After every file edit | Formats and lints **only the edited file** with the project's own tools (Ruff, Prettier, ESLint, gofmt, rustfmt), and sends problems back to Claude. It skips tools that are not configured. |
+
+### MCP tokens
+
+Some MCP servers need a token. CWI lists them in step 6. Set them in your shell, never in the repo:
 
 ```bash
 export GITHUB_TOKEN=ghp_...
 ```
 
-`.mcp.json` only holds the reference `${GITHUB_TOKEN}`, never the value.
+`.mcp.json` only stores the reference `${GITHUB_TOKEN}`. The first time, Claude Code asks you to approve the project's MCP servers.
 
-### The Safety Guard hook
+### Check what Claude Code loaded
 
-The Safety Guard is ticked by default. It stops Claude from running clearly destructive commands, such as `terraform destroy`, `prisma migrate reset`, `git push --force` or `rm -rf /`. It also stops Claude from editing `.env` files, keys or `.git/`. Claude then explains why the command seemed necessary and asks you first.
+| Command in Claude Code | Shows |
+| --- | --- |
+| `/agents` | Installed agents, including `development-agents/` |
+| `/` | Skills such as `/kickoff`, `/archify`, `/feature-spec` |
+| `/hooks` | `safety-guard`, `post-edit-validation` |
+| `/mcp` | MCP servers and their status |
+| `/memory` | `CLAUDE.md` with the `AGENTS.md` import |
 
-To allow something for one project, create `.claude/safety-guard.json`:
-
-```json
-{
-  "allow_paths": [".env.local"],
-  "allow_commands": ["^terraform destroy -target=module\\.sandbox"],
-  "disabled_rules": ["git-reset-hard"],
-  "protected_paths": ["config/production.yml"]
-}
-```
+If Claude Code was already open while `cwi init` ran, restart it so it sees the new agents.
 
 ---
 
-## 3. Add things to the catalog
+## 4. Add things to the catalog
 
-This section is for people maintaining this template repository. Run these commands from the repository root.
+For maintainers of this template. Run these commands from the repository root with `uv run cwi …`, or `cwi …` if it is installed.
 
-### The one command you need
-
-```bash
-cwi catalog add <type> <file> [options]
+```mermaid
+flowchart LR
+    F["Your file<br/>SKILL.md · agent.md · script"] --> A["cwi catalog add"]
+    A --> M["Writes cwi.json + payload/<br/>asks what is missing"]
+    M --> V{"Catalog<br/>valid?"}
+    V -- "Yes" --> G["git commit + push<br/>→ every new project gets it"]
+    V -- "No" --> X["Nothing added<br/>error explains why"]
 ```
 
-CWI reads your file, asks for anything missing and creates the catalog entry. It then checks the whole catalog. If something is wrong, nothing is added.
+### What to pass for each type
 
-### Skills
+| Type | You pass | Extras | Where tools go |
+| --- | --- | --- | --- |
+| **Skill** | `SKILL.md`, or a folder containing it | `--ref file.md` → `references/`, `--script file` → `scripts/`, `--exclude test` | `allowed-tools:` in the frontmatter |
+| **Agent** | One `.md` file | `--script file` → `.claude/scripts/<id>/` | `tools:` and `model:` in the frontmatter |
+| **Hook** | The hook script | `--event`, `--matcher`, `--timeout` | n/a |
+| **Script** | The script file(s) | `--description` (required) | n/a |
+| **MCP** | The server name | `--url` + `--header K=V`, or `--command` + `--arg`, and `--env VAR` | Secrets always as `${VAR}` |
 
-A skill is a Markdown file with a short header:
+<details>
+<summary><b>Skill example</b></summary>
 
 ```markdown
 ---
@@ -221,20 +327,19 @@ allowed-tools: Read, Grep
 ---
 
 # API design
-...instructions for Claude...
+…instructions for Claude…
 ```
-
-The `allowed-tools` line is optional.
 
 ```bash
 cwi catalog add skill path/to/SKILL.md
 cwi catalog add skill path/to/SKILL.md --ref rest-guide.md --script check.py
-cwi catalog add skill path/to/api-design/          # a folder with SKILL.md, references/, scripts/
+cwi catalog add skill path/to/api-design/                # whole folder
+cwi catalog add skill ~/.agents/skills/archify --exclude test --default
 ```
+</details>
 
-### Agents
-
-An agent is one Markdown file. Its tools go in the header as `tools:`, not `allowed-tools:`.
+<details>
+<summary><b>Agent example</b></summary>
 
 ```markdown
 ---
@@ -244,139 +349,236 @@ tools: Read, Grep, Bash
 model: sonnet
 ---
 
-You are a database reviewer...
+You are a database reviewer…
 ```
-
-The `tools` and `model` lines are optional.
 
 ```bash
 cwi catalog add agent path/to/dba.md
-cwi catalog add agent path/to/dba.md --script explain-query.py
+cwi catalog add agent path/to/dba.md --script explain-query.py --depends script:run-quality-checks
 ```
 
-> If you run `add skill` on a file that has `tools:` in its header, CWI tells you it is an agent.
+If you run `add skill` on a file whose frontmatter has `tools:`, CWI tells you it is an agent.
 
-### Hooks
+A custom tool for an agent, such as a script that queries a database, is shipped with `--script`. The agent runs it through `Bash`. For a real tool, add an MCP server and make the agent `--depends mcp:<name>`.
+</details>
 
-A hook is a script Claude Code runs on an event. It receives JSON on stdin. To block an action, exit with code `2` and print the reason to stderr.
+<details>
+<summary><b>Hook example</b></summary>
+
+A hook receives the event JSON on stdin. Exit code `2` blocks the action, and stderr is shown to Claude as the reason.
 
 ```bash
 cwi catalog add hook block-prod.sh --event PreToolUse --matcher Bash -d "Blocks production deploys"
 cwi catalog add hook notify.py --event Stop -d "Desktop notification when Claude finishes"
 ```
 
-Events: `PreToolUse`, `PostToolUse`, `UserPromptSubmit`, `Stop`, `SubagentStop`, `SessionStart`, `SessionEnd`, `Notification`, `PreCompact`.
-`--matcher` only applies to `PreToolUse` and `PostToolUse`. Examples are `Bash` and `Edit|Write`.
+Events: `PreToolUse`, `PostToolUse`, `UserPromptSubmit`, `Stop`, `SubagentStop`, `SessionStart`, `SessionEnd`, `Notification`, `PreCompact`. `--matcher` applies only to `PreToolUse` and `PostToolUse`.
+</details>
 
-### Scripts
+<details>
+<summary><b>Script and MCP examples</b></summary>
 
 ```bash
 cwi catalog add script seed-db.sh -d "Seeds the local database with demo data"
-```
 
-### MCP servers
-
-```bash
-# Remote server
 cwi catalog add mcp linear --url https://mcp.linear.app/mcp \
   --header 'Authorization=Bearer ${LINEAR_TOKEN}'
 
-# Local server
 cwi catalog add mcp postgres --command npx \
   --arg -y --arg @modelcontextprotocol/server-postgres --arg '${DATABASE_URL}'
 ```
 
-Always write secrets as `${VAR}`. CWI refuses a real token.
+A real token in `--header` or `--env` is rejected: "looks like a literal secret".
+</details>
 
-### When should it be ticked?
+### When is it ticked in `cwi init`?
 
-Add these options to any `add` command:
-
-| Option | Effect in `cwi init` |
+| Option | Effect |
 | --- | --- |
-| `--default` | Ticked for every project. |
-| `--type backend,fullstack` | Ticked for these project types: `backend`, `frontend`, `fullstack`, `ai`, `cli`, `library`, `data_ml`, `other`. |
-| `--tech fastapi,react` | Ticked when these technologies are detected. |
-| *(none)* | Listed, but the user ticks it manually. |
-| `--depends script:run-quality-checks` | Also installs this capability when it is selected. |
-| `--group dev-agents --group-default backend` | Put it in a family and tick it for backend projects through that family. See [Families](#families-groups). |
+| `--default` | Ticked in every project. |
+| `--type backend,fullstack` | Ticked for those project types: `backend`, `frontend`, `fullstack`, `ai`, `cli`, `library`, `data_ml`, `other`. |
+| `--tech fastapi,react` | Ticked when those technologies are detected. |
+| `--group <family> --group-default backend` | Ticked for that project type through its family. |
+| *(nothing)* | Listed, and the user ticks it manually. |
+| `--depends type:id` | Installs that capability too whenever this one is selected. |
 
-Without `--yes`, CWI asks these questions for you.
+Without `--yes`, the command asks you these questions.
 
-### Families (groups)
+### Families
 
-A family is a folder that groups related capabilities, for example `development-agents`. Families can also make a set of members preselected for a project type. For example, choosing **Backend** in `cwi init` ticks the backend members of `development-agents`.
+A family groups related capabilities in one folder, and decides which members are ticked for each project type.
 
 ```text
 catalog/agents/development-agents/
-├── group.json                 family name + defaults per project type
+├── group.json               name + defaults per project type
 ├── debugger/
 │   ├── cwi.json
 │   └── payload/.claude/agents/development-agents/debugger.md
-└── test-automator/...
+└── …
 ```
 
-Grouped agents install into `.claude/agents/<family>/`. Claude Code finds agents in subfolders too.
+Grouped agents install into `.claude/agents/<family>/`, and Claude Code finds agents in subfolders.
 
 ```bash
-# Add an agent to a family. The family is created if it does not exist.
 cwi catalog add agent terraform-expert.md --group devops-agents --group-default backend,fullstack
-
-# Create an empty family
 cwi catalog group create agent product-agents --name "Product agents"
-
-# Choose which members are ticked for one project type (replaces the list for that type)
 cwi catalog group defaults agent development-agents backend debugger,test-automator,refactoring-specialist
 ```
-
-You can also edit `group.json` directly:
-
-```json
-{
-  "schema_version": 1,
-  "id": "development-agents",
-  "type": "agent",
-  "name": "Development agents",
-  "defaults": {
-    "backend": ["debugger", "test-automator"],
-    "frontend": ["accessibility-tester", "debugger"]
-  }
-}
-```
-
-Run `cwi catalog validate` after editing it by hand.
 
 ### Other catalog commands
 
 ```bash
-cwi catalog list                 # everything in the catalog
-cwi catalog validate             # check the catalog for problems
-cwi catalog remove skill:old     # delete an entry
-cwi catalog add skill SKILL.md --force   # replace an existing entry
+cwi catalog list                       # everything, with group, defaults and recommendations
+cwi catalog validate                   # check the whole catalog
+cwi catalog remove skill:old           # remove an entry (also from its family defaults)
+cwi catalog add skill SKILL.md --force # replace an existing entry
 ```
 
-### Publish your changes
+### Publish
 
-The commands only change files in `catalog/`. To ship them with the template, commit and push:
+The commands only change files under `catalog/`. Ship them like any other change:
 
 ```bash
-git add catalog/
-git commit -m "catalog: add api-design skill"
-git push
+git add catalog/ && git commit -m "catalog: add api-design skill" && git push
 ```
 
-Every project created from the template after that push gets the new capability.
+Every project set up after the push can use the new capability.
 
 ---
 
-## Troubleshooting
+## 5. Reference
+
+### What gets preselected
+
+✓ means preselected. Everything can be changed on the capabilities screen.
+
+| Capability | backend | frontend | fullstack | ai | cli | library | data_ml | other |
+| --- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| `kickoff`, `project-discovery`, `archify` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| `safety-guard`, `post-edit-validation` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| `feature-spec`, `feature-workflow` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓¹ |
+| `testing`, `debugging`, `code-reviewer` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | |
+| `run-quality-checks` | ✓² | ✓² | ✓² | ✓² | ✓² | ✓² | ✓² | |
+| `backend-development` | ✓ | | ✓ | | | | | |
+| `frontend-development` | | ✓ | ✓ | | | | | |
+| `security-reviewer` | ✓ | | ✓ | ✓ | | | | |
+| `github` (MCP) | ✓³ | ✓³ | ✓³ | ✓³ | ✓³ | ✓³ | ✓³ | ✓³ |
+
+¹ Installed as dependencies of `kickoff`. ² Installed as a dependency of `code-reviewer`. ³ Only when GitHub Actions workflows are detected.
+
+Technologies also trigger recommendations. For example, a detected FastAPI ticks `backend-development`, and a detected Vitest ticks `testing`.
+
+### The `development-agents` family
+
+35 agents adapted from [davila7/claude-code-templates](https://github.com/davila7/claude-code-templates/tree/main/cli-tool/components/agents/development-tools) (MIT). 🔒 means read-only: no `Write` or `Edit`.
+
+**Preselected by project type** (from `catalog/agents/development-agents/group.json`):
+
+| Agent | backend | frontend | fullstack | ai | cli | library | data_ml |
+| --- | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| `debugger` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| `test-automator` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| `refactoring-specialist` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | |
+| `dependency-manager` | ✓ | ✓ | ✓ | | ✓ | ✓ | |
+| `codebase-explorer` 🔒 | ✓ | ✓ | ✓ | ✓ | | | |
+| `architect-reviewer` 🔒 | ✓ | | ✓ | ✓ | | ✓ | |
+| `performance-engineer` | ✓ | ✓ | ✓ | | | | ✓ |
+| `error-detective` 🔒 | ✓ | | ✓ | ✓ | | | |
+| `accessibility-tester` 🔒 | | ✓ | ✓ | | | | |
+| `cli-developer` | | | | | ✓ | | |
+| `unused-code-cleaner` | | | | | | ✓ | |
+
+<details>
+<summary><b>All 35 agents</b></summary>
+
+| Agent | What it does | Notes |
+| --- | --- | --- |
+| `accessibility-tester` 🔒 | WCAG accessibility audits | Recommended for frontend and full-stack |
+| `architect-reviewer` 🔒 | Reviews design decisions and architecture | |
+| `ascii-ui-mockup-generator` | ASCII mockups of UI layouts | |
+| `build-engineer` | Build performance and compilation times | |
+| `chaos-engineer` | Controlled failure experiments and resilience | |
+| `cli-developer` | Command-line tools and terminal apps | |
+| `code-simplifier` | Simplifies code without changing behaviour | |
+| `codebase-explorer` 🔒 | Maps an unfamiliar codebase | Used by `project-discovery` |
+| `codebase-pattern-finder` 🔒 | Finds existing patterns and examples | |
+| `command-expert` | CLI command design | Written for its source repo |
+| `context-manager` | Context in long multi-agent tasks | |
+| `debugger` | Diagnoses and fixes bugs | |
+| `dependency-manager` | Audits and updates dependencies | |
+| `dx-optimizer` | Developer workflow: builds, feedback loops | |
+| `error-detective` 🔒 | Correlates errors and logs | |
+| `flutter-go-reviewer` 🔒 | Flutter and Go code review | Recommended when Go or Dart is detected |
+| `general-purpose` | Generalist agent | ⚠️ Overrides Claude Code's built-in agent of the same name |
+| `laravel-expert-agent` | Laravel development | Recommended when Laravel is detected |
+| `launchdarkly-flag-cleanup` | Cleans up LaunchDarkly feature flags | Needs the LaunchDarkly MCP |
+| `mcp-expert` | MCP integrations | Written for its source repo |
+| `pagerduty-incident-responder` | PagerDuty incident response | Needs the PagerDuty and GitHub MCPs |
+| `performance-engineer` | Finds and removes bottlenecks | |
+| `performance-profiler` | Memory and latency profiling | |
+| `playwright-tester` | Playwright end-to-end tests | Recommended when Playwright is detected |
+| `qa-expert` | QA strategy and test plans | |
+| `refactoring-specialist` | Safe refactors of complex or duplicated code | |
+| `rootly-incident-responder` | Incident response with Rootly | Needs the Rootly MCP |
+| `senior-code-reviewer` 🔒 | Broad code review | Originally `code-reviewer`, renamed |
+| `slack-expert` | Slack apps and integrations | |
+| `technical-debt-manager` 🔒 | Technical debt analysis and planning | |
+| `test-automator` | Builds automated tests and frameworks | |
+| `test-engineer` | Test strategy and automation | |
+| `thinking-beast-mode` | Long autonomous multi-step tasks | |
+| `tooling-engineer` | Internal developer tools | |
+| `unused-code-cleaner` | Removes unused imports, functions and classes | |
+
+</details>
+
+> Each selected agent adds its description to Claude's context. If Claude Code warns that agent descriptions are too long, trim the lists in `group.json`.
+
+### Safety Guard rules
+
+The guard **parses** shell commands into the executable and its arguments. It handles `&&`, `;`, `|`, newlines, `sudo`, `env`, `npx`, `uv run`, `bash -c`, `eval` and `$(…)`. It blocks only clear matches:
+
+| Area | Blocked examples |
+| --- | --- |
+| Infrastructure | `terraform destroy`, `terraform apply -destroy`, `pulumi destroy`, `cdk destroy`, `kubectl delete namespace`, `kubectl delete … --all`, `helm uninstall` |
+| Databases | `prisma migrate reset`, `prisma db push --force-reset`, `dropdb`, `alembic downgrade base`, `manage.py flush`, `rails db:drop`, SQL `DROP` / `TRUNCATE` / `DELETE` without `WHERE`, `redis-cli FLUSHALL` |
+| Containers and cloud | `docker compose down -v`, `docker volume rm`, `docker system prune --volumes`, `aws s3 rb --force`, `aws s3 rm --recursive`, RDS / DynamoDB / CloudFormation deletes |
+| Git | `git push --force` (allowed with `--force-with-lease`), `git reset --hard`, `git clean -f`, `git checkout -- .`, `git stash clear` |
+| Files | `rm -r` on `/`, `~`, `.`, `..`, `*`, `.git` or outside the project (temp folders allowed), `mkfs`, `dd of=/dev/…`, `shred` |
+| Protected paths | Writing or editing `.env*` (not `.env.example`), `*.pem`, `*.key`, SSH keys, `.git/`, the guard itself and CWI state |
+
+Allowed on purpose: `rm -rf node_modules`, `rm -rf ./dist`, `git push`, `terraform plan`, `prisma migrate dev`, and `echo "terraform destroy"` (just text).
+
+Per-project overrides go in `.claude/safety-guard.json`. That file is protected, so only you can change it:
+
+```json
+{
+  "protected_paths": ["config/production.yml"],
+  "allow_paths": [".env.local"],
+  "allow_commands": ["^terraform destroy -target=module\\.sandbox"],
+  "disabled_rules": ["git-reset-hard"]
+}
+```
+
+### Credits
+
+The third-party components are listed with their sources and licenses in the [README › Credits and sources](README.MD#credits-and-sources).
+
+---
+
+## 6. Troubleshooting
 
 | Problem | Fix |
 | --- | --- |
-| `No CWI catalog found` | Run from the template folder, or pass `--catalog /path/to/catalog`. |
-| `Catalog source unavailable` on a re-run | Expected after cleanup. Pass `--catalog` to add or remove capabilities. |
-| `Re-run with --yes to apply` | You ran CWI without an interactive terminal. Add `--yes`, or run it in a terminal. |
-| `... changed since the preview` | A file changed while CWI was running. Run `cwi init` again. |
-| `The id '...' is already used` | Names must be unique across all types. Pass `--id another-name`. |
+| `cwi: command not found` | Run `uv tool install -e ~/tools/claude-workspace-init`, and make sure `~/.local/bin` is on your `PATH`. |
+| `No CWI catalog found` | Pass `--catalog ~/tools/claude-workspace-init/catalog`, or run from the template folder. |
+| `Catalog source unavailable` on a rerun | Expected after cleanup. Pass `--catalog` to add or remove capabilities. |
+| `Re-run with --yes to apply` | No interactive terminal. Add `--yes`, or run it in a real terminal. |
+| `… changed since the preview` | A file changed during the run. Run `cwi init` again. |
+| `skill:archify needs node` | Install Node.js 18+. The skill is installed anyway. |
+| Agents missing in Claude Code | Restart Claude Code, then check `/agents`. |
+| The MCP server does not connect | Export its token, for example `GITHUB_TOKEN`, then approve the server in `/mcp`. |
+| `/kickoff` keeps proposing discovery | `docs/architecture.md` still has the `cwi:architecture-template` line. Finish discovery, or remove the line. |
+| The Safety Guard blocked something you need | Run it yourself, or allow it in `.claude/safety-guard.json`. |
+| `The id '…' is already used` | Ids are unique across all types. Pass `--id another-name`. |
 | `looks like a literal secret` | Replace the token with `${VAR_NAME}`. |
-| Anything else | Run the command again with `--verbose`. |
+| Anything else | Run the same command with `--verbose`. |

@@ -1,180 +1,208 @@
 # Claude Workspace Init (CWI)
 
-An opinionated Claude Code workspace bootstrapper.
+**Set up Claude Code for any project in one command. Then let Claude work in the right order: architecture, specs, implementation.**
 
 > Start with everything available. Finish with only what the project needs.
 
-This repository ships a catalog of reusable Claude Code capabilities: skills, agents, scripts, hooks and MCP servers. Nothing in `catalog/` is active. Running `cwi init` scans the project or asks a few questions, writes a minimal `AGENTS.md` (imported by `CLAUDE.md`), and lets you pick capabilities. It previews every change before applying it, then installs only what you selected.
+![Python](https://img.shields.io/badge/python-3.12%2B-3776AB)
+![Package manager](https://img.shields.io/badge/uv-required-DE5FE9)
+![Claude Code](https://img.shields.io/badge/Claude%20Code-skills%20%C2%B7%20agents%20%C2%B7%20hooks%20%C2%B7%20MCP-D97757)
+![AGENTS.md](https://img.shields.io/badge/AGENTS.md-supported-2ea44f)
 
-For a step-by-step guide, see [USAGE.md](USAGE.md).
+CWI ships a **catalog** of Claude Code capabilities: skills, agents, hooks, scripts and MCP servers. `cwi init` scans your project and recommends what fits. It shows you every change before writing anything and installs only what you choose. The result is a lean workspace, with no copy of the full catalog.
+
+Then, inside Claude Code, **`/kickoff`** takes over. It checks the project state and guides you step by step: define the architecture, write the feature specs, then implement them.
+
+📘 **Step-by-step guide: [USAGE.md](USAGE.md)**
+
+---
+
+## How it works
+
+```mermaid
+flowchart LR
+    subgraph T["Terminal · deterministic, no AI"]
+        A["cwi init"] --> B["Scan project<br/>stack · versions · commands"]
+        B --> C["Choose capabilities<br/>recommended preselected"]
+        C --> D["Preview every change<br/>diffs · nothing written yet"]
+        D --> E["Apply safely<br/>backup · rollback · validate"]
+    end
+    subgraph CC["Claude Code · AI"]
+        F["/kickoff"] --> G["1 · Architecture<br/>project-discovery"]
+        G --> H["2 · Specs<br/>feature-spec"]
+        H --> I["3 · Implementation<br/>feature-workflow"]
+        I -. next feature .-> F
+    end
+    E -- "opens Claude Code" --> F
+```
+
+| Phase | Tool | What you get |
+| --- | --- | --- |
+| **Provision** | `cwi init` (CLI) | `AGENTS.md` + `CLAUDE.md`, a `docs/` skeleton, and the skills, agents, hooks and MCP servers you selected. |
+| **Architecture** | `/kickoff` → `project-discovery` | `docs/architecture.md` written from your code or your requirements, a glossary, decisions, an optional diagram. |
+| **Specs** | `/kickoff` → `feature-spec` | `docs/specs/<feature>.md` with testable acceptance criteria and open questions. |
+| **Build** | `/kickoff` → `feature-workflow` | Branch, plan, test-first slices, verification, independent review, PR description. |
+
+---
 
 ## Quick start
 
-Install the CLI once, so it survives the template cleanup:
+### 1. Install once
+
+You need [uv](https://docs.astral.sh/uv/) and Python 3.12 or newer.
 
 ```bash
-uv tool install -e /path/to/claude-workspace-init
+git clone https://github.com/pol5coma/claude-workspace-init ~/tools/claude-workspace-init
+uv tool install -e ~/tools/claude-workspace-init
+cwi --version
 ```
 
-### New project from this template
+### 2a. Add it to a project you already have
 
 ```bash
-git clone <this repo> my-app && cd my-app
-cwi init
+cd my-project
+cwi init --catalog ~/tools/claude-workspace-init/catalog --dry-run   # preview only
+cwi init --catalog ~/tools/claude-workspace-init/catalog              # do it
 ```
 
-After a successful run the project contains only the Claude workspace:
+### 2b. Or start a new project from this template
+
+```bash
+git clone https://github.com/pol5coma/claude-workspace-init my-app
+cd my-app
+cwi init        # removes CWI's own files after a successful run
+```
+
+### 3. Start working in Claude Code
+
+```bash
+claude "/kickoff"
+```
+
+When `cwi init` finishes, it offers to open Claude Code with `/kickoff` already started.
+
+---
+
+## What ends up in your project
 
 ```text
-AGENTS.md              shared instructions for any coding agent (agents.md standard)
-docs/                  optional skeleton: architecture + versions, glossary, specs, decisions
-CLAUDE.md              @AGENTS.md import + Claude-only notes
-.claude/
-  settings.json        merged hooks
-  cwi-state.json       CWI ownership record (paths, owners, hashes; no secrets)
-  skills/<id>/SKILL.md
-  agents/<id>.md
-  hooks/*.py
-  scripts/<agent>/…    only if a selected agent ships helpers
-.mcp.json              only if an MCP server was selected
-scripts/               only if a project script was selected
+my-project/
+├── AGENTS.md            shared instructions for every coding agent: safety, stack + versions, commands, docs
+├── CLAUDE.md            @AGENTS.md  ← Claude Code imports the shared file; add Claude-only notes below
+├── docs/
+│   ├── architecture.md  structure, data flow, integrations, "Stack & versions" table
+│   ├── domain/glossary.md
+│   ├── specs/           one spec per feature + ordered backlog in README.md
+│   ├── decisions/       short design decision records
+│   └── diagrams/        archify diagrams (created when you ask for one)
+├── .mcp.json            only if you picked an MCP server (secrets as ${VAR})
+├── scripts/             only if you picked a project script
+└── .claude/
+    ├── settings.json    hooks (safety-guard, post-edit-validation)
+    ├── skills/          only the selected skills
+    ├── agents/          only the selected agents (+ development-agents/)
+    ├── hooks/           hook scripts
+    └── cwi-state.json   what CWI installed (paths, owners, hashes; never secrets)
 ```
 
-The catalog, templates, CWI source, tests, packaging files, `USAGE.md` and spec docs are removed. `README.MD` and `.gitignore` stay.
+Claude Code finds all of it automatically the next time you open the project. You can check with `/agents`, `/hooks`, `/mcp` and `/memory`, or type `/` to list the skills.
 
-### Existing project
+---
 
-Point CWI at a catalog:
+## Highlights
 
-```bash
-cd existing-project
-cwi init --catalog /path/to/claude-workspace-init/catalog
-```
-
-You can also copy `catalog/` into the project. CWI then removes it after a successful run, but only if it still looks like an unmodified CWI catalog.
-
-## Flags
-
-| Flag | Effect |
+| | |
 | --- | --- |
-| `--root PATH` | Project to initialize. The default is the current directory, and CWI asks before switching to a git root. |
-| `--catalog PATH` | Catalog to source capabilities from. The default is `./catalog`. |
-| `--dry-run` | Scan, plan and preview with default answers. Writes nothing. |
-| `--yes`, `-y` | Accept every default and apply without prompts. |
-| `--verbose`, `-v` | Debug logs and tracebacks. |
+| 🔍 **Detect before asking** | Reads manifests and lockfiles only, and never runs project code. Finds languages, frameworks, **exact versions**, databases, infrastructure, test tools and commands, each with its evidence. |
+| 🧭 **Recommend, don't impose** | Deterministic recommendations by project type and technology, with the reason shown. You decide. |
+| 👀 **Show before changing** | A full plan and diffs of every existing file before anything is written. Cancel means zero changes. |
+| 🛟 **Never destroy your work** | Transactional apply with backup and rollback. Existing `CLAUDE.md`, settings and MCP config are merged, never overwritten. CWI only removes what it installed. |
+| 🔁 **Idempotent** | Running it twice with the same answers changes nothing. Files you edited are detected by hash and never replaced silently. |
+| 🤝 **Works with every agent** | `AGENTS.md` (the [agents.md](https://agents.md) standard) holds the shared instructions. `CLAUDE.md` imports it. |
+| 🛡️ **Safety Guard** | A hook that blocks destructive commands such as `terraform destroy`, `prisma migrate reset`, `git push --force` or `rm -rf /`, and edits to `.env` or keys, before they run. |
+| 📌 **Version-pinned** | The stack in `AGENTS.md` lists the real versions and tells agents to code for them. |
 
-Without a TTY and without `--yes`, CWI prints the plan and applies nothing.
+---
 
-## What `cwi init` does
+## The catalog
 
-1. **Scan.** It reads manifests only and never executes project code. It detects languages, frameworks, package managers, databases, infrastructure, test tools, commands and existing Claude configuration. Every detection keeps its evidence and a confidence level.
-2. **Profile.** For an existing project you confirm, edit or rescan the detected profile. For a new project you answer a few progressive questions.
-3. **Instructions.** By default, CWI writes compact Safety, Stack, Commands and Architecture sections to `AGENTS.md`, with no empty sections, and shows an estimated size. `CLAUDE.md` imports it with `@AGENTS.md`, because Claude Code ignores `AGENTS.md` when a `CLAUDE.md` exists. You can choose "CLAUDE.md only" instead. Existing files are never silently overwritten. CWI adds the import line to your `CLAUDE.md`, and for `AGENTS.md` you choose keep, merge, replace or skip.
-4. **Select.** You pick Skills, Agents, Scripts, MCP servers and Hooks. Recommendations are deterministic, explained and preselected. Dependencies are confirmed and conflicts always need a choice.
-5. **Plan and preview.** CWI builds the full operation list, with diffs for every existing file it would change. Cancelling at this point changes nothing.
-6. **Apply.** The apply is transactional, with backups in `.cwi/backups/` and atomic writes. Results are validated before cleanup, and any failure restores the repository.
-7. **Clean.** CWI removes only resources it owns. User files are never deleted.
+Items marked ⭐ are preselected in every project. The others are recommended according to the project type or the technologies detected, and you can always change the selection.
 
-It finishes by pointing you to `claude "/kickoff"`, and can open Claude Code with it already started. `kickoff` then runs `project-discovery`, `feature-spec` and `feature-workflow` in order. See [USAGE.md](USAGE.md#after-cwi-init-run-kickoff-in-claude-code).
+### Workflow skills: the `/kickoff` path
 
-Re-running `cwi init` with the same answers produces the same repository state. Modified CWI-managed files are detected by hash and never overwritten without asking.
+| Skill | What it does |
+| --- | --- |
+| ⭐ `kickoff` | The entry point in Claude Code. It reads the project state and runs the next step in order: architecture, then specs, then implementation. Resumable. |
+| ⭐ `project-discovery` | Defines the architecture. It finds an existing one, analyzes the code with `codebase-explorer`, or builds one from your requirements documents. |
+| `feature-spec` | Turns a request into `docs/specs/<feature>.md`: acceptance criteria (Given / When / Then), edge cases, open questions. Never invents business rules. |
+| `feature-workflow` | Implements a feature from its spec: branch, plan, test-first slices with small commits, verification, independent review, PR. It always asks when something is unclear. |
+| ⭐ `archify` | Interactive HTML diagrams of architecture, workflows, sequences, dataflows and lifecycles, from requirements or from the code. Needs Node.js 18+. |
 
-## Bundled catalog
+### Engineering skills
 
-| Type | ID | Purpose |
-| --- | --- | --- |
-| Skill | `testing` | Smallest relevant test scope first. Includes a related-test finder script. |
-| Skill | `debugging` | Reproduce, isolate, hypothesize, fix, then add a regression test. |
-| Skill | `backend-development` | API, persistence and migration conventions, with FastAPI, Django and Express references. |
-| Skill | `archify` | Selected by default. Interactive HTML diagrams of architecture, workflows, sequences, dataflows and lifecycles, built from requirements or from the code. It needs Node.js 18+. Adapted from [tt-a1i/archify](https://github.com/tt-a1i/archify) (MIT). |
-| Skill | `kickoff` | Selected by default. The entry point in Claude Code: it checks the project state and runs discovery, specs and implementation in order. It is resumable. |
-| Skill | `project-discovery` | Selected by default. It is the first step after `cwi init` and defines the architecture: it finds an existing one, analyzes the code, or builds one from your requirements. |
-| Skill | `feature-spec` | Turns a request into `docs/specs/<feature>.md` with testable acceptance criteria and open questions. |
-| Skill | `feature-workflow` | Implements a feature from its spec: branch, plan, test-first slices, verification, independent review. |
-| Skill | `frontend-development` | Component, state and accessibility conventions, with React, Next.js, Vue and Svelte references. |
-| Agent | `code-reviewer` | Diff review plus the project's configured quality checks. |
-| Agent | `security-reviewer` | Security review plus an offline dependency inventory. |
-| Agents | `development-agents/` family, 35 agents | Development, maintenance, review and testing. Each project type preselects a subset. Adapted from davila7/claude-code-templates (MIT). |
-| Script | `run-quality-checks` | Runs only the linters, type checkers and tests the project is configured for. |
-| Hook | `safety-guard` | Recommended by default. Blocks destructive commands and edits to protected files. |
-| Hook | `post-edit-validation` | Recommended by default. Formats and lints only the edited file with the project's own tools. |
-| MCP | `github` | GitHub remote MCP server. Requires `GITHUB_TOKEN` in your environment, and CWI never stores it. |
+| Skill | What it does |
+| --- | --- |
+| `testing` | Runs the smallest relevant test scope first. Includes a related-test finder. |
+| `debugging` | Reproduce, isolate, hypothesize, fix, add a regression test. |
+| `backend-development` | API, validation, persistence and migration conventions, with FastAPI, Django and Express references. |
+| `frontend-development` | Components, state, forms, accessibility and styling, with React, Next.js, Vue and Svelte references. |
 
-### Safety Guard
+### Agents
 
-The guard parses commands instead of matching raw text. `terraform destroy` is blocked, while `echo "do not run terraform destroy"` is allowed. It covers these areas:
+| Agent | What it does |
+| --- | --- |
+| `code-reviewer` | Reviews the diff for correctness and tests, and runs the project's quality checks (read-only). |
+| `security-reviewer` | Finds injection, authorization, secrets and unsafe-dependency issues. Includes an offline dependency inventory (read-only). |
+| **`development-agents/`** (35) | A family of development, maintenance, review and testing agents. Each project type preselects a subset. [Full list in USAGE.md](USAGE.md#the-development-agents-family). |
 
-- **Infrastructure and data:** destroy commands, database resets and drops, destructive SQL, volume deletion.
-- **Git:** force pushes, `reset --hard`, `clean -f`.
-- **Deletion:** `rm -r` on `/`, `~`, `.` or paths outside the project.
-- **Protected files:** edits to `.env*`, keys, `.git/` and the guard itself.
+### Hooks, scripts and MCP
 
-Project overrides live in `.claude/safety-guard.json`, which only you can edit:
+| Capability | What it does |
+| --- | --- |
+| ⭐ `safety-guard` (hook) | Blocks clearly destructive commands and edits to protected files before they run. It parses commands, so `echo "terraform destroy"` is allowed. |
+| ⭐ `post-edit-validation` (hook) | After each edit, formats and lints **only that file** with the project's own tools. It never installs anything. |
+| `run-quality-checks` (script) | Runs only the linters, type checkers and tests the project is configured for. |
+| `github` (MCP) | GitHub's remote MCP server: issues, pull requests, code search and Actions. Needs `GITHUB_TOKEN`. |
 
-```json
-{
-  "protected_paths": ["config/production.yml"],
-  "allow_paths": [".env.local"],
-  "allow_commands": ["^terraform destroy -target=module\\.scratch"],
-  "disabled_rules": ["git-reset-hard"]
-}
-```
+Add your own with `cwi catalog add`. See [USAGE.md › Add to the catalog](USAGE.md#4-add-things-to-the-catalog).
 
-## Adding a capability to the catalog
+---
 
-Use `cwi catalog add`. It writes `cwi.json` and the `payload/` folder for you, validates the whole catalog, and leaves nothing behind if something is wrong. It only edits files under `catalog/`. The new capability reaches the GitHub template when you commit and push it.
+## Credits and sources
 
-| Type | You pass | Optional extras | Where tools go |
+CWI builds on great open-source work. Every third-party component keeps its license notice.
+
+| Component | Source | License | What CWI changed |
 | --- | --- | --- | --- |
-| Skill | `SKILL.md`, or a folder containing it | `--ref file.md`, `--script file` | `allowed-tools:` in the SKILL.md frontmatter |
-| Agent | the agent `.md` file | `--script file` | `tools:` and `model:` in the agent frontmatter |
-| Hook | the hook script | `--event`, `--matcher`, `--timeout` | not applicable |
-| Script | the script file(s) | none | not applicable |
-| MCP | the server name | `--url` with `--header`, or `--command` with `--arg`, and `--env` | secrets always as `${VAR}` |
+| `archify` skill | [tt-a1i/archify](https://github.com/tt-a1i/archify) v3.0.1, based on [Cocoon-AI/architecture-diagram-generator](https://github.com/Cocoon-AI/architecture-diagram-generator) | MIT | Bundled unchanged, except the `test/` folder. `LICENSE` and `THIRD_PARTY_NOTICES.md` are included. |
+| `development-agents/` family (35 agents) | [davila7/claude-code-templates](https://github.com/davila7/claude-code-templates), [`cli-tool/components/agents/development-tools`](https://github.com/davila7/claude-code-templates/tree/main/cli-tool/components/agents/development-tools) | MIT, © 2025 Daniel (San) Ávila | Reviewers made read-only, non-Claude Code tool names translated, invalid models fixed, `code-reviewer` renamed `senior-code-reviewer`. Each file carries an attribution comment. |
+| `github` MCP server | [github/github-mcp-server](https://github.com/github/github-mcp-server), remote endpoint `api.githubcopilot.com/mcp/` | MIT | Configuration only. The token is a `${GITHUB_TOKEN}` reference. |
+| `AGENTS.md` format | [agents.md](https://agents.md) open standard | n/a | CWI generates it and imports it from `CLAUDE.md`. |
 
-```bash
-cwi catalog add skill path/to/SKILL.md --ref docs/rest.md --type backend,fullstack --tech fastapi
-cwi catalog add skill path/to/my-skill/            # folder with SKILL.md, references/, scripts/
-cwi catalog add agent path/to/dba.md --script explain.py --depends script:run-quality-checks
-cwi catalog add hook  block-prod.sh --event PreToolUse --matcher Bash -d "Blocks prod deploys"
-cwi catalog add script seed.sh -d "Seeds development data"
-cwi catalog add mcp linear --url https://mcp.linear.app/mcp --header 'Authorization=Bearer ${LINEAR_TOKEN}'
-cwi catalog list
-cwi catalog validate
-cwi catalog remove skill:debugging
-```
+Written for CWI: the `kickoff`, `project-discovery`, `feature-spec`, `feature-workflow`, `testing`, `debugging`, `backend-development` and `frontend-development` skills, the `code-reviewer` and `security-reviewer` agents, the `safety-guard` and `post-edit-validation` hooks, the `run-quality-checks` script, and the `cwi` CLI.
 
-Common options:
+Built on the Claude Code project conventions for [skills](https://code.claude.com/docs/en/skills), [subagents](https://code.claude.com/docs/en/sub-agents), [hooks](https://code.claude.com/docs/en/hooks), [MCP](https://code.claude.com/docs/en/mcp) and [memory / AGENTS.md](https://code.claude.com/docs/en/memory).
 
-- `--default` preselects the capability in every project.
-- `--type` and `--tech` recommend it only for matching projects.
-- `--id` and `--description` override what is read from the file.
-- `--force` replaces an existing capability with the same reference.
-- `--group <family>` stores it in a family folder such as `catalog/agents/development-agents/<id>/`. Grouped agents install into `.claude/agents/<family>/`.
-- `--group-default backend,fullstack` preselects it for those project types through the family's `group.json`. Edit the per-type lists with `cwi catalog group defaults`.
-
-Without `--yes`, the command asks for anything missing. A file with `tools:` in its frontmatter is an agent, so `add skill` refuses it and suggests `add agent`.
-
-Commit the result to ship it:
-
-```bash
-git add catalog/skills/my-skill && git commit -m "catalog: add skill:my-skill"
-```
+---
 
 ## Development
 
 ```bash
 uv sync
-uv run pytest
+uv run pytest                                       # unit, integration and end-to-end tests
 uv run ruff check . && uv run ruff format --check .
+uv run cwi catalog validate
 uv run cwi init --dry-run
 ```
 
-The code lives in `src/cwi/`, split by responsibility:
-
-- `scanner/` reads the project and never prints.
-- `planning/` builds the plan and never prompts.
-- `install/` mutates the repository and never decides what to do.
-- `ui/` renders screens and asks questions.
-
-Every Claude Code path contract is centralized in `src/cwi/paths.py`.
+```text
+src/cwi/
+├── scanner/     reads the project (never prints, never executes project code)
+├── catalog/     loads, validates and recommends capabilities
+├── claude_md/   renders AGENTS.md / CLAUDE.md and the docs skeleton
+├── planning/    builds the full plan (never prompts, never writes)
+├── install/     applies the plan transactionally (never decides)
+├── authoring/   `cwi catalog add`
+├── ui/          screens and prompts
+└── paths.py     every Claude Code path contract in one place
+```
