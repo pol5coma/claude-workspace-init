@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "swift-reviewer",
+  "type": "agent",
+  "name": "Swift reviewer",
+  "description": "Expert Swift code reviewer specializing in protocol-oriented design, value semantics, ARC memory management, Swift Concurrency, and idiomatic patterns. Use for all Swift code changes. MUST BE USED for Swift projects.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "swift"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

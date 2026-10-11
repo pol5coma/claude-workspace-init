@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "conversation-analyzer",
+  "type": "agent",
+  "name": "Conversation analyzer",
+  "description": "Use this agent when analyzing conversation transcripts to find behaviors worth preventing with hooks. Triggered by /hookify without arguments.",
+  "dependencies": [],
+  "conflicts": []
+}

@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "dashboard-builder",
+  "type": "skill",
+  "name": "Dashboard builder",
+  "description": "Build monitoring dashboards that answer real operator questions for Grafana, SigNoz, and similar platforms. Use when turning metrics into a working dashboard instead of a vanity board.",
+  "dependencies": [],
+  "conflicts": []
+}

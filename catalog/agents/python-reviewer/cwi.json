@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "python-reviewer",
+  "type": "agent",
+  "name": "Python reviewer",
+  "description": "Expert Python code reviewer specializing in PEP 8 compliance, Pythonic idioms, type hints, security, and performance. Use for all Python code changes. MUST BE USED for Python projects.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "python"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

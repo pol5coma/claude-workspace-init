@@ -489,7 +489,15 @@ def test_local_catalog_removed_after_success(tmp_path, real_catalog):
 
 def _copy_template(dest):
     ignore = shutil.ignore_patterns(
-        ".git", ".venv", "__pycache__", ".pytest_cache", ".ruff_cache", ".DS_Store", "fixtures"
+        ".git",
+        ".venv",
+        "__pycache__",
+        ".pytest_cache",
+        ".ruff_cache",
+        ".DS_Store",
+        "fixtures",
+        "new_skills",  # local import inboxes, not part of the template
+        "new_agents",
     )
     shutil.copytree(PROJECT_ROOT, dest, ignore=ignore)
     for name in ("CWI_SPEC.md", "CWI_IMPLEMENTATION_GUIDE.md"):

@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "api-connector-builder",
+  "type": "skill",
+  "name": "Api connector builder",
+  "description": "Build a new API connector or provider by matching the target repo's existing integration pattern exactly. Use when adding one more integration without inventing a second architecture.",
+  "dependencies": [],
+  "conflicts": []
+}

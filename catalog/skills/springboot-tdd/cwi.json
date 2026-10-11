@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "springboot-tdd",
+  "type": "skill",
+  "name": "Springboot tdd",
+  "description": "Test-driven development for Spring Boot using JUnit 5, Mockito, MockMvc, Testcontainers, and JaCoCo. Use when adding features, fixing bugs, or refactoring.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "spring boot"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

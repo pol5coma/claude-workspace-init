@@ -533,6 +533,23 @@ Technologies also trigger recommendations. For example, a detected FastAPI ticks
 
 > Each selected agent adds its description to Claude's context. If Claude Code warns that agent descriptions are too long, trim the lists in `group.json`.
 
+### The ECC packs
+
+302 skills and 71 agents imported from [affaan-m/ECC](https://github.com/affaan-m/ECC) (MIT, © 2026 Affaan Mustafa). They live directly in `catalog/skills/` and `catalog/agents/`, and their agents install into `.claude/agents/`. Each file ends with an attribution comment naming the source. Their content is unchanged, apart from an attribution line at the end of each file and the cleanup described below.
+
+| Pack | Contents | Preselected |
+| --- | --- | --- |
+| ECC skills (302) | **Languages and frameworks:** patterns, testing, security and verification for Python, Django, FastAPI, TypeScript, React, Vue, Nuxt, Next.js, Angular, Java, Spring Boot, Quarkus, Kotlin, Swift, Go, Rust, C++, C#, PHP, Laravel, Rails, Dart and Flutter, plus Postgres, MySQL, Redis, Prisma, Docker and Kubernetes. **Engineering:** API design, architecture decision records, hexagonal architecture, error handling, e2e testing, TDD, code review, git workflow, migrations, deployment. **Agent engineering:** harnesses, evals, loops, cost and token budgets, prompt optimization, orchestration. **Beyond code:** documentation, research, SEO, content, marketing, finance, logistics and other operations. | Only stack-specific skills, when that stack is detected |
+| ECC agents (71) | Reviewers and build-error resolvers per language or framework (`python-reviewer`, `react-build-resolver`, `go-reviewer`…), `planner`, `architect`, `tdd-guide`, `e2e-runner`, `doc-updater`, `docs-lookup`, `database-reviewer`, `performance-optimizer`, `refactor-cleaner`, `silent-failure-hunter`, open-source packaging, network and specialist agents. | Only stack-specific agents, when that stack is detected |
+
+Renamed to avoid clashing with existing capabilities: `ecc-safety-guard` (a skill, not the hook), `ecc-code-reviewer`, `ecc-code-simplifier` and `ecc-security-reviewer`.
+
+Eleven skills, for example `agent-eval`, declared `tools:` in their frontmatter. That is an agent field, which Claude Code ignores on skills. The line was removed, with no change in behaviour. It was not turned into `allowed-tools`, which would pre-approve those tools.
+
+To see everything, run `cwi catalog list`. To change when one of them is preselected, edit `recommendation` or `default_selected` in its `cwi.json`, for example `catalog/skills/tdd-workflow/cwi.json`, then run `cwi catalog validate`.
+
+> Each selected agent and skill adds its description to Claude's context. Pick what the project needs rather than whole families.
+
 ### Safety Guard rules
 
 The guard **parses** shell commands into the executable and its arguments. It handles `&&`, `;`, `|`, newlines, `sudo`, `env`, `npx`, `uv run`, `bash -c`, `eval` and `$(…)`. It blocks only clear matches:

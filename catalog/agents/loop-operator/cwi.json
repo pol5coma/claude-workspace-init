@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "loop-operator",
+  "type": "agent",
+  "name": "Loop operator",
+  "description": "Operate autonomous agent loops, monitor progress, and intervene safely when loops stall.",
+  "dependencies": [],
+  "conflicts": []
+}

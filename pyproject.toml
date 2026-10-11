@@ -34,7 +34,27 @@ addopts = "-q"
 [tool.ruff]
 line-length = 100
 target-version = "py312"
-extend-exclude = ["tests/fixtures"]
+extend-exclude = [
+    "tests/fixtures",
+    # catalog Markdown is instructions for Claude, not project code: never reformat it
+    "catalog/**/*.md",
+    # third-party catalog content is kept verbatim (see README › Credits)
+    "catalog/skills/agent-self-evaluation",
+    "catalog/skills/continuous-learning-v2",
+    "catalog/skills/delivery-gate",
+    "catalog/skills/docs-governance",
+    "catalog/skills/frontend-slides",
+    "catalog/skills/manim-video",
+    "catalog/skills/openclaw-persona-forge",
+    "catalog/skills/operator-approval-loop",
+    "catalog/skills/skill-comply",
+    "catalog/skills/taste-application",
+    "catalog/skills/taste-distillation",
+    "catalog/skills/videodb",
+    "catalog/skills/archify",
+    "new_skills",
+    "new_agents",
+]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B", "SIM"]

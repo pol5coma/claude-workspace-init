@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "golang-testing",
+  "type": "skill",
+  "name": "Golang testing",
+  "description": "Go testing patterns including table-driven tests, subtests, benchmarks, fuzzing, and test coverage. Follows TDD methodology with idiomatic Go practices. Use when writing Go tests — table-driven cases, subtests, benchmarks, fuzzing, or coverage.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "go"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

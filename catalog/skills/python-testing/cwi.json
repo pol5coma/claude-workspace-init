@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "python-testing",
+  "type": "skill",
+  "name": "Python testing",
+  "description": "Python testing strategies using pytest, TDD methodology, fixtures, mocking, parametrization, and coverage requirements. Use when writing pytest tests — fixtures, mocks, parametrization, or coverage.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "python"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

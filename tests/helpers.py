@@ -28,8 +28,19 @@ def copy_fixture(name: str, dest: Path) -> Path:
 
 
 def copy_catalog(dest: Path) -> Path:
+    """Copy only the capability folders of the bundled catalog (not notes kept next to them)."""
+    from cwi.domain.enums import CapabilityType
+
     target = dest / "catalog"
-    shutil.copytree(REAL_CATALOG, target, ignore=shutil.ignore_patterns("__pycache__", ".DS_Store"))
+    target.mkdir(parents=True)
+    for cap_type in CapabilityType:
+        source = REAL_CATALOG / cap_type.plural
+        if source.is_dir():
+            shutil.copytree(
+                source,
+                target / cap_type.plural,
+                ignore=shutil.ignore_patterns("__pycache__", ".DS_Store"),
+            )
     return target
 
 

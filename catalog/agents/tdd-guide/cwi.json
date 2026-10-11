@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "tdd-guide",
+  "type": "agent",
+  "name": "Tdd guide",
+  "description": "Test-Driven Development specialist enforcing write-tests-first methodology. Use PROACTIVELY when writing new features, fixing bugs, or refactoring code. Ensures 80%+ test coverage.",
+  "dependencies": [],
+  "conflicts": []
+}

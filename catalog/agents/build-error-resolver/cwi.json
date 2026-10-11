@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "build-error-resolver",
+  "type": "agent",
+  "name": "Build error resolver",
+  "description": "Build and TypeScript error resolution specialist. Use PROACTIVELY when build fails or type errors occur. Fixes build/type errors only with minimal diffs, no architectural edits. Focuses on getting the build green quickly.",
+  "dependencies": [],
+  "conflicts": []
+}

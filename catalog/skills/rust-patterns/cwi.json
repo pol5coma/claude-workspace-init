@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "rust-patterns",
+  "type": "skill",
+  "name": "Rust patterns",
+  "description": "Idiomatic Rust patterns, ownership, error handling, traits, concurrency, and best practices for building safe, performant applications. Use when writing or reviewing Rust code and ownership, error handling, traits, or concurrency is in question.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "rust"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

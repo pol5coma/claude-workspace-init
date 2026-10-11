@@ -154,6 +154,7 @@ Items marked ⭐ are preselected in every project. The others are recommended ac
 | `code-reviewer` | Reviews the diff for correctness and tests, and runs the project's quality checks (read-only). |
 | `security-reviewer` | Finds injection, authorization, secrets and unsafe-dependency issues. Includes an offline dependency inventory (read-only). |
 | **`development-agents/`** (35) | A family of development, maintenance, review and testing agents. Each project type preselects a subset. [Full list in USAGE.md](USAGE.md#the-development-agents-family). |
+| **ECC agents** (71) | Language and framework reviewers and build resolvers, planners, TDD guide, documentation, open-source and specialist agents, in `catalog/agents/`. Stack-specific ones are preselected when that stack is detected. [Details](USAGE.md#the-ecc-packs). |
 
 ### Hooks, scripts and MCP
 
@@ -163,6 +164,10 @@ Items marked ⭐ are preselected in every project. The others are recommended ac
 | ⭐ `post-edit-validation` (hook) | After each edit, formats and lints **only that file** with the project's own tools. It never installs anything. |
 | `run-quality-checks` (script) | Runs only the linters, type checkers and tests the project is configured for. |
 | `github` (MCP) | GitHub's remote MCP server: issues, pull requests, code search and Actions. Needs `GITHUB_TOKEN`. |
+
+### ECC skill pack
+
+**302 skills** in `catalog/skills/`: patterns, testing and security for many languages and frameworks; agent engineering; architecture, documentation and research; business and operations. Stack-specific skills, such as `django-patterns` or `react-testing`, are preselected only when that stack is detected. Everything else is listed for you to pick. [Details](USAGE.md#the-ecc-packs).
 
 Add your own with `cwi catalog add`. See [USAGE.md › Add to the catalog](USAGE.md#4-add-things-to-the-catalog).
 
@@ -176,6 +181,7 @@ CWI builds on great open-source work. Every third-party component keeps its lice
 | --- | --- | --- | --- |
 | `archify` skill | [tt-a1i/archify](https://github.com/tt-a1i/archify) v3.0.1, based on [Cocoon-AI/architecture-diagram-generator](https://github.com/Cocoon-AI/architecture-diagram-generator) | MIT | Bundled unchanged, except the `test/` folder. `LICENSE` and `THIRD_PARTY_NOTICES.md` are included. |
 | `development-agents/` family (35 agents) | [davila7/claude-code-templates](https://github.com/davila7/claude-code-templates), [`cli-tool/components/agents/development-tools`](https://github.com/davila7/claude-code-templates/tree/main/cli-tool/components/agents/development-tools) | MIT, © 2025 Daniel (San) Ávila | Reviewers made read-only, non-Claude Code tool names translated, invalid models fixed, `code-reviewer` renamed `senior-code-reviewer`. Each file carries an attribution comment. |
+| 302 skills and 71 agents | [affaan-m/ECC](https://github.com/affaan-m/ECC) | MIT, © 2026 Affaan Mustafa | Imported into `catalog/skills/` and `catalog/agents/`, with content unchanged except for removing an ineffective `tools:` line from 11 skills. Four were renamed to avoid clashes: `ecc-safety-guard`, `ecc-code-reviewer`, `ecc-code-simplifier` and `ecc-security-reviewer`. Stack-specific items get technology recommendations. Each file carries an attribution comment. |
 | `github` MCP server | [github/github-mcp-server](https://github.com/github/github-mcp-server), remote endpoint `api.githubcopilot.com/mcp/` | MIT | Configuration only. The token is a `${GITHUB_TOKEN}` reference. |
 | `AGENTS.md` format | [agents.md](https://agents.md) open standard | n/a | CWI generates it and imports it from `CLAUDE.md`. |
 

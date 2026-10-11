@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "vite-patterns",
+  "type": "skill",
+  "name": "Vite patterns",
+  "description": "Vite build tool patterns including config, plugins, HMR, env variables, proxy setup, SSR, library mode, dependency pre-bundling, and build optimization. Activate when working with vite.config.ts, Vite plugins, or Vite-based projects.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "vite"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "clickhouse-io",
+  "type": "skill",
+  "name": "Clickhouse io",
+  "description": "ClickHouse database patterns, query optimization, analytics, and data engineering best practices for high-performance analytical workloads. Use when writing ClickHouse schemas or queries, or when an analytical query is too slow.",
+  "dependencies": [],
+  "conflicts": []
+}

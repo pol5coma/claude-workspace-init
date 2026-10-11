@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "comment-analyzer",
+  "type": "agent",
+  "name": "Comment analyzer",
+  "description": "Analyze code comments for accuracy, completeness, maintainability, and comment rot risk.",
+  "dependencies": [],
+  "conflicts": []
+}

@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "terminal-ops",
+  "type": "skill",
+  "name": "Terminal ops",
+  "description": "Evidence-first repo execution workflow for ECC. Use when the user wants a command run, a repo checked, a CI failure debugged, or a narrow fix pushed with exact proof of what was executed and verified.",
+  "dependencies": [],
+  "conflicts": []
+}

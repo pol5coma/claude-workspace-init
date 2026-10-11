@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "i18n-sync",
+  "type": "skill",
+  "name": "I18n sync",
+  "description": "Translate and synchronize application JSON locale files using source-key usage, project terminology, and focused validation. Use when adding keys or languages, updating source copy, or reviewing missing and stale translations.",
+  "dependencies": [],
+  "conflicts": []
+}

@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "healthcare-reviewer",
+  "type": "agent",
+  "name": "Healthcare reviewer",
+  "description": "Reviews healthcare application code for clinical safety, CDSS accuracy, PHI compliance, and medical data integrity. Specialized for EMR/EHR, clinical decision support, and health information systems.",
+  "dependencies": [],
+  "conflicts": []
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "csharp-reviewer",
+  "type": "agent",
+  "name": "Csharp reviewer",
+  "description": "Expert C# code reviewer specializing in .NET conventions, async patterns, security, nullable reference types, and performance. Use for all C# code changes. MUST BE USED for C# projects.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "c#"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

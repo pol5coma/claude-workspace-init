@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "type-design-analyzer",
+  "type": "agent",
+  "name": "Type design analyzer",
+  "description": "Analyze type design for encapsulation, invariant expression, usefulness, and enforcement.",
+  "dependencies": [],
+  "conflicts": []
+}

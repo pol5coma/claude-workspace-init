@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "rust-build-resolver",
+  "type": "agent",
+  "name": "Rust build resolver",
+  "description": "Rust build, compilation, and dependency error resolution specialist. Fixes cargo build errors, borrow checker issues, and Cargo.toml problems with minimal changes. Use when Rust builds fail.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "rust"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

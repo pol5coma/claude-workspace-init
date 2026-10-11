@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "code-explorer",
+  "type": "agent",
+  "name": "Code explorer",
+  "description": "Deeply analyzes existing codebase features by tracing execution paths, mapping architecture layers, and documenting dependencies to inform new development.",
+  "dependencies": [],
+  "conflicts": []
+}

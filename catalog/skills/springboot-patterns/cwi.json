@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "springboot-patterns",
+  "type": "skill",
+  "name": "Springboot patterns",
+  "description": "Spring Boot architecture patterns, REST API design, layered services, data access, caching, async processing, and logging. Use for Java Spring Boot backend work. Use when building or reviewing a Spring Boot backend — REST layer, services, data access, caching, or async work.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "spring boot"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "fastapi-patterns",
+  "type": "skill",
+  "name": "Fastapi patterns",
+  "description": "FastAPI best practices covering project structure, Pydantic v2 schemas, dependency injection, async handlers, authentication, authorization, transactional service layers, and testing with httpx and pytest. Use when building or reviewing FastAPI apps — Pydantic schemas, dependencies, async handlers, auth, or tests.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "fastapi"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

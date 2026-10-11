@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "kotlin-testing",
+  "type": "skill",
+  "name": "Kotlin testing",
+  "description": "Kotlin testing patterns with Kotest, MockK, coroutine testing, property-based testing, and Kover coverage. Follows TDD methodology with idiomatic Kotlin practices. Use when writing Kotlin tests with Kotest or MockK, or testing coroutines and checking coverage.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "kotlin"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "cpp-testing",
+  "type": "skill",
+  "name": "Cpp testing",
+  "description": "Use only when writing/updating/fixing C++ tests, configuring GoogleTest/CTest, diagnosing failing or flaky tests, or adding coverage/sanitizers.",
+  "dependencies": [],
+  "conflicts": []
+}

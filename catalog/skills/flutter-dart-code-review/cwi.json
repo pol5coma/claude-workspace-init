@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "flutter-dart-code-review",
+  "type": "skill",
+  "name": "Flutter dart code review",
+  "description": "Library-agnostic Flutter/Dart code review checklist covering widget best practices, state management patterns (BLoC, Riverpod, Provider, GetX, MobX, Signals), Dart idioms, performance, accessibility, security, and clean architecture. Use when reviewing Flutter or Dart code, whatever state management library the project uses.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "dart"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

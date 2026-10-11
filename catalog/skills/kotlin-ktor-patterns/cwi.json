@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "kotlin-ktor-patterns",
+  "type": "skill",
+  "name": "Kotlin ktor patterns",
+  "description": "Ktor server patterns including routing DSL, plugins, authentication, Koin DI, kotlinx.serialization, WebSockets, and testApplication testing. Use when building a Ktor server — routing, plugins, auth, DI, serialization, or tests.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "kotlin"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

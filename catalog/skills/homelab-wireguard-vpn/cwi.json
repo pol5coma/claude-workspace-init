@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "homelab-wireguard-vpn",
+  "type": "skill",
+  "name": "Homelab wireguard vpn",
+  "description": "WireGuard VPN server setup, peer configuration, key generation, split tunneling vs full tunnel routing, and remote access to a home network from mobile and laptop clients. Use when setting up WireGuard for remote access to a home network, or deciding between split and full tunnel routing.",
+  "dependencies": [],
+  "conflicts": []
+}

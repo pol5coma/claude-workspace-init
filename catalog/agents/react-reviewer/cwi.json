@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "react-reviewer",
+  "type": "agent",
+  "name": "React reviewer",
+  "description": "Expert React/JSX code reviewer specializing in hook correctness, render performance, server/client component boundaries, accessibility, and React-specific security. Use for any change touching .tsx/.jsx files or React component logic. MUST BE USED for React projects.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "react"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

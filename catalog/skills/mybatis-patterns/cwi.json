@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "mybatis-patterns",
+  "type": "skill",
+  "name": "Mybatis patterns",
+  "description": "MyBatis and MyBatis-Spring patterns for mapper design, XML and annotation SQL, result mapping, dynamic SQL safety, transactions, batching, pagination, and query performance. Use when building or reviewing Java persistence code with MyBatis, Spring Boot, MyBatis-Spring, or MyBatis-based legacy applications.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "java"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

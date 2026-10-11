@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "laravel-security",
+  "type": "skill",
+  "name": "Laravel security",
+  "description": "Laravel security best practices — authentication, authorization, Eloquent safety, CSRF, XSS prevention, API security, and secure deployment configurations. Use when reviewing Laravel auth, Eloquent safety, CSRF, XSS, API security, or deployment configuration.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "laravel"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

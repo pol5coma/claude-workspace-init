@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "refactor-cleaner",
+  "type": "agent",
+  "name": "Refactor cleaner",
+  "description": "Dead code cleanup and consolidation specialist. Use PROACTIVELY for removing unused code, duplicates, and refactoring. Runs analysis tools (knip, depcheck, ts-prune) to identify dead code and safely removes it.",
+  "dependencies": [],
+  "conflicts": []
+}

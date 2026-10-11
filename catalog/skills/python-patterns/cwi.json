@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "python-patterns",
+  "type": "skill",
+  "name": "Python patterns",
+  "description": "Pythonic idioms, PEP 8 standards, type hints, and best practices for building robust, efficient, and maintainable Python applications. Use when writing or reviewing Python code and idiomatic structure, typing, or PEP 8 is in question.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "python"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

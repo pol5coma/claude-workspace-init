@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "laravel-plugin-discovery",
+  "type": "skill",
+  "name": "Laravel plugin discovery",
+  "description": "Discover and evaluate Laravel packages via LaraPlugins.io MCP. Use when the user wants to find plugins, check package health, or assess Laravel/PHP compatibility.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "laravel"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

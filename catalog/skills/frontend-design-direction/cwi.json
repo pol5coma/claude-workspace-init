@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "frontend-design-direction",
+  "type": "skill",
+  "name": "Frontend design direction",
+  "description": "Set an ECC-specific frontend design direction for production UI work. Use when building or improving websites, dashboards, applications, components, landing pages, visual tools, or any web UI that needs stronger product-specific design judgment.",
+  "dependencies": [],
+  "conflicts": []
+}

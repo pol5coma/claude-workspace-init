@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "defi-amm-security",
+  "type": "skill",
+  "name": "Defi amm security",
+  "description": "Security checklist for Solidity AMM contracts, liquidity pools, and swap flows. Covers reentrancy, CEI ordering, donation or inflation attacks, oracle manipulation, slippage, admin controls, and integer math. Use when auditing or writing Solidity AMM, liquidity pool, or swap code.",
+  "dependencies": [],
+  "conflicts": []
+}

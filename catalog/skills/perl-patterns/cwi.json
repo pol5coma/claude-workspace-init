@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "perl-patterns",
+  "type": "skill",
+  "name": "Perl patterns",
+  "description": "Modern Perl 5.36+ idioms, best practices, and conventions for building robust, maintainable Perl applications. Use when writing or reviewing modern Perl 5.36+ code.",
+  "dependencies": [],
+  "conflicts": []
+}

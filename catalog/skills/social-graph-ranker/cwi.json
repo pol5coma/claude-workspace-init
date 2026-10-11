@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "social-graph-ranker",
+  "type": "skill",
+  "name": "Social graph ranker",
+  "description": "Weighted social-graph ranking for warm intro discovery, bridge scoring, and network gap analysis across X and LinkedIn. Use when the user wants the reusable graph-ranking engine itself, not the broader outreach or network-maintenance workflow layered on top of it.",
+  "dependencies": [],
+  "conflicts": []
+}

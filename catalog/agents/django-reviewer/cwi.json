@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "django-reviewer",
+  "type": "agent",
+  "name": "Django reviewer",
+  "description": "Expert Django code reviewer specializing in ORM correctness, DRF patterns, migration safety, security misconfigurations, and production-grade Django practices. Use for all Django code changes. MUST BE USED for Django projects.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "django"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

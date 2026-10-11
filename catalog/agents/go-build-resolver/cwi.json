@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "go-build-resolver",
+  "type": "agent",
+  "name": "Go build resolver",
+  "description": "Go build, vet, and compilation error resolution specialist. Fixes build errors, go vet issues, and linter warnings with minimal changes. Use when Go builds fail.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "go"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

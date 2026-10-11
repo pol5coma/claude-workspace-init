@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "vue-reviewer",
+  "type": "agent",
+  "name": "Vue reviewer",
+  "description": "Expert Vue.js code reviewer specializing in Composition API correctness, reactivity pitfalls, component architecture, template security, and Vue-specific performance. Use for any change touching .vue, .ts/.js files with Vue imports, or Vue ecosystem code (Pinia, Vue Router, Nuxt). MUST BE USED for V",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "vue"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

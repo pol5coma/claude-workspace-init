@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "gan-planner",
+  "type": "agent",
+  "name": "Gan planner",
+  "description": "GAN Harness — Planner agent. Expands a one-line prompt into a full product specification with features, sprints, evaluation criteria, and design direction.",
+  "dependencies": [],
+  "conflicts": []
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "laravel-patterns",
+  "type": "skill",
+  "name": "Laravel patterns",
+  "description": "Laravel architecture patterns, routing/controllers, Eloquent ORM, service layers, queues, events, caching, and API resources for production apps. Use when building or reviewing Laravel apps — controllers, Eloquent, service layers, queues, or API resources.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "laravel"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

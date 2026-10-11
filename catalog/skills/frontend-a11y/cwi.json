@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "frontend-a11y",
+  "type": "skill",
+  "name": "Frontend a11y",
+  "description": "Accessibility patterns for React and Next.js — semantic HTML, ARIA attributes, form labeling, keyboard navigation, focus management, and screen reader support. Use when building or reviewing forms, modals, dropdowns, tooltips, or tabs, fixing a11y lint or code-review findings, or wiring up keyboard navigation and focus management.",
+  "dependencies": [],
+  "conflicts": []
+}

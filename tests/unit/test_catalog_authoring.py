@@ -54,7 +54,7 @@ def test_set_frontmatter_preserves_other_keys():
 
 def test_add_skill_file_with_refs_and_scripts(catalog, sources):
     (sources / "SKILL.md").write_text(
-        "---\nname: API Design\ndescription: REST API design rules.\n---\n\n# API\n"
+        "---\nname: API Guidelines\ndescription: REST API design rules.\n---\n\n# API\n"
     )
     (sources / "rest.md").write_text("# REST\n")
     (sources / "lint.py").write_text("print(1)\n")
@@ -76,22 +76,22 @@ def test_add_skill_file_with_refs_and_scripts(catalog, sources):
         "--yes",
     )
     assert result.exit_code == 0, result.stdout
-    cap = load_catalog(catalog).get("skill:api-design")
+    cap = load_catalog(catalog).get("skill:api-guidelines")
     assert sorted(cap.payload_files) == [
-        ".claude/skills/api-design/SKILL.md",
-        ".claude/skills/api-design/references/rest.md",
-        ".claude/skills/api-design/scripts/lint.py",
+        ".claude/skills/api-guidelines/SKILL.md",
+        ".claude/skills/api-guidelines/references/rest.md",
+        ".claude/skills/api-guidelines/scripts/lint.py",
     ]
     manifest = cap.manifest
     assert manifest.description == "REST API design rules."
     assert [t.value for t in manifest.recommendation.project_types] == ["backend", "fullstack"]
     assert manifest.recommendation.technologies == ["fastapi"]
-    assert os.access(cap.payload_dir / ".claude/skills/api-design/scripts/lint.py", os.X_OK)
+    assert os.access(cap.payload_dir / ".claude/skills/api-guidelines/scripts/lint.py", os.X_OK)
     assert (
-        parse_frontmatter((cap.payload_dir / ".claude/skills/api-design/SKILL.md").read_text())[
+        parse_frontmatter((cap.payload_dir / ".claude/skills/api-guidelines/SKILL.md").read_text())[
             "name"
         ]
-        == "api-design"
+        == "api-guidelines"
     )
 
 

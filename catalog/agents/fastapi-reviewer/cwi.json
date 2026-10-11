@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "fastapi-reviewer",
+  "type": "agent",
+  "name": "Fastapi reviewer",
+  "description": "Reviews FastAPI applications for async correctness, dependency injection, Pydantic schemas, security, OpenAPI quality, testing, and production readiness.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "fastapi"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

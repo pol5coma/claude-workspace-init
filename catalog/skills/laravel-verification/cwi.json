@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "laravel-verification",
+  "type": "skill",
+  "name": "Laravel verification",
+  "description": "Verification loop for Laravel projects: env checks, linting, static analysis, tests with coverage, security scans, and deployment readiness. Use when verifying a Laravel project before merge or deploy — lint, static analysis, tests, coverage, security.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "laravel"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

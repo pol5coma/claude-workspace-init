@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "compose-multiplatform-patterns",
+  "type": "skill",
+  "name": "Compose multiplatform patterns",
+  "description": "Compose Multiplatform and Jetpack Compose patterns for KMP projects — state management, navigation, theming, performance, and platform-specific UI. Use when building Compose or Jetpack Compose UI, state, navigation, or theming in a KMP project.",
+  "recommendation": {
+    "project_types": [],
+    "technologies": [
+      "kotlin"
+    ],
+    "require_technology": true
+  },
+  "dependencies": [],
+  "conflicts": []
+}

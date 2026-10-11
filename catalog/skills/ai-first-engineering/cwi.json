@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "ai-first-engineering",
+  "type": "skill",
+  "name": "Ai first engineering",
+  "description": "Engineering operating model for teams where AI agents generate a large share of implementation output. Use when setting team process, review gates, or ownership rules for a codebase largely written by agents.",
+  "dependencies": [],
+  "conflicts": []
+}
