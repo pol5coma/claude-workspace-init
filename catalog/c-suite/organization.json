@@ -1,0 +1,84 @@
+{
+  "cto": {
+    "role": "Chief Technology Officer (CTO)",
+    "description": "The highest-ranking technology executive in the organization. Defines the long-term technological strategy, drives technical innovation, and aligns software tools and infrastructure with the company's business objectives.",
+    "org_chart": {
+      "level_1_executive_leadership": {
+        "description": "High-level leaders who report directly to the CTO. They translate strategic vision into operational guidelines, manage global budgets, and lead the major branches of the technology department.",
+        "roles": [
+          {
+            "role": "VP of Engineering",
+            "responsibilities": "The CTO's operational right hand. Responsible for people management, budgeting, hiring, and ensuring software delivery meets established deadlines."
+          },
+          {
+            "role": "Chief Architect / Enterprise Architect",
+            "responsibilities": "Responsible for the global technical design of systems. Defines technologies, languages, and architectures to ensure platforms remain scalable and stable."
+          },
+          {
+            "role": "CISO (Chief Information Security Officer)",
+            "responsibilities": "Guarantees cybersecurity, data privacy, and legal or regulatory security compliance across the company's entire infrastructure."
+          },
+          {
+            "role": "Head of Data / Chief Data Officer",
+            "responsibilities": "Leads the strategy for collecting, storing, and analyzing Big Data, as well as training Artificial Intelligence and machine learning models."
+          },
+          {
+            "role": "Head of Infrastructure / DevOps / SRE",
+            "responsibilities": "Responsible for keeping servers and cloud environments (AWS, Azure, GCP) operational to eliminate system downtime."
+          }
+        ],
+        "level_2_operations_management": {
+          "description": "Directors responsible for overseeing specific business verticals or product areas. They coordinate multiple engineering teams and serve as a bridge between executive leadership and tactical teams.",
+          "roles": [
+            {
+              "role": "Directors of Engineering",
+              "responsibilities": "Oversee groups of technical teams organized by specific products or platforms (e.g., Director of Mobile Applications)."
+            },
+            {
+              "role": "Director of QA (Quality Assurance)",
+              "responsibilities": "Leads the overall quality control strategy, ensuring strict methodologies are in place to mitigate bugs before software releases."
+            },
+            {
+              "role": "Director of Product / Product Managers",
+              "responsibilities": "Define the features and the 'what' to build based on market and user needs, working hand-in-hand with engineering."
+            }
+          ],
+          "level_3_team_leadership": {
+            "description": "Middle management operating in day-to-day project development. They utilize agile methodologies (Scrum, Kanban) and directly manage engineering talent and code quality.",
+            "roles": [
+              {
+                "role": "Engineering Managers",
+                "responsibilities": "A role focused on people management. They conduct performance reviews, guide career paths, and resolve organizational roadblocks for the team."
+              },
+              {
+                "role": "Tech Leads / Team Leads",
+                "responsibilities": "Technical anchors for the team. They make software design decisions at the code level and mentor less experienced developers."
+              }
+            ],
+            "level_4_individual_contributors": {
+              "description": "Technical specialists and engineers who execute the actual operational work: writing code, performing individual tests, automating deployments, and analyzing data.",
+              "roles": [
+                {
+                  "role": "Software Engineers (Frontend, Backend, Fullstack)",
+                  "responsibilities": "Program and build user interfaces (Frontend) as well as data layers, APIs, and internal servers (Backend)."
+                },
+                {
+                  "role": "QA Engineers / Testers",
+                  "responsibilities": "Execute manual tests and develop automation scripts to validate that code operates exactly as designed."
+                },
+                {
+                  "role": "DevOps / SRE Engineers",
+                  "responsibilities": "Automate software deployments to production environments and continuously monitor the performance of live applications."
+                },
+                {
+                  "role": "Data Engineers / Data Scientists",
+                  "responsibilities": "Build data pipelines for processing raw data and design advanced analytics or machine learning algorithms."
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

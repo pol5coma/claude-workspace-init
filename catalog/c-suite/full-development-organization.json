@@ -1,0 +1,145 @@
+{
+  "c_suite_organization": {
+    "description": "The complete executive leadership and operational structure required to take a software idea from inception to market launch, including key performance indicators (KPIs) for each role.",
+    "c_level": [
+      {
+        "role": "CEO (Chief Executive Officer)",
+        "description": "Owner of the business vision and model. Secures funding, sets global strategy, and coordinates all other C-level executives.",
+        "kpis": [
+          "Runway & Funding Secured (Months of operational runway)",
+          "Customer Acquisition Cost to Lifetime Value Ratio (CAC:LTV > 1:3)",
+          "Net Promoter Score (NPS) / Overall Market Value"
+        ],
+        "sub_levels": {}
+      },
+      {
+        "role": "CPO (Chief Product Officer)",
+        "description": "Responsible for product definition and user value. Transforms the strategic business vision into concrete features, user flows, and product design.",
+        "kpis": [
+          "Product-Market Fit Score",
+          "User Activation Rate (% of users completing core action)",
+          "Feature Adoption Rate & Retention Rate (MoM)"
+        ],
+        "sub_levels": {
+          "level_1_management": [
+            {
+              "role": "Product Manager (PM)",
+              "responsibilities": "Writes detailed feature specifications, prioritizes the product backlog, and coordinates timelines between design and engineering teams.",
+              "kpis": [
+                "On-Time Feature Delivery (% of roadmap commitments met)",
+                "Product Backlog Health (Ready-to-dev tasks available)",
+                "User Churn Rate reduction per feature release"
+              ]
+            }
+          ],
+          "level_2_execution": [
+            {
+              "role": "UI/UX Product Designer",
+              "responsibilities": "Conducts user research, creates wireframes (UX), and designs the final high-fidelity visual interfaces (UI) and design systems.",
+              "kpis": [
+                "Task Completion Rate (UX usability testing success)",
+                "Drop-off Rate at Key Funnel Steps (e.g., onboarding)",
+                "Design System Consistency (% of reusable components used)"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "role": "CTO (Chief Technology Officer)",
+        "description": "The technical mastermind. Selects the technology stack, designs the high-level architecture, and ensures the system is stable, scalable, and performant.",
+        "kpis": [
+          "Platform Uptime & Availability (e.g., 99.9% availability)",
+          "Infrastructure Cost per Active User",
+          "Engineering Velocity & Resource Efficiency"
+        ],
+        "sub_levels": {
+          "level_1_management": [
+            {
+              "role": "Tech Lead / Engineering Manager",
+              "responsibilities": "Oversees the development team, guides core architectural choices, ensures code quality, and reviews technical documentation.",
+              "kpis": [
+                "Sprint Velocity / Story Points completed",
+                "Cycle Time (Time from code branch to production deployment)",
+                "Code Review Turnaround Time"
+              ]
+            }
+          ],
+          "level_2_execution": [
+            {
+              "role": "Software Engineers (Frontend, Backend, Fullstack)",
+              "responsibilities": "Write clean, maintainable code to build user-facing components (Frontend) and databases, APIs, and business logic (Backend).",
+              "kpis": [
+                "Deployment Frequency (Production pushes per week)",
+                "Code Churn Rate (% of code rewritten shortly after commit)",
+                "Technical Debt Ratio (Remediation time vs. development time)"
+              ]
+            },
+            {
+              "role": "QA Engineer / Tester",
+              "responsibilities": "Executes automated and manual tests to catch bugs and guarantee software functionality before release.",
+              "kpis": [
+                "Defect Leakage Rate (% of bugs found by users in production)",
+                "Automated Test Coverage %",
+                "Time to Detect and Verify Bug Fixes"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "role": "CISO (Chief Information Security Officer)",
+        "description": "The protector. Ensures 'Security by Design' across the codebase, infrastructure, and user data while maintaining legal regulatory compliance.",
+        "kpis": [
+          "Compliance Audit Score (GDPR, SOC2, HIPAA readiness)",
+          "Mean Time to Detect / Respond to Incidents (MTTD / MTTR)",
+          "Zero Critical Vulnerabilities in Production"
+        ],
+        "sub_levels": {
+          "level_1_execution": [
+            {
+              "role": "SecOps / Cloud Security Engineer",
+              "responsibilities": "Secures production environments (AWS, GCP, Azure), manages firewalls, automates patch management, and monitors vulnerabilities.",
+              "kpis": [
+                "Time to Patch Critical Vulnerabilities",
+                "Phishing/Security Simulation Success Rate",
+                "Access Control Audit Logs Defect Count"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "role": "CMO (Chief Marketing Officer)",
+        "description": "Responsible for growth, customer acquisition, and market positioning. Drives the go-to-market strategy to bring users to the software.",
+        "kpis": [
+          "Customer Acquisition Cost (CAC) reduction MoM",
+          "Total Lead/User Volume Growth (MQLs/SQLs)",
+          "Share of Voice (SOV) / Brand Awareness metrics"
+        ],
+        "sub_levels": {
+          "level_1_execution": [
+            {
+              "role": "Growth Marketer / Performance Marketer",
+              "responsibilities": "Manages paid acquisition (Google/Meta Ads), handles SEO strategy, and analyzes user funnel conversion metrics.",
+              "kpis": [
+                "Return on Ad Spend (ROAS)",
+                "Landing Page Conversion Rate (%)",
+                "Organic Search Traffic Growth (SEO)"
+              ]
+            },
+            {
+              "role": "Copywriter / Content Creator",
+              "responsibilities": "Crafts compelling text for the landing page, ads, email sequences, and social media to communicate product value clearly.",
+              "kpis": [
+                "Ad Click-Through Rate (CTR)",
+                "Email Open and Click Rates (Drip campaigns)",
+                "Content Engagement Rate (Time on page / Social shares)"
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
