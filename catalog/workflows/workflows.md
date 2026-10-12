@@ -4,22 +4,24 @@
 
 # 1. Full Stack Workflow
 
-- SelfAI: General Director.
+- Chief Agent Orquestrator Officer (CAOO)
 
-    - General project documentation.
-    - General Idea
-    - Global Architecture & Stack
-    - Global Rules
-    - Global Guidelines
-    - Agent coordinator / agent orquestrator / feed agents 
+    - General Product Idea      (all the documentation about the project; functionality, goals, features..)
+    - General Project Set Up    (rules, guidelines, style, stack, architecture)
+   
+    - Agent coordinator / Agent orquestrator / feed agents 
     - Report to Human ( Human in the loop + Human actions (mcp via slack, whatsapp or others) )
+    - Roadmap knowledge / Planner (agent planner helps CEOlf)
+    - Execution Planner:
+        - All agents reports to their Leads (Agent-Leads: A2A?? ).
+        - CAOO & Agent-Leads discuss and define the roadmap and priorities (define backlog). | Human approval.
 
-    # Director Tools:
+    # CAOO Tools:
     - Retrieve Documentation (Read Filesystem / MCP (google drive, notion, other))
     - Write / Reaad files
     - Bash
 
-    # Director Configuration:
+    # CAOO Configuration:
 
     The workflow can be executed with the following optional configuration:
 
