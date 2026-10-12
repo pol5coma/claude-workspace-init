@@ -2,7 +2,7 @@
 
 ## Workflows
 
-# 1. Full Stack Workflow
+# 1. Full Stack Development Workflow
 
 - Chief Agent Orquestrator Officer (CAOO)
 
