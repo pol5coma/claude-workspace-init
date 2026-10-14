@@ -1,35 +1,87 @@
-# Software Product Development and Lifecycle Workflow
+# Software Product Development and Lifecycle Workflow (SPDLC)
 
-This proposed SPDLC framework covers a software product from initial idea to retirement. It contains **7 macro-phases and 62 subphases**, with executive accountability, operational ownership, execution roles, inputs, dependencies, deliverables and decision criteria.
+This proposed SPDLC framework covers a software product from initial idea to retirement. It contains **7 macro-phases and 62 subphases**, with executive functions assigned to Agentic Officers, operational ownership, execution roles, inputs, dependencies, deliverables and decision criteria.
+
+## Purpose and authority
+
+This document is the master instruction set for the Software Product Development and Lifecycle Workflow (SPDLC). It defines the shared operating model, mandatory agent rules and activities from initial idea to retirement.
+
+The Chief Agent Orchestrator Agentic Officer (CAOAO) uses it to plan and coordinate execution. Every participating Chief [Role] Agentic Officer and specialist follows its global rules and the requirements of its assigned activities. Officer mandates, specialist prompts and activity briefs add role-specific and task-specific instructions within this framework. Authority to act comes from the Human's instructions and recorded delegations, not from an agent's title.
+
+## Agent C-suite: Chief [Role] Agentic Officers
+
+This workflow adopts an **agent C-suite**: a management layer of AI agents assigned to C-Level functions. Each **Chief [Role] Agentic Officer** leads a defined business or technical domain, translates objectives into priorities, commissions specialist work, evaluates evidence and makes decisions within a recorded mandate. These domain officers are collectively called **C-Agents**.
+
+An officer's responsibility spans the relevant subphases and successive iterations of the product lifecycle. For example, the Technology Agentic Officer contributes to feasibility, architecture, delivery, operations and retirement. Specialists carry out bounded activity assignments; their domain officer maintains direction, resolves domain questions and reviews the resulting evidence across those assignments.
+
+The officer role is a reusable definition. A configured agent instance performs that role for a particular run, with an identity, instructions, capabilities, decision authority and continuity records. Continuity is maintained through artifacts and recorded decisions even when the underlying agent session changes. Instantiating an officer therefore includes defining its mandate and connecting it to the workflow's inputs, specialists, tools and outputs.
+
+### Naming convention
+
+- **Full title:** `Chief [Role] Agentic Officer`, where `[Role]` is the executive function, such as `Executive`, `Product`, `Technology`, `Financial` or `Information Security`.
+- **Acronym:** insert `A` for `Agentic` immediately before the final `O` of the traditional title. Examples: `CEO → CEAO`, `CTO → CTAO`, `CFO → CFAO` and `CPO → CPAO`.
+- **Compound roles:** retain all role initials. `CISO → CISAO` expands to **Chief Information Security Agentic Officer**.
+- **Workflow terminology:** activity assignments, officer mandates, decisions and new records use the Agentic Officer titles and acronyms. Traditional titles are retained in naming explanations and the glossary to show the correspondence; references to executive stakeholders or decisions in the activities refer to the relevant C-Agents unless a Human participant is explicitly named.
+
+**CAOAO — Chief Agent Orchestrator Agentic Officer** applies the same naming pattern with `Agent Orchestrator` as the role. CAOAO coordinates the agent C-suite and its execution; the domain officers listed in the glossary lead their respective business and technical functions.
 
 ## How to use this workflow
 
-- **Phases are iterative work areas.** Discovery, design, engineering and marketing can overlap. Testing, security, privacy, accessibility and measurement are addressed throughout the relevant work rather than only at the end.
-- **Numbers are stable references, not a strict execution order.** 
-New description, very linked to the next bullet point.
+- **Read phases as work areas.** Discovery, design, engineering and marketing can overlap and repeat as evidence develops.
+- **Read subphase IDs as stable references.** IDs identify activities; their numerical order is not an execution schedule. For example, brand definition in 3.12 supplies direction to final UI design in 3.5, and GTM strategy in 3.13 informs launch preparation while design and development continue.
+- **Read each activity as an execution brief.** Description explains the work; Inputs and Dependencies explain what it draws on; Deliverable and Exit criteria explain the expected result and its acceptance conditions. Decision / next step describes the possible routes after evaluation. Field definitions provides the full reference.
+- **Distinguish an activity from its instances.** A subphase describes reusable work. An activity instance is one execution for a particular product, scope and iteration, release, review or event. Revisiting a subphase creates a new instance linked to the previous evidence.
 
-The original subphase IDs are preserved. Brand definition (3.12) and GTM strategy (3.13) are new: 3.12 supplies direction to final UI design (3.5), and 3.13 starts during design and informs launch preparation.
+## Agent orchestration model
 
-- **Dependencies concern usable input artifacts.** A referenced activity need not be fully finished before useful parallel work starts, but the relevant evidence must be sufficiently mature for the decision being made. Complete the required checks before approving the affected scope or release. 
-== Que vol dir suficientment mature? s'hauria de definir.
+The coordination structure is **Human → CAOAO → C-Agents (Chief [Role] Agentic Officers) → Specialists (activity subagents)**. Results and escalations return through the assigned C-Agent to CAOAO; CAOAO reports consolidated progress to the Human and requests input according to the configured workflow mode. C-Agents also collaborate across domains when an activity requires several decisions.
 
-- **Match evidence to scope and version.** Record the owner, version, evidence links, review status and unresolved risks for each deliverable. Material changes require the affected decisions and checks to be revisited.
-- **Use one named Operational Owner per activity instance.** Titles in this template identify suitable roles; where alternatives are listed, select one person for the instance. That person coordinates execution, dependencies and closure.
-- **Executive accountability is domain-specific.** Final Responsible identifies who owns the decision or outcome. Where multiple executives are named, their decision domains are stated. Delegate routine decisions explicitly; the template does not require executives to approve every task personally.
-- **Roles are functions, not a hiring plan.** Assign them to the actual team; a person may perform multiple functions. Specialist involvement depends on the product and the competence needed.
-- **Tailor applicability explicitly.** Conditional activities may be recorded as not applicable with a reason and owner decision. Dependent work must confirm that the omitted input is genuinely unnecessary or has an agreed alternative; missing evidence is not automatically N/A.
-- **Define product-specific thresholds.** Set acceptance and decision criteria before the relevant evaluation. Avoid universal sample sizes, KPI targets or quality limits. Label hypotheses, estimates and observed results separately and report important limitations.
-- **Separate feedback from prerequisites.** Decision / next step describes iteration, escalation and stop routes. Re-enter earlier activities with a new iteration, scope or release context; do not treat old acceptance as approval of materially changed work.
-- **Apply ongoing criteria per cycle or event.** Phase 6 remains active while the product operates. Its exit criteria close a review, incident or change instance, not the ongoing service.
-- **Stop and replacement paths are conditional.** An initiative may stop before launch. A replacement product follows its own applicable discovery-to-launch activities before the existing product is decommissioned.
-- **Tailor to the product domain.** Add domain-specific work where necessary, such as model/data evaluation for AI functionality, payment operations, hardware dependencies or sector-specific obligations. This general framework is not a claim that one fixed checklist covers every product.
+| Participant | Responsibility |
+|---|---|
+| Human | Sets objectives, constraints, delegation boundaries and the initial workflow mode. May actively contribute to or execute any subphase. Receives questions and decision requests according to the selected mode. |
+| CAOAO — Chief Agent Orchestrator Agentic Officer | Maintains the execution plan, assigns work to C-Agents, coordinates dependencies and workflow modes, distributes relevant context, consolidates records and reports to the Human. |
+| C-Agents — Chief [Role] Agentic Officers | Lead their executive domains, translate objectives into domain plans, delegate to specialists, review evidence and own the decisions assigned to them within their mandates. |
+| Specialists (activity subagents) | Execute a bounded activity brief, produce deliverables and evidence, record their work and report results or blockers to their assigned lead. |
+
+C-Agent roles are instantiated as agents according to the product's needs. One agent may cover several officer roles where its capabilities and the required review arrangements allow it; the role being exercised must remain identifiable in each assignment and decision. Every required decision domain must have a named assignment before dependent work proceeds. Human participation follows the selected workflow mode and is recorded explicitly. The Agent C-suite role glossary defines the domains.
+
+**CAOAO coordinates workflow execution; CEAO leads business direction.** CEAO owns strategic priorities and investment or lifecycle decisions within its mandate. CAOAO turns those decisions and the other officers' domain plans into coordinated execution. Product acceptance remains with CPAO, technical decisions with CTAO, economic assessments with CFAO, and the other domains with their designated officers. A CEAO business decision does not replace the domain reviews required for the same outcome.
+
+Each activity instance has **one named Operational Owner** who coordinates execution, dependencies and closure. The assigned subagent may also be its Operational Owner. **Final Responsible** identifies the C-Agent or explicitly named delegate with decision authority for the outcome; performing the work does not automatically confer acceptance authority. Where several C-Agents are listed, their decision domains remain distinct.
+
+Each assigned subphase becomes a separate activity brief for a subagent. A subagent may be reused for later instances, and supporting specialists may contribute within the agreed plan. Every supporting assignment retains its parent activity reference and the same global rules.
+
+When the Human performs some or all of an activity, the assigned subagent coordinates the agreed support, captures the supplied outputs and arranges review without duplicating the Human's work. The activity retains one named Operational Owner.
+
+CAOAO coordinates a repeating cycle: establish context, select eligible activities, delegate, collect evidence, obtain the applicable decisions and update the plan.
+
+For example, in **2.5**, CFAO evaluates economic viability, CTAO evaluates technical feasibility, CPAO coordinates the consolidated Discovery decision, and CEAO decides material investment or strategic changes within its authority. CAOAO coordinates the assignments and dependencies and routes the recorded result to the next activities. Each officer's decision remains attributable to that officer and its evidence.
+
+## Human participation and workflow modes
+
+The initial workflow configuration sets **`workflow_mode`** to `agentic`, `auto`, `semi-auto` or `manual`. The mode applies across all subphases and determines when agents involve the Human. A **step** means one activity instance of a subphase, including a new iteration; it does not mean every internal action or tool call.
+
+In every mode, the Human may proactively contribute information, request changes, work alongside an agent or take over a subphase. CAOAO must incorporate that intervention into the affected brief and execution plan. Voluntary participation does not introduce an approval requirement into `agentic` mode.
+
+| Mode | Agent execution | Human involvement |
+|---|---|---|
+| `agentic` | Agents execute, review and make all workflow decisions within the initial scope and delegation. | No human approval is requested or required at any point during execution. The Human may intervene voluntarily. |
+| `auto` | Agents execute and decide autonomously within their delegated authority. | CAOAO asks only when progress requires information, an action or a decision that the agents cannot obtain or resolve within their available capabilities and authority. There are no routine human checkpoints. |
+| `semi-auto` | Agents execute each subphase autonomously and prepare its result for review. | At the end of every step, CAOAO presents the result and asks whether the Human wants changes or wants to continue. The affected step waits for a response before closure or dependent progression. Requested changes are addressed and presented again. |
+| `manual` | Agents coordinate the workflow and are ready to execute each subphase. | Before starting substantive work on every step, CAOAO presents its brief and asks whether the Human wants to do it personally, work with agent assistance or delegate it fully. Execution follows that choice; the agent waits for the response before starting. |
+
+In `agentic`, all workflow decisions must have an authorized agent decision owner established in the initial configuration. If a required input, capability or authority is unavailable, CAOAO must record the affected work as blocked and report the reason without requesting human approval or silently switching to `auto`. Independent authorized work may continue.
+
+In `auto`, a request to the Human must identify the specific missing input, action or decision and why the agents cannot resolve it. In `semi-auto` and `manual`, silence does not complete a required checkpoint; independent work may proceed only if its own mode requirements are satisfied.
+
+The Human may explicitly change the mode during a run. CAOAO must record the new mode, when it takes effect and which pending activities it affects. A mode change does not retroactively approve work or satisfy exit criteria. All modes retain the same evidence, review, logging and acceptance requirements, including for work performed by the Human.
 
 ## Field definitions
 
 | Field | Meaning |
 |---|---|
 | Description | Work to perform and the problem it addresses. |
-| Final Responsible | Executive or delegated decision authority, with distinct domains when more than one is involved. |
+| Final Responsible | C-Agent or explicitly named delegate accountable for the workflow decision or outcome, with distinct domains when more than one is involved. |
 | Operational Owner | One named coordinator when the activity is instantiated. |
 | Who executes | Roles that carry out or contribute to the work. |
 | Inputs | Information, artifacts and evidence needed for the activity. |
@@ -39,35 +91,158 @@ The original subphase IDs are preserved. Brand definition (3.12) and GTM strateg
 | Decision / next step | Where to proceed, iterate, escalate or stop based on the result. |
 | Applicability | When and how deeply the activity is needed; conditional work requires an explicit applicability decision. |
 
-## Executive role glossary
+## Agent C-suite role glossary
 
-| Role | Decision domain in this workflow |
+The following mappings cover every C-Level function used by this workflow. Decision ownership applies within the officer's recorded mandate and the selected workflow mode.
+
+| Traditional title | Agent acronym | Full Agentic Officer title | Decision domain in this workflow |
+|---|---|---|---|
+| CEO | CEAO | Chief Executive Agentic Officer | Business direction, strategic priorities, material investment and product lifecycle decisions. |
+| CPO | CPAO | Chief Product Agentic Officer | Product strategy, discovery decisions, scope, prioritization, customer value and product acceptance. |
+| CTO | CTAO | Chief Technology Agentic Officer | Technical feasibility, architecture, engineering, technical release readiness and technical operations. |
+| CMO | CMAO | Chief Marketing Agentic Officer | Market positioning, brand, go-to-market strategy, acquisition and lifecycle marketing. |
+| CFO | CFAO | Chief Financial Agentic Officer | Financial planning, economic viability, budget assessments, unit economics and financial controls. |
+| COO | COAO | Chief Operating Agentic Officer | Service operations, support, operational readiness, customer transition and operational closure. |
+| CRO | CRAO | Chief Revenue Agentic Officer | Sales strategy, revenue operations and renewals where a separate revenue function is applicable. |
+| CISO | CISAO | Chief Information Security Agentic Officer | Security oversight, assessments, security-risk decisions within its mandate and security response. |
+| CLO | CLAO | Chief Legal Agentic Officer | Legal and contractual assessments and readiness decisions, working with the designated privacy owner where relevant. |
+
+Human and CAOAO provide direction and orchestration around this domain-officer layer:
+
+| Participant | Role in the model |
 |---|---|
-| Human - Human | Supervises and approves CAOO |
-| CAOO - Chief Agent Orquestrator Officer |  Orquestrates all the agents to make sure they work aligned with the selected Workflow. Receives instructions and approvals from the Human and prepare and plan the needed execution for the underneath C-Levels. |
-| CEO — Chief Executive Officer | Business direction and material investment or lifecycle decisions. |
-| CPO — Chief Product Officer | Product strategy, scope, customer value and product acceptance. |
-| CTO — Chief Technology Officer | Technical feasibility, architecture, engineering and technical operations. |
-| CMO — Chief Marketing Officer | Market positioning, brand, GTM and marketing. |
-| CFO — Chief Financial Officer | Financial planning, economics and financial controls. |
-| COO — Chief Operating Officer | Service operations, support and operational coordination. |
-| CRO — Chief Revenue Officer | Sales and revenue operations where a separate function exists. |
-| CISO — Chief Information Security Officer | Security oversight, assessment and security response. |
-| CLO — Chief Legal Officer | Applicable legal/contractual matters, supported by the designated privacy owner where relevant. |
+| Human | Defines objectives, constraints, delegation and workflow mode; may actively contribute to any subphase. |
+| CAOAO — Chief Agent Orchestrator Agentic Officer | Coordinates the C-Agents and their dependencies, applies the workflow mode, consolidates progress and communicates with the Human. |
 
-## Agent rules
-- **Record everything:** Every agent (all levels) should report and register their activity by using `workflows/tools/agent-record.py` tool. CAOO is the only agent who reads it, and reports to the Human.
+Additional executive functions follow the same naming convention and require an explicit domain, mandate and assignment. Combined roles retain separate decision records for each function and any required independent review.
 
-Who am I?: The agent-name
-When?: The cronological moment. 
-Which phase: The ordered sub-phase for this agent.
-What?: Which is my expected target / goal. 
+## Mandatory agent rules
 
-Why?: Which was the input received to do it, why did it follow that plan, why that decision, why that step, is it needed, is someone waiting for it?
+These rules apply to all participating agents, including CAOAO, C-Agents and specialists. **Must** indicates a requirement. Examples illustrate a rule without replacing the criteria agreed for the product.
 
-Who?: Who asked for that step?
-For Who?: Who is waiting that output?
-How?
+### Rule 1. Establish the execution context and authority
+
+Before delegation, CAOAO must record the product and objective, workflow version, run ID, selected `workflow_mode`, current scope and iteration or release, known constraints, available resources, and artifact and logging locations. Unknowns must remain explicit and have owners where they affect execution.
+
+CAOAO must identify the active C-Agents, their delegated decision authority and any decisions reserved for the Human under the selected mode. In `agentic`, workflow decisions must be delegated to agents without human approval gates. Agents must follow the configured mode's participation and checkpoint requirements; delegated authority does not remove the required questions in `semi-auto` or `manual`. Matters outside an agent's authority must be referred to CAOAO for resolution under the selected mode.
+
+Before a C-Agent receives work, CAOAO must establish its **officer mandate** using the following fields:
+
+| Field | Required definition |
+|---|---|
+| Role and instance | Canonical officer title and acronym, unique agent identity, run scope and mandate version. |
+| Mission and outcomes | Domain objectives, expected results and how those results will be evaluated. |
+| Responsibilities | Applicable subphases, decisions owned, required deliverables and boundaries with other officers. |
+| Decision authority | Source of delegation, permitted decisions, resource or budget limits, conditions and escalation route. |
+| Capabilities and access | Required expertise, available tools, authorized resources and known capability gaps. |
+| Specialist delegation | Specialist functions the officer may commission, assignment boundaries, review duties and intended recipients. |
+| Collaboration | Other officers involved, required joint decisions, named decision owners and the route for unresolved disagreement. |
+| Context and continuity | Versioned source artifacts, decision summaries, open risks and pending work needed to start or resume the role. Shared-log access remains governed by Rule 6. |
+
+Each C-Agent must use its mandate to plan domain work, assign bounded briefs, collect and review evidence, make or escalate the required decisions, and maintain its domain artifacts. It must verify that its capabilities and permissions support an assignment before executing it. A title or role prompt alone must not be treated as evidence of capability or authority.
+
+When an officer is replaced, CAOAO must transfer its current mandate, relevant artifacts, decision summaries and open work to the new instance. Previous records must retain the identity of the agent that produced them. An officer must not expand its own mandate; changes must follow the existing delegation and workflow mode and be recorded before the expanded authority is used.
+
+Activity briefs and specialist prompts must preserve the global rules. If instructions conflict or decision authority is unclear, the agent must report the conflict to CAOAO before taking the affected action. Independent work within the established scope may continue.
+
+### Rule 2. Give every activity instance a complete brief
+
+Before execution, the assigning lead must provide the subagent with:
+
+- The run ID, subphase ID, unique activity instance ID and any parent activity reference.
+- The objective, scope, expected deliverable and intended recipients.
+- The assigned agent, named Operational Owner, requester and relevant decision owners.
+- The assigning CAOAO or C-Agent's role and instance identity, applicable delegation or mandate reference and task-specific limits.
+- The current `workflow_mode`, its required human checkpoints and any agreed Human contribution or execution responsibility.
+- The applicable global rules, full subphase definition and any product-specific requirements.
+- Input artifact references and versions, dependency conditions and known limitations.
+- Acceptance criteria, required reviews, authority limits and reporting destination.
+
+The subagent must confirm that the brief supports the assigned work and report blocking gaps. It must not invent missing requirements, evidence or approvals. Proposed assumptions may support exploration when clearly labelled and permitted by the brief.
+
+### Rule 3. Verify inputs for their intended use
+
+Dependencies refer to **usable input artifacts**, not merely to the completion status of upstream activities. Parallel work may begin before an upstream activity closes if the inputs support the specific work being started.
+
+An input is ready for a stated use only when the receiving Operational Owner records that:
+
+1. The artifact is accessible, its owner and version are identified, and its scope matches the receiving activity.
+2. It contains the information needed for that use and meets the input criteria defined in the receiving brief.
+3. Its review status, assumptions, limitations and unresolved issues are explicit; none prevents that use under the agreed criteria.
+4. Any remaining checks, restrictions on use and follow-up owners are identified.
+
+Readiness for exploration or implementation does not establish readiness for final acceptance or release. The applicable decision owner must confirm the required checks and approvals before accepting the affected scope.
+
+For example, provisional brand direction from 3.12 may support UI exploration in 3.5. Final UI approval requires the applicable brand decisions and the other exit criteria for 3.5 to be satisfied.
+
+If an input fails these conditions, the receiving agent must identify the missing evidence, request it through the assigned lead and mark the dependent work as blocked. Unaffected work may continue.
+
+### Rule 4. Tailor applicability explicitly
+
+Conditional work may be marked **not applicable (N/A)** only with a recorded rationale and decision by the relevant authorized owner. The record must identify the affected scope, supporting evidence and any alternative input. Owners of dependent activities must confirm that their required inputs remain covered.
+
+Missing evidence, unavailable resources or incomplete work must not be labelled N/A. Required activities must not be silently skipped; their depth may be scaled to the product's uncertainty, impact and resources within the stated applicability conditions.
+
+CAOAO and the relevant C-Agents must include additional activities where the product requires them, such as model/data evaluation, payment operations, hardware dependencies or sector-specific obligations. Each addition must have an owner, inputs, deliverables and acceptance criteria.
+
+### Rule 5. Define criteria and keep evidence traceable
+
+The responsible activity owner and applicable decision owners must establish product-specific acceptance and decision criteria before the relevant evaluation. Criteria must state the evidence or verification method needed to judge the result. Sample sizes, KPI targets and quality limits must be justified for the product and decision.
+
+Testing, security, privacy, accessibility and measurement must be addressed throughout the relevant activities. Their required checks must be included in the affected briefs and acceptance criteria.
+
+Every deliverable must identify its owner, scope, version, evidence links, review status and unresolved risks. Agents must distinguish hypotheses, estimates and observed results, report material limitations, and describe checks that were not performed. They must not present proposed work, simulated results or pending approvals as completed facts.
+
+Changes that could alter an earlier decision — including changes to scope, requirements, assumptions, dependencies or the evaluated version — must trigger a review of the affected evidence and decisions. Previous acceptance applies only to the scope and version it covered. Criteria changed after an evaluation must retain their history and rationale; they must not be silently rewritten to make a result pass.
+
+### Rule 6. Record activity and decisions
+
+Every agent, including CAOAO, must record significant execution events using the configured `workflows/tools/agent-record.py` tool. Events include assignment or start, material decisions, deliverable updates, blockers, handoffs, human checkpoints and responses, mode changes and closure. The coordinating agent must record Human contributions and their source.
+
+Each record must provide the following information. These are content requirements; the tool's supported interface determines how they are submitted.
+
+| Question | Required information |
+|---|---|
+| Who am I? | Agent name and unique instance identity, role exercised for this assignment and, for C-Agents, canonical officer acronym and mandate version. |
+| When? | Timestamp with timezone. |
+| Which work? | Run ID, workflow version, current `workflow_mode`, subphase ID, activity instance ID, scope and iteration/release or event; parent reference where applicable. |
+| What? | Expected goal and the action, decision or result being recorded. |
+| Why? | Trigger or input references and a concise, evidence-based rationale for the action or decision. |
+| Who requested it? | Requesting human or agent and the assignment reference. |
+| Who needs it? | Intended recipients and dependent activity references, or an explicit statement that none are currently assigned. |
+| How? | Method or tools used, relevant checks and resulting artifact or evidence links. |
+| What is the status? | Current work status, outcome, blockers or unresolved risks, review/approval status and next action with its owner. |
+
+Records must capture observable actions, evidence and concise decision rationales. They must not require private internal reasoning or include secrets or unnecessary sensitive data.
+
+CAOAO is the only agent that reads and consolidates the shared activity log. Other agents submit their records and receive the context, artifacts and decisions needed for their assignments through briefs and handoffs. This restriction concerns the shared log; it does not prevent access to authorized deliverables and evidence.
+
+If logging is unavailable, the agent must return the structured record to CAOAO with its persistence status marked **pending**. CAOAO must track the logging issue and arrange submission when available. No agent may claim that a pending record has been persisted.
+
+### Rule 7. Hand off evidence and close through the right authority
+
+On delivery, the subagent must provide its assigned lead with the deliverable references and versions, the result against each exit criterion, supporting evidence, unresolved issues and a recommended next step. The activity record must identify the recipients and pending decisions.
+
+Human-produced deliverables must pass the same applicable reviews and exit criteria. The coordinating agent must identify who performed the work and must not claim to have executed or verified actions without evidence. In `semi-auto`, the end-of-step response must be recorded before closure or dependent progression; in `manual`, the agreed execution arrangement must have been followed. Human participation does not replace the required domain reviews.
+
+The Operational Owner must coordinate the required reviews. An activity instance may be marked **accepted** only when its exit criteria are satisfied and the relevant decision owners have recorded the required decisions within their authority. Exceptions are allowed only where the activity's criteria and delegated authority permit them; each must identify its scope, rationale, consequences and owner. The agent must not silently waive a failed criterion.
+
+For decisions involving several C-Agents, each officer must record its domain conclusion, evidence, conditions and unresolved issues. CAOAO must coordinate resolution through the decision owners and the escalation route defined in their mandates. CEAO decides business trade-offs within its authority; required product, technical, financial, security and other domain checks remain applicable. CAOAO must not substitute its orchestration role for a missing domain decision. Unresolved conflicts block the dependent decision and are handled under the configured workflow mode.
+
+Completion of execution, acceptance of a deliverable and authorization of a downstream action are distinct decisions. Agents must not infer approval from silence, a role title or a completed upstream task. They must reference any existing authorization that covers the next action.
+
+CAOAO must update the plan and distribute the accepted outputs, conditions or corrective actions to the affected leads. Reports to the Human must identify progress, material risks and blockers. Requests for human input must follow the selected mode; reporting a blocker in `agentic` must not become a human approval request.
+
+### Rule 8. Preserve iteration and lifecycle context
+
+Agents must use **Dependencies** to assess prerequisites and **Decision / next step** to route the result toward continuation, revision, escalation or stopping. Returning to an earlier subphase must create a linked activity instance with the new scope or iteration; prior evidence may be reused when still applicable.
+
+For phase 6, exit criteria close an individual review, incident or work cycle. They must not be treated as permanent completion of an ongoing service responsibility.
+
+An initiative may stop before launch through the appropriate recorded decision and proportionate closure activities. A replacement product must complete its own applicable discovery-to-launch activities and readiness decisions before the existing product is decommissioned.
+
+
+# Workflow:
 
 ## 1. Idea & Strategy
 
@@ -76,7 +251,7 @@ Frame the opportunity, make assumptions explicit and authorize a bounded investm
 ### 1.1. Initial ideation and opportunity assessment
 
 - **Description:** Generate, collect and screen product ideas. Identify the opportunity behind each idea and assess its strategic fit, potential impact, differentiation and obvious constraints using available information.
-- **Final Responsible:** CEO, in collaboration with CPO.
+- **Final Responsible:** CEAO, in collaboration with CPAO.
 - **Operational Owner:** Founder / Business Lead.
 - **Who executes:** Founder/Business Lead, Product Manager and relevant stakeholders, with Marketing, Finance and Engineering input.
 - **Inputs:** Initial ideas, business context, observed problems, existing capabilities and known constraints.
@@ -89,7 +264,7 @@ Frame the opportunity, make assumptions explicit and authorize a bounded investm
 ### 1.2. Define product vision and strategic goals
 
 - **Description:** Define the intended long-term direction of the product, its connection to business objectives and the outcomes it should achieve. Establish initial success criteria and strategic boundaries.
-- **Final Responsible:** CEO for business direction; CPO for product vision and goals.
+- **Final Responsible:** CEAO for business direction; CPAO for product vision and goals.
 - **Operational Owner:** Product Manager.
 - **Who executes:** Product Manager and Business/Strategy Lead, working with executive stakeholders.
 - **Inputs:** Selected opportunity, business direction, organizational goals and stakeholder expectations.
@@ -102,7 +277,7 @@ Frame the opportunity, make assumptions explicit and authorize a bounded investm
 ### 1.3. Define initial target audience and value proposition
 
 - **Description:** Form initial hypotheses about target users, buyers and their problems. Describe the value the product could provide, why customers might choose it and how it could differ from existing alternatives.
-- **Final Responsible:** CPO, in collaboration with CMO.
+- **Final Responsible:** CPAO, in collaboration with CMAO.
 - **Operational Owner:** Product Marketing Manager.
 - **Who executes:** Product Manager and Product Marketing Manager, with UX Researcher input.
 - **Inputs:** Opportunity hypothesis, existing audience information, proposed problem and business context.
@@ -115,7 +290,7 @@ Frame the opportunity, make assumptions explicit and authorize a bounded investm
 ### 1.4. Define the business model
 
 - **Description:** Outline how the product could create, deliver and capture value. Identify potential revenue streams, pricing approaches, distribution channels, key partners and major cost drivers. Keep assumptions explicit until evidence is available.
-- **Final Responsible:** CEO, in collaboration with CFO, CPO and CMO.
+- **Final Responsible:** CEAO, in collaboration with CFAO, CPAO and CMAO.
 - **Operational Owner:** Business / Strategy Lead.
 - **Who executes:** Business/Strategy Analyst, Finance Analyst, Product Manager and Product Marketing Manager.
 - **Inputs:** Product direction, audience/value hypotheses, potential revenue mechanisms, channels and rough cost drivers.
@@ -128,7 +303,7 @@ Frame the opportunity, make assumptions explicit and authorize a bounded investm
 ### 1.5. Identify strategic assumptions, risks and constraints
 
 - **Description:** Identify what must be true for the opportunity to succeed. Surface market, adoption, economic, technical and operational uncertainties, plus applicable legal, licensing, privacy and data-use constraints. Record budget, timing and organizational boundaries, and prioritize the assumptions Discovery should investigate first.
-- **Final Responsible:** CPO for consolidated discovery priorities, with CEO, CFO, CTO and CMO owning decisions within their areas and the designated legal/privacy owner assessing applicable constraints.
+- **Final Responsible:** CPAO for consolidated discovery priorities, with CEAO, CFAO, CTAO and CMAO owning decisions within their areas and the designated legal/privacy owner assessing applicable constraints.
 - **Operational Owner:** Product Manager.
 - **Who executes:** Product Manager, UX Researcher, Business/Finance Analyst and Tech Lead, with relevant specialists.
 - **Inputs:** Opportunity brief, known organizational constraints, emerging audience and business-model assumptions, and intended data or third-party use.
@@ -141,9 +316,9 @@ Frame the opportunity, make assumptions explicit and authorize a bounded investm
 ### 1.6. Define the initial budget and resource allocation
 
 - **Description:** Allocate the funding, people and time needed for Discovery and early validation. Establish spending boundaries, decision checkpoints and an indicative investment envelope for later stages, subject to discovery findings.
-- **Final Responsible:** CEO for investment approval; CFO for financial planning.
+- **Final Responsible:** CEAO for investment approval; CFAO for financial planning.
 - **Operational Owner:** Finance Lead / Finance Analyst.
-- **Who executes:** Finance Analyst, Product Manager and relevant functional leads, with CTO and CMO input.
+- **Who executes:** Finance Analyst, Product Manager and relevant functional leads, with CTAO and CMAO input.
 - **Inputs:** Strategic goals, preliminary business model, prioritized uncertainties and proposed Discovery work.
 - **Dependencies:** Upstream references: 1.2, 1.4, 1.5. Fund learning first; later development and marketing allocations are reviewed after Discovery and updated planning.
 - **Deliverable:** Approved discovery budget, initial resource allocation, indicative timeline, funding assumptions and agreed investment review checkpoints.
@@ -158,7 +333,7 @@ Establish evidence about the problem, solution concepts, demand, economics and f
 ### 2.1. Market and user research
 
 - **Description:** Investigate the market, potential user segments, relevant stakeholders, existing alternatives and competitors. Understand users’ contexts, behaviours, needs and current ways of addressing the problem.
-- **Final Responsible:** CPO, in collaboration with CMO.
+- **Final Responsible:** CPAO, in collaboration with CMAO.
 - **Operational Owner:** UX Researcher.
 - **Who executes:** UX Researcher, Product Manager and Product Marketing Manager, with Market/Data Analyst support when needed.
 - **Inputs:** Initial audience and problem hypotheses, strategic constraints, research priorities and Discovery resources.
@@ -171,7 +346,7 @@ Establish evidence about the problem, solution concepts, demand, economics and f
 ### 2.2. Problem validation
 
 - **Description:** Test whether the identified problem exists for the target users and assess its frequency, severity and impact. Understand dissatisfaction with existing alternatives and identify which problems are worth prioritizing.
-- **Final Responsible:** CPO.
+- **Final Responsible:** CPAO.
 - **Operational Owner:** Product Manager.
 - **Who executes:** UX Researcher and Product Manager, with Product/Data Analyst support.
 - **Inputs:** Research findings, observed behaviours, existing alternatives and initial problem statements.
@@ -184,7 +359,7 @@ Establish evidence about the problem, solution concepts, demand, economics and f
 ### 2.3. Explore solution concepts
 
 - **Description:** Identify and compare alternative solution concepts and candidate features addressing the prioritized problems. Explore their expected user value, assumptions and risks, and run early concept tests with relevant users before committing to a solution.
-- **Final Responsible:** CPO.
+- **Final Responsible:** CPAO.
 - **Operational Owner:** Product Designer.
 - **Who executes:** Product Manager, Product Designer and UX Researcher, with Tech Lead and Product Marketing Manager input.
 - **Inputs:** Prioritized problems, user context, strategic constraints and relevant existing alternatives.
@@ -197,7 +372,7 @@ Establish evidence about the problem, solution concepts, demand, economics and f
 ### 2.4. Evaluate demand
 
 - **Description:** Assess whether target users would adopt the proposed solution and whether buyers would pay where applicable. Test the value proposition, willingness to switch, pricing assumptions and ability to reach the intended audience through appropriate experiments.
-- **Final Responsible:** CMO, in collaboration with CPO.
+- **Final Responsible:** CMAO, in collaboration with CPAO.
 - **Operational Owner:** Product Marketing Manager.
 - **Who executes:** Product Marketing Manager, Product Manager and Growth Marketer, with UX Researcher and Data Analyst support.
 - **Inputs:** Candidate concepts, audience evidence, business-model and pricing hypotheses, and resources authorized for demand experiments.
@@ -210,7 +385,7 @@ Establish evidence about the problem, solution concepts, demand, economics and f
 ### 2.5. Evaluate economic viability and technical feasibility
 
 - **Description:** Assess whether proposed solutions could support a sustainable business and be built and operated within realistic constraints. Estimate revenue potential, acquisition and operating costs, development effort, critical dependencies and technical risks. Consolidate problem, concept and demand evidence into an explicit cross-functional Discovery decision.
-- **Final Responsible:** CFO for economic viability; CTO for technical feasibility; CPO for coordinating the overall Discovery decision, with CEO approval for material investment or strategic changes.
+- **Final Responsible:** CFAO for economic viability; CTAO for technical feasibility; CPAO for coordinating the overall Discovery decision, with CEAO approval for material investment or strategic changes.
 - **Operational Owner:** Product Manager.
 - **Who executes:** Finance/Business Analyst, Product Manager, Tech Lead and Software Architect, with Engineering and Operations input.
 - **Inputs:** Problem evidence, concept findings, demand results, initial cost/revenue assumptions, technical constraints and specialist assessments.
@@ -229,7 +404,7 @@ Define and validate the next useful product increment, its quality and technical
 ### 3.1. Define scope and priorities
 
 - **Description:** Define the scope, what is included and excluded, and the smallest useful product increment to deliver first. Prioritize outcomes and features using customer value, evidence, effort, risk and dependencies.
-- **Final Responsible:** CPO.
+- **Final Responsible:** CPAO.
 - **Operational Owner:** Product Manager.
 - **Who executes:** Product Manager, Design team and Engineering team.
 - **Inputs:** Recorded Discovery decision, prioritized problems, solution evidence, strategic goals and resource constraints.
@@ -242,7 +417,7 @@ Define and validate the next useful product increment, its quality and technical
 ### 3.2. Specify behaviour
 
 - **Description:** Specify features, business rules, roles and permissions, entity and workflow states, state transitions, exceptions and edge cases. Define observable acceptance criteria and distinguish required behaviour from implementation choices.
-- **Final Responsible:** CPO.
+- **Final Responsible:** CPAO.
 - **Operational Owner:** Product Manager / Business Analyst.
 - **Who executes:** Product Manager / Business Analyst, with Design and Engineering input.
 - **Inputs:** Agreed increment scope, user and buyer needs, business context and relevant existing process rules.
@@ -255,7 +430,7 @@ Define and validate the next useful product increment, its quality and technical
 ### 3.3. Define quality requirements
 
 - **Description:** Define measurable quality requirements for performance, expected capacity, availability, reliability, compatibility, security, privacy and accessibility as relevant to the product. Agree recovery objectives, data-handling constraints and the conditions under which each requirement will be verified. Use product-specific thresholds and label unvalidated assumptions.
-- **Final Responsible:** CTO for technical quality requirements, in collaboration with CPO, COO, Security, Design and the designated legal/privacy owner.
+- **Final Responsible:** CTAO for technical quality requirements, in collaboration with CPAO, COAO, Security, Design and the designated legal/privacy owner.
 - **Operational Owner:** Tech Lead.
 - **Who executes:** Tech Lead, Security team, design team, and operations team.
 - **Inputs:** Scope, operating expectations, critical journeys, Discovery risks and applicable specialist constraints.
@@ -268,7 +443,7 @@ Define and validate the next useful product increment, its quality and technical
 ### 3.4. Design the experience (UX)
 
 - **Description:** Design the user experience, navigation, paths, interactions, content and error handling.
-- **Final Responsible:** CPO.
+- **Final Responsible:** CPAO.
 - **Operational Owner:** Product Designer.
 - **Who executes:** UX Designer, UX Researcher and UX Writer.
 - **Inputs:** Functional requirements, business flows, user research and prioritized experience problems.
@@ -281,7 +456,7 @@ Define and validate the next useful product increment, its quality and technical
 ### 3.5. Design the user interface
 
 - **Description:** Design screens, visual hierarchy, reusable components, interaction states and responsive behaviour, ensuring consistency with the brand and accessibility requirements.
-- **Final Responsible:** CPO, in coordination with CMO.
+- **Final Responsible:** CPAO, in coordination with CMAO.
 - **Operational Owner:** Product / UI Designer.
 - **Who executes:** Product/UI Designer and Brand Designer, with Engineering input on feasibility.
 - **Inputs:** User flows and wireframes, brand identity, content direction, accessibility requirements and target device contexts.
@@ -294,7 +469,7 @@ Define and validate the next useful product increment, its quality and technical
 ### 3.6. Design the technical solution
 
 - **Description:** Define the initial software architecture, system components, data model, interfaces and integrations. Evaluate technical trade-offs against functional and non-functional requirements. Specify trust boundaries, key threats, data sources and permitted uses, access ownership, retention and deletion behaviour, and relevant third-party or licensing constraints.
-- **Final Responsible:** CTO.
+- **Final Responsible:** CTAO.
 - **Operational Owner:** Tech Lead / Software Architect.
 - **Who executes:** Software Architects, Tech Lead and Engineering team, with Security and Operations input.
 - **Inputs:** Functional and quality requirements, integration constraints, data needs, feasibility findings and available organizational capabilities.
@@ -307,7 +482,7 @@ Define and validate the next useful product increment, its quality and technical
 ### 3.7. Align product & offer
 
 - **Description:** Align features per plan, pricing and packaging proposals, positioning, messaging and commercial promises with the defined product scope and business model.
-- **Final Responsible:** CMO, in collaboration with CPO and CFO; final pricing approval follows the agreed business decision authority.
+- **Final Responsible:** CMAO, in collaboration with CPAO and CFAO; final pricing approval follows the agreed business decision authority.
 - **Operational Owner:** Product Marketing Manager.
 - **Who executes:** Product Marketing Manager and Product Manager, with Finance input.
 - **Inputs:** Prioritized product scope, demand and pricing evidence, business-model hypotheses and audience understanding.
@@ -320,7 +495,7 @@ Define and validate the next useful product increment, its quality and technical
 ### 3.8. Prototype and validate the experience
 
 - **Description:** Build prototypes at the fidelity needed to test the proposed experience. Evaluate comprehension, usefulness and usability with relevant users, record limitations and iterate on significant findings.
-- **Final Responsible:** CPO.
+- **Final Responsible:** CPAO.
 - **Operational Owner:** UX Researcher.
 - **Who executes:** Product Designer, UX Researcher and Product Manager.
 - **Inputs:** User flows, acceptance criteria, appropriate prototype fidelity, recruiting criteria and research questions.
@@ -333,7 +508,7 @@ Define and validate the next useful product increment, its quality and technical
 ### 3.9. Resolve technical uncertainty
 
 - **Description:** Identify and investigate critical technical assumptions, integration constraints and feasibility risks. Use focused technical spikes or proofs of concept where evidence is needed before committing to implementation.
-- **Final Responsible:** CTO.
+- **Final Responsible:** CTAO.
 - **Operational Owner:** Tech Lead.
 - **Who executes:** Tech Lead, Software Architects and relevant engineers, with specialists as needed.
 - **Inputs:** Initial feasibility assessment, critical requirements, candidate technical approaches and prioritized technical unknowns.
@@ -346,7 +521,7 @@ Define and validate the next useful product increment, its quality and technical
 ### 3.10. Define measurement
 
 - **Description:** Define how product success and user behaviour will be measured. Specify outcome metrics, activation criteria, funnel stages, events and data requirements, distinguishing observed results from assumptions.
-- **Final Responsible:** CPO, in collaboration with CMO and CTO.
+- **Final Responsible:** CPAO, in collaboration with CMAO and CTAO.
 - **Operational Owner:** Product / Data Analyst.
 - **Who executes:** Product/Data Analyst and Product Manager, with Growth Marketing and Engineering input.
 - **Inputs:** Strategic outcomes, initial product scope, critical user journeys and demand/channel hypotheses.
@@ -359,7 +534,7 @@ Define and validate the next useful product increment, its quality and technical
 ### 3.11. Plan development
 
 - **Description:** Break the agreed scope into incremental deliveries. Identify dependencies, estimate effort and uncertainty, allocate capacity and define acceptance and release criteria. Prepare sufficient detail for the first increment, including a risk-based validation approach and clear ownership of relevant tests and reviews.
-- **Final Responsible:** CPO for product priorities and scope; CTO for technical delivery planning and engineering capacity.
+- **Final Responsible:** CPAO for product priorities and scope; CTAO for technical delivery planning and engineering capacity.
 - **Operational Owner:** Engineering Manager / Tech Lead.
 - **Who executes:** Product Manager, Engineering Manager and Tech Lead, with Design, Engineering, QA and Operations input.
 - **Inputs:** Prioritized scope, requirements, architecture, prototype findings, technical-risk evidence, measurement needs and available capacity.
@@ -372,7 +547,7 @@ Define and validate the next useful product increment, its quality and technical
 ### 3.12. Define brand identity and communication principles
 
 - **Description:** Translate product positioning and audience understanding into a coherent brand identity. Define brand personality, voice, visual direction, naming where needed, and principles for expressing the brand across product and marketing touchpoints. Reuse and adapt an existing identity when appropriate.
-- **Final Responsible:** CMO for brand direction, in coordination with CPO for product experience.
+- **Final Responsible:** CMAO for brand direction, in coordination with CPAO for product experience.
 - **Operational Owner:** Brand / Creative Lead.
 - **Who executes:** Brand/Creative Lead, Brand Designer and Copywriter, with Product Marketing, Product Design and UX Writing input.
 - **Inputs:** Strategic direction, target-audience evidence, positioning, offer definition and any existing brand assets.
@@ -385,7 +560,7 @@ Define and validate the next useful product increment, its quality and technical
 ### 3.13. Define the go-to-market strategy
 
 - **Description:** Translate positioning, demand evidence and the product scope into a practical route to market. Select initial segments and use cases, acquisition and distribution channels, sales or self-service motion, launch objectives, budget allocation and lifecycle approach. Define hypotheses, experiments and readiness criteria before campaign execution.
-- **Final Responsible:** CMO for go-to-market strategy, with CPO confirming product scope, CFO reviewing budget and economics, and CRO owning sales strategy where applicable.
+- **Final Responsible:** CMAO for go-to-market strategy, with CPAO confirming product scope, CFAO reviewing budget and economics, and CRAO owning sales strategy where applicable.
 - **Operational Owner:** Product Marketing Manager.
 - **Who executes:** Product Marketing Manager, Growth Marketing Lead and Product Manager, with Sales, Customer Success, Finance and Data input.
 - **Inputs:** Offer and positioning, demand/channel evidence, business goals, measurement definitions, financial constraints and draft delivery timing.
@@ -402,7 +577,7 @@ Build and validate increments, prepare operations and produce a release candidat
 ### 4.1. Prepare development environments and delivery foundations
 
 - **Description:** Establish repositories, development and testing environments, configuration management, access controls and CI/CD pipelines. Define the engineering conventions and automated checks needed to build and validate product increments consistently.
-- **Final Responsible:** CTO.
+- **Final Responsible:** CTAO.
 - **Operational Owner:** Platform / DevOps Lead.
 - **Who executes:** Tech Lead, Engineering team and Platform/DevOps Engineers, with Security input.
 - **Inputs:** Initial architecture, security/quality requirements, delivery plan and environment/access needs.
@@ -415,7 +590,7 @@ Build and validate increments, prepare operations and produce a release candidat
 ### 4.2. Implement product features incrementally
 
 - **Description:** Implement prioritized features across frontend, backend and relevant platforms. Apply the agreed business rules, permissions, designs and acceptance criteria, including error handling and relevant interface states.
-- **Final Responsible:** CTO for implementation; CPO for scope and requirement decisions.
+- **Final Responsible:** CTAO for implementation; CPAO for scope and requirement decisions.
 - **Operational Owner:** Tech Lead.
 - **Who executes:** Engineering team and Tech Lead, collaborating with Product Manager and Product Designer.
 - **Inputs:** Prioritized backlog, behaviour and acceptance criteria, applicable UI specifications, architecture and delivery foundations.
@@ -428,7 +603,7 @@ Build and validate increments, prepare operations and produce a release candidat
 ### 4.3. Implement integrations and data handling
 
 - **Description:** Connect internal components and external services. Implement data storage, validation, synchronization and failure handling. Prepare and test imports or migrations where required, including data reconciliation and recovery procedures.
-- **Final Responsible:** CTO.
+- **Final Responsible:** CTAO.
 - **Operational Owner:** Backend / Integration Lead.
 - **Who executes:** Backend/Integration Engineers, Data Engineers and relevant specialists, with QA and Security input.
 - **Inputs:** Interface contracts, data model and lifecycle rules, external-service constraints, test environments and failure requirements.
@@ -441,7 +616,7 @@ Build and validate increments, prepare operations and produce a release candidat
 ### 4.4. Review code quality and maintainability
 
 - **Description:** Review changes continuously for correctness, clarity, architectural consistency and maintainability. Run appropriate automated checks, address review findings and document significant implementation decisions or accepted technical debt.
-- **Final Responsible:** CTO.
+- **Final Responsible:** CTAO.
 - **Operational Owner:** Tech Lead.
 - **Who executes:** Peer Engineers, Tech Lead and Software Architect where applicable.
 - **Inputs:** Incremental changes, engineering conventions, architecture decisions, automated checks and affected requirements.
@@ -454,7 +629,7 @@ Build and validate increments, prepare operations and produce a release candidat
 ### 4.5. Perform functional and regression testing
 
 - **Description:** Verify that features, business rules, permissions and integrations behave as specified. Test critical end-to-end journeys, failure scenarios and regressions, combining automated and exploratory testing according to risk.
-- **Final Responsible:** CTO, with CPO clarifying expected product behaviour.
+- **Final Responsible:** CTAO, with CPAO clarifying expected product behaviour.
 - **Operational Owner:** QA Lead.
 - **Who executes:** QA Engineers, Engineering team and Product Manager.
 - **Inputs:** Functional requirements and acceptance criteria, testable increments, relevant integrations, test data and risk-based validation approach.
@@ -467,7 +642,7 @@ Build and validate increments, prepare operations and produce a release candidat
 ### 4.6. Validate non-functional requirements
 
 - **Description:** Evaluate the implemented product against agreed performance, capacity, reliability, accessibility and compatibility requirements. Test relevant failure and recovery scenarios under representative conditions.
-- **Final Responsible:** CTO, in collaboration with CPO and COO.
+- **Final Responsible:** CTAO, in collaboration with CPAO and COAO.
 - **Operational Owner:** QA / Performance Test Lead.
 - **Who executes:** QA Engineers, Engineering team, Platform/SRE Engineers and Accessibility Specialists where needed.
 - **Inputs:** Measurable quality requirements, representative test conditions, implemented product and applicable integrations.
@@ -480,7 +655,7 @@ Build and validate increments, prepare operations and produce a release candidat
 ### 4.7. Implement and verify security and privacy controls
 
 - **Description:** Implement and assess controls for authentication, authorization, secrets, sensitive data and relevant privacy requirements. Perform risk-appropriate security testing, investigate findings and verify remediation of critical issues.
-- **Final Responsible:** CTO for implementation; CISO for security assessment and security-risk recommendations, with the privacy/legal owner consulted where applicable.
+- **Final Responsible:** CTAO for implementation; CISAO for security assessment and security-risk recommendations, with the privacy/legal owner consulted where applicable.
 - **Operational Owner:** Security Lead.
 - **Who executes:** Engineering team, Security Engineers and relevant privacy specialists.
 - **Inputs:** Security/privacy requirements, threat and data-flow design, implemented changes, dependency inventory and test environments.
@@ -493,7 +668,7 @@ Build and validate increments, prepare operations and produce a release candidat
 ### 4.8. Implement analytics and observability
 
 - **Description:** Implement the agreed product events and business metrics alongside technical logs, metrics, traces and alerts. Verify data accuracy, useful diagnostic context and appropriate handling of sensitive information.
-- **Final Responsible:** CTO for instrumentation and technical observability; CPO for product measurement acceptance.
+- **Final Responsible:** CTAO for instrumentation and technical observability; CPAO for product measurement acceptance.
 - **Operational Owner:** Analytics / Instrumentation Lead.
 - **Who executes:** Engineering team, Product/Data Analyst and Platform/SRE Engineers, with Growth Marketing and Security input.
 - **Inputs:** Measurement plan, event specifications, technical architecture, relevant product increments and operating requirements.
@@ -506,7 +681,7 @@ Build and validate increments, prepare operations and produce a release candidat
 ### 4.9. Validate product acceptance and usability
 
 - **Description:** Evaluate the implemented experience against user needs, designs and acceptance criteria. Conduct product acceptance reviews and usability sessions with representative users, then prioritize and resolve material gaps.
-- **Final Responsible:** CPO.
+- **Final Responsible:** CPAO.
 - **Operational Owner:** Product Manager.
 - **Who executes:** Product Manager, Product Designer, UX Researcher and QA, with relevant stakeholders and representative users participating.
 - **Inputs:** Implemented increment, acceptance criteria, prototype findings, functional-test evidence and representative user scenarios.
@@ -519,7 +694,7 @@ Build and validate increments, prepare operations and produce a release candidat
 ### 4.10. Prepare operations and support
 
 - **Description:** Prepare the people and procedures needed to operate and support the product. Define ownership, support workflows, incident response, escalation, backup and recovery processes, and operational training.
-- **Final Responsible:** COO for service and support readiness; CTO for technical operations readiness.
+- **Final Responsible:** COAO for service and support readiness; CTAO for technical operations readiness.
 - **Operational Owner:** Operations Lead.
 - **Who executes:** Operations, Customer Support/Success, Platform/SRE and Engineering teams, with Product and Security input.
 - **Inputs:** Service and recovery expectations, release scope, observability, expected customer journeys and likely support demand.
@@ -532,7 +707,7 @@ Build and validate increments, prepare operations and produce a release candidat
 ### 4.11. Verify release readiness
 
 - **Description:** Consolidate product, engineering, security and operational validation evidence. Prepare the release candidate, deployment and rollback procedures, migration sequence where relevant, and explicit go/no-go criteria. Review outstanding issues before authorizing progression to launch.
-- **Final Responsible:** CTO for technical release readiness, with CPO, COO and CISO approving readiness within their respective areas.
+- **Final Responsible:** CTAO for technical release readiness, with CPAO, COAO and CISAO approving readiness within their respective areas.
 - **Operational Owner:** Engineering Manager / Release Lead.
 - **Who executes:** Engineering Manager/Tech Lead, QA Lead, Product Manager, Platform/DevOps and Operations representatives.
 - **Inputs:** Release candidate, code-review and test evidence, security assessment, instrumentation checks, product acceptance and operational readiness.
@@ -549,7 +724,7 @@ Deploy and introduce the approved product to its intended audience, stabilize th
 ### 5.1. Coordinate the launch and confirm readiness
 
 - **Description:** Coordinate the technical, product, commercial and operational launch. Consolidate readiness evidence from the previous phase, confirm dependencies, assign owners and establish launch timing, rollout stages and go/no-go criteria.
-- **Final Responsible:** CPO for cross-functional launch coordination, with CTO, CMO and COO approving readiness within their areas.
+- **Final Responsible:** CPAO for cross-functional launch coordination, with CTAO, CMAO and COAO approving readiness within their areas.
 - **Operational Owner:** Product Manager / Launch Lead.
 - **Who executes:** Product Manager, Product Marketing Manager, Engineering Lead and Operations Lead.
 - **Inputs:** Release readiness evidence, GTM strategy, delivery timing, operational capacity and applicable domain approvals.
@@ -562,7 +737,7 @@ Deploy and introduce the approved product to its intended audience, stabilize th
 ### 5.2. Confirm legal, privacy and security readiness
 
 - **Description:** Review applicable terms, privacy notices, licensing, commercial claims and contractual requirements. Confirm that agreed security controls are operational and that unresolved legal or security issues have been assessed before release.
-- **Final Responsible:** CLO for legal readiness; CISO for security readiness, with CTO responsible for technical remediation.
+- **Final Responsible:** CLAO for legal readiness; CISAO for security readiness, with CTAO responsible for technical remediation.
 - **Operational Owner:** Legal / Privacy Lead.
 - **Who executes:** Legal Counsel, Privacy Specialists and Security Engineers, collaborating with Product, Engineering and Marketing.
 - **Inputs:** Applicable constraints, reviewed technical controls, data practices, proposed commercial terms and current product/marketing claims.
@@ -575,7 +750,7 @@ Deploy and introduce the approved product to its intended audience, stabilize th
 ### 5.3. Finalize marketing and launch design assets
 
 - **Description:** Prepare and verify the public-facing materials needed to explain and promote the released product. Ensure visual identity, messaging, screenshots, demonstrations and commercial promises match the actual release.
-- **Final Responsible:** CMO, with CPO confirming product accuracy.
+- **Final Responsible:** CMAO, with CPAO confirming product accuracy.
 - **Operational Owner:** Brand / Creative Lead.
 - **Who executes:** Product Marketing Manager, Brand/Visual Designer, Copywriter and Content team, with Product Designer input.
 - **Inputs:** Approved brand direction, offer and messaging, GTM plan, accepted product capabilities and release details.
@@ -588,7 +763,7 @@ Deploy and introduce the approved product to its intended audience, stabilize th
 ### 5.4. Prepare acquisition and commercial channels
 
 - **Description:** Configure and verify the channels through which users discover, access, trial or purchase the product. Confirm pricing presentation, conversion paths, lead handling and sales readiness where relevant to the business model.
-- **Final Responsible:** CMO for acquisition channels; CRO for sales readiness where a sales function exists.
+- **Final Responsible:** CMAO for acquisition channels; CRAO for sales readiness where a sales function exists.
 - **Operational Owner:** Growth / Marketing Operations Lead.
 - **Who executes:** Growth Marketing, Marketing Operations, Sales Operations and Product Marketing, with Engineering and Finance support.
 - **Inputs:** GTM strategy, offer and pricing decisions, conversion-flow requirements, tracking and applicable sales materials.
@@ -601,7 +776,7 @@ Deploy and introduce the approved product to its intended audience, stabilize th
 ### 5.5. Deploy the approved release to production
 
 - **Description:** Deploy the approved release, execute required migrations and verify production configuration. Run smoke tests on critical journeys, confirm monitoring and recovery readiness, and control access according to the rollout plan.
-- **Final Responsible:** CTO.
+- **Final Responsible:** CTAO.
 - **Operational Owner:** Platform / DevOps Lead.
 - **Who executes:** Platform/DevOps Engineers, Engineering team, Tech Lead and QA, with Security support.
 - **Inputs:** Approved release candidate, rollout authorization, domain readiness, migration procedures and deployment/recovery plans.
@@ -614,7 +789,7 @@ Deploy and introduce the approved product to its intended audience, stabilize th
 ### 5.6. Conduct a pilot or controlled rollout
 
 - **Description:** Where appropriate, introduce the product to a limited audience before broader exposure. Observe real usage, validate operational assumptions, collect feedback and assess whether to expand, pause or revise the rollout.
-- **Final Responsible:** CPO for audience expansion decisions, with CTO and COO confirming technical and operational readiness.
+- **Final Responsible:** CPAO for audience expansion decisions, with CTAO and COAO confirming technical and operational readiness.
 - **Operational Owner:** Product Manager.
 - **Who executes:** Product Manager, Engineering, QA, Customer Success/Support and UX Researcher.
 - **Inputs:** Deployed release, controlled audience, rollout criteria, monitoring and operational/support coverage.
@@ -627,7 +802,7 @@ Deploy and introduce the approved product to its intended audience, stabilize th
 ### 5.7. Activate public launch and acquisition campaigns
 
 - **Description:** Execute the approved launch communications and acquisition activities in coordination with product availability. Activate relevant paid, organic, partnership, community and sales initiatives, adapting exposure to operational capacity.
-- **Final Responsible:** CMO, in coordination with CRO where applicable.
+- **Final Responsible:** CMAO, in coordination with CRAO where applicable.
 - **Operational Owner:** Growth Marketing Lead.
 - **Who executes:** Growth Marketers, Content and Social teams, PR/Communications, Partnership Managers and Sales.
 - **Inputs:** Authorized rollout status, approved communications, working acquisition channels, production availability and relevant pilot findings.
@@ -640,7 +815,7 @@ Deploy and introduce the approved product to its intended audience, stabilize th
 ### 5.8. Onboard and support the first users
 
 - **Description:** Help initial users access the product, understand its value and complete their first meaningful tasks. Operate support and escalation processes, resolve adoption barriers and feed recurring issues back to Product and Engineering.
-- **Final Responsible:** COO for onboarding and support operations; CPO for the in-product onboarding experience.
+- **Final Responsible:** COAO for onboarding and support operations; CPAO for the in-product onboarding experience.
 - **Operational Owner:** Customer Success / Support Lead.
 - **Who executes:** Customer Success, Customer Support, Product Manager and Engineering, with Lifecycle Marketing input.
 - **Inputs:** Available product, onboarding experience, runbooks, support coverage and the actual launch audience.
@@ -653,7 +828,7 @@ Deploy and introduce the approved product to its intended audience, stabilize th
 ### 5.9. Monitor and stabilize the launch
 
 - **Description:** Closely monitor service health, security signals, data quality, critical user journeys and support demand. Triage incidents and defects, deliver necessary fixes, and pause or reverse rollout when agreed thresholds are breached.
-- **Final Responsible:** CTO for technical stability, with CISO overseeing security response and COO coordinating customer-facing operations.
+- **Final Responsible:** CTAO for technical stability, with CISAO overseeing security response and COAO coordinating customer-facing operations.
 - **Operational Owner:** Engineering Manager / Incident Lead.
 - **Who executes:** Engineering, Platform/SRE, Security, QA, Support and Product/Data Analysts.
 - **Inputs:** Production release, operational signals, launch thresholds, incident runbooks and incoming customer reports.
@@ -666,7 +841,7 @@ Deploy and introduce the approved product to its intended audience, stabilize th
 ### 5.10. Evaluate launch outcomes and transition to ongoing operations
 
 - **Description:** Compare initial outcomes with launch objectives, accounting for sample size and observation time. Review acquisition, activation, customer feedback, service quality and commercial results where available. Assign ongoing ownership and prioritize follow-up improvements.
-- **Final Responsible:** CPO for product outcome evaluation; COO for the transition to ongoing service operations.
+- **Final Responsible:** CPAO for product outcome evaluation; COAO for the transition to ongoing service operations.
 - **Operational Owner:** Product Manager.
 - **Who executes:** Product Manager, Product/Data Analyst, Marketing, Engineering, Operations and Finance representatives.
 - **Inputs:** Launch/adoption results, early user outcomes, support evidence, stability findings and the original launch objectives.
@@ -683,7 +858,7 @@ Operate the product continuously, learn from outcomes and deliver proportionate 
 ### 6.1. Operate and monitor the service
 
 - **Description:** Keep the product available and functioning within agreed service objectives. Monitor infrastructure, application health, integrations, capacity and critical user journeys, and respond to operational deviations.
-- **Final Responsible:** CTO for technical service operation, in coordination with COO.
+- **Final Responsible:** CTAO for technical service operation, in coordination with COAO.
 - **Operational Owner:** Platform / SRE Lead.
 - **Who executes:** Platform/SRE Engineers, Engineering team and Operations.
 - **Inputs:** Production service, agreed service objectives, runbooks, observability and assigned operating capacity.
@@ -696,7 +871,7 @@ Operate the product continuously, learn from outcomes and deliver proportionate 
 ### 6.2. Provide customer support and customer success
 
 - **Description:** Resolve user questions and problems, support onboarding and adoption, and help customers achieve their intended outcomes. Maintain support resources and identify recurring issues requiring product or operational improvements.
-- **Final Responsible:** COO.
+- **Final Responsible:** COAO.
 - **Operational Owner:** Customer Success / Support Lead.
 - **Who executes:** Customer Support, Customer Success and Operations, with Product and Engineering support.
 - **Inputs:** Active users, onboarding/support workflows, knowledge resources, service commitments and customer requests.
@@ -709,7 +884,7 @@ Operate the product continuously, learn from outcomes and deliver proportionate 
 ### 6.3. Manage incidents and recovery
 
 - **Description:** Detect, triage and resolve service disruptions. Coordinate technical response, customer communication and recovery, then investigate significant incidents and assign preventive actions.
-- **Final Responsible:** CTO for technical incident response, with CISO leading security incidents and COO coordinating customer-facing operations.
+- **Final Responsible:** CTAO for technical incident response, with CISAO leading security incidents and COAO coordinating customer-facing operations.
 - **Operational Owner:** Designated Incident Commander.
 - **Who executes:** On-call Engineers, Platform/SRE, Security, Support and relevant service owners.
 - **Inputs:** Triggered incident, impact evidence, operational/security signals, runbooks, escalation paths and relevant service owners.
@@ -722,7 +897,7 @@ Operate the product continuously, learn from outcomes and deliver proportionate 
 ### 6.4. Maintain technical health
 
 - **Description:** Maintain dependencies, infrastructure, integrations and automated tests. Address technical debt, compatibility changes, performance degradation and obsolete components according to business impact and risk.
-- **Final Responsible:** CTO.
+- **Final Responsible:** CTAO.
 - **Operational Owner:** Tech Lead.
 - **Who executes:** Engineering team, Tech Lead, Platform Engineers and QA.
 - **Inputs:** Technical-health findings, dependency/support lifecycle information, incident actions, code-quality evidence and capacity constraints.
@@ -735,7 +910,7 @@ Operate the product continuously, learn from outcomes and deliver proportionate 
 ### 6.5. Maintain security, privacy and compliance
 
 - **Description:** Monitor threats and vulnerabilities, review access and data-handling practices, and maintain applicable security and privacy controls. Address findings and reassess obligations when the product, market or operating context changes.
-- **Final Responsible:** CISO for security oversight; CLO or designated privacy/legal owner for applicable legal obligations; CTO for technical remediation.
+- **Final Responsible:** CISAO for security oversight; CLAO or designated privacy/legal owner for applicable legal obligations; CTAO for technical remediation.
 - **Operational Owner:** Security Lead.
 - **Who executes:** Security Engineers, Engineering, Privacy Specialists, Legal and Operations.
 - **Inputs:** Current controls and obligations, threat/vulnerability signals, access and data-use changes, and previous risk decisions.
@@ -748,7 +923,7 @@ Operate the product continuously, learn from outcomes and deliver proportionate 
 ### 6.6. Measure product and business outcomes
 
 - **Description:** Evaluate activation, engagement, retention, customer satisfaction and relevant commercial results. Verify measurement quality, investigate changes and distinguish observed behaviour from assumptions or attribution estimates.
-- **Final Responsible:** CPO for product outcomes, with CMO, CFO and COO owning metrics within their areas.
+- **Final Responsible:** CPAO for product outcomes, with CMAO, CFAO and COAO owning metrics within their areas.
 - **Operational Owner:** Product / Data Analyst.
 - **Who executes:** Product/Data Analysts, Product Manager, Marketing Analysts, Finance and Operations Analysts.
 - **Inputs:** Metric definitions, verified instrumentation, launch baseline, usage cohorts and available commercial/operational data.
@@ -761,7 +936,7 @@ Operate the product continuously, learn from outcomes and deliver proportionate 
 ### 6.7. Improve adoption, retention and commercial growth
 
 - **Description:** Improve onboarding communications, lifecycle campaigns, acquisition channels and relevant sales or renewal processes. Coordinate these activities with product improvements to increase sustained customer value.
-- **Final Responsible:** CMO for marketing and lifecycle activities; CPO for in-product adoption and retention; CRO for sales and renewals where applicable.
+- **Final Responsible:** CMAO for marketing and lifecycle activities; CPAO for in-product adoption and retention; CRAO for sales and renewals where applicable.
 - **Operational Owner:** Growth / Lifecycle Lead.
 - **Who executes:** Growth Marketing, Lifecycle/CRM Marketing, Product, Customer Success and Sales.
 - **Inputs:** Product and customer-success findings, funnel/cohort results, commercial objectives and the current GTM strategy.
@@ -774,7 +949,7 @@ Operate the product continuously, learn from outcomes and deliver proportionate 
 ### 6.8. Conduct continuous discovery
 
 - **Description:** Continuously investigate user needs, usage patterns, support themes, churn reasons and market changes. Identify emerging problems and opportunities, and test whether proposed improvements address meaningful needs.
-- **Final Responsible:** CPO.
+- **Final Responsible:** CPAO.
 - **Operational Owner:** Product Manager.
 - **Who executes:** Product Manager, UX Researcher, Product Designer and Product/Data Analyst, with Marketing and Customer Success input.
 - **Inputs:** Usage and outcome evidence, support themes, churn/adoption findings, research and relevant market changes.
@@ -787,7 +962,7 @@ Operate the product continuously, learn from outcomes and deliver proportionate 
 ### 6.9. Prioritize the evolution roadmap
 
 - **Description:** Compare product opportunities, defects, technical debt and operational needs against strategic goals. Balance expected value, risk, effort and available capacity, and determine the next outcomes and increments to pursue.
-- **Final Responsible:** CPO for product priorities, in collaboration with CTO, COO, CMO and CFO.
+- **Final Responsible:** CPAO for product priorities, in collaboration with CTAO, COAO, CMAO and CFAO.
 - **Operational Owner:** Product Manager.
 - **Who executes:** Product Manager, Engineering Manager, Tech Lead and relevant functional leads.
 - **Inputs:** Opportunity evidence, performance findings, technical debt, operational/security needs and capacity/investment constraints.
@@ -800,7 +975,7 @@ Operate the product continuously, learn from outcomes and deliver proportionate 
 ### 6.10. Deliver and evaluate improvements
 
 - **Description:** Route selected improvements through the appropriate discovery, design, development, validation and release activities. Use controlled experiments where suitable, measure results and decide whether to retain, expand, revise or reverse changes.
-- **Final Responsible:** CTO for technical delivery; CPO for product acceptance and outcome evaluation.
+- **Final Responsible:** CTAO for technical delivery; CPAO for product acceptance and outcome evaluation.
 - **Operational Owner:** Engineering Manager / Delivery Lead.
 - **Who executes:** Product, Design, Engineering, QA and Data teams, with Marketing and Operations involved as needed.
 - **Inputs:** Prioritized improvement scope, expected outcomes, current product context and relevant risk/acceptance evidence.
@@ -813,7 +988,7 @@ Operate the product continuously, learn from outcomes and deliver proportionate 
 ### 6.11. Optimize operational and economic efficiency
 
 - **Description:** Review operating costs, infrastructure consumption, acquisition economics, support effort and vendor dependencies. Identify efficiencies while preserving agreed service quality, customer value and risk boundaries.
-- **Final Responsible:** CFO for economic oversight, with CTO and COO accountable for improvements within their areas.
+- **Final Responsible:** CFAO for economic oversight, with CTAO and COAO accountable for improvements within their areas.
 - **Operational Owner:** Finance / Operations Analyst.
 - **Who executes:** Finance Analysts, Platform/Engineering, Operations and Marketing Analysts.
 - **Inputs:** Actual costs and revenue where relevant, operating usage, support effort, vendor commitments and outcome metrics.
@@ -826,7 +1001,7 @@ Operate the product continuously, learn from outcomes and deliver proportionate 
 ### 6.12. Review strategic direction and lifecycle decisions
 
 - **Description:** Periodically reassess whether the product continues to meet strategic, customer and economic objectives. Decide whether to maintain direction, increase investment, reposition, consolidate, replace or retire the product.
-- **Final Responsible:** CEO, in collaboration with CPO, CFO, CTO, CMO and COO.
+- **Final Responsible:** CEAO, in collaboration with CPAO, CFAO, CTAO, CMAO and COAO.
 - **Operational Owner:** Product / Business Strategy Lead.
 - **Who executes:** Product and Business/Strategy leads, supported by Finance, Data and relevant functional teams.
 - **Inputs:** Product/business outcomes, customer and market evidence, economics, risk position and strategic alternatives.
@@ -843,7 +1018,7 @@ Carry out an authorized transition or closure while managing affected users, dat
 ### 7.1. Decide and approve retirement or replacement
 
 - **Description:** Assess whether to discontinue the product or replace it. Define the rationale, affected scope, customer impact and conditions for completing the transition.
-- **Final Responsible:** CEO, in collaboration with CPO, CFO and CTO.
+- **Final Responsible:** CEAO, in collaboration with CPAO, CFAO and CTAO.
 - **Operational Owner:** Product Manager.
 - **Who executes:** Product Manager and Business/Strategy Lead, with Finance, Engineering and Operations input.
 - **Inputs:** Strategic lifecycle decision, rationale, customer and dependency impact, economics and available replacement or exit options.
@@ -856,7 +1031,7 @@ Carry out an authorized transition or closure while managing affected users, dat
 ### 7.2. Plan and communicate the transition
 
 - **Description:** Define timelines, responsibilities, support arrangements and available alternatives. Communicate the changes, deadlines and required actions to affected users, customers, partners and internal teams.
-- **Final Responsible:** COO, in collaboration with CPO, CMO and CLO.
+- **Final Responsible:** COAO, in collaboration with CPAO, CMAO and CLAO.
 - **Operational Owner:** Operations Lead.
 - **Who executes:** Product Manager, Operations, Customer Success, Marketing/Communications and Legal.
 - **Inputs:** Approved lifecycle decision, affected customer/vendor inventory, service commitments, replacement options and legal/financial constraints.
@@ -869,7 +1044,7 @@ Carry out an authorized transition or closure while managing affected users, dat
 ### 7.3. Transition users and data
 
 - **Description:** Migrate users, workflows and required data to a validated replacement, or provide appropriate export and exit options. Verify data integrity, access and transition outcomes before disabling the original service.
-- **Final Responsible:** CTO for technical migration; COO for customer transition.
+- **Final Responsible:** CTAO for technical migration; COAO for customer transition.
 - **Operational Owner:** Migration / Transition Lead.
 - **Who executes:** Engineering, Data Engineers, QA and Customer Success, with Security and Privacy input.
 - **Inputs:** Transition plan, affected users/data, validated destination where applicable, export/migration tooling and data-handling requirements.
@@ -882,7 +1057,7 @@ Carry out an authorized transition or closure while managing affected users, dat
 ### 7.4. Decommission the product securely
 
 - **Description:** Disable the retired application, integrations, scheduled processes and product-specific infrastructure. Revoke obsolete access and credentials, protect shared dependencies, and archive or delete data according to approved retention requirements.
-- **Final Responsible:** CTO, with CISO overseeing security and CLO confirming applicable legal requirements.
+- **Final Responsible:** CTAO, with CISAO overseeing security and CLAO confirming applicable legal requirements.
 - **Operational Owner:** Platform / DevOps Lead.
 - **Who executes:** Engineering, Platform/DevOps, Security and Data teams.
 - **Inputs:** Authorized decommissioning scope, transition evidence or approved N/A, dependency inventory, communication conditions and approved data disposition requirements.
@@ -895,7 +1070,7 @@ Carry out an authorized transition or closure while managing affected users, dat
 ### 7.5. Complete commercial and operational closure
 
 - **Description:** Resolve remaining customer and supplier obligations, final billing or refunds where applicable, and unnecessary recurring expenditure. Reassign resources, preserve essential knowledge and assign ownership of any residual obligations.
-- **Final Responsible:** COO for operational closure; CFO for financial closure, with CLO supporting contractual matters.
+- **Final Responsible:** COAO for operational closure; CFAO for financial closure, with CLAO supporting contractual matters.
 - **Operational Owner:** Operations Lead.
 - **Who executes:** Operations, Finance, Legal, Customer Success and Product Manager.
 - **Inputs:** Transition/decommissioning evidence, customer/vendor obligations, final financial records, resource assignments and essential knowledge.
