@@ -20,3 +20,6 @@ build/
 .DS_Store
 
 drafts/
+# SPADO local runtime data (project configuration remains versionable)
+.spado/local/
+.spado/backups/

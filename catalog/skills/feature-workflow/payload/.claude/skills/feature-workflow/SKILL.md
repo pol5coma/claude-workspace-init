@@ -9,7 +9,7 @@ Deliver a feature in small, verified steps. Follow the phases in order; do not s
 
 ## Before anything: the architecture must exist
 
-If there is no architecture doc, or `docs/architecture.md` still contains `cwi:architecture-template`, stop. Tell the user the architecture is not defined yet and run the **project-discovery** skill first.
+If there is no architecture doc, or `docs/architecture.md` still contains `spado:architecture-template`, stop. Tell the user the architecture is not defined yet and run the **project-discovery** skill first.
 
 ## Ask, don't assume
 
@@ -69,7 +69,7 @@ If something breaks and the cause is unclear, switch to the **debugging** skill 
 - Review the whole branch diff with **code-reviewer** in a fresh context. Add **security-reviewer** when the feature touches authentication, authorization, user input, payments or personal data.
 - Fix confirmed findings, re-run tests, commit.
 - Update `docs/architecture.md` (structure or versions changed), the glossary and the spec status (`done`).
-- After `project-setup` or any dependency upgrade: update the versions table in `docs/architecture.md` and tell the user to run `cwi init` and choose **Rescan**, so the Stack in AGENTS.md lists the real versions.
+- After `project-setup` or any dependency upgrade: update the versions table in `docs/architecture.md` and tell the user to run `spado init` and choose **Rescan**, so the Stack in AGENTS.md lists the real versions.
 - If the feature changed the architecture (new component, integration, data store or flow) and **archify** is installed, offer to regenerate the architecture diagram and link it in the PR. Diagrams live in `docs/diagrams/<type>-<slug>/` (tell archify to use that folder) so they are versioned with the docs.
 - Write the PR description: what and why, how to test, risks, and which acceptance criteria are covered by which tests.
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Report where this project stands in the CWI workflow, as JSON. Read-only.
+"""Report where this project stands in the SPADO workflow, as JSON. Read-only.
 
 Used by the kickoff skill to decide the next step:
   architecture -> specs -> implementation
@@ -15,7 +15,7 @@ import re
 import sys
 from pathlib import Path
 
-TEMPLATE_MARKER = "cwi:architecture-template"
+TEMPLATE_MARKER = "spado:architecture-template"
 IGNORED_DIRS = {
     ".git",
     "node_modules",
@@ -29,7 +29,7 @@ IGNORED_DIRS = {
     "coverage",
     "__pycache__",
     "target",
-    ".cwi",
+    ".spado",
     ".claude",
     "docs",
     ".idea",
@@ -37,7 +37,7 @@ IGNORED_DIRS = {
     ".turbo",
     ".cache",
 }
-CWI_FILES = {"scripts/run-quality-checks.py"}
+SPADO_FILES = {"scripts/run-quality-checks.py"}
 SOURCE_SUFFIXES = {
     ".py",
     ".ts",
@@ -101,7 +101,7 @@ def has_code(root: Path, limit: int = 20_000) -> bool:
         for name in filenames:
             seen += 1
             rel = (rel_dir / name).as_posix()
-            if Path(name).suffix in SOURCE_SUFFIXES and rel not in CWI_FILES:
+            if Path(name).suffix in SOURCE_SUFFIXES and rel not in SPADO_FILES:
                 return True
             if seen > limit:
                 return False

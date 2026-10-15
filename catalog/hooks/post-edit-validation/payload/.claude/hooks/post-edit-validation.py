@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""CWI Post-edit Validation: a Claude Code PostToolUse hook.
+"""SPADO Post-edit Validation: a Claude Code PostToolUse hook.
 
 After Claude edits a file, format and lint *that file only* with tools the project is already
 configured for. Problems are returned to Claude (stderr + exit 2). No configured tool means
-skip silently: CWI never installs or guesses tools, and never runs the test suite here.
+skip silently: SPADO never installs or guesses tools, and never runs the test suite here.
 
 Exit codes: 0 clean or skipped, 2 problems found (shown to Claude), 1 internal error.
 """

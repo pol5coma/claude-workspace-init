@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CWI Safety Guard: a deterministic Claude Code PreToolUse hook.
+"""SPADO Safety Guard: a deterministic Claude Code PreToolUse hook.
 
 Blocks clearly destructive shell commands and edits to protected files before they run.
 It parses commands (it does not grep raw text), so `echo "do not run terraform destroy"`
@@ -287,7 +287,7 @@ DEFAULT_PROTECTED = (
     "id_ed25519*",
     "id_ecdsa*",
     ".git/**",
-    ".claude/cwi-state.json",
+    ".claude/spado-state.json",
     ".claude/hooks/safety-guard.py",
     ".claude/safety-guard.json",
 )
@@ -751,7 +751,7 @@ def check_tool(payload: dict, config: Config) -> str | None:
 def block_message(reason: str, tool: str) -> str:
     rule, _, detail = reason.partition(": ")
     return (
-        "CWI Safety Guard blocked this " + ("command" if tool == "Bash" else "edit") + ".\n"
+        "SPADO Safety Guard blocked this " + ("command" if tool == "Bash" else "edit") + ".\n"
         f"Rule: {rule}\nWhy: {detail}\n\n"
         "Do not retry it or work around the guard. Investigate the current state, explain to the user "
         "why this irreversible operation seems necessary, and ask for explicit approval. The user can run it "

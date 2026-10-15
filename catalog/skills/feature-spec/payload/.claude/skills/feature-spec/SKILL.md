@@ -9,7 +9,7 @@ Write down what to build before building it. The spec is the contract that plann
 
 ## Before anything: the architecture must exist
 
-If there is no architecture doc, or `docs/architecture.md` still contains `cwi:architecture-template`, stop. Tell the user the architecture is not defined yet and run the **project-discovery** skill first.
+If there is no architecture doc, or `docs/architecture.md` still contains `spado:architecture-template`, stop. Tell the user the architecture is not defined yet and run the **project-discovery** skill first.
 
 ## Steps
 
