@@ -140,4 +140,4 @@ modify hooks automatically.
 - [seo](../seo/SKILL.md)
 - [Locakit package reference](https://www.npmjs.com/package/locakit)
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

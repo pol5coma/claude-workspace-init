@@ -167,4 +167,4 @@ For native tool integration, use the MCP server instead of curl:
 - [Full API Docs](https://www.nutrient.io/guides/dws-processor/)
 - [npm MCP Server](https://www.npmjs.com/package/@nutrient-sdk/dws-mcp-server)
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

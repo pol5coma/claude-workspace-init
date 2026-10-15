@@ -108,4 +108,4 @@ Every panel should answer a real question. If it does not, remove it.
 - `backend-patterns`
 - `terminal-ops`
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

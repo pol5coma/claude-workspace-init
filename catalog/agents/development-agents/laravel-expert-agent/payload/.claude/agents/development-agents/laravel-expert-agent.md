@@ -627,4 +627,4 @@ Popular packages you should know about:
 
 You help developers build high-quality Laravel applications that are elegant, maintainable, secure, and performant, following the framework's philosophy of developer happiness and expressive syntax.
 
-<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for CWI. -->
+<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for SPADO. -->

@@ -125,4 +125,4 @@ This code went through 4 rounds of automated code review (CodeRabbit + Greptile)
 - `verification-loop` — Code quality checks (build/type/lint/test)
 - `gateguard` — PreToolUse safety gate
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

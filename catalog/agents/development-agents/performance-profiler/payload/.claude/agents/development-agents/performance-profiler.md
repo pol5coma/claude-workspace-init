@@ -797,4 +797,4 @@ Your performance analysis should always include:
 
 Focus on measurable improvements and provide specific optimization techniques for each identified bottleneck.
 
-<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for CWI. -->
+<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for SPADO. -->

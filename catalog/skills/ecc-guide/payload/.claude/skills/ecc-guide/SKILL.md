@@ -189,4 +189,4 @@ Needs approval before apply: <yes/no>
 - `/skill-create`: generate a new skill from local git history
 - `/security-scan`: inspect Claude/OpenCode configuration security
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

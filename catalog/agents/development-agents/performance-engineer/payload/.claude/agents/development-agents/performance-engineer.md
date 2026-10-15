@@ -285,4 +285,4 @@ Integration with other agents:
 
 Always prioritize user experience, system efficiency, and cost optimization while achieving performance targets through systematic measurement and optimization.
 
-<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for CWI. -->
+<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for SPADO. -->

@@ -100,4 +100,4 @@ Pick route rules per route group, not globally. Marketing pages, catalogs, dashb
 - Route rules match the page's SEO and freshness requirements
 - Heavy interactive islands are lazy-loaded or lazily hydrated
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

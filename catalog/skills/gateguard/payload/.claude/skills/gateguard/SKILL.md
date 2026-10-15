@@ -206,4 +206,4 @@ This adds `.gateguard.yml` for per-project configuration (custom messages, ignor
 - `safety-guard` — Runtime safety checks (complementary, not overlapping)
 - `code-reviewer` — Post-edit review (GateGuard is pre-edit investigation)
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

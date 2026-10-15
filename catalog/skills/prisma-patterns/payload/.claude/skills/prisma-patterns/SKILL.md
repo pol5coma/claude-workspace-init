@@ -400,4 +400,4 @@ await prisma.post.deleteMany({ where: { authorId: userId } });
 - `database-migrations` — multi-step migration planning for production
 - `backend-patterns` — general API and service layer design
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

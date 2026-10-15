@@ -209,4 +209,4 @@ verdict `APPROVE` with status `pass` for all rows.
 Do not withhold approval to appear rigorous. If the code handles Bengali text
 correctly, approve it.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

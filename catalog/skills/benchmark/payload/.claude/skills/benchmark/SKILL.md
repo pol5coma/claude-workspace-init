@@ -94,4 +94,4 @@ Stores baselines in `.ecc/benchmarks/` as JSON. Git-tracked so the team shares b
 - Pair with `/canary-watch` for post-deploy monitoring
 - Pair with `/browser-qa` for full pre-ship checklist
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

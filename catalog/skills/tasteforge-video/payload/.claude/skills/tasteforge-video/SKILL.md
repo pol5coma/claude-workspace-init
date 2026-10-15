@@ -255,4 +255,4 @@ When shots must be generated, pass the reviewed brief and style direction to
 offline CLI remains fail-closed; its plans and editable timelines do not prove
 a provider job ran.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

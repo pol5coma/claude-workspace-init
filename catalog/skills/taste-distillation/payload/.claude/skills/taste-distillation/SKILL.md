@@ -199,4 +199,4 @@ export FAL_KEY=...            # only needed for the stages that call fal
 Every network call is stubbed under `TASTE_FORGE_DRY_RUN=1` or `--dry-run`, so
 the plan, prompts, track layout and manifest can be inspected without spending.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

@@ -96,4 +96,4 @@ request, invoke that specialized skill without routing through this one.
 - Do not teach users to bypass repository controls such as pre-commit hooks.
 - Do not add archive or index mutation to this read-only foundation.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

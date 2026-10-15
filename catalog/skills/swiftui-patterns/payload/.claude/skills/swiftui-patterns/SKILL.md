@@ -258,4 +258,4 @@ Use `#Preview` macro with inline mock data for fast iteration:
 See skill: `swift-actor-persistence` for actor-based persistence patterns.
 See skill: `swift-protocol-di-testing` for protocol-based DI and testing with Swift Testing.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

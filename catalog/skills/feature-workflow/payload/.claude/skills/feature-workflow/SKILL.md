@@ -69,7 +69,7 @@ If something breaks and the cause is unclear, switch to the **debugging** skill 
 - Review the whole branch diff with **code-reviewer** in a fresh context. Add **security-reviewer** when the feature touches authentication, authorization, user input, payments or personal data.
 - Fix confirmed findings, re-run tests, commit.
 - Update `docs/architecture.md` (structure or versions changed), the glossary and the spec status (`done`).
-- After `project-setup` or any dependency upgrade: update the versions table in `docs/architecture.md` and tell the user to run `spado init` and choose **Rescan**, so the Stack in AGENTS.md lists the real versions.
+- After `project-setup` or any dependency upgrade: verify the installed versions against the project lockfiles, update the versions table in `docs/architecture.md`, and update any Stack section in AGENTS.md or CLAUDE.md if that file exists.
 - If the feature changed the architecture (new component, integration, data store or flow) and **archify** is installed, offer to regenerate the architecture diagram and link it in the PR. Diagrams live in `docs/diagrams/<type>-<slug>/` (tell archify to use that folder) so they are versioned with the docs.
 - Write the PR description: what and why, how to test, risks, and which acceptance criteria are covered by which tests.
 

@@ -284,4 +284,4 @@ class FakeItemRepository : ItemRepository {
 See skill: `compose-multiplatform-patterns` for UI consumption of Flows.
 See skill: `android-clean-architecture` for where coroutines fit in layers.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

@@ -136,4 +136,4 @@ Useful sections to add only when missing:
 - **A deleted file keeps coming back:** Record it in the existing status page's delete-zone and preserve the reason and replacement in an ADR or maintenance decision log.
 - **A log contains an old claim or secret:** Redact sensitive content, append a dated correction, and validate the replacement statement against code, tests, configuration, or Git.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

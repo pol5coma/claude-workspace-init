@@ -151,4 +151,4 @@ Omit principles that you checked but did not change.
 - `transition: all` and `will-change: all` are absent.
 - Small controls still have usable hit areas.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

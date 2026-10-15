@@ -887,4 +887,4 @@ pytest tests/test_login.py --count=5 -v
 - `cpp-testing` — C++ unit/integration testing with GoogleTest
 - `cpp-coding-standards` — C++ code style and patterns
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

@@ -474,4 +474,4 @@ If the page is server-rendered with occasional interactivity, Hotwire ships fast
 - `backend-patterns` — service boundaries and adapter patterns (referenced by the Ruby patterns rules)
 - Ruby patterns rules (`rules/ruby/patterns.md`, installed as `rules/ecc/ruby/patterns.md`) — the decisions and when-to-use guidance this skill implements
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

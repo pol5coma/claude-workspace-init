@@ -242,4 +242,4 @@ var body: some View {
 - Streaming UI that progressively shows generated content
 - Domain-specific AI actions via tool calling (search, compute, lookup)
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

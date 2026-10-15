@@ -3,7 +3,7 @@
   "id": "kickoff",
   "type": "skill",
   "name": "Kickoff",
-  "description": "Start or resume work on this project in the right order - architecture first, then feature specs, then implementation. Checks the project state and runs project-discovery, feature-spec or feature-workflow as needed. Use when opening the project, when the user says start, kickoff, continue, \"what's next\" or \"where were we\", or right after spado init.",
+  "description": "Start or resume work on this project in the right order - architecture first, then feature specs, then implementation. Checks the project state and runs project-discovery, feature-spec or feature-workflow as needed. Use when opening the project, when the user says start, kickoff, continue, \"what's next\" or \"where were we\", or after installing this skill.",
   "default_selected": true,
   "dependencies": [
     "skill:project-discovery",

@@ -439,4 +439,4 @@ main().catch((err) => {
 - **Facilitators**: [self-facilitation example](https://github.com/x402-foundation/x402/tree/main/examples/typescript/servers/self-facilitation) (no third party), [x402.org facilitator](https://x402.org/facilitator) (testnet default), and the maintained [production list](https://docs.x402.org/dev-tools/facilitators)
 - **Discovery**: CDP and PayAI bazaars at `/discovery/resources`; [pay.sh](https://pay.sh) for Solana-payable services
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

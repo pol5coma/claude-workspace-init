@@ -412,4 +412,4 @@ When this skill is used for review, return:
 - Skill: `security-review` - secret handling, auth, and least privilege
 - Agent: `database-reviewer` - broader database review workflow
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

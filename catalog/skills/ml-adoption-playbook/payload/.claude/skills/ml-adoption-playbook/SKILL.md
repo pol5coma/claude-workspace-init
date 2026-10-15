@@ -56,4 +56,4 @@ When assisting a user via this playbook, agents should:
 3. **Write the decoupling interface** (API/Service) in Phase 3 *before* writing the training loop.
 4. **Deliver a reproducible script** in Phase 4 that trains the model and saves the artifact.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

@@ -105,4 +105,4 @@ Keep the plan concrete, but label unknowns clearly. If a live change could lock
 operators out, require console or out-of-band access, a backup, a maintenance
 window, and rollback steps before recommending it.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

@@ -336,4 +336,4 @@ identify the 5 most engaging 30-second clips for social media."
 - `videodb` — Server-side video processing, indexing, and streaming
 - `content-engine` — Platform-native content distribution
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

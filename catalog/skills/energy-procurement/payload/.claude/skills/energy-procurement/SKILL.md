@@ -220,4 +220,4 @@ Track monthly, review quarterly with finance and sustainability:
 - Maintain an internal hedge policy, approved counterparty list, and tariff-change calendar alongside this skill.
 - Keep facility-specific load shapes and utility contract metadata close to the planning workflow so recommendations stay grounded in real demand patterns.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

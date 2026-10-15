@@ -563,4 +563,4 @@ testWidgets('CartBadge shows item count', (tester) async {
 - Skill: `flutter-dart-code-review` — comprehensive review checklist
 - Rules: `rules/dart/` — coding style, patterns, security, testing, hooks
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

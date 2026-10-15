@@ -949,4 +949,4 @@ SecurityLogger::log('suspicious_activity', ['reason' => 'multiple_attempts_from_
 - `backend-patterns` — General backend API and database patterns
 - `laravel-tdd` — Laravel testing with PHPUnit and Pest
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

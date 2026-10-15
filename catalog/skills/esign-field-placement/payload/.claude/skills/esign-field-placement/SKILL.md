@@ -198,4 +198,4 @@ The operator re-authenticates in the browser; the automation is re-run.
 - With no `--draft` or explicit send instruction, the envelope is not sent.
 - A logged-out session exits non-zero before touching the composer.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

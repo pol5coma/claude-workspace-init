@@ -158,4 +158,4 @@ Delegate platform-native content production to `content-engine`.
 Delegate multi-platform distribution to `crosspost`.
 Use `market-research` for deep audience or competitive intelligence.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

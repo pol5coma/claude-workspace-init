@@ -1,6 +1,6 @@
 ---
 name: project-discovery
-description: First step after spado init. Defines the project architecture before any spec or code - finds existing architecture docs, analyzes existing code, or builds the architecture from requirements documents - and fills docs/architecture.md, the glossary and the feature backlog. Use when starting work on a project, when docs/architecture.md contains spado:architecture-template, or when asked to document or define the architecture.
+description: First step when using this standalone skill. Defines the project architecture before any spec or code - finds existing architecture docs, analyzes existing code, or builds the architecture from requirements documents - and fills docs/architecture.md, the glossary and the feature backlog. Use when starting work on a project, when docs/architecture.md contains spado:architecture-template, or when asked to document or define the architecture.
 ---
 
 # Project discovery
@@ -23,7 +23,7 @@ Then follow the matching path.
 
 ### 1. Yes, path given
 - Read the document. If it misses structure, data flow, integrations or versions, list the gaps and ask whether to complete them.
-- Make sure AGENTS.md (or CLAUDE.md) points to it under "Project docs". If `docs/architecture.md` is the unused SPADO template, ask whether to delete it.
+- Make sure AGENTS.md (or CLAUDE.md) points to it under "Project docs". If `docs/architecture.md` is only an unused placeholder, ask whether to delete it.
 
 ### 2. Yes, find it
 - Search: `ARCHITECTURE.md`, `docs/**/architecture*`, `docs/**/design*`, ADR folders (`docs/adr`, `docs/decisions`), README sections named "Architecture". Skip `node_modules`, build output and vendored code.
@@ -40,7 +40,7 @@ Then follow the matching path.
 - Ask: "Do you have requirements documents? Give me their path (for example `docs/requirements/`), or say none."
 - **With requirements:** read all of them, then:
   - Build `docs/domain/glossary.md` from the business terms.
-  - Propose the architecture in `docs/architecture.md` (components, data, integrations) using the stack in AGENTS.md. Use the latest stable versions unless the requirements say otherwise, and record them in the versions table.
+  - Propose the architecture in `docs/architecture.md` (components, data, integrations) using the stack documented by the project, if available. Use the latest stable versions unless the requirements say otherwise, and record them in the versions table.
   - Record the stack choice in `docs/decisions/0001-stack.md`.
   - Write an ordered feature backlog in `docs/specs/README.md` under a `## Backlog` heading, as a numbered list of `` `slug` — description `` items (dependencies first). The first item is `project-setup`: the walking skeleton (project scaffold, tooling, CI, one end-to-end path).
   - Every contradiction, gap or ambiguity between documents becomes a question for the user — list them and ask before writing.
@@ -50,6 +50,6 @@ Then follow the matching path.
 ## Step 2 — Confirm and finish
 
 1. Show a short summary of what you will write; write it only after the user agrees.
-2. Delete the `spado:architecture-template` line at the top of `docs/architecture.md`.
+2. If the architecture file contains the `spado:architecture-template` placeholder marker, remove it after the architecture is completed.
 3. **Diagram (optional).** If the **archify** skill is installed, offer to generate the architecture diagram from `docs/architecture.md` and the code (repository evidence). Diagrams live in `docs/diagrams/<type>-<slug>/` (tell archify to use that folder) so they are versioned with the docs. Link it from the Overview of `docs/architecture.md`. If Node.js is missing, say so and skip.
 4. Tell the user the next step: **feature-spec** for the first feature in the backlog (`project-setup` for a new project). If the **kickoff** skill is installed, suggest `/kickoff` to continue in order.

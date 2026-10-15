@@ -143,4 +143,4 @@ final class QuestionListViewModel {
 - Any shared mutable state that multiple parts of the app access concurrently
 - Replacing legacy `DispatchQueue`-based thread safety with modern Swift concurrency
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

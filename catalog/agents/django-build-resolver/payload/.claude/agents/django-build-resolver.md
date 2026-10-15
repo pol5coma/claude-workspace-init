@@ -251,4 +251,4 @@ Final: `Django Status: OK/FAILED | Errors Fixed: N | Files Modified: list`
 For Django architecture and ORM patterns, see `skill: django-patterns`.
 For Django security settings, see `skill: django-security`.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

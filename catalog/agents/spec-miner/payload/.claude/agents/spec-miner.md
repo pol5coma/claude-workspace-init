@@ -216,4 +216,4 @@ Write the `description` in the frontmatter to include a summary of the module's 
 - FAIL: Reading every file in a large module instead of using sample-and-expand — wastes tokens and hits context limits
 - FAIL: Recording `depends_on` / `triggers` for cross-module or async event-driven relationships — those are not statically traceable
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

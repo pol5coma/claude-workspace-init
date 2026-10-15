@@ -376,4 +376,4 @@ v2.1 is fully compatible with v2.0 and v1:
 
 *Instinct-based learning: teaching Claude your patterns, one project at a time.*
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

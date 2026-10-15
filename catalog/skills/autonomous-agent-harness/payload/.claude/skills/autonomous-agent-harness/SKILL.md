@@ -270,4 +270,4 @@ Trigger: 30 min before each calendar event
 - Memory files should be kept concise. Archive old data rather than letting files grow unbounded.
 - Always verify that scheduled tasks completed successfully. Add error handling to cron prompts.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

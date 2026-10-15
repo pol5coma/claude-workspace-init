@@ -156,4 +156,4 @@ End with questions that force decisions, not admiration of the analysis:
 - `competitive-platform-analysis` — provides the tier structure (Direct / Adjacent / Aspirational) used in Section 3.
 - `brand-discovery` — use to establish the client's positioning brief if it hasn't been defined.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

@@ -202,4 +202,4 @@ Run `dev-team` to shape a proposal, then `council` if a specific decision within
 - `/plan-prd` (command) — product requirements document before the team session
 - `/epic-decompose` (command) — break the outcome into issue-backed work
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

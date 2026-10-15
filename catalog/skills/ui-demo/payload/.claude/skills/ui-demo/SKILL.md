@@ -465,4 +465,4 @@ node demo-script.cjs
 11. Placeholder select values look real - watch for `"0"` and `"Select..."`.
 12. Popups create separate videos - capture popup pages explicitly and merge later if needed.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

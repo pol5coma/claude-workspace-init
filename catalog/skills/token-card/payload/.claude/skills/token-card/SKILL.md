@@ -120,4 +120,4 @@ On a dry run: what would have been written, and nothing on disk changed.
   installed globally; `npx` fetches the pinned version per run.
 - Reads token counts and timestamps only.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

@@ -276,4 +276,4 @@ Use the same boundary rules across ecosystems; only syntax and wiring style chan
 - Refactoring starts from one vertical slice with behavior-preserving tests.
 - Language/framework specifics stay in adapters, never in domain rules.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

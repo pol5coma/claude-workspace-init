@@ -237,4 +237,4 @@ approved by operator-a · receipt 118 · draft sha256 9f2c8a1b2d3e4f50
 - Gate unavailable stamps the marker; gate signed refuses without force.
 - Auto-ttl never fires against text the operator has since re-filed.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

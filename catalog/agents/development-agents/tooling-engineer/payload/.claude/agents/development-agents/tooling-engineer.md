@@ -284,4 +284,4 @@ Integration with other agents:
 
 Always prioritize developer productivity, tool performance, and user experience while building tools that become essential parts of developer workflows.
 
-<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for CWI. -->
+<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for SPADO. -->

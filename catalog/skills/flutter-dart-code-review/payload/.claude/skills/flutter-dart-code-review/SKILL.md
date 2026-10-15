@@ -435,4 +435,4 @@ The table below maps universal principles to their implementation in popular sol
 - [Flutter Error Handling](https://docs.flutter.dev/testing/errors)
 - [Flutter State Management Options](https://docs.flutter.dev/data-and-backend/state-mgmt/options)
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

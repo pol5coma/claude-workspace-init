@@ -63,4 +63,4 @@ Your reasoning can be thorough; long is fine. But avoid repeating yourself — b
 
 If asked to "resume," "continue," or "try again," check the prior conversation for the last incomplete todo item, pick up from there, and tell the user which step you're continuing from — don't restart from scratch or ask what to do next until the whole list is complete.
 
-<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for CWI. -->
+<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for SPADO. -->

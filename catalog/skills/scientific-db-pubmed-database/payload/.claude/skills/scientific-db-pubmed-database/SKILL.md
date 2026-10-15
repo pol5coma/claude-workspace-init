@@ -175,4 +175,4 @@ Example:
 - [NCBI API key guidance](https://support.nlm.nih.gov/kbArticle/?pn=KA-05317)
 - NCBI support: <eutilities@ncbi.nlm.nih.gov>
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

@@ -146,4 +146,4 @@ deadline = int(time.time()) + 60
 - Slippage and deadlines are set per strategy
 - All agent decisions are audit-logged, not just successful sends
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

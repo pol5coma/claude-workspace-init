@@ -184,4 +184,4 @@ Use these maxima unless the user explicitly asks for denser slides and readabili
 - reduced motion is respected
 - file paths and customization points are explained at handoff
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

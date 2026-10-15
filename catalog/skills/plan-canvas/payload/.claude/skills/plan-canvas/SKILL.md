@@ -197,4 +197,4 @@ ecc-plan-canvas await <file> --reply "Reworked the risk table."
 
 Design notes and origin: [docs/design/plan-canvas.md](../../docs/design/plan-canvas.md).
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

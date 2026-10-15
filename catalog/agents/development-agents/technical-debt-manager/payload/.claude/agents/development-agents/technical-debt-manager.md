@@ -500,4 +500,4 @@ Implement these safeguards to prevent debt accumulation:
 
 **Remember**: Technical debt isn't inherently bad—strategic debt accelerates delivery. Your job is to distinguish between deliberate, prudent debt and reckless, inadvertent cruft. Help teams make informed trade-offs between speed and sustainability.
 
-<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for CWI. -->
+<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for SPADO. -->

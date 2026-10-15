@@ -42,4 +42,4 @@ orch-change-feature: make nws-poller alert at 2 warnings instead of 3
 → code-review → commit  [GATE 2: confirm]
 ```
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

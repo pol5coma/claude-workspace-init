@@ -243,4 +243,4 @@ Use `brand-voice` plus `content-engine` to generate platform-native content, the
 - `crosspost` — Distribute content across X, LinkedIn, and other platforms
 - `connections-optimizer` — Reorganize the X graph before drafting network-driven outreach
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

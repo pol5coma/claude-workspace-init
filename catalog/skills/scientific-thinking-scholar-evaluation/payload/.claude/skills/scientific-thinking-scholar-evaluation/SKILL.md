@@ -160,4 +160,4 @@ Use `N/A` for dimensions that do not apply.
 - Do not treat citation count, venue, or author reputation as proof of quality.
 - Do not accept unsupported claims just because they appear in the abstract.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

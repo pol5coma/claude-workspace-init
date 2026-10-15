@@ -403,4 +403,4 @@ Use Pub/Sub for fire-and-forget. Switch to Streams if you need guaranteed delive
 - Skill: `django-patterns` — Django cache framework integration
 - Agent: `database-reviewer` — full database review workflow
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

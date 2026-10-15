@@ -69,4 +69,4 @@ Use **Zod** (or the SDK’s preferred schema format) for input validation.
 - **Go**: Official Go SDK on GitHub (`modelcontextprotocol/go-sdk`).
 - **C#**: Official C# SDK for .NET.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

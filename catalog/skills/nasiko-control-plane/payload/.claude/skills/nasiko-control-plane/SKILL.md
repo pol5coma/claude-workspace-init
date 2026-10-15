@@ -48,4 +48,4 @@ was enabled, or Ito compute is connected. Report each state separately.
   explicit absolute `ECC_NASIKO_CLI_EXECUTABLE` for development verification.
 - Do not treat a partial or ambiguous installation as success.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

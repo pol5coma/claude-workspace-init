@@ -108,4 +108,4 @@ For detailed PHP patterns, security examples, and code samples, see skills: `lar
 
 Review with the mindset: "Would this code pass review at a top PHP shop or open-source project?"
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

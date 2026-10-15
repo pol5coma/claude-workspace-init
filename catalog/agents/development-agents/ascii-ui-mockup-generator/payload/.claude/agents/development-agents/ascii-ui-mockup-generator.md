@@ -39,4 +39,4 @@ Your ASCII mockups should be production-ready blueprints that developers can dir
 
 Always start by confirming your understanding of the requirements before generating mockups, and be ready to iterate based on user feedback.
 
-<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for CWI. -->
+<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for SPADO. -->

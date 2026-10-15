@@ -115,4 +115,4 @@ For detailed Swift patterns and rules, see rules: `swift/coding-style`, `swift/p
 
 Review with the mindset: "Would this code pass review at a top Swift shop or well-maintained open-source project?"
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

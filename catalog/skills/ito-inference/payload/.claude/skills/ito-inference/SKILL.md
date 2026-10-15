@@ -118,4 +118,4 @@ These stages describe the future backend, not code that exists in ECC:
 Until every gate and lifecycle operation above exists in the canonical runtime,
 this skill remains a fail-closed availability check and documentation handoff.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

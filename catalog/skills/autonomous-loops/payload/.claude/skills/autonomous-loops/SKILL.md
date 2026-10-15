@@ -610,4 +610,4 @@ These patterns compose well:
 | NanoClaw | ECC | `/claw` command in this repo |
 | Verification Loop | ECC | `skills/verification-loop/` in this repo |
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

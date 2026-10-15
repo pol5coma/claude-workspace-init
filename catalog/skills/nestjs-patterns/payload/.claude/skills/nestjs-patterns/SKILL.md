@@ -230,4 +230,4 @@ describe('UsersController', () => {
 - Keep background jobs and event consumers in their own modules, not inside HTTP controllers.
 - Make rate limiting, auth, and audit logging explicit for public endpoints.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

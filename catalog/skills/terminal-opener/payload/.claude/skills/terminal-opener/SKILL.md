@@ -54,4 +54,4 @@ the returned `action` when the adapter is missing or unsupported. Use WezTerm
 for the current adapter; treat other requested terminals as unsupported plans,
 not as commands to execute.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

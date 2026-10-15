@@ -161,4 +161,4 @@ data = dataclasses.asdict(entry)  # Use manual serialization instead
 - Cache entries that would be extremely large (consider streaming instead)
 - Results that depend on parameters beyond file content (e.g., different extraction configs)
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

@@ -1,6 +1,6 @@
 ---
 name: kickoff
-description: Start or resume work on this project in the right order - architecture first, then feature specs, then implementation. Checks the project state and runs project-discovery, feature-spec or feature-workflow as needed. Use when opening the project, when the user says start, kickoff, continue, "what's next" or "where were we", or right after spado init.
+description: Start or resume work on this project in the right order - architecture first, then feature specs, then implementation. Checks the project state and runs project-discovery, feature-spec or feature-workflow as needed. Use when opening the project, when the user says start, kickoff, continue, "what's next" or "where were we", or after installing this skill.
 ---
 
 # Kickoff
@@ -51,7 +51,7 @@ The user can always override: if they ask for a specific feature or phase, do th
 
 ## Rules
 
-- **Order matters.** Do not write specs while the architecture is missing or still the SPADO template, and do not implement a feature without a `ready` spec.
+- **Order matters.** Do not write specs while the architecture is missing or still a placeholder, and do not implement a feature without a `ready` spec.
 - **Ask, don't assume.** Stop and ask when anything is unclear, contradictory, or missing an important decision. Never invent requirements or business rules.
 - **Status lives in the files.** Keep `Status:` in each spec and the backlog in `docs/specs/README.md` up to date (`## Backlog` as a numbered list of `` `slug` — description `` items), so the next `/kickoff` picks up correctly.
 - **Stay safe.** Work on feature branches, never force-push, and ask before anything destructive.

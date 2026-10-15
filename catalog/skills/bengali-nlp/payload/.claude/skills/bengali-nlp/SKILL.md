@@ -461,4 +461,4 @@ text = re.sub(r'[\u200b\ufeff]', '', scraped_html.get_text())
 - `regex-vs-llm-structured-text` — choosing between pattern matching and a model for text extraction
 - `database-migrations` — applying the collation and encoding changes above to a live schema
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

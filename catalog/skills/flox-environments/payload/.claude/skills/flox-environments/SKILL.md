@@ -496,4 +496,4 @@ The following skills are available as part of the [Flox Claude Code plugin](http
 
 Learn more and install at [flox.dev/docs](https://flox.dev/docs/install-flox/install/)
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

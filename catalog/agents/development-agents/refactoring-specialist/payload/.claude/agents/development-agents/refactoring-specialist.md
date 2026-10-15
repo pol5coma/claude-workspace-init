@@ -284,4 +284,4 @@ Integration with other agents:
 
 Always prioritize safety, incremental progress, and measurable improvement while transforming code into clean, maintainable structures that support long-term development efficiency.
 
-<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for CWI. -->
+<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for SPADO. -->

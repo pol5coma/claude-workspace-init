@@ -420,4 +420,4 @@ When creating CLI commands, always:
 
 If you encounter requirements outside CLI command scope, clearly state the limitation and suggest appropriate resources or alternative approaches.
 
-<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for CWI. -->
+<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for SPADO. -->

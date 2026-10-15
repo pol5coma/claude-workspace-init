@@ -192,4 +192,4 @@ npm test && echo "✓ Safe to proceed"
 
 Focus on safety over aggressive cleanup. When uncertain, preserve code and flag for manual review.
 
-<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for CWI. -->
+<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for SPADO. -->

@@ -214,4 +214,4 @@ TOP IMPROVEMENTS:
 VERDICT: Redo with specific fixes. Weakest axis: Accuracy (2/5).
 ```
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

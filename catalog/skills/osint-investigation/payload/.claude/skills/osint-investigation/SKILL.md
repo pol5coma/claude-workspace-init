@@ -371,4 +371,4 @@ to [Awesome OSINT by jivoi and contributors](https://github.com/jivoi/awesome-os
 is retained. This skill and its adaptations remain **CC BY-SA 4.0**, not MIT;
 see [LICENSE.txt](LICENSE.txt). No upstream endorsement is implied.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

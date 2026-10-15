@@ -76,4 +76,4 @@ Action: Call the resolve-library-id tool with libraryName "Supabase", query "Sup
 
 Output: List of auth methods with short code examples and a note that details are from current Supabase docs.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

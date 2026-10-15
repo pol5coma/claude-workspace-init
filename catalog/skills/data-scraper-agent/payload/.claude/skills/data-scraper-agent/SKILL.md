@@ -775,4 +775,4 @@ A complete working agent built with this exact architecture would collect from 4
 batch Gemini calls, learn from Applied/Rejected decisions stored in Notion, and run
 100% free on GitHub Actions. Follow Steps 1–9 above to build your own.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

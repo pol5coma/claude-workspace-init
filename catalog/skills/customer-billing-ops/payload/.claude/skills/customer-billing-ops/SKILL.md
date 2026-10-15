@@ -140,4 +140,4 @@ PRODUCT GAP
 - "This looks like duplicate personal checkout, not a real team-seat purchase"
 - "Refund one duplicate charge, keep the remaining active subscription, then convert the customer to org billing later if needed"
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

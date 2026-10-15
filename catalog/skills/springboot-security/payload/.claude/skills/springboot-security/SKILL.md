@@ -272,4 +272,4 @@ public class RateLimitFilter extends OncePerRequestFilter {
 
 **Remember**: Deny by default, validate inputs, least privilege, and secure-by-configuration first.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

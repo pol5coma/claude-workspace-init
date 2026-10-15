@@ -169,4 +169,4 @@ Keep message bodies, supplier terms, channel identifiers, secrets and raw incide
 receipts out of public tests and diagnostics. Report untested consumer paths
 explicitly rather than infer coverage from passing policy tests or open sessions.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

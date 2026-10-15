@@ -130,4 +130,4 @@ cast call <token_address> "decimals()(uint8)" --rpc-url <rpc>
 - Re-query decimals after bridging or wrapper changes
 - Normalize internal accounting consistently before comparison or pricing
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

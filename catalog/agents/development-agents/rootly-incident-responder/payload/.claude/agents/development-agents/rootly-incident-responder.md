@@ -349,4 +349,4 @@ This skill provides AI-assisted incident response with human approval gates. For
 
 This MCP skill and AI SRE work together: the skill provides the foundation for manual workflows, while AI SRE automates the repetitive parts as your team scales.
 
-<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for CWI. -->
+<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for SPADO. -->

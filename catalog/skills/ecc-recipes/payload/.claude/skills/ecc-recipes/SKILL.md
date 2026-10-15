@@ -149,4 +149,4 @@ pass review N consecutive times (add a max-iteration backstop to bound burn).
 - Not prompt rewriting — that's `prompt-optimizer`.
 - Never hardcode command counts or member lists — always live-read.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

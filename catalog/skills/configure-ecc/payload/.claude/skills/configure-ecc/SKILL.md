@@ -205,4 +205,4 @@ npx --yes --package ecc-universal ecc welcome --action configured
 
 Do not claim that Kimi installed or configured ECC lifecycle hooks.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

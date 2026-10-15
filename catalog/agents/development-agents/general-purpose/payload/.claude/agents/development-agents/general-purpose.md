@@ -51,4 +51,4 @@ The default agent for handling complex, multi-step tasks with automatic delegati
 - Make assumptions about requirements
 - Leave tasks incomplete
 
-<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for CWI. -->
+<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for SPADO. -->

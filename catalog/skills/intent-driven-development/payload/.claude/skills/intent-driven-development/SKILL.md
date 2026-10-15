@@ -359,4 +359,4 @@ When another planning or implementation workflow is available, pass the acceptan
 criterion IDs to it. When no dedicated workflow exists, provide the brief directly as the
 implementation reference. Do not assume any named skill or tool is installed.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

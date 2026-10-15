@@ -231,4 +231,4 @@ npx eslint . 2>&1 | tee /tmp/lint-output.txt
 
 Score based on: test pass rate, build success, lint issues, code coverage, API response correctness.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

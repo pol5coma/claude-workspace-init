@@ -385,4 +385,4 @@ No bug in /api/user/notifications  → Don't write test (yet)
 - Write integration tests when unit tests suffice
 - Aim for coverage percentage — aim for regression prevention
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

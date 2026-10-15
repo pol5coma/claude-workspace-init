@@ -288,4 +288,4 @@ python3 ${SKILL_DIR}/gacha.py [次数]
 
 > 注：README.md / README.zh.md 是给人类用户看的安装说明，不影响 Skill 运行。
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

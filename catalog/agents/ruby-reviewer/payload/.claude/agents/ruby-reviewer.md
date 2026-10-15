@@ -111,4 +111,4 @@ For detailed Ruby and Rails patterns, security guidance, and testing conventions
 
 Review with the mindset: "Would this code pass review at a top Ruby shop or a well-maintained Rails open-source project?"
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

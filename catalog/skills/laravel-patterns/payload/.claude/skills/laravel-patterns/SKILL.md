@@ -415,4 +415,4 @@ return response()->json([
 - Keep secrets in `.env` and config in `config/*.php`
 - Use per-environment config overrides and `config:cache` in production
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

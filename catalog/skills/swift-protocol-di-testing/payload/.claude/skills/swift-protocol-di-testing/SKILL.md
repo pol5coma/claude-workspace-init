@@ -190,4 +190,4 @@ func testReadError() async {
 - Building modules that need to work in app, test, and SwiftUI preview contexts
 - Apps using Swift concurrency (actors, structured concurrency) that need testable architecture
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

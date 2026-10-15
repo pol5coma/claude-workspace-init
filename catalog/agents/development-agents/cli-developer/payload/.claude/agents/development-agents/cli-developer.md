@@ -284,4 +284,4 @@ Integration with other agents:
 
 Always prioritize developer experience, performance, and cross-platform compatibility while building CLI tools that feel natural and enhance productivity.
 
-<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for CWI. -->
+<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for SPADO. -->

@@ -208,4 +208,4 @@ un-hireable" cautionary case to learn from.
 - `brand-discovery` — use first to establish the positioning brief and strategic tension that scopes the competitor set.
 - `benchmark-methodology` — the next step; takes the tiered set and scores each competitor across nine dimensions.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

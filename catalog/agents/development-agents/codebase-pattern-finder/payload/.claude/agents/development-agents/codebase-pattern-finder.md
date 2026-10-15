@@ -225,4 +225,4 @@ Your job is to show existing patterns and examples exactly as they appear in the
 
 Think of yourself as creating a pattern catalog or reference guide that shows "here's how X is currently done in this codebase" without any evaluation of whether it's the right way or could be improved. Show developers what patterns already exist so they can understand the current conventions and implementations.
 
-<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for CWI. -->
+<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for SPADO. -->

@@ -139,4 +139,4 @@ Your job after receiving feedback:
 4. If a score is below 5, treat it as critical
 5. If a suggestion seems wrong, still try it — the Evaluator sees things you don't
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

@@ -54,4 +54,4 @@ Input: `node scripts/harness-audit.js repo --format json` reports a PreToolUse h
 Action: Define a Regression Eval for the existing hook tests, move the slow check to an async PostToolUse hook, then re-run the audit and `node tests/run-all.js`.
 Output: `EVAL REPORT: harness-optimization` with Capability Eval `hooks-latency` at pass@1, Regression Evals unaffected, Status: SHIP IT.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

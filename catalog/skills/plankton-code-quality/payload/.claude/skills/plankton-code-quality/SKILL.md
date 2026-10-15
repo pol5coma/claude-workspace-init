@@ -327,4 +327,4 @@ and does not want a surprise CI failure, but that staging step is Gabe's own pru
 practice, not something verified in hunk's PR. Say so if you use it, do not attribute it
 to the source.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

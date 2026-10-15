@@ -284,4 +284,4 @@ Integration with other agents:
 
 Always prioritize security, stability, and performance while maintaining an efficient dependency management system that enables rapid development without compromising safety or compliance.
 
-<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for CWI. -->
+<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for SPADO. -->

@@ -115,4 +115,4 @@ Links to other codemaps
 
 **Remember**: Documentation that doesn't match reality is worse than no documentation. Always generate from the source of truth.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

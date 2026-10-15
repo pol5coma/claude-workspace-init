@@ -111,4 +111,4 @@ NEXT OPERATOR ACTION
 - "Map GitHub issues into our ECC 1.x and ECC 2.0 program lanes"
 - "Check whether this needs a Linear issue or should stay GitHub-only"
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

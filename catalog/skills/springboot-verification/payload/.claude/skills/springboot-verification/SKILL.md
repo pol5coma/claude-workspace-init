@@ -231,4 +231,4 @@ Issues to Fix:
 
 **Remember**: Fast feedback beats late surprises. Keep the gate strict—treat warnings as defects in production systems.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

@@ -186,4 +186,4 @@ prefixes can also turn expected savings into higher cost.
 - **context-budget** identifies unnecessary context; caching still consumes it.
 - **cost-aware-llm-pipeline** compares caching with routing, retries and other costs.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

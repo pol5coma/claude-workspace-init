@@ -169,4 +169,4 @@ On a 50,000-file C++ monorepo:
 
 - [GitHub Repository](https://github.com/haibindev/repo-scan)
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

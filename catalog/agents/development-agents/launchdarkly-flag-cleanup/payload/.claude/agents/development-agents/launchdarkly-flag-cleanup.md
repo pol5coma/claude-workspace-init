@@ -193,4 +193,4 @@ Create a PR with a clear, structured description:
 - Don't skip the safety checks — always verify removal readiness
 - Don't guess the forward value — always use LaunchDarkly's configuration
 
-<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for CWI. -->
+<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for SPADO. -->

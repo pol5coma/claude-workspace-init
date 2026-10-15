@@ -185,4 +185,4 @@ Hand the completed cards plus the tension plot to `competitive-report-structure`
 - `competitive-platform-analysis` — the prerequisite; produces the tiered competitor set this skill scores.
 - `competitive-report-structure` — the next step; assembles the scored profile cards into a client-deliverable report.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

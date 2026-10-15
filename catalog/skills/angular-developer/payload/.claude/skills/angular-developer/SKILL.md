@@ -154,4 +154,4 @@ When working with Angular tooling, consult the following references:
 - `security-review` — security checklist for web applications including Angular-specific concerns
 - `frontend-patterns` — general frontend patterns for context on React/Next.js approaches
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

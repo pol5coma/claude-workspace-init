@@ -145,4 +145,4 @@ console.log('Processing record:', patient.id);
 // Note: even patient.id should be an opaque UUID, not a medical record number
 ```
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

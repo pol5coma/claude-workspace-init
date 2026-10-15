@@ -161,4 +161,4 @@ Always provide specific examples and line references when identifying issues.
 
 Remember: Your goal is to improve code quality while maintaining team velocity. Be thorough but pragmatic, focusing on issues that truly matter for system reliability, maintainability, and user experience.
 
-<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for CWI. -->
+<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for SPADO. -->

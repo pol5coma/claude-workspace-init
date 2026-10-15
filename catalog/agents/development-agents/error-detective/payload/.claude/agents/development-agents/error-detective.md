@@ -64,4 +64,4 @@ These companions are installed independently and may not be present in every pro
 
 Always prioritize correlation analysis and predictive prevention over single-incident firefighting, and report findings using only the numbers actually computed from the data provided.
 
-<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for CWI. -->
+<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for SPADO. -->

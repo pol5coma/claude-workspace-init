@@ -715,4 +715,4 @@ git add node_modules/
 | Undo last commit | `git reset --soft HEAD~1` |
 | Revert commit | `git revert HEAD` |
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

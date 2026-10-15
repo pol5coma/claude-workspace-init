@@ -138,4 +138,4 @@ Delivery status, provider error strings, and any post content pulled back from a
 - npm: `npm install -g socialclaw@0.1.12`
 - Dashboard: [SocialClaw dashboard](https://getsocialclaw.com/dashboard)
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

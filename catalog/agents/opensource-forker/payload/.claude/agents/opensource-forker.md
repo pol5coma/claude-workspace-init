@@ -206,4 +206,4 @@ Output: `FORK_REPORT.md` listing all changes, staging directory ready for saniti
 - If unsure whether something is a secret, treat it as one
 - Do not modify source code logic — only configuration and references
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

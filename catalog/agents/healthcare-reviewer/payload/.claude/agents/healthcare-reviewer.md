@@ -91,4 +91,4 @@ You are a clinical informatics reviewer for healthcare software. Patient safety 
 - PHI exposure is always CRITICAL severity, regardless of how small the leak
 - Never approve code that silently catches CDSS errors
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

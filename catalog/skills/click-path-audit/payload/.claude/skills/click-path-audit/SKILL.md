@@ -244,4 +244,4 @@ selectThread: (thread) => set({
 - Step 2 traces the handler: call 1 sets true, call 2 resets false
 - Verdict: Sequential Undo — final state contradicts button intent
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

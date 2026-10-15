@@ -341,4 +341,4 @@ const NotificationsContext = createContext<Notification[]>([]);
 // A component that only consumes ThemeContext does NOT re-render when notifications change
 ```
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

@@ -442,4 +442,4 @@ Before submitting any interactive component for review:
 - `design-system` — design token and component consistency
 - `motion-foundations` and `motion-patterns`: animation patterns with accessibility considerations
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

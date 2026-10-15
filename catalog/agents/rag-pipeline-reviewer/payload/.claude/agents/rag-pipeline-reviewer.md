@@ -66,4 +66,4 @@ Input: User has a ChromaDB + Ollama RAG pipeline, top-5 chunks sent straight to 
 Action: Confirm no reranking step and no RAGAS check exist. Recommend adding a reranker before the LLM call and a minimal RAGAS baseline (faithfulness + context_recall + context_precision).
 Output: "No reranking found — top-5 chunks are forwarded unfiltered. No retrieval evaluation found. Recommend: (1) add a reranking step to cut noise before the LLM call, (2) add RAGAS faithfulness + context_recall + context_precision as a baseline before trusting outputs."
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

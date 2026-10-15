@@ -305,4 +305,4 @@ sudo wg-quick down wg0 && sudo wg-quick up wg0
 - homelab-vlan-segmentation
 - homelab-pihole-dns
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

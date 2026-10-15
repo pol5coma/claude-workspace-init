@@ -332,4 +332,4 @@ Output: Ranked list with warm paths, voice profile summary, and channel-specific
 - `brand-voice` for canonical voice capture
 - `connections-optimizer` for review-first network pruning and expansion before outreach
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

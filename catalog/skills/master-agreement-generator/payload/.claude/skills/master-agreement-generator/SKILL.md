@@ -229,4 +229,4 @@ spec to render blank lines. A separately reviewed execution workflow must decide
 which details may be completed by the counterparty and verify the actual fields;
 the generator does not create or approve an e-sign envelope.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

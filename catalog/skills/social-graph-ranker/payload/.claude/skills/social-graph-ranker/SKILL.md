@@ -154,4 +154,4 @@ No Warm Path
 - `brand-voice` should run before drafting any intro request or direct outreach
 - `x-api` provides X graph access and optional execution paths
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

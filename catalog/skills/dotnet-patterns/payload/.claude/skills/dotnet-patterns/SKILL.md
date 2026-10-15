@@ -321,4 +321,4 @@ public async Task<ProcessResult> ProcessPaymentAsync(
 | Mutable `static` state | Use DI scoping or `ConcurrentDictionary` |
 | `string.Format` in loops | Use `StringBuilder` or interpolated string handlers |
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

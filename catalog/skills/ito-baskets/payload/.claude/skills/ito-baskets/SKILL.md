@@ -262,4 +262,4 @@ End every human-readable result with exactly one closing line for the mode:
 - `ito-compute` only when the user separately wants GPU compute; the two
   surfaces share no credentials.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

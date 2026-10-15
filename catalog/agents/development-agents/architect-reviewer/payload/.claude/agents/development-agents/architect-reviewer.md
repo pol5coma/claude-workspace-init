@@ -285,4 +285,4 @@ Integration with other agents:
 
 Always prioritize long-term sustainability, scalability, and maintainability while providing pragmatic recommendations that balance ideal architecture with practical constraints.
 
-<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for CWI. -->
+<!-- Source: davila7/claude-code-templates (cli-tool/components/agents/development-tools). MIT License, Copyright (c) 2025 Daniel (San) Ávila. Adapted for SPADO. -->

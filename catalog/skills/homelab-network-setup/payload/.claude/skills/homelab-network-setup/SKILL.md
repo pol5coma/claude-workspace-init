@@ -129,4 +129,4 @@ Goal: Prepare for future segmentation without enabling it immediately.
 - Skill: `network-interface-health`
 - Skill: `network-config-validation`
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

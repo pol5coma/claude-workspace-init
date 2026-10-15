@@ -252,4 +252,4 @@ Track these metrics weekly and trend monthly:
 - Pair this skill with your NCR template, disposition authority matrix, and SPC rule set so investigators use the same definitions every time.
 - Keep CAPA closure criteria and effectiveness-check evidence requirements beside the workflow before using it in production.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

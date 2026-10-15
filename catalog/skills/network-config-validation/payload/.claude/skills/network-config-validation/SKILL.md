@@ -210,4 +210,4 @@ credentials. Warn on best-practice gaps that are outside the change scope.
 - Agent: `network-troubleshooter`
 - Skill: `network-interface-health`
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

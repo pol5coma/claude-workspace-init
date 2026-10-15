@@ -96,4 +96,4 @@ If you are vendoring only this skill outside the full ECC install, copy the revi
 
 Inspired by antbotlab/blueprint — upstream project and reference design.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

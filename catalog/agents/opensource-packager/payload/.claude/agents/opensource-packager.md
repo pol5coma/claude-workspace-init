@@ -257,4 +257,4 @@ Output: 5 files generated, setup.sh executable, "Using with Claude Code" section
 - CLAUDE.md must be accurate — wrong commands are worse than no commands
 - If the project already has good docs, enhance them rather than replace
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

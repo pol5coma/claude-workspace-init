@@ -69,4 +69,4 @@ A variant cannot become the new default until:
 - the change is encoded in source control or a durable runbook;
 - the final summary includes exact commands and measurements.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

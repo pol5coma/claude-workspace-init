@@ -169,4 +169,4 @@ Final: `Build Status: SUCCESS/FAILED | Errors Fixed: N | Files Modified: list`
 
 For detailed Swift patterns and rules, see rules: `swift/coding-style`, `swift/patterns`, `swift/security`. See also skill: `swift-concurrency-6-2`, `swift-actor-persistence`.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

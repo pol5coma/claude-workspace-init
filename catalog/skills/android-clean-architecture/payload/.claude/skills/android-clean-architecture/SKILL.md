@@ -339,4 +339,4 @@ plugins { id("kmp-library") }
 See skill: `compose-multiplatform-patterns` for UI patterns.
 See skill: `kotlin-coroutines-flows` for async patterns.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

@@ -343,4 +343,4 @@ uc deploy --recreate
 | Service can't reach external LAN IP from container | Verify Caddy container's host can route to target network |
 | Volumes lost after `uc service rm` | Named volumes persist; only anonymous volumes are auto-removed |
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

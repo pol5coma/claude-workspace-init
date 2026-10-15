@@ -99,4 +99,4 @@ Before submitting:
 - The issue is not already covered by an advisory, CVE, or open ticket
 - The target is actually in scope for the bounty program
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

@@ -187,4 +187,4 @@ def process(text: str, config: Config, tracker: CostTracker) -> tuple[Result, Co
 - Multi-model architectures that need intelligent routing
 - Production systems that need budget guardrails
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

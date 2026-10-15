@@ -89,4 +89,4 @@ Return:
 - `remotion-video-creation` for motion-heavy post-processing or compositing
 - `content-engine` when the animation is part of a broader launch
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

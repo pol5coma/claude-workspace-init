@@ -258,4 +258,4 @@ and the step is excluded from the Batch execution block.
 - Match the language of the plan document for task descriptions.
 - Do not insert "Co-Authored-By" lines or emoji in the output unless the user explicitly asks.
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->

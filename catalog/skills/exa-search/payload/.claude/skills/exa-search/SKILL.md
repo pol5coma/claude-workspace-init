@@ -116,4 +116,4 @@ get_code_context_exa(query: "WebAssembly component model examples", tokensNum: 4
 - `deep-research` — Full research workflow using firecrawl + exa together
 - `market-research` — Business-oriented research with decision frameworks
 
-<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into CWI. -->
+<!-- Source: affaan-m/ECC (https://github.com/affaan-m/ECC). MIT License, Copyright (c) 2026 Affaan Mustafa. Imported into SPADO. -->
