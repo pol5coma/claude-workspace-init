@@ -27,7 +27,7 @@ The officer role is a reusable definition. A configured agent instance performs 
 
 ## How to use this workflow
 
-- **Read phases as work areas.** Discovery, design, engineering and marketing can overlap and repeat as evidence develops.
+- **Follow phases sequentially by default.** Complete the applicable scope of a phase before advancing the main workflow. Explicit invocations may advance other phases or subphases; record their position, assumptions and unresolved dependencies without closing skipped work. Revisions create linked iterations.
 - **Read subphase IDs as stable references.** IDs identify activities; their numerical order is not an execution schedule. For example, brand definition in 3.12 supplies direction to final UI design in 3.5, and GTM strategy in 3.13 informs launch preparation while design and development continue.
 - **Read each activity as an execution brief.** Description explains the work; Inputs and Dependencies explain what it draws on; Deliverable and Exit criteria explain the expected result and its acceptance conditions. Decision / next step describes the possible routes after evaluation. Field definitions provides the full reference.
 - **Distinguish an activity from its instances.** A subphase describes reusable work. An activity instance is one execution for a particular product, scope and iteration, release, review or event. Revisiting a subphase creates a new instance linked to the previous evidence.
@@ -67,12 +67,16 @@ In every mode, the Human may proactively contribute information, request changes
 |---|---|---|
 | `agentic` | Agents execute, review and make all workflow decisions within the initial scope and delegation. | No human approval is requested or required at any point during execution. The Human may intervene voluntarily. |
 | `auto` | Agents execute and decide autonomously within their delegated authority. | CAOAO asks only when progress requires information, an action or a decision that the agents cannot obtain or resolve within their available capabilities and authority. There are no routine human checkpoints. |
-| `semi-auto` | Agents execute each subphase autonomously and prepare its result for review. | At the end of every step, CAOAO presents the result and asks whether the Human wants changes or wants to continue. The affected step waits for a response before closure or dependent progression. Requested changes are addressed and presented again. |
-| `manual` | Agents coordinate the workflow and are ready to execute each subphase. | Before starting substantive work on every step, CAOAO presents its brief and asks whether the Human wants to do it personally, work with agent assistance or delegate it fully. Execution follows that choice; the agent waits for the response before starting. |
+| `semi-auto` | Agents prepare a plan, then execute and review within the approved scope. | The Human approves the versioned plan before execution. There is no routine Human checkpoint after execution; domain reviews still apply. Material plan changes require new approval. |
+| `manual` | Agents plan and coordinate the work and applicable domain reviews. | The Human approves the plan and chooses personal execution, assistance or delegation before work begins, then reviews the result before closure. |
 
 In `agentic`, all workflow decisions must have an authorized agent decision owner established in the initial configuration. If a required input, capability or authority is unavailable, CAOAO must record the affected work as blocked and report the reason without requesting human approval or silently switching to `auto`. Independent authorized work may continue.
 
 In `auto`, a request to the Human must identify the specific missing input, action or decision and why the agents cannot resolve it. In `semi-auto` and `manual`, silence does not complete a required checkpoint; independent work may proceed only if its own mode requirements are satisfied.
+
+Before every phase and activity instance, generate a versioned plan identifying the objective, expected deliverable, current state, input versions, dependencies, responsible agents, actions, assumptions and acceptance criteria. An activity is an execution instance of a subphase, not another task hierarchy. In `agentic` and `auto`, authorized agents validate plans unless `auto` requires a Human decision. Plan approval never substitutes for result acceptance.
+
+Status, review and conversation are read-only interactions. They may inspect any authorized scope but must not change project files, execution state or external systems. Conversation proposals require an explicit execution invocation before work begins. Read-only consultations are exempt from persistent execution logging.
 
 The Human may explicitly change the mode during a run. CAOAO must record the new mode, when it takes effect and which pending activities it affects. A mode change does not retroactively approve work or satisfy exit criteria. All modes retain the same evidence, review, logging and acceptance requirements, including for work performed by the Human.
 
@@ -162,7 +166,7 @@ The subagent must confirm that the brief supports the assigned work and report b
 
 ### Rule 3. Verify inputs for their intended use
 
-Dependencies refer to **usable input artifacts**, not merely to the completion status of upstream activities. Parallel work may begin before an upstream activity closes if the inputs support the specific work being started.
+Dependencies refer to **usable input artifacts**, not merely to the completion status of upstream activities. Within a phase, parallel work may begin before an upstream activity closes if the inputs support the specific work being started. Cross-phase advances require an explicit recorded invocation.
 
 An input is ready for a stated use only when the receiving Operational Owner records that:
 
@@ -175,7 +179,7 @@ Readiness for exploration or implementation does not establish readiness for fin
 
 For example, provisional brand direction from 3.12 may support UI exploration in 3.5. Final UI approval requires the applicable brand decisions and the other exit criteria for 3.5 to be satisfied.
 
-If an input fails these conditions, the receiving agent must identify the missing evidence, request it through the assigned lead and mark the dependent work as blocked. Unaffected work may continue.
+If an input fails these conditions, identify the missing evidence and request it through the assigned lead. Bounded provisional work may proceed under a plan with explicit assumptions and pending validation conditions. It must not be accepted until the required inputs and checks are satisfied. Record blocked work when even provisional execution is not possible.
 
 ### Rule 4. Tailor applicability explicitly
 
@@ -197,7 +201,7 @@ Changes that could alter an earlier decision — including changes to scope, req
 
 ### Rule 6. Record activity and decisions
 
-Every agent, including CAOAO, must record significant execution events using the configured `workflows/tools/agent-record.py` tool. Events include assignment or start, material decisions, deliverable updates, blockers, handoffs, human checkpoints and responses, mode changes and closure. The coordinating agent must record Human contributions and their source.
+Every agent, including CAOAO, must record significant execution events using the configured `workflows/tools/agent-record.py` tool, which delegates to the same SPADO state services as the CLI. Events include assignment or start, plans and their approvals, material decisions, deliverable updates, blockers, handoffs, human checkpoints and responses, mode changes and closure. The coordinating agent must record Human contributions and their source. Read-only consultations do not persist events.
 
 Each record must provide the following information. These are content requirements; the tool's supported interface determines how they are submitted.
 
@@ -223,7 +227,7 @@ If logging is unavailable, the agent must return the structured record to CAOAO 
 
 On delivery, the subagent must provide its assigned lead with the deliverable references and versions, the result against each exit criterion, supporting evidence, unresolved issues and a recommended next step. The activity record must identify the recipients and pending decisions.
 
-Human-produced deliverables must pass the same applicable reviews and exit criteria. The coordinating agent must identify who performed the work and must not claim to have executed or verified actions without evidence. In `semi-auto`, the end-of-step response must be recorded before closure or dependent progression; in `manual`, the agreed execution arrangement must have been followed. Human participation does not replace the required domain reviews.
+Human-produced deliverables must pass the same applicable reviews and exit criteria. The coordinating agent must identify who performed the work and must not claim to have executed or verified actions without evidence. In `semi-auto`, the plan approval must be recorded before execution. In `manual`, the execution arrangement, plan approval and final Human review must be recorded. Human participation does not replace required domain reviews.
 
 The Operational Owner must coordinate the required reviews. An activity instance may be marked **accepted** only when its exit criteria are satisfied and the relevant decision owners have recorded the required decisions within their authority. Exceptions are allowed only where the activity's criteria and delegated authority permit them; each must identify its scope, rationale, consequences and owner. The agent must not silently waive a failed criterion.
 
@@ -240,7 +244,6 @@ Agents must use **Dependencies** to assess prerequisites and **Decision / next s
 For phase 6, exit criteria close an individual review, incident or work cycle. They must not be treated as permanent completion of an ongoing service responsibility.
 
 An initiative may stop before launch through the appropriate recorded decision and proportionate closure activities. A replacement product must complete its own applicable discovery-to-launch activities and readiness decisions before the existing product is decommissioned.
-
 
 # Workflow:
 
@@ -862,7 +865,7 @@ Operate the product continuously, learn from outcomes and deliver proportionate 
 - **Operational Owner:** Platform / SRE Lead.
 - **Who executes:** Platform/SRE Engineers, Engineering team and Operations.
 - **Inputs:** Production service, agreed service objectives, runbooks, observability and assigned operating capacity.
-- **Dependencies:** Upstream references: 5.5, 4.10, 4.8. Starts during launch and continues after 5.10. Coordinate capacity and incidents with support, security and engineering maintenance.
+- **Dependencies:** Upstream references: 5.5, 4.10, 4.8. Launch operation is covered by phase 5; this activity assumes continuing operation after 5.10. Coordinate capacity and incidents with support, security and engineering maintenance.
 - **Deliverable:** Service-health dashboards, service-level reports, capacity assessments and operational records.
 - **Exit criteria:** Each operating review confirms service status, coverage and owned deviations from objectives; unresolved issues have an action or escalation.
 - **Decision / next step:** Continue monitoring, trigger 6.3 for incidents and feed capacity/health findings into 6.4, 6.9 and 6.11.

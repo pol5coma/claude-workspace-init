@@ -1,0 +1,1439 @@
+{
+  "schema_version": 1,
+  "id": "spdlc",
+  "version": "1.0.0",
+  "title": "Full SPDLC",
+  "organization": "spdlc",
+  "rules": "rules.md",
+  "phases": [
+    {
+      "id": "1",
+      "title": "Idea & Strategy",
+      "introduction": "Frame the opportunity, make assumptions explicit and authorize a bounded investment in Discovery.",
+      "subphases": [
+        "1.1",
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.5",
+        "1.6"
+      ],
+      "lifecycle": "sequential"
+    },
+    {
+      "id": "2",
+      "title": "Discovery",
+      "introduction": "Establish evidence about the problem, solution concepts, demand, economics and feasibility, then record a cross-functional decision.",
+      "subphases": [
+        "2.1",
+        "2.2",
+        "2.3",
+        "2.4",
+        "2.5"
+      ],
+      "lifecycle": "sequential"
+    },
+    {
+      "id": "3",
+      "title": "Definition and Design",
+      "introduction": "Define and validate the next useful product increment, its quality and technical approach, the brand and its route to market.\n\n**Sequencing note:** 3.12 and 3.13 preserve the existing numbering; follow their dependencies rather than postponing this work until the end of phase 3.",
+      "subphases": [
+        "3.1",
+        "3.2",
+        "3.3",
+        "3.4",
+        "3.5",
+        "3.6",
+        "3.7",
+        "3.8",
+        "3.9",
+        "3.10",
+        "3.11",
+        "3.12",
+        "3.13"
+      ],
+      "lifecycle": "sequential"
+    },
+    {
+      "id": "4",
+      "title": "Development and Validation",
+      "introduction": "Build and validate increments, prepare operations and produce a release candidate with explicit readiness evidence.",
+      "subphases": [
+        "4.1",
+        "4.2",
+        "4.3",
+        "4.4",
+        "4.5",
+        "4.6",
+        "4.7",
+        "4.8",
+        "4.9",
+        "4.10",
+        "4.11"
+      ],
+      "lifecycle": "sequential"
+    },
+    {
+      "id": "5",
+      "title": "Launch",
+      "introduction": "Deploy and introduce the approved product to its intended audience, stabilize the launch and establish ongoing ownership.",
+      "subphases": [
+        "5.1",
+        "5.2",
+        "5.3",
+        "5.4",
+        "5.5",
+        "5.6",
+        "5.7",
+        "5.8",
+        "5.9",
+        "5.10"
+      ],
+      "lifecycle": "sequential"
+    },
+    {
+      "id": "6",
+      "title": "Operation and Evolution",
+      "introduction": "Operate the product continuously, learn from outcomes and deliver proportionate improvements through repeated iterations.",
+      "subphases": [
+        "6.1",
+        "6.2",
+        "6.3",
+        "6.4",
+        "6.5",
+        "6.6",
+        "6.7",
+        "6.8",
+        "6.9",
+        "6.10",
+        "6.11",
+        "6.12"
+      ],
+      "lifecycle": "recurring"
+    },
+    {
+      "id": "7",
+      "title": "Retirement or Replacement",
+      "introduction": "Carry out an authorized transition or closure while managing affected users, data, dependencies and residual obligations.",
+      "subphases": [
+        "7.1",
+        "7.2",
+        "7.3",
+        "7.4",
+        "7.5"
+      ],
+      "lifecycle": "conditional"
+    }
+  ],
+  "subphases": {
+    "1.1": {
+      "id": "1.1",
+      "title": "Initial ideation and opportunity assessment",
+      "phase": "1",
+      "brief": "subphases/1.1.md",
+      "owners": [
+        "CEAO",
+        "CPAO"
+      ],
+      "specialists": [
+        "spdlc-1-1"
+      ],
+      "dependencies": [],
+      "deliverable": "Shortlisted ideas, initial opportunity statements, selection criteria and rationale for the opportunity chosen for investigation.",
+      "exit_criteria": "At least one opportunity has a clear problem hypothesis, intended beneficiary and selection rationale; rejected ideas and major unknowns are recorded.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "1.2": {
+      "id": "1.2",
+      "title": "Define product vision and strategic goals",
+      "phase": "1",
+      "brief": "subphases/1.2.md",
+      "owners": [
+        "CEAO",
+        "CPAO"
+      ],
+      "specialists": [
+        "spdlc-1-2"
+      ],
+      "dependencies": [
+        "1.1"
+      ],
+      "deliverable": "Product vision statement, strategic objectives, initial outcome metrics and guiding product principles.",
+      "exit_criteria": "Vision, intended outcomes, strategic boundaries and initial success measures are understandable and agreed by the designated business and product decision owners.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "1.3": {
+      "id": "1.3",
+      "title": "Define initial target audience and value proposition",
+      "phase": "1",
+      "brief": "subphases/1.3.md",
+      "owners": [
+        "CPAO",
+        "CMAO"
+      ],
+      "specialists": [
+        "spdlc-1-3"
+      ],
+      "dependencies": [
+        "1.1"
+      ],
+      "deliverable": "Initial user and buyer segment hypotheses, problem statements, value proposition and differentiation hypotheses.",
+      "exit_criteria": "Users and buyers are distinguished where relevant; the proposed problem, value and differentiation are explicit and assumptions are labelled.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "1.4": {
+      "id": "1.4",
+      "title": "Define the business model",
+      "phase": "1",
+      "brief": "subphases/1.4.md",
+      "owners": [
+        "CEAO",
+        "CFAO",
+        "CPAO",
+        "CMAO"
+      ],
+      "specialists": [
+        "spdlc-1-4"
+      ],
+      "dependencies": [
+        "1.2",
+        "1.3"
+      ],
+      "deliverable": "Initial business model, monetization and pricing hypotheses, cost structure and preliminary economic assumptions.",
+      "exit_criteria": "The model explains value delivery, funding or revenue, major costs and critical dependencies, with assumptions and alternatives visible.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "1.5": {
+      "id": "1.5",
+      "title": "Identify strategic assumptions, risks and constraints",
+      "phase": "1",
+      "brief": "subphases/1.5.md",
+      "owners": [
+        "CPAO",
+        "CEAO",
+        "CFAO",
+        "CTAO",
+        "CMAO"
+      ],
+      "specialists": [
+        "spdlc-1-5"
+      ],
+      "dependencies": [
+        "1.1"
+      ],
+      "deliverable": "Prioritized assumptions and risks, known constraints, initial data-use and licensing questions, validation priorities and decision criteria for continuing, changing direction or stopping.",
+      "exit_criteria": "High-impact assumptions and constraints have owners, evidence status, an investigation priority and proposed decision criteria.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "1.6": {
+      "id": "1.6",
+      "title": "Define the initial budget and resource allocation",
+      "phase": "1",
+      "brief": "subphases/1.6.md",
+      "owners": [
+        "CEAO",
+        "CFAO"
+      ],
+      "specialists": [
+        "spdlc-1-6"
+      ],
+      "dependencies": [
+        "1.2",
+        "1.4",
+        "1.5"
+      ],
+      "deliverable": "Approved discovery budget, initial resource allocation, indicative timeline, funding assumptions and agreed investment review checkpoints.",
+      "exit_criteria": "Discovery has an approved resource envelope, named capacity, review dates and an investment decision owner; funding conditions are explicit.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "2.1": {
+      "id": "2.1",
+      "title": "Market and user research",
+      "phase": "2",
+      "brief": "subphases/2.1.md",
+      "owners": [
+        "CPAO",
+        "CMAO"
+      ],
+      "specialists": [
+        "spdlc-2-1"
+      ],
+      "dependencies": [
+        "1.3",
+        "1.5",
+        "1.6"
+      ],
+      "deliverable": "Market and competitor analysis, initial user segmentation, stakeholder map, research findings and problem hypotheses.",
+      "exit_criteria": "Relevant users, buyers, stakeholders and alternatives have been investigated with a documented method, sample, findings and limitations.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "2.2": {
+      "id": "2.2",
+      "title": "Problem validation",
+      "phase": "2",
+      "brief": "subphases/2.2.md",
+      "owners": [
+        "CPAO"
+      ],
+      "specialists": [
+        "spdlc-2-2"
+      ],
+      "dependencies": [
+        "2.1"
+      ],
+      "deliverable": "Evidence-backed problem statements, prioritized user needs, findings that support or challenge the hypotheses, and remaining uncertainties.",
+      "exit_criteria": "Priority problems have evidence of significance and context, disconfirming findings and limitations are recorded, and a proceed/revise/stop recommendation is justified.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "2.3": {
+      "id": "2.3",
+      "title": "Explore solution concepts",
+      "phase": "2",
+      "brief": "subphases/2.3.md",
+      "owners": [
+        "CPAO"
+      ],
+      "specialists": [
+        "spdlc-2-3"
+      ],
+      "dependencies": [
+        "2.2"
+      ],
+      "deliverable": "Solution concepts, candidate feature hypotheses, lightweight sketches or concept prototypes, early concept-test findings and a shortlist of options with remaining uncertainties.",
+      "exit_criteria": "At least one promising concept has an explicit value hypothesis, initial user feedback, comparison with alternatives and visible unresolved risks.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "2.4": {
+      "id": "2.4",
+      "title": "Evaluate demand",
+      "phase": "2",
+      "brief": "subphases/2.4.md",
+      "owners": [
+        "CMAO",
+        "CPAO"
+      ],
+      "specialists": [
+        "spdlc-2-4"
+      ],
+      "dependencies": [
+        "2.3",
+        "1.4"
+      ],
+      "deliverable": "Demand-validation findings, evidence of adoption or purchase interest, initial acquisition-channel hypotheses, and documented limitations distinguishing stated intent from actual commitments.",
+      "exit_criteria": "Adoption and, where relevant, purchase hypotheses have been tested against predefined criteria; evidence strength, sample and uncertainty are reported.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "2.5": {
+      "id": "2.5",
+      "title": "Evaluate economic viability and technical feasibility",
+      "phase": "2",
+      "brief": "subphases/2.5.md",
+      "owners": [
+        "CFAO",
+        "CTAO",
+        "CPAO",
+        "CEAO"
+      ],
+      "specialists": [
+        "spdlc-2-5"
+      ],
+      "dependencies": [
+        "2.2",
+        "2.3",
+        "2.4",
+        "1.5"
+      ],
+      "deliverable": "Preliminary business case, assumption-based unit economics and financial scenarios, initial technical feasibility assessment, consolidated Discovery evidence, major risks and a recorded decision to proceed, investigate further, reformulate or stop.",
+      "exit_criteria": "The evidence and material uncertainties are consolidated; the designated product, business and technical decision owners record whether to proceed, investigate further, reformulate or stop, including any conditions.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "3.1": {
+      "id": "3.1",
+      "title": "Define scope and priorities",
+      "phase": "3",
+      "brief": "subphases/3.1.md",
+      "owners": [
+        "CPAO"
+      ],
+      "specialists": [
+        "spdlc-3-1"
+      ],
+      "dependencies": [
+        "2.5",
+        "1.2"
+      ],
+      "deliverable": "Prioritized scope, explicit exclusions, initial product increment and rationale linking priorities to intended outcomes.",
+      "exit_criteria": "Included and excluded scope, intended outcomes, priority rationale and the first useful increment are agreed; unresolved assumptions have owners.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "3.2": {
+      "id": "3.2",
+      "title": "Specify behaviour",
+      "phase": "3",
+      "brief": "subphases/3.2.md",
+      "owners": [
+        "CPAO"
+      ],
+      "specialists": [
+        "spdlc-3-2"
+      ],
+      "dependencies": [
+        "3.1"
+      ],
+      "deliverable": "Functional requirements (FR), business rules, state and permission models, business flows, exception scenarios and acceptance criteria linked to the agreed scope.",
+      "exit_criteria": "The next increment's critical behaviours, permissions, state transitions and exception cases are defined well enough to design and test; contradictions and blocking unknowns are resolved.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "3.3": {
+      "id": "3.3",
+      "title": "Define quality requirements",
+      "phase": "3",
+      "brief": "subphases/3.3.md",
+      "owners": [
+        "CTAO",
+        "CPAO",
+        "COAO"
+      ],
+      "specialists": [
+        "spdlc-3-3"
+      ],
+      "dependencies": [
+        "1.5",
+        "2.5",
+        "3.1"
+      ],
+      "deliverable": "Verifiable non-functional requirements (NFR), product-specific quality thresholds and test conditions, initial service and recovery objectives, and applicable security, accessibility and privacy requirements.",
+      "exit_criteria": "Applicable quality requirements have measurable criteria, verification methods and owners; assumptions, cost implications and risk acceptance are explicit.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "3.4": {
+      "id": "3.4",
+      "title": "Design the experience (UX)",
+      "phase": "3",
+      "brief": "subphases/3.4.md",
+      "owners": [
+        "CPAO"
+      ],
+      "specialists": [
+        "spdlc-3-4"
+      ],
+      "dependencies": [
+        "3.2",
+        "2.2"
+      ],
+      "deliverable": "Information architecture, user flows, and wireframes.",
+      "exit_criteria": "Priority journeys and information structure cover normal and significant exception paths; the intended content and interaction logic are understandable for the next increment.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "3.5": {
+      "id": "3.5",
+      "title": "Design the user interface",
+      "phase": "3",
+      "brief": "subphases/3.5.md",
+      "owners": [
+        "CPAO",
+        "CMAO"
+      ],
+      "specialists": [
+        "spdlc-3-5"
+      ],
+      "dependencies": [
+        "3.4",
+        "3.12",
+        "3.3"
+      ],
+      "deliverable": "Visual designs, screen and component states, responsive specifications and a design system.",
+      "exit_criteria": "Required screens, responsive behaviour and relevant component states are specified and reviewed for brand consistency, usability, accessibility and implementation feasibility.",
+      "applicability": "Conditional on a visual product interface; reuse established design assets when appropriate. For headless services, document N/A and specify consumer-facing contracts in 3.2 and 3.6."
+    },
+    "3.6": {
+      "id": "3.6",
+      "title": "Design the technical solution",
+      "phase": "3",
+      "brief": "subphases/3.6.md",
+      "owners": [
+        "CTAO"
+      ],
+      "specialists": [
+        "spdlc-3-6"
+      ],
+      "dependencies": [
+        "3.2",
+        "3.3"
+      ],
+      "deliverable": "Initial technical architecture, data model, API and integration contracts, data-flow and lifecycle specifications, security design and threat assessment, and documented technical decisions and trade-offs.",
+      "exit_criteria": "The architecture supports the first increment and quality requirements; interfaces, data responsibilities and trade-offs are explicit, with critical design risks resolved or accepted by the relevant authority.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "3.7": {
+      "id": "3.7",
+      "title": "Align product & offer",
+      "phase": "3",
+      "brief": "subphases/3.7.md",
+      "owners": [
+        "CMAO",
+        "CPAO",
+        "CFAO"
+      ],
+      "specialists": [
+        "spdlc-3-7"
+      ],
+      "dependencies": [
+        "3.1",
+        "2.4",
+        "1.4"
+      ],
+      "deliverable": "Product offering and packaging proposal, feature-to-plan mapping, positioning and messaging aligned with the product\u2019s actual capabilities.",
+      "exit_criteria": "The initial offer, packaging, claims and proposed pricing fit the scope and audience; required pricing decisions and unsupported promises are resolved or clearly pending with owners.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "3.8": {
+      "id": "3.8",
+      "title": "Prototype and validate the experience",
+      "phase": "3",
+      "brief": "subphases/3.8.md",
+      "owners": [
+        "CPAO"
+      ],
+      "specialists": [
+        "spdlc-3-8"
+      ],
+      "dependencies": [
+        "3.4",
+        "3.2"
+      ],
+      "deliverable": "Tested prototypes, research findings and limitations, prioritized adjustments and a recorded decision on the proposed experience.",
+      "exit_criteria": "Critical tasks and messages have been tested with relevant participants; significant findings are resolved, retested or explicitly accepted, with limitations documented.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "3.9": {
+      "id": "3.9",
+      "title": "Resolve technical uncertainty",
+      "phase": "3",
+      "brief": "subphases/3.9.md",
+      "owners": [
+        "CTAO"
+      ],
+      "specialists": [
+        "spdlc-3-9"
+      ],
+      "dependencies": [
+        "2.5",
+        "3.2",
+        "3.3"
+      ],
+      "deliverable": "Technical feasibility findings, proof-of-concept results, recommended approaches, and remaining risks with mitigation actions.",
+      "exit_criteria": "Each investigated critical assumption has a result, limitations and a decision; remaining risks have owners and do not silently invalidate the chosen implementation approach.",
+      "applicability": "Conditional: focused spikes or proofs of concept are required only for material unresolved uncertainty. Otherwise record why existing evidence is sufficient."
+    },
+    "3.10": {
+      "id": "3.10",
+      "title": "Define measurement",
+      "phase": "3",
+      "brief": "subphases/3.10.md",
+      "owners": [
+        "CPAO",
+        "CMAO",
+        "CTAO"
+      ],
+      "specialists": [
+        "spdlc-3-10"
+      ],
+      "dependencies": [
+        "1.2",
+        "3.1",
+        "2.4"
+      ],
+      "deliverable": "Measurement plan, metric definitions, analytics event specifications and an initial reporting plan.",
+      "exit_criteria": "Priority outcomes have metric definitions, populations/windows, required events/data, ownership and decision use; collection is feasible and respects agreed data constraints.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "3.11": {
+      "id": "3.11",
+      "title": "Plan development",
+      "phase": "3",
+      "brief": "subphases/3.11.md",
+      "owners": [
+        "CPAO",
+        "CTAO"
+      ],
+      "specialists": [
+        "spdlc-3-11"
+      ],
+      "dependencies": [
+        "3.1",
+        "3.2",
+        "3.3",
+        "3.6",
+        "3.8",
+        "3.9",
+        "3.10"
+      ],
+      "deliverable": "Prioritized backlog, initial delivery plan, dependency map, effort estimates, resource allocation, risk-based validation approach and agreed acceptance and release criteria.",
+      "exit_criteria": "The first increment has owners, workable dependencies, bounded estimates, acceptance criteria and a risk-based test/review approach; funding and capacity constraints are addressed.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "3.12": {
+      "id": "3.12",
+      "title": "Define brand identity and communication principles",
+      "phase": "3",
+      "brief": "subphases/3.12.md",
+      "owners": [
+        "CMAO",
+        "CPAO"
+      ],
+      "specialists": [
+        "spdlc-3-12"
+      ],
+      "dependencies": [
+        "1.2",
+        "1.3",
+        "3.7"
+      ],
+      "deliverable": "Brand brief, approved visual identity and tone-of-voice guidelines, initial brand assets, naming decisions where relevant and shared product/marketing usage principles.",
+      "exit_criteria": "Brand voice, visual direction and usage principles are approved at the required depth; product and marketing can apply them consistently, with naming/licensing questions resolved where applicable.",
+      "applicability": "Required at proportionate depth; adapt an existing brand where appropriate. Naming and full identity creation are conditional, not mandatory reinvention."
+    },
+    "3.13": {
+      "id": "3.13",
+      "title": "Define the go-to-market strategy",
+      "phase": "3",
+      "brief": "subphases/3.13.md",
+      "owners": [
+        "CMAO",
+        "CPAO",
+        "CFAO",
+        "CRAO"
+      ],
+      "specialists": [
+        "spdlc-3-13"
+      ],
+      "dependencies": [
+        "3.7",
+        "2.4",
+        "3.10",
+        "1.6"
+      ],
+      "deliverable": "GTM strategy, prioritized segments and channels, commercial motion, launch and lifecycle objectives, approved or explicitly pending budget assumptions, initial experiment portfolio and marketing readiness criteria.",
+      "exit_criteria": "Initial segments, route to market, owners, budget status, launch/lifecycle objectives, experiments and readiness criteria are explicit and aligned with product capability and economics.",
+      "applicability": "Required as a route-to-adoption plan; paid campaigns, sales motions, partnerships and external marketing apply only when relevant to the product."
+    },
+    "4.1": {
+      "id": "4.1",
+      "title": "Prepare development environments and delivery foundations",
+      "phase": "4",
+      "brief": "subphases/4.1.md",
+      "owners": [
+        "CTAO"
+      ],
+      "specialists": [
+        "spdlc-4-1"
+      ],
+      "dependencies": [
+        "3.6",
+        "3.3",
+        "3.11"
+      ],
+      "deliverable": "Working development and testing environments, configured delivery pipelines, repository conventions and environment setup documentation.",
+      "exit_criteria": "The team can build and test reproducibly with appropriate access, secret/configuration handling and automated checks; environment setup and ownership are documented.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "4.2": {
+      "id": "4.2",
+      "title": "Implement product features incrementally",
+      "phase": "4",
+      "brief": "subphases/4.2.md",
+      "owners": [
+        "CTAO",
+        "CPAO"
+      ],
+      "specialists": [
+        "spdlc-4-2"
+      ],
+      "dependencies": [
+        "3.2",
+        "3.5",
+        "3.6",
+        "3.11",
+        "4.1"
+      ],
+      "deliverable": "Working product increments, implementation-level tests, updated technical documentation and traceability to requirements.",
+      "exit_criteria": "An increment implements the agreed behaviour and includes relevant tests and documentation; its change set is ready for the applicable review and validation activities.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "4.3": {
+      "id": "4.3",
+      "title": "Implement integrations and data handling",
+      "phase": "4",
+      "brief": "subphases/4.3.md",
+      "owners": [
+        "CTAO"
+      ],
+      "specialists": [
+        "spdlc-4-3"
+      ],
+      "dependencies": [
+        "3.2",
+        "3.6",
+        "3.3",
+        "4.1"
+      ],
+      "deliverable": "Tested integrations and data flows, verified interface contracts, and migration or import procedures where applicable.",
+      "exit_criteria": "Applicable integrations and data paths work under expected and significant failure conditions; contracts, reconciliation checks and recovery implications are documented and tested.",
+      "applicability": "Required for applicable data handling and integrations; external-service, import and migration work is conditional on actual product needs."
+    },
+    "4.4": {
+      "id": "4.4",
+      "title": "Review code quality and maintainability",
+      "phase": "4",
+      "brief": "subphases/4.4.md",
+      "owners": [
+        "CTAO"
+      ],
+      "specialists": [
+        "spdlc-4-4"
+      ],
+      "dependencies": [
+        "4.1",
+        "4.2"
+      ],
+      "deliverable": "Reviewed changes, automated quality-check results, documented technical decisions and tracked technical debt.",
+      "exit_criteria": "Required peer and automated checks pass for the reviewed change; blocking findings are resolved and accepted debt or exceptions have owners.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "4.5": {
+      "id": "4.5",
+      "title": "Perform functional and regression testing",
+      "phase": "4",
+      "brief": "subphases/4.5.md",
+      "owners": [
+        "CTAO",
+        "CPAO"
+      ],
+      "specialists": [
+        "spdlc-4-5"
+      ],
+      "dependencies": [
+        "3.2",
+        "4.1",
+        "4.2",
+        "4.3"
+      ],
+      "deliverable": "Test results linked to requirements, reusable automated tests, defect reports and verified fixes.",
+      "exit_criteria": "Critical behaviours and significant failure scenarios have evidence of correct operation; blocking defects are resolved and retested, with residual limitations recorded.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "4.6": {
+      "id": "4.6",
+      "title": "Validate non-functional requirements",
+      "phase": "4",
+      "brief": "subphases/4.6.md",
+      "owners": [
+        "CTAO",
+        "CPAO",
+        "COAO"
+      ],
+      "specialists": [
+        "spdlc-4-6"
+      ],
+      "dependencies": [
+        "3.3",
+        "4.2",
+        "4.3"
+      ],
+      "deliverable": "Non-functional validation results, identified limitations, remediation actions and documented residual risks.",
+      "exit_criteria": "Applicable quality criteria are met under stated conditions or explicit, authorized exceptions exist; material limitations and corrective actions are visible.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "4.7": {
+      "id": "4.7",
+      "title": "Implement and verify security and privacy controls",
+      "phase": "4",
+      "brief": "subphases/4.7.md",
+      "owners": [
+        "CTAO",
+        "CISAO"
+      ],
+      "specialists": [
+        "spdlc-4-7"
+      ],
+      "dependencies": [
+        "3.3",
+        "3.6",
+        "4.1",
+        "4.2"
+      ],
+      "deliverable": "Implemented controls, security assessment findings, verified remediation evidence and documented unresolved risks with assigned owners.",
+      "exit_criteria": "Required controls and significant findings have verification evidence; release-blocking findings are resolved, and residual risks have an authorized decision and accountable owner.",
+      "applicability": "Required at proportionate depth; specialist assessments or independent testing are conditional on exposure, obligations and product risk."
+    },
+    "4.8": {
+      "id": "4.8",
+      "title": "Implement analytics and observability",
+      "phase": "4",
+      "brief": "subphases/4.8.md",
+      "owners": [
+        "CTAO",
+        "CPAO"
+      ],
+      "specialists": [
+        "spdlc-4-8"
+      ],
+      "dependencies": [
+        "3.10",
+        "3.6",
+        "4.1",
+        "4.2"
+      ],
+      "deliverable": "Validated analytics instrumentation, operational dashboards, configured alerts and measurement-quality checks.",
+      "exit_criteria": "Critical events and operational signals are verified end to end in the available environment; dashboards, alert routing and sensitive-data handling meet agreed criteria.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "4.9": {
+      "id": "4.9",
+      "title": "Validate product acceptance and usability",
+      "phase": "4",
+      "brief": "subphases/4.9.md",
+      "owners": [
+        "CPAO"
+      ],
+      "specialists": [
+        "spdlc-4-9"
+      ],
+      "dependencies": [
+        "3.2",
+        "3.8",
+        "4.2",
+        "4.5"
+      ],
+      "deliverable": "Product acceptance report, usability findings, prioritized adjustments and an explicit acceptance status for the release scope.",
+      "exit_criteria": "Product acceptance is explicitly recorded for the release scope; critical user tasks work and material usability gaps are resolved or accepted with documented consequences.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "4.10": {
+      "id": "4.10",
+      "title": "Prepare operations and support",
+      "phase": "4",
+      "brief": "subphases/4.10.md",
+      "owners": [
+        "COAO",
+        "CTAO"
+      ],
+      "specialists": [
+        "spdlc-4-10"
+      ],
+      "dependencies": [
+        "3.3",
+        "3.11",
+        "4.8"
+      ],
+      "deliverable": "Operational runbooks, support documentation, ownership and escalation paths, recovery procedures and training materials.",
+      "exit_criteria": "Named operators can use the runbooks, alerts, escalation paths and support materials; necessary recovery checks and training are complete, with coverage and residual gaps explicit.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "4.11": {
+      "id": "4.11",
+      "title": "Verify release readiness",
+      "phase": "4",
+      "brief": "subphases/4.11.md",
+      "owners": [
+        "CTAO",
+        "CPAO",
+        "COAO",
+        "CISAO"
+      ],
+      "specialists": [
+        "spdlc-4-11"
+      ],
+      "dependencies": [
+        "4.4",
+        "4.5",
+        "4.6",
+        "4.7",
+        "4.8",
+        "4.9",
+        "4.10"
+      ],
+      "deliverable": "Release candidate, consolidated readiness assessment, deployment and rollback plan, known-issues register and a recorded decision to proceed or address remaining blockers.",
+      "exit_criteria": "The specific release candidate has a recorded technical readiness decision, domain sign-offs, deployment/recovery plan and no unresolved release blockers under agreed criteria.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "5.1": {
+      "id": "5.1",
+      "title": "Coordinate the launch and confirm readiness",
+      "phase": "5",
+      "brief": "subphases/5.1.md",
+      "owners": [
+        "CPAO",
+        "CTAO",
+        "CMAO",
+        "COAO"
+      ],
+      "specialists": [
+        "spdlc-5-1"
+      ],
+      "dependencies": [
+        "3.13",
+        "3.11",
+        "4.11",
+        "5.2"
+      ],
+      "deliverable": "Integrated launch plan, ownership and dependency map, agreed launch criteria and a recorded readiness decision.",
+      "exit_criteria": "The intended rollout stage has an owner, timing, audience, readiness evidence, dependencies, stop conditions and a recorded go/no-go decision.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "5.2": {
+      "id": "5.2",
+      "title": "Confirm legal, privacy and security readiness",
+      "phase": "5",
+      "brief": "subphases/5.2.md",
+      "owners": [
+        "CLAO",
+        "CISAO",
+        "CTAO"
+      ],
+      "specialists": [
+        "spdlc-5-2"
+      ],
+      "dependencies": [
+        "1.5",
+        "3.3",
+        "3.6",
+        "3.7",
+        "4.7"
+      ],
+      "deliverable": "Reviewed legal materials, legal and security readiness assessments, documented outstanding issues and applicable release conditions.",
+      "exit_criteria": "Applicable launch requirements are addressed or an authorized disposition is recorded; release-blocking issues are closed and the relevant notices, terms and controls are ready.",
+      "applicability": "Required as an applicability/readiness check; the depth and specialist involvement depend on the product, audience, data and obligations."
+    },
+    "5.3": {
+      "id": "5.3",
+      "title": "Finalize marketing and launch design assets",
+      "phase": "5",
+      "brief": "subphases/5.3.md",
+      "owners": [
+        "CMAO",
+        "CPAO"
+      ],
+      "specialists": [
+        "spdlc-5-3"
+      ],
+      "dependencies": [
+        "3.12",
+        "3.7",
+        "3.13",
+        "4.9"
+      ],
+      "deliverable": "Launch website or landing pages, campaign creatives, product demonstrations, release notes, email and social content, and store listings where applicable.",
+      "exit_criteria": "Required launch materials are accurate, accessible at the agreed level, consistent with the brand and ready in the needed formats and destinations.",
+      "applicability": "Required at the appropriate scale; external campaigns, app-store listings, PR and specific creative formats are conditional."
+    },
+    "5.4": {
+      "id": "5.4",
+      "title": "Prepare acquisition and commercial channels",
+      "phase": "5",
+      "brief": "subphases/5.4.md",
+      "owners": [
+        "CMAO",
+        "CRAO"
+      ],
+      "specialists": [
+        "spdlc-5-4"
+      ],
+      "dependencies": [
+        "3.13",
+        "3.7",
+        "4.8"
+      ],
+      "deliverable": "Ready-to-activate acquisition channels, verified conversion paths, commercial materials and defined lead or sales handoffs.",
+      "exit_criteria": "Relevant discovery-to-access/purchase paths, attribution, lead ownership and commercial handoffs are verified, with budget and activation authority recorded.",
+      "applicability": "Required for relevant acquisition/adoption channels; paid media, sales, billing and CRM apply only where the business model needs them."
+    },
+    "5.5": {
+      "id": "5.5",
+      "title": "Deploy the approved release to production",
+      "phase": "5",
+      "brief": "subphases/5.5.md",
+      "owners": [
+        "CTAO"
+      ],
+      "specialists": [
+        "spdlc-5-5"
+      ],
+      "dependencies": [
+        "4.11",
+        "5.1",
+        "5.2"
+      ],
+      "deliverable": "Deployed production release, deployment and migration records, production verification results and an operational rollback or recovery procedure.",
+      "exit_criteria": "Production verification passes for the exposed scope, required migration checks succeed and a supported rollback or forward-recovery path is available.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "5.6": {
+      "id": "5.6",
+      "title": "Conduct a pilot or controlled rollout",
+      "phase": "5",
+      "brief": "subphases/5.6.md",
+      "owners": [
+        "CPAO",
+        "CTAO",
+        "COAO"
+      ],
+      "specialists": [
+        "spdlc-5-6"
+      ],
+      "dependencies": [
+        "5.5",
+        "4.10"
+      ],
+      "deliverable": "Pilot or rollout findings, prioritized issues, user feedback and a recorded decision on the next rollout stage.",
+      "exit_criteria": "Pilot outcomes and limitations are recorded; predefined expansion criteria and technical/operational checks support an explicit expand, pause, revise or stop decision.",
+      "applicability": "Conditional: use when risk, uncertainty, audience or deployment context benefits from limited exposure. Controlled production verification remains required even if a separate pilot is skipped."
+    },
+    "5.7": {
+      "id": "5.7",
+      "title": "Activate public launch and acquisition campaigns",
+      "phase": "5",
+      "brief": "subphases/5.7.md",
+      "owners": [
+        "CMAO",
+        "CRAO"
+      ],
+      "specialists": [
+        "spdlc-5-7"
+      ],
+      "dependencies": [
+        "5.1",
+        "5.2",
+        "5.3",
+        "5.4",
+        "5.5",
+        "5.6"
+      ],
+      "deliverable": "Published launch communications, active campaigns and commercial initiatives, and initial channel-performance results.",
+      "exit_criteria": "Agreed communications and acquisition activities are live for the authorized audience, with owners, spend controls and functioning measurement.",
+      "applicability": "Required as product availability/adoption communication; external public launch, paid campaigns and sales activation are conditional."
+    },
+    "5.8": {
+      "id": "5.8",
+      "title": "Onboard and support the first users",
+      "phase": "5",
+      "brief": "subphases/5.8.md",
+      "owners": [
+        "COAO",
+        "CPAO"
+      ],
+      "specialists": [
+        "spdlc-5-8"
+      ],
+      "dependencies": [
+        "5.5",
+        "4.10"
+      ],
+      "deliverable": "Operational onboarding and support workflows, initial activation findings, support records and prioritized adoption issues.",
+      "exit_criteria": "Initial users can obtain support and reach the intended first-value experience; major onboarding barriers and unresolved requests have owners and escalation paths.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "5.9": {
+      "id": "5.9",
+      "title": "Monitor and stabilize the launch",
+      "phase": "5",
+      "brief": "subphases/5.9.md",
+      "owners": [
+        "CTAO",
+        "CISAO",
+        "COAO"
+      ],
+      "specialists": [
+        "spdlc-5-9"
+      ],
+      "dependencies": [
+        "5.5",
+        "4.8",
+        "4.10"
+      ],
+      "deliverable": "Launch monitoring reports, incident and defect records, verified fixes and an explicit stabilization status.",
+      "exit_criteria": "For the agreed observation window, launch-critical incidents are resolved or under an accepted plan, service criteria are satisfied and ongoing ownership is assigned.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "5.10": {
+      "id": "5.10",
+      "title": "Evaluate launch outcomes and transition to ongoing operations",
+      "phase": "5",
+      "brief": "subphases/5.10.md",
+      "owners": [
+        "CPAO",
+        "COAO"
+      ],
+      "specialists": [
+        "spdlc-5-10"
+      ],
+      "dependencies": [
+        "5.7",
+        "5.8",
+        "5.9"
+      ],
+      "deliverable": "Launch review, initial performance baseline, prioritized improvement backlog, ongoing ownership assignments and an agreed transition to Operation and Evolution.",
+      "exit_criteria": "The launch review records outcomes, limitations, outstanding work and named steady-state owners; operational transition is explicitly accepted.",
+      "applicability": "Required; scale the depth to the product's uncertainty, impact and resources."
+    },
+    "6.1": {
+      "id": "6.1",
+      "title": "Operate and monitor the service",
+      "phase": "6",
+      "brief": "subphases/6.1.md",
+      "owners": [
+        "CTAO",
+        "COAO"
+      ],
+      "specialists": [
+        "spdlc-6-1"
+      ],
+      "dependencies": [
+        "5.5",
+        "4.10",
+        "4.8"
+      ],
+      "deliverable": "Service-health dashboards, service-level reports, capacity assessments and operational records.",
+      "exit_criteria": "Each operating review confirms service status, coverage and owned deviations from objectives; unresolved issues have an action or escalation.",
+      "applicability": "Ongoing while the product operates; apply the exit criterion to each review or work cycle, not to permanent completion of the activity."
+    },
+    "6.2": {
+      "id": "6.2",
+      "title": "Provide customer support and customer success",
+      "phase": "6",
+      "brief": "subphases/6.2.md",
+      "owners": [
+        "COAO"
+      ],
+      "specialists": [
+        "spdlc-6-2"
+      ],
+      "dependencies": [
+        "5.8",
+        "4.10"
+      ],
+      "deliverable": "Support resolutions, updated knowledge resources, customer-success plans where relevant, and categorized customer feedback.",
+      "exit_criteria": "Requests in the work cycle are resolved, clearly communicated or assigned with next actions; recurring themes and customer risks are recorded.",
+      "applicability": "Ongoing while the product operates; apply the exit criterion to each review or work cycle, not to permanent completion of the activity."
+    },
+    "6.3": {
+      "id": "6.3",
+      "title": "Manage incidents and recovery",
+      "phase": "6",
+      "brief": "subphases/6.3.md",
+      "owners": [
+        "CTAO",
+        "CISAO",
+        "COAO"
+      ],
+      "specialists": [
+        "spdlc-6-3"
+      ],
+      "dependencies": [
+        "4.10",
+        "6.1"
+      ],
+      "deliverable": "Incident records, recovery verification, stakeholder communications, post-incident reviews and tracked corrective actions.",
+      "exit_criteria": "Service or security impact is controlled, recovery is verified, communications are complete for the incident stage and significant follow-up actions have owners.",
+      "applicability": "Event-driven when an incident occurs; response preparedness and appropriate exercises remain part of normal operational readiness."
+    },
+    "6.4": {
+      "id": "6.4",
+      "title": "Maintain technical health",
+      "phase": "6",
+      "brief": "subphases/6.4.md",
+      "owners": [
+        "CTAO"
+      ],
+      "specialists": [
+        "spdlc-6-4"
+      ],
+      "dependencies": [
+        "4.4",
+        "6.1"
+      ],
+      "deliverable": "Maintenance updates, dependency and lifecycle tracking, prioritized technical-debt backlog and technical-health assessments.",
+      "exit_criteria": "Scheduled maintenance changes are reviewed and verified, applicable compatibility risks are addressed and remaining debt has priority and ownership.",
+      "applicability": "Ongoing while the product operates; apply the exit criterion to each review or work cycle, not to permanent completion of the activity."
+    },
+    "6.5": {
+      "id": "6.5",
+      "title": "Maintain security, privacy and compliance",
+      "phase": "6",
+      "brief": "subphases/6.5.md",
+      "owners": [
+        "CISAO",
+        "CLAO",
+        "CTAO"
+      ],
+      "specialists": [
+        "spdlc-6-5"
+      ],
+      "dependencies": [
+        "5.2",
+        "4.7"
+      ],
+      "deliverable": "Updated risk assessments, access reviews, vulnerability remediation records, control evidence and tracked compliance actions.",
+      "exit_criteria": "Each review records control status, findings, owner decisions and remediation priorities; critical issues receive a timely response under the agreed process.",
+      "applicability": "Ongoing while the product operates; apply the exit criterion to each review or work cycle, not to permanent completion of the activity."
+    },
+    "6.6": {
+      "id": "6.6",
+      "title": "Measure product and business outcomes",
+      "phase": "6",
+      "brief": "subphases/6.6.md",
+      "owners": [
+        "CPAO",
+        "CMAO",
+        "CFAO",
+        "COAO"
+      ],
+      "specialists": [
+        "spdlc-6-6"
+      ],
+      "dependencies": [
+        "3.10",
+        "4.8",
+        "5.10"
+      ],
+      "deliverable": "Product and business dashboards, cohort and funnel analyses, measurement-quality findings and evidence-based performance reviews.",
+      "exit_criteria": "The review contains interpretable results, data-quality limitations and material changes, with sufficient context to support the stated decisions.",
+      "applicability": "Ongoing while the product operates; apply the exit criterion to each review or work cycle, not to permanent completion of the activity."
+    },
+    "6.7": {
+      "id": "6.7",
+      "title": "Improve adoption, retention and commercial growth",
+      "phase": "6",
+      "brief": "subphases/6.7.md",
+      "owners": [
+        "CMAO",
+        "CPAO",
+        "CRAO"
+      ],
+      "specialists": [
+        "spdlc-6-7"
+      ],
+      "dependencies": [
+        "3.13",
+        "6.6",
+        "6.2"
+      ],
+      "deliverable": "Growth and retention initiatives, campaign and funnel improvements, commercial playbooks and measured outcomes.",
+      "exit_criteria": "Each initiative has an evaluated outcome or justified continuation decision, with user impact, cost and evidence limitations visible.",
+      "applicability": "Applicable to adoption and sustained customer value; paid growth, revenue expansion and renewal initiatives depend on the product's objectives and business model."
+    },
+    "6.8": {
+      "id": "6.8",
+      "title": "Conduct continuous discovery",
+      "phase": "6",
+      "brief": "subphases/6.8.md",
+      "owners": [
+        "CPAO"
+      ],
+      "specialists": [
+        "spdlc-6-8"
+      ],
+      "dependencies": [
+        "6.6",
+        "6.2"
+      ],
+      "deliverable": "Updated research findings, opportunity backlog, revised hypotheses and supporting evidence for potential improvements.",
+      "exit_criteria": "Investigated opportunities have evidence, an articulated problem, uncertainty and a decision on further research or consideration for delivery.",
+      "applicability": "Ongoing while the product operates; apply the exit criterion to each review or work cycle, not to permanent completion of the activity."
+    },
+    "6.9": {
+      "id": "6.9",
+      "title": "Prioritize the evolution roadmap",
+      "phase": "6",
+      "brief": "subphases/6.9.md",
+      "owners": [
+        "CPAO",
+        "CTAO",
+        "COAO",
+        "CMAO",
+        "CFAO"
+      ],
+      "specialists": [
+        "spdlc-6-9"
+      ],
+      "dependencies": [
+        "6.8",
+        "6.4",
+        "6.6"
+      ],
+      "deliverable": "Updated outcome-based roadmap, prioritized backlog, capacity allocation and documented prioritization decisions.",
+      "exit_criteria": "The next work cycle has explicit priorities, rationale, scope boundaries, owners and capacity allocation, with mandatory remediation visible.",
+      "applicability": "Ongoing while the product operates; apply the exit criterion to each review or work cycle, not to permanent completion of the activity."
+    },
+    "6.10": {
+      "id": "6.10",
+      "title": "Deliver and evaluate improvements",
+      "phase": "6",
+      "brief": "subphases/6.10.md",
+      "owners": [
+        "CTAO",
+        "CPAO"
+      ],
+      "specialists": [
+        "spdlc-6-10"
+      ],
+      "dependencies": [
+        "6.9"
+      ],
+      "deliverable": "Released improvements, validation and experiment results, updated documentation and recorded follow-up decisions.",
+      "exit_criteria": "The change has passed proportionate design, engineering, acceptance and release checks; its outcome is assessed or has an assigned observation plan.",
+      "applicability": "Triggered by selected improvements or fixes; the depth of discovery, testing and rollout is tailored to the change's impact and uncertainty."
+    },
+    "6.11": {
+      "id": "6.11",
+      "title": "Optimize operational and economic efficiency",
+      "phase": "6",
+      "brief": "subphases/6.11.md",
+      "owners": [
+        "CFAO",
+        "CTAO",
+        "COAO"
+      ],
+      "specialists": [
+        "spdlc-6-11"
+      ],
+      "dependencies": [
+        "6.6",
+        "6.1"
+      ],
+      "deliverable": "Cost and unit-economics reviews, efficiency initiatives, updated forecasts and measured savings or productivity improvements.",
+      "exit_criteria": "The review identifies feasible actions, baseline economics, owners and expected trade-offs; completed actions have measured outcomes where observable.",
+      "applicability": "Ongoing while the product operates; apply the exit criterion to each review or work cycle, not to permanent completion of the activity."
+    },
+    "6.12": {
+      "id": "6.12",
+      "title": "Review strategic direction and lifecycle decisions",
+      "phase": "6",
+      "brief": "subphases/6.12.md",
+      "owners": [
+        "CEAO",
+        "CPAO",
+        "CFAO",
+        "CTAO",
+        "CMAO",
+        "COAO"
+      ],
+      "specialists": [
+        "spdlc-6-12"
+      ],
+      "dependencies": [
+        "6.6",
+        "6.8",
+        "6.11"
+      ],
+      "deliverable": "Strategic product review, updated investment decisions and direction, or an approved transition into Retirement or Replacement when appropriate.",
+      "exit_criteria": "A direction and investment decision is recorded with evidence, conditions, owners and the next review trigger.",
+      "applicability": "Ongoing while the product operates; apply the exit criterion to each review or work cycle, not to permanent completion of the activity."
+    },
+    "7.1": {
+      "id": "7.1",
+      "title": "Decide and approve retirement or replacement",
+      "phase": "7",
+      "brief": "subphases/7.1.md",
+      "owners": [
+        "CEAO",
+        "CPAO",
+        "CFAO",
+        "CTAO"
+      ],
+      "specialists": [
+        "spdlc-7-1"
+      ],
+      "dependencies": [
+        "6.12"
+      ],
+      "deliverable": "Approved retirement or replacement decision, scope, rationale and completion criteria.",
+      "exit_criteria": "The authorized decision identifies the scope, affected parties, target conditions, funding/ownership and unresolved obligations for the transition.",
+      "applicability": "Required once retirement or replacement is proposed; early project cancellation uses a proportionate closure path."
+    },
+    "7.2": {
+      "id": "7.2",
+      "title": "Plan and communicate the transition",
+      "phase": "7",
+      "brief": "subphases/7.2.md",
+      "owners": [
+        "COAO",
+        "CPAO",
+        "CMAO",
+        "CLAO"
+      ],
+      "specialists": [
+        "spdlc-7-2"
+      ],
+      "dependencies": [
+        "7.1"
+      ],
+      "deliverable": "Transition plan, stakeholder communications, support arrangements and assigned responsibilities.",
+      "exit_criteria": "Transition timing, notice requirements, owners, support, migration/exit options and acceptance criteria are approved; required communications are delivered or scheduled before affected actions.",
+      "applicability": "Required for the affected scope; external notices and migration support depend on actual users, customers and commitments."
+    },
+    "7.3": {
+      "id": "7.3",
+      "title": "Transition users and data",
+      "phase": "7",
+      "brief": "subphases/7.3.md",
+      "owners": [
+        "CTAO",
+        "COAO"
+      ],
+      "specialists": [
+        "spdlc-7-3"
+      ],
+      "dependencies": [
+        "7.2"
+      ],
+      "deliverable": "Verified migrations or exports, customer transition status and documented exceptions requiring follow-up.",
+      "exit_criteria": "Required migrations or exports are verified, access and continuity checks pass where applicable, and remaining cases have an authorized disposition before source shutdown.",
+      "applicability": "Conditional on affected users, workflows or data; record N/A and the supporting inventory if no transition/export is required."
+    },
+    "7.4": {
+      "id": "7.4",
+      "title": "Decommission the product securely",
+      "phase": "7",
+      "brief": "subphases/7.4.md",
+      "owners": [
+        "CTAO",
+        "CISAO",
+        "CLAO"
+      ],
+      "specialists": [
+        "spdlc-7-4"
+      ],
+      "dependencies": [
+        "7.1",
+        "7.2",
+        "7.3"
+      ],
+      "deliverable": "Decommissioning records, data disposition records and verification that retired components and access are inactive.",
+      "exit_criteria": "Retired components and obsolete access are inactive, shared dependencies remain functional and data archival/deletion actions are verified against the approved plan.",
+      "applicability": "Required for deployed or provisioned product assets; tailor to actual infrastructure, accounts, integrations and retained data."
+    },
+    "7.5": {
+      "id": "7.5",
+      "title": "Complete commercial and operational closure",
+      "phase": "7",
+      "brief": "subphases/7.5.md",
+      "owners": [
+        "COAO",
+        "CFAO",
+        "CLAO"
+      ],
+      "specialists": [
+        "spdlc-7-5"
+      ],
+      "dependencies": [
+        "7.2",
+        "7.4"
+      ],
+      "deliverable": "Closure report, reconciled financial records, resolved or assigned obligations, archived documentation and lessons learned.",
+      "exit_criteria": "Applicable billing/refunds and supplier actions are reconciled, unnecessary expenditure is stopped, residual obligations have owners and final closure is explicitly accepted.",
+      "applicability": "Required at proportionate depth for every closed initiative or product; specific financial/contractual actions apply only where obligations exist."
+    }
+  }
+}

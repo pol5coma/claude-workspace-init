@@ -1,3 +1,5 @@
+> Historical design reference. Executable v1 definitions live in `catalog/organizations/spdlc/organization.json` and `catalog/workflows/spdlc/`. The maintained master document is [Full SPDLC](Full_SPDLC_Workflow.md); this earlier outline is not loaded by SPADO.
+
 # Claude Workspace Init for Product Development Life Cycle (PDLC)
 
 Provisioned claude workspace with C-suite Agents & sub-agents, skills and tools for the different phases of the PDLC.
