@@ -88,13 +88,15 @@ PostgreSQL/pgvector runs in a project-specific container and persistent volume, 
 | Action | Claude Code | Codex |
 |---|---|---|
 | Whole workflow | `/spdlc --mode auto` | `$spdlc --mode auto` |
-| Phase | `/spdlc --phase 3 --mode manual` | `$spdlc --phase 3 --mode manual` |
-| Subphase | `/spdlc --subphase 3.5 --mode semi-auto` | `$spdlc --subphase 3.5 --mode semi-auto` |
+| Phase | `/spdlc --phase definition-design --mode manual` | `$spdlc --phase definition-design --mode manual` |
+| Subphase | `/spdlc --subphase ui-design --mode semi-auto` | `$spdlc --subphase ui-design --mode semi-auto` |
 | State | `/spado --status` | `$spado --status` |
 | Review | `/spado --review phase 3` | `$spado --review phase 3` |
 | Conversation | `/spado --chat` | `$spado --chat` |
 
 Entry skills translate these requests to SPADO services and native agent delegation. `--run ID` selects an existing execution; `--new-run` asks the host to create an independent execution. The original scope stays intact when advancing within a full workflow. Missing inputs remain visible and provisional outputs cannot be accepted prematurely. Phases progress sequentially by default; subphases follow their input dependencies. Activity means a concrete subphase instance.
+
+Use `spado workflow validate` to list phase and subphase slugs. Numeric IDs such as `3` and `3.5` remain valid.
 
 | Mode | Before execution | Result |
 |---|---|---|
@@ -111,7 +113,7 @@ Human intervention is always possible. Plans name the deliverable, inputs, actio
 spado workflow create --objective "Validate a product opportunity" --human
 spado actor create CAOAO --run RUN_ID --human
 # Give the returned token-file path to the CAOAO session as SPADO_ACTOR_TOKEN_FILE.
-spado workflow context --run RUN_ID --subphase 1.1
+spado workflow context --run RUN_ID --subphase initial-ideation --human
 spado status --run RUN_ID --human
 spado review all --run RUN_ID --human
 spado docs sync docs/vision.md --run RUN_ID --human

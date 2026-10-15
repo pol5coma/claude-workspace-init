@@ -2,17 +2,17 @@
 
 [Back to the manual](../../USAGE.md) · [CLI reference](../../USAGE.md#cli-reference) · [Event contract](../../src/spado/runtime/protocol.md)
 
-This chapter follows **subphase 1.1, Initial ideation and opportunity assessment**, in `semi-auto`. It has no canonical upstream dependency, so it is suitable for a first independent run. The selected opportunity is a hypothesis, not proof of demand.
+This chapter follows **`initial-ideation` (subphase 1.1, Initial ideation and opportunity assessment)**, in `semi-auto`. It has no canonical upstream dependency, so it is suitable for a first independent run. The selected opportunity is a hypothesis, not proof of demand.
 
 ## Host-led walkthrough
 
 1. Install SPADO from a permanent checkout and configure a separate product directory using the [setup instructions](../../USAGE.md#installation-and-setup). Select your host, mode and embedding backend explicitly. Preview first, then apply and run `spado db up`.
-2. Open that product in Claude or Codex. Invoke `/spdlc --new-run --subphase 1.1 --mode semi-auto` or `$spdlc --new-run --subphase 1.1 --mode semi-auto`. Provide your objective, ideas, intended users, existing evidence and constraints. Ask to assess one opportunity, recording discarded ideas and unknowns.
+2. Open that product in Claude or Codex. Invoke `/spdlc --new-run --subphase initial-ideation --mode semi-auto` or `$spdlc --new-run --subphase initial-ideation --mode semi-auto`. Provide your objective, ideas, intended users, existing evidence and constraints. Ask to assess one opportunity, recording discarded ideas and unknowns.
 3. The host registers the run and CAOAO, delegates CEAO, CPAO and specialist `spdlc-1-1`, reads the canonical brief and prepares the activity. Keep the run ID. The owner is a runtime specialist UUID, not the string `spdlc-1-1`.
 4. Read the actual plan: objective, deliverable, actions, criteria, inputs and assumptions. Approve that plan ID/version or request changes. Expected state before approval: `awaiting_plan_approval`; afterward: `ready`.
 5. The assigned specialist records `start`, performs the assessment and writes a document. It synchronizes the file and delivers the returned revision with criterion evidence. Expected progression: `running` → `awaiting_review`.
 6. CEAO and CPAO each review under their own identity. Changes requested mean the work must be corrected and delivered again. After both approve, CAOAO accepts the activity and promotes the revision.
-7. Inspect `spado status --run RUN_ID --human` and `spado review subphase 1.1 --run RUN_ID --human`. Confirm acceptance, the real deliverable and the current official revision through context. Structural success does not replace reading the content.
+7. Inspect `spado status --run RUN_ID --human` and `spado review subphase initial-ideation --run RUN_ID --human`. Confirm acceptance, the real deliverable and the current official revision through context. Structural success does not replace reading the content.
 
 Semantic indexing is optional for this first exercise. After promotion, use `docs index` and `docs search` when you want retrieval; that is when model download/API access becomes relevant.
 
@@ -28,7 +28,7 @@ Run commands from the configured product. Uppercase IDs/token paths are placehol
 
 ```bash
 spado workflow create --objective "Select one product opportunity for investigation" \
-  --subphase 1.1 --mode semi-auto --human
+  --subphase initial-ideation --mode semi-auto --human
 spado actor create CAOAO --run RUN_ID --human
 ```
 
@@ -39,7 +39,7 @@ The first result provides `run`. The second provides `actor` and `token_file`. P
 With CAOAO's token in its environment:
 
 ```bash
-spado workflow context --run RUN_ID --subphase 1.1
+spado workflow context --run RUN_ID --subphase initial-ideation
 spado actor create CEAO --run RUN_ID
 spado actor create CPAO --run RUN_ID
 spado actor create spdlc-1-1 --run RUN_ID
@@ -56,7 +56,7 @@ Save the following as `prepare.json`, replacing the owner with the actual specia
   "event_id": "11111111-1111-4111-8111-111111111111",
   "kind": "prepare",
   "payload": {
-    "subphase": "1.1",
+    "subphase": "initial-ideation",
     "owner": "SPECIALIST_ACTOR_ID",
     "plan": {
       "objective": "Select one product opportunity for investigation",
@@ -75,7 +75,7 @@ This minimal plan has no recorded input documents because 1.1 has no upstream de
 
 ```bash
 spado workflow prepare --run RUN_ID --request prepare.json
-spado workflow context --run RUN_ID --subphase 1.1
+spado workflow context --run RUN_ID --subphase initial-ideation
 ```
 
 Keep the returned `ACTIVITY_ID`. Context contains `instances[].plan.id` and `.version` for that activity. A `prepare` request for an existing unaccepted instance resumes it; use `revise_plan` to change its plan, or explicitly `new_instance` to create another activity.
@@ -121,7 +121,7 @@ spado workflow record --run RUN_ID --request start.json
 Perform the assessment and create `docs/opportunity.md`. It must contain the actual candidates, beneficiary, selected problem hypothesis, selection criteria/rationale, rejected ideas, evidence limitations and unknowns. This guide does not manufacture that business evidence.
 
 ```bash
-spado docs sync docs/opportunity.md --subphase 1.1 --run RUN_ID
+spado docs sync docs/opportunity.md --subphase initial-ideation --run RUN_ID
 ```
 
 Keep the returned revision as `REVISION_ID`. This records evidence but does not deliver or approve it.
@@ -197,7 +197,7 @@ After all gates pass, CAOAO saves `accept.json`:
 spado workflow record --run RUN_ID --request accept.json
 spado docs promote REVISION_ID --run RUN_ID
 spado status --run RUN_ID
-spado review subphase 1.1 --run RUN_ID
+spado review subphase initial-ideation --run RUN_ID
 ```
 
 Expected state: `accepted`; `workflow context` exposes the approved document revision. Promotion does not change file contents. Optional retrieval:

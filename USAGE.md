@@ -99,7 +99,25 @@ For development inside the SPADO checkout, use `uv sync --group dev` and `uv run
 
 ### Configure an organization project
 
-The target directory must already exist:
+Run these commands **in the product directory**, not in the SPADO source checkout. `spado init` is not an interactive wizard: on the first workflow installation, it requires `--host`, `--mode`, `--embeddings` and `--embedding-model`. Running bare `spado init` returns an error listing those four options.
+
+For an existing project using Codex and an external embedding provider (replace the project path and model if needed):
+
+```bash
+cd ~/projects/my-product
+spado init --host codex --mode auto \
+  --embeddings external --embedding-model text-embedding-3-small --dry-run
+spado init --host codex --mode auto \
+  --embeddings external --embedding-model text-embedding-3-small
+spado db up
+spado status --human
+```
+
+The preview lists files under `writes` without installing them. The real `init` may list hundreds of `writes`: these are the native agents, skills, workflow briefs and SPADO configuration. It does **not** create or execute a run. `db up` starts PostgreSQL and creates `.spado/local/human.token`; `status --human` uses that credential and normally shows `runs: []` until you start a workflow. Bare `spado status` instead expects a delegated agent credential and reports `Set SPADO_ACTOR_TOKEN_FILE ... or use --human` when none is present. Do not export the Human token as an agent token.
+
+Open or reload this product in Codex, then invoke `$spdlc` **in Codex chat**, with an objective. See [first execution](#first-execution-and-everyday-use). The external embedding key is needed when indexing or searching documents, not for this setup/status check.
+
+To configure both hosts with local embeddings instead, the target directory must already exist:
 
 ```bash
 mkdir -p ~/projects/my-product
@@ -110,14 +128,14 @@ spado init --host claude --host codex --mode semi-auto \
   --dry-run
 ```
 
-Review `writes`, then repeat without `--dry-run`. Select only your intended host(s). Continue:
+Review `writes`, then repeat the same `init` command without `--dry-run`. Select only your intended host(s). Continue:
 
 ```bash
 spado db up
 spado status --human
 ```
 
-An empty `runs` list is expected initially. `init` installs resources; `db up` starts PostgreSQL, initializes schema and creates the Human credential. Neither starts agents nor creates an execution.
+An empty `runs` list is expected initially. Neither `init` nor `db up` starts agents or creates an execution.
 
 For simultaneous projects, choose different `--database-port` values at initial setup (default `55432`). That flag is currently ignored when updating an existing project; see [known gaps](docs/manual/implementation.md#current-limits).
 
@@ -139,18 +157,25 @@ Select capabilities explicitly with repeated `--capability TYPE:ID` flags. Catal
 Open the configured product in your host. In **Claude chat**:
 
 ```text
-/spdlc --new-run --subphase 1.1 --mode semi-auto
+/spdlc --new-run --subphase initial-ideation --mode semi-auto
 Start an independent opportunity assessment. The objective is to choose one product problem worth investigating. Ask for the initial business context, show the concrete plan, and wait for my approval before executing it.
 ```
 
 In **Codex chat**, use `$spdlc` with the same request. These are skill invocations, not shell commands: the shell would treat `$spdlc` as a variable.
 
+If you configured `auto` above, a first Codex request can instead be:
+
+```text
+$spdlc --new-run --subphase initial-ideation --mode auto
+Assess this product idea: [describe the idea, intended users and what you want to learn]. Create an independent run, show me its ID and coordinate the work through the assigned agents.
+```
+
 The host creates a run on your instruction, delegates CAOAO/officers/specialist, obtains the brief and prepares a plan. In `semi-auto`, approve the concrete plan before work. Officers review the evidence; CAOAO accepts the activity and promotes accepted revisions. Keep the returned run ID.
 
 ```bash
 spado status --run RUN_ID --human
-spado workflow context --run RUN_ID --subphase 1.1 --human
-spado review subphase 1.1 --run RUN_ID --human
+spado workflow context --run RUN_ID --subphase initial-ideation --human
+spado review subphase initial-ideation --run RUN_ID --human
 ```
 
 Replace `RUN_ID` with the real UUID. `pending` means no activity was recorded, not that a background worker is running. See the [complete tutorial](docs/manual/first-run.md).
@@ -167,6 +192,22 @@ Replace `RUN_ID` with the real UUID. `pending` means no activity was recorded, n
 | Return another day | Preserve run/credentials and resume with `--run`. There is no CLI pause/resume scheduler. |
 
 Commands never silently choose the latest run. Most infer selection only when exactly one run is accessible; `status` lists choices for zero/multiple runs. Explicit `--run` is preferable for repeatable operations.
+
+### Phase selectors
+
+The phase slug and numeric ID are interchangeable in `--phase`, `spado review phase` and host invocations. For example, `--phase definition-design` and `--phase 3` select the same phase.
+
+| ID | Slug | Phase |
+|---|---|---|
+| `1` | `idea-strategy` | Idea & Strategy |
+| `2` | `discovery` | Discovery |
+| `3` | `definition-design` | Definition and Design |
+| `4` | `development-validation` | Development and Validation |
+| `5` | `launch` | Launch |
+| `6` | `operation-evolution` | Operation and Evolution |
+| `7` | `retirement-replacement` | Retirement or Replacement |
+
+Subphases work the same way: `--subphase ui-design` and `--subphase 3.5` select the same subphase. Run `spado workflow validate --catalog .spado/catalog` in the configured project for all 62 subphase slugs.
 
 ## Modes, plans, dependencies and states
 
@@ -271,7 +312,7 @@ spado status --human
 spado status --run RUN_ID --human
 ```
 
-**Effects/output:** read-only JSON with phase/subphase/activity state and plans, or run choices when zero/multiple runs exist. No live-process heartbeat. **Errors:** missing credentials/config, unavailable DB, unauthorized actor or unknown run.
+From your own terminal, use `--human` after `spado db up`; the command does not automatically assume the shell user is the Human. Without `--human`, it requires a delegated actor credential in `SPADO_ACTOR_TOKEN_FILE` or `SPADO_ACTOR_TOKEN`. **Effects/output:** read-only JSON with phase/subphase/activity state and plans, or run choices when zero/multiple runs exist. No live-process heartbeat. **Errors:** missing credentials/config, unavailable DB, unauthorized actor or unknown run.
 
 ### spado review
 
@@ -284,12 +325,14 @@ spado review [TARGET] [IDENTIFIER] [--run ID] [--root PATH] [--human]
 | Argument | Default | Meaning |
 |---|---|---|
 | `TARGET` | `all` | `all`, `phase`, `subphase`, `activity`. |
-| `IDENTIFIER` | unset | Required except for `all`; phase/subphase ID or activity UUID. Omit for `all`. |
+| `IDENTIFIER` | unset | Required except for `all`; phase/subphase slug or numeric ID, or activity UUID. Omit for `all`. |
 
 ```bash
 spado review all --run RUN_ID --human
-spado review phase 3 --run RUN_ID --human
-spado review subphase 3.5 --run RUN_ID --human
+spado review phase definition-design --run RUN_ID --human
+spado review phase 3 --run RUN_ID --human          # same phase by numeric ID
+spado review subphase ui-design --run RUN_ID --human
+spado review subphase 3.5 --run RUN_ID --human     # same subphase by numeric ID
 spado review activity ACTIVITY_ID --run RUN_ID --human
 ```
 
@@ -300,21 +343,25 @@ spado review activity ACTIVITY_ID --run RUN_ID --human
 Create a run and pin workflow/organization definitions. Normal entry is a **direct Human action** after setup/DB startup. Does not run agents.
 
 ```text
-spado workflow create --objective TEXT [--phase N | --subphase N.N] [--mode MODE] [--root PATH] [--human]
+spado workflow create --objective TEXT [--phase SLUG_OR_ID | --subphase SLUG_OR_ID] [--mode MODE] [--root PATH] [--human]
 ```
 
 | Option | Default | Meaning |
 |---|---|---|
 | `--objective TEXT` | required | Product/work objective. |
-| `--phase N` | unset | One-phase scope. |
-| `--subphase N.N` | unset | One-subphase scope; exclusive with `--phase`. |
+| `--phase SLUG_OR_ID` | unset | One-phase scope, for example `definition-design` or `3`. |
+| `--subphase SLUG_OR_ID` | unset | One-subphase scope, for example `ui-design` or `3.5`; exclusive with `--phase`. |
 | `--mode MODE` | project default | Four-mode selection. |
 | `--root PATH` | `.` | Configured project. |
 | `--human` | false | Local Human credential; otherwise coordinator authorization required. |
 
 ```bash
-spado workflow create --objective "Choose a product opportunity" --subphase 1.1 --mode semi-auto --human
+spado workflow create --objective "Choose a product opportunity" --subphase initial-ideation --mode semi-auto --human
+spado workflow create --objective "Design the product" --phase definition-design --mode auto --human
+spado workflow create --objective "Design the product" --phase 3 --mode auto --human
 ```
+
+The last two commands use equivalent phase selectors; each invocation still creates a separate run. List available phase and subphase slugs in a configured product with `spado workflow validate --catalog .spado/catalog`, or the bundled tool catalog with `spado workflow validate`. Slugs are unique within each scope type and resolve to numeric IDs in persisted runs and events. Existing numeric IDs and earlier full-title subphase slugs still work. Runs pin their catalog snapshot: existing runs keep their original definitions, while newly created runs use the current slug list. Older snapshots also accept title-based names such as `definition-design` and `initial-ideation`.
 
 **Effects/output:** run plus initial event, returning `{"run": "…"}`. No scope means full workflow. No `--run`/`--new-run` CLI options: every successful creation makes a new run. **Errors:** invalid/incompatible scopes, missing configuration/credentials, unavailable DB.
 
@@ -324,12 +371,14 @@ Read pinned definitions, roles, modes, dependencies, revisions and plans visible
 
 | Option | Default | Meaning |
 |---|---|---|
-| `--phase N` | unset | Phase filter. |
-| `--subphase N.N` | unset | Subphase filter, exclusive with phase. |
+| `--phase SLUG_OR_ID` | unset | Phase filter, for example `definition-design` or `3`. |
+| `--subphase SLUG_OR_ID` | unset | Subphase filter, for example `ui-design` or `3.5`; exclusive with phase. |
 | `--activity ID` | unset | Select that activity's subphase, possibly including its other instances; exclusive with either other selector. |
 
 ```bash
-spado workflow context --run RUN_ID --subphase 1.1 --human
+spado workflow context --run RUN_ID --subphase initial-ideation --human
+spado workflow context --run RUN_ID --phase definition-design --human
+spado workflow context --run RUN_ID --phase 3 --human
 ```
 
 **Effects/output:** read-only JSON with `run_version`, briefs, deliverables, criteria and missing inputs. No selector means workflow view filtered by actor scope. Reading definitions beyond a run's execution scope does not expand that scope. **Errors:** incompatible/unknown selectors, explicit access beyond delegation.
@@ -378,7 +427,7 @@ Validate canonical SPDLC definitions, roles, skill/brief files and dependencies.
 spado workflow validate --catalog ~/tools/spado/catalog
 ```
 
-**Effects/output:** read-only JSON counts (currently 7 phases, 62 subphases, 72 organization agents). **Errors:** missing files, inconsistent IDs/references, dependency cycles. Validates definitions, not execution completion.
+**Effects/output:** read-only JSON counts and complete `phase_slugs` and `subphase_slugs` maps from numeric ID to slug (currently 7 phases, 62 subphases, 72 organization agents). **Errors:** missing files, inconsistent IDs/references, dependency cycles. Validates definitions, not execution completion.
 
 ### spado workflow render
 
@@ -443,12 +492,12 @@ Record a file revision and invalidate affected recorded consumers. All shared ru
 | Argument/option | Default | Meaning |
 |---|---|---|
 | `PATH` | required | Existing project-relative `.md`, `.txt`, `.rst`, `.json`; no outside paths or `.spado/local`. |
-| `--subphase N.N` | unset | Subphase attribution; omit for general context. |
+| `--subphase SLUG_OR_ID` | unset | Subphase attribution, for example `initial-ideation` or `1.1`. Omit for general context. |
 | `--depends REVISION_ID` | none | Repeatable consumed revision IDs, not paths. |
 
 ```bash
 spado docs sync docs/vision.md --run RUN_ID --human
-spado docs sync docs/opportunity.md --subphase 1.1 --run RUN_ID
+spado docs sync docs/opportunity.md --subphase initial-ideation --run RUN_ID
 ```
 
 **Effects/output:** reads file, records content/hash, returns revision and affected consumers; unchanged latest content reuses its revision without updating dependency metadata alone. Does not edit/promote files. Human/CAOAO coordinate; officers are scoped; a specialist must own a running activity with an approved plan, including bounded work on provisional inputs. **Errors:** forbidden/missing path, invalid dependencies or authority/gates.
@@ -675,18 +724,20 @@ These are **instructions to installed entry skills**, interpreted by the host ag
 | Purpose | Claude chat | Codex chat |
 |---|---|---|
 | Full workflow | `/spdlc --mode auto` | `$spdlc --mode auto` |
-| Phase | `/spdlc --phase 3 --mode manual` | `$spdlc --phase 3 --mode manual` |
-| Subphase | `/spdlc --subphase 3.5 --mode semi-auto` | `$spdlc --subphase 3.5 --mode semi-auto` |
+| Phase by slug | `/spdlc --phase definition-design --mode manual` | `$spdlc --phase definition-design --mode manual` |
+| Same phase by ID | `/spdlc --phase 3 --mode manual` | `$spdlc --phase 3 --mode manual` |
+| Subphase by slug | `/spdlc --subphase ui-design --mode semi-auto` | `$spdlc --subphase ui-design --mode semi-auto` |
+| Same subphase by ID | `/spdlc --subphase 3.5 --mode semi-auto` | `$spdlc --subphase 3.5 --mode semi-auto` |
 | Existing activity | `/spdlc --activity ACTIVITY_ID --run RUN_ID` | `$spdlc --activity ACTIVITY_ID --run RUN_ID` |
-| Independent run | `/spdlc --new-run --subphase 1.1` | `$spdlc --new-run --subphase 1.1` |
+| Independent run | `/spdlc --new-run --subphase initial-ideation` | `$spdlc --new-run --subphase initial-ideation` |
 | State | `/spado --status --run RUN_ID` | `$spado --status --run RUN_ID` |
 | Review everything | `/spado --review all --run RUN_ID` | `$spado --review all --run RUN_ID` |
-| Review phase | `/spado --review phase 3 --run RUN_ID` | `$spado --review phase 3 --run RUN_ID` |
-| Review subphase | `/spado --review subphase 3.5 --run RUN_ID` | `$spado --review subphase 3.5 --run RUN_ID` |
+| Review phase | `/spado --review phase definition-design --run RUN_ID` | `$spado --review phase definition-design --run RUN_ID` |
+| Review subphase | `/spado --review subphase ui-design --run RUN_ID` | `$spado --review subphase ui-design --run RUN_ID` |
 | Review activity | `/spado --review activity ACTIVITY_ID --run RUN_ID` | `$spado --review activity ACTIVITY_ID --run RUN_ID` |
 | Discussion only | `/spado --chat --run RUN_ID` | `$spado --chat --run RUN_ID` |
 
-`spdlc` accepts one target: whole workflow (no selector), `--phase`, `--subphase` or `--activity`. `--mode` uses the four modes; omission follows the configured/run rules. `--run` selects the existing execution; `--new-run` requests an independent execution and needs an objective in your message. Do not combine an existing activity/run selection with a request for a new run. The host should reuse the unambiguous conversation run unless explicitly asked to create another.
+`--phase` and `--subphase` each accept a slug or numeric ID; `definition-design`/`3` and `ui-design`/`3.5` select the same scopes respectively. `spdlc` accepts one target: whole workflow (no selector), `--phase`, `--subphase` or `--activity`. `--mode` uses the four modes; omission follows the configured/run rules. `--run` selects the existing execution; `--new-run` requests an independent execution and needs an objective in your message. Do not combine an existing activity/run selection with a request for a new run. The host should reuse the unambiguous conversation run unless explicitly asked to create another.
 
 For discussion, name the phase/subphase/activity in ordinary text after `--chat`. You can move between topics without writing anything. `spado` consultation must not create runs, sync/index documents, approve plans, write files/events or change external systems. Request execution explicitly through `spdlc` when ready.
 
@@ -702,7 +753,7 @@ Human shell actions use `--human`. Agents use a delegated token, normally throug
 
 ```bash
 export SPADO_ACTOR_TOKEN_FILE='/absolute/path/returned/by/actor-create.token'
-spado workflow context --run RUN_ID --subphase 1.1
+spado workflow context --run RUN_ID --subphase initial-ideation
 ```
 
 This path is a placeholder. If `SPADO_ACTOR_TOKEN` is also set, its nonempty value takes precedence. Never print tokens or use `--human` to bypass an agent's authority. A role name in a request does not authenticate an officer. These are application permissions, not an OS sandbox against the machine/database administrator.
@@ -855,11 +906,11 @@ In a partial run, existing upstream evidence can be supplied as a synchronized a
 |---|---|
 | `spado: command not found` | Check the tool installation and PATH; `uv tool update-shell` can configure the tool executable directory. Reopen the shell. |
 | Missing `.spado/project.json` | You are in the wrong root or used capability-only setup. Configure the organization before runtime commands. |
-| Initial setup requires host/mode/embeddings/model | Supply all four for fresh workflow setup. Use no-workflow only for capability installation. |
+| `Initial setup requires --host, --mode, --embeddings and --embedding-model` | `spado init` is non-interactive. Supply all four on the first workflow installation; see the [Codex example](#configure-an-organization-project). Use `--no-workflow` only for capability installation. |
 | PostgreSQL operation failed | Check Docker, `spado db up`, project port/password and any DSN override. |
 | Port already in use | Give simultaneously active projects distinct ports at initial setup; existing-port updates are currently unsupported by `init`. |
 | No Human token | Complete `db up`; do not substitute an agent token. Lost credentials on an existing DB need deliberate recovery, not assumed rebootstrap. |
-| Set `SPADO_ACTOR_TOKEN_FILE` / unauthorized actor | Pass the assigned token to that session; use `--human` only for actual Human actions. Check whether direct-token env overrides the file. |
+| `Set SPADO_ACTOR_TOKEN_FILE ... or use --human` / unauthorized actor | If you ran `spado status` yourself after `spado db up`, use `spado status --human`. Agent sessions need their own delegated token file; `SPADO_ACTOR_TOKEN` overrides the file when nonempty. |
 | Select an execution with `--run` | Inspect `spado status --human` and choose the intended run ID. |
 | Scope/delegation error | Use the assigned scope/identity; request CAOAO coordination or create a separate run outside current execution scope. |
 | Approval targets a stale plan / execution changed | Refresh context; review and approve current plan ID/version. Do not replay stale approval as a new decision. |
