@@ -1,10 +1,12 @@
 # SPADO — Software Product Agentic Development Organization
 
+> SPADO was previously named **CWI (Claude Workspace Init)**. The repository still uses its original name; it will be renamed in a future version.
+
 SPADO provisions coding agents to work as a **C-organization**: an organization of agents with executive responsibilities, specialist assignments and a shared way of planning, executing and reviewing work.
 
 It configures **Claude Code and Codex** with native agents, skills, workflows and optional tools and MCP integrations. The host runs the agents; SPADO supplies their organizational definitions, operating instructions and shared execution state. The architecture is designed to accommodate other coding agents through additional host adapters.
 
-For setup, everyday operation and **every command and parameter**, use the [usage manual](USAGE.md). Start with its [CWI → SPADO route guide](USAGE.md#from-cwi-to-spado) or [first-run walkthrough](docs/manual/first-run.md). The [coherence review](docs/manual/coherence.md) identifies current sources, historical designs and known implementation limits.
+For setup, everyday operation and **every command and parameter**, use the [usage manual](USAGE.md). Start with its [setup guide](USAGE.md#choose-your-setup) or [first-run walkthrough](docs/manual/first-run.md). The [implementation notes](docs/manual/implementation.md) describe current limits.
 
 ## The agentic organization paradigm
 
@@ -133,12 +135,11 @@ The existing catalog of skills, agents, scripts, hooks and MCP remains available
 spado catalog list
 spado catalog validate
 spado init --no-workflow --host codex --capability mcp:github
-spado provision --catalog ~/tools/spado/catalog --dry-run
 ```
 
-`spado provision` retains the existing interactive Claude workspace installer. `spado init` provisions organizations, or capabilities alone with `--no-workflow`. Optional resources can be added to workflow setup with repeated `--capability TYPE:ID` flags. Dependencies and conflicts are resolved before writing. Host configuration is merged additively; conflicting user edits block installation.
+`spado init` provisions organizations, or capabilities alone with `--no-workflow`. Optional resources can be added to workflow setup with repeated `--capability TYPE:ID` flags. Dependencies and conflicts are resolved before writing. Host configuration is merged additively; conflicting user edits block installation.
 
-Capabilities use `spado.json` manifests. Imported resources default to Claude compatibility until reviewed; declare `hosts` explicitly to opt into Codex support. Unsupported hooks, agents or host-specific payloads are rejected rather than silently translated. GitHub MCP is available on both hosts. Existing CWI installations are not automatically migrated, and no `cwi` command alias is provided.
+Capabilities use `spado.json` manifests. Imported resources default to Claude compatibility until reviewed; declare `hosts` explicitly to opt into Codex support. Unsupported hooks, agents or host-specific payloads are rejected rather than silently translated. GitHub MCP is available on both hosts.
 
 ## Architecture and authoring
 

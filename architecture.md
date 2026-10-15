@@ -1,6 +1,6 @@
 # SPADO Architecture
 
-For installation, command syntax and operating procedures, see the [usage manual](USAGE.md). The [repository coherence review](docs/manual/coherence.md) distinguishes current implementation, historical CWI material and outstanding limitations; this document describes the common operating model.
+For installation, command syntax and operating procedures, see the [usage manual](USAGE.md). The [implementation notes](docs/manual/implementation.md) describe current limits; this document defines the common operating model.
 
 SPADO (Software Product Agentic Development Organization) provisions coding agents to work as a **C-organization**. Agents have executive or specialist responsibilities, skills model their behavior, and workflows coordinate their assignments and decisions.
 

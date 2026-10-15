@@ -1,12 +1,12 @@
 # SPADO usage manual
 
-The operating manual for **SPADO 0.2.0**, formerly CWI: repository structure, setup, daily use and **all 29 terminal commands and their parameters**. This describes the implementation in this checkout; check `spado --version` and command-specific `--help` on other versions.
+The operating manual for **SPADO 0.2.0**: repository structure, setup, daily use and **all 28 terminal commands and their parameters**. This describes the implementation in this checkout; check `spado --version` and command-specific `--help` on other versions.
 
-[Product overview](README.MD) · [Architecture](architecture.md) · [Coherence review and known gaps](docs/manual/coherence.md)
+[Product overview](README.MD) · [Architecture](architecture.md) · [Implementation notes](docs/manual/implementation.md)
 
 ## Contents
 
-1. [From CWI to SPADO](#from-cwi-to-spado)
+1. [Choose your setup](#choose-your-setup)
 2. [Repository map and sources of truth](#repository-map-and-sources-of-truth)
 3. [Installation and setup](#installation-and-setup)
 4. [First execution and everyday use](#first-execution-and-everyday-use)
@@ -18,32 +18,30 @@ The operating manual for **SPADO 0.2.0**, formerly CWI: repository structure, se
 10. [Updates and maintenance](#updates-and-maintenance)
 11. [Troubleshooting](#troubleshooting)
 
-Supplemental chapters: [first-run and advanced event walkthrough](docs/manual/first-run.md), [modular provisioning and catalog walkthrough](docs/manual/modular-provisioning.md), [repository coherence review](docs/manual/coherence.md). The complete command reference stays in this file.
+Supplemental chapters: [first-run and advanced event walkthrough](docs/manual/first-run.md), [capability catalog walkthrough](docs/manual/capabilities.md), [implementation notes](docs/manual/implementation.md). The complete command reference stays in this file.
 
-## From CWI to SPADO
+## Choose your setup
 
-CWI provisioned a modular Claude workspace. SPADO retains that installer and adds organizations, reusable workflows and execution-state services. **There is one Python package and executable, `spado`. `cwi` and `cwi-init` are not current commands.** Existing CWI installations are not automatically migrated.
+SPADO uses one package and one project installer, `spado init`. Select a whole SPDLC organization or install compatible capabilities independently. The host executes agents; SPADO provides their instructions, catalog and, for workflows, authenticated state services.
 
 | Your goal | Use | Result |
 |---|---|---|
-| Work through the Full SPDLC organization | `spado init`, `spado db up`, then the host's `spdlc` entry skill | Installs resources, starts the state database, then lets the host coordinate agents. |
-| Install individual capabilities for Claude/Codex | `spado init --no-workflow --host HOST --capability TYPE:ID` | Selected compatible resources without a workflow or PostgreSQL. |
-| Use the original interactive Claude wizard | `spado provision` | Scans the project, suggests capabilities, configures instructions and previews changes. |
-| Inspect or record execution | `status`, `review`, `workflow`, `actor`, `docs` subcommands | Authenticated reads/writes against the configured project. |
-| Maintain reusable capabilities | `spado catalog …` | Reads/edits the source catalog, without updating installed projects. |
+| Work through Full SPDLC | `spado init`, `spado db up`, then the host's `spdlc` entry skill | Installs the organization and runtime configuration, starts PostgreSQL and lets the host coordinate agents. |
+| Install selected capabilities for Claude/Codex | `spado init --no-workflow --host HOST --capability TYPE:ID` | Installs compatible skills, agents, scripts, hooks or MCP without workflow state or PostgreSQL. |
+| Add capabilities to Full SPDLC | Repeat `--capability TYPE:ID` during workflow setup | Installs optional resources alongside the organization. |
+| Inspect or record execution | `status`, `review`, `workflow`, `actor`, `docs` commands | Authenticated reads and writes against a configured workflow project. |
+| Maintain the reusable catalog | `spado catalog …` | Edits source definitions; installed projects update when `spado init` is repeated. |
 
-`init` and `provision` are different installers, not mandatory successive steps. Their ownership records are separate; using both on the same files can produce conflicts. Choose the route you need.
+SPADO supports **Claude Code and Codex**. More hosts and workflows need implementation work. There is no autonomous scheduler, graphical runtime UI or background document watcher.
 
-SPADO configures **Claude Code and Codex**. The host launches and runs agents; SPADO has no autonomous scheduler, graphical runtime UI or background document watcher. More hosts/workflows need implementation work.
-
-The organization consists of the Human, **CAOAO** (execution coordination), nine **Chief [Role] Agentic Officers** (domain decisions) and specialists (bounded work). CEAO owns executive direction; CAOAO coordinates execution. Skills provide behavioral instructions. See the [complete officer mapping](README.MD#chief-role-agentic-officers).
+The organization consists of the Human, **CAOAO** (execution coordination), nine **Chief [Role] Agentic Officers** (domain decisions) and specialists (bounded assignments). CEAO owns executive direction; CAOAO coordinates execution. Skills provide behavioral instructions. See the [complete officer mapping](README.MD#chief-role-agentic-officers).
 
 ## Repository map and sources of truth
 
 | Location | Purpose and edit guidance |
 |---|---|
 | `pyproject.toml`, `src/spado/cli.py` | Package/executable and command registration. |
-| `src/spado/commands`, `scanner`, `planning`, `install`, `state`, `claude_md`, `ui` | Active modular provisioner and catalog-authoring code inherited from CWI. `ui` is the terminal wizard, not a graphical runtime UI. |
+| `src/spado/commands/catalog.py`, `src/spado/authoring`, `src/spado/catalog`, `src/spado/install` | Capability authoring and loading, dependency resolution, safe installation and conflict checks. |
 | `src/spado/workflows` | Definitions, modes, plans, gates and state transitions. |
 | `src/spado/runtime` | Setup, identities, PostgreSQL, events, protocol and embeddings. |
 | `src/spado/adapters` | Native host resources and entry skills. |
@@ -53,8 +51,6 @@ The organization consists of the Human, **CAOAO** (execution coordination), nine
 | `catalog/organization-skills/` | Their behavioral instructions. |
 | `catalog/workflows/Full_SPDLC_Workflow.md` | Generated reading copy. Regenerate with `workflow render`; do not edit as the source. |
 | `catalog/workflows/tools/agent-record.py` | Source of the installed facade using the same services as the CLI. |
-| `catalog/c-suite/`, `catalog/workflows/c-suite-workflow.md`, `catalog/workflows/workflows.md` | Historical designs; not selected by the current runtime loader. |
-| `templates/`, `src/spado/claude_md/templates/` | Modular provisioner templates, separate from SPDLC runtime resources. |
 | `tests/` | Unit, CLI and integration verification. |
 
 Organization setup creates these resources **in the product repository**:
@@ -69,7 +65,6 @@ Organization setup creates these resources **in the product repository**:
 | `.claude/agents/`, `.claude/skills/` | Native Claude organization resources. |
 | `.codex/agents/`, `.agents/skills/` | Native Codex organization resources. |
 | `.mcp.json`, `.claude/settings.json`, `.codex/config.toml` | Optional capability-specific host configuration. |
-| `.claude/spado-state.json` | Separate ownership/state for the modular `provision` installer. |
 | Docker named volume | PostgreSQL runs, actors, events, document revisions and embeddings. |
 
 Product documents remain ordinary files, commonly in `docs/`. The database retains recorded revisions/history. Source catalog, installed copies and pinned run snapshots are distinct. Editing README or architecture does not change agent instructions or existing executions automatically.
@@ -85,7 +80,7 @@ Keep a permanent tool checkout separate from products:
 ~/projects/my-product/   product code, installed agents and project state
 ```
 
-Use Python 3.12+ and `uv`. Organization execution also requires a coding-agent host and PostgreSQL/pgvector; the provided database commands use Docker with Compose. Modular provisioning needs no database. Local embeddings require a Python extra; external embeddings require a compatible endpoint and credential.
+Use Python 3.12+ and `uv`. Organization execution also requires a coding-agent host and PostgreSQL/pgvector; the provided database commands use Docker with Compose. Capability-only installation needs no database. Local embeddings require a Python extra; external embeddings require a compatible endpoint and credential.
 
 ```bash
 git clone https://github.com/pol5coma/claude-workspace-init ~/tools/spado
@@ -124,7 +119,7 @@ spado status --human
 
 An empty `runs` list is expected initially. `init` installs resources; `db up` starts PostgreSQL, initializes schema and creates the Human credential. Neither starts agents nor creates an execution.
 
-For simultaneous projects, choose different `--database-port` values at initial setup (default `55432`). That flag is currently ignored when updating an existing project; see [known gaps](docs/manual/coherence.md#functional-gaps-and-operational-limits).
+For simultaneous projects, choose different `--database-port` values at initial setup (default `55432`). That flag is currently ignored when updating an existing project; see [known gaps](docs/manual/implementation.md#current-limits).
 
 For external embeddings use `--embeddings external --embedding-model MODEL_ID --embedding-endpoint URL` and set `SPADO_EMBEDDING_API_KEY` through your environment. Indexing sends document chunks and searching sends queries to that provider. Local models download on first use. Setup and ordinary state operations do not encode embeddings.
 
@@ -137,7 +132,7 @@ spado init --no-workflow --host codex --capability mcp:github
 
 This creates capability resources and installation bookkeeping, without `.spado/project.json` or PostgreSQL. Supply the MCP credential separately. Repeated `--capability TYPE:ID` options also add capabilities to organization setup.
 
-For the interactive Claude-only alternative, run `spado provision --catalog ~/tools/spado/catalog --dry-run`, then repeat without `--dry-run`. See the [walkthrough](docs/manual/modular-provisioning.md). Its optional template cleanup removes bootstrap source from the template copy; install the editable tool from the separate permanent checkout.
+Select capabilities explicitly with repeated `--capability TYPE:ID` flags. Catalog `default_selected` and group defaults remain metadata; `init` does not scan a project or apply automatic recommendations. See the [capability walkthrough](docs/manual/capabilities.md).
 
 ## First execution and everyday use
 
@@ -209,7 +204,7 @@ SPDLC-specific: phase 6 has repeated operating cycles; phase 7 requires CEAO's r
 
 Uppercase `RUN_ID`, `ACTIVITY_ID`, `REVISION_ID`, `FILE` and similar values are placeholders. Replace them with actual values. Brackets in syntax mean optional arguments; do not type them.
 
-Every command/group accepts `--help`; `spado --version` prints the version; bare `spado` displays help. `--verbose`, `--root`, `--run` and `--human` are **not global options**.
+Every command/group accepts `--help`; `spado --version` prints the version; bare `spado` displays help. `--root`, `--run` and `--human` are **not global options**.
 
 These **shared runtime options** apply to `status`, `review`, `actor create`, `workflow context|prepare|record|export` and every `docs` command:
 
@@ -219,15 +214,15 @@ These **shared runtime options** apply to `status`, `review`, `actor create`, `w
 | `--run ID` | unset | Select run; infer only if exactly one is accessible. `status` instead lists zero/multiple choices. |
 | `--human` | false | Local Human credential for an actual Human action; otherwise delegated actor environment credentials. |
 
-`workflow create` shares `--root`/`--human`, without `--run`. Database commands share only `--root`. Installers have their own options.
+`workflow create` shares `--root`/`--human`, without `--run`. Database commands share only `--root`. The installer has its own options.
 
-Runtime output is generally JSON. Catalog/provision output uses terminal tables/messages; `workflow render` emits Markdown; `db up` can print Docker output before JSON. Do not assume all stdout is pure JSON. Handled runtime failures generally exit `1`, parsing failures `2`. `provision` uses `1` for cancellation/known errors, `2` for unexpected failures and `130` for interruption. Some malformed requests/provider errors can still surface as Python exceptions.
+Runtime output is generally JSON. Catalog output uses terminal tables/messages; `workflow render` emits Markdown; `db up` can print Docker output before JSON. Do not assume all stdout is pure JSON. Handled runtime failures generally exit `1`, parsing failures `2`. Some malformed requests/provider errors can still surface as Python exceptions.
 
 ### Command index
 
 | Family | Commands |
 |---|---|
-| Root (4) | [`init`](#spado-init), [`provision`](#spado-provision), [`status`](#spado-status), [`review`](#spado-review) |
+| Root (3) | [`init`](#spado-init), [`status`](#spado-status), [`review`](#spado-review) |
 | Workflow (7) | [`create`](#spado-workflow-create), [`context`](#spado-workflow-context), [`prepare`](#spado-workflow-prepare), [`record`](#spado-workflow-record), [`export`](#spado-workflow-export), [`validate`](#spado-workflow-validate), [`render`](#spado-workflow-render) |
 | Actor (1) | [`create`](#spado-actor-create) |
 | Database (3) | [`up`](#spado-db-up), [`down`](#spado-db-down), [`migrate`](#spado-db-migrate) |
@@ -266,31 +261,6 @@ spado init --no-workflow --host codex --capability mcp:github --dry-run
 ```
 
 **Errors:** missing setup fields/root, invalid mode/provider/host, unsupported capabilities, dependency conflicts, edited managed files. See [updates](#updates-and-maintenance).
-
-### spado provision
-
-Interactive modular **Claude** workspace installer; needs project/catalog filesystem access, no workflow identity or database.
-
-```text
-spado provision [OPTIONS]
-```
-
-| Option | Default | Meaning |
-|---|---|---|
-| `--root PATH` | current directory with root discovery | Project to provision. |
-| `--catalog PATH` | target project’s `catalog/`, if present | Explicit source. This command does not fall back to the installed tool catalog. |
-| `--dry-run` | false | Scan/plan/preview with default answers; no writes. |
-| `--yes`, `-y` | false | Accept defaults, including template cleanup when detected. |
-| `--verbose`, `-v` | false | Debug logs/tracebacks for this command. |
-
-**Effects/output:** scans without executing product code; proposes instructions/capabilities; previews and applies the confirmed plan transactionally. Writes Claude resources, instructions/docs and `.claude/spado-state.json`. Deselection may remove owned files. Optional template cleanup removes the bootstrap allowlist. Cancellation before apply writes nothing. Without local/explicit catalog, configuration is limited to instructions and existing-state handling; supply `--catalog` to select capabilities.
-
-```bash
-spado provision --root ~/projects/my-product --catalog ~/tools/spado/catalog --dry-run
-spado provision --root ~/projects/my-product --catalog ~/tools/spado/catalog
-```
-
-**Errors:** unavailable catalog, noninteractive apply without `--yes`, conflicting files, changed preview preconditions. The wizard can offer to open Claude with `/kickoff`, a separate optional skill from SPDLC. See [all screens](docs/manual/modular-provisioning.md).
 
 ### spado status
 
@@ -464,7 +434,7 @@ Initialize/apply the current schema on a reachable configured DB. Only command-s
 spado db migrate
 ```
 
-**Effects/output:** DDL and `{"schema_version": 1}`. Does not start Docker/create Human token file. Not a CWI migration or arbitrary migration-version runner. **Errors:** missing config or DB access failure.
+**Effects/output:** DDL and `{"schema_version": 1}`. Does not start Docker/create Human token file. Not an arbitrary migration-version runner. **Errors:** missing config or DB access failure.
 
 ### spado docs sync
 
@@ -525,7 +495,7 @@ All five `catalog add` commands accept these options:
 | `--id ID` | inferred | Identifier; unique across types. |
 | `--name TEXT` | inferred | Display name. |
 | `--description TEXT`, `-d TEXT` | input/derived | Description override; may prompt if omitted. |
-| `--default` / `--no-default` | unset; false noninteractively | Global preselection; interactive omission asks. |
+| `--default` / `--no-default` | unset; false noninteractively | Default-selection metadata; interactive omission asks. Current `init` selects explicitly. |
 | `--type TYPES` | none | Comma-separated `backend`, `frontend`, `fullstack`, `ai`, `cli`, `library`, `data_ml`, `other`. |
 | `--tech TECHNOLOGIES` | none | Comma-separated technology recommendations. |
 | `--depends TYPE:ID` | none | Repeatable dependencies. |
@@ -722,7 +692,7 @@ For discussion, name the phase/subphase/activity in ordinary text after `--chat`
 
 Terminal equivalents differ: use `spado status`, **not** `spado --status`; `spado review phase 3`, **not** `spado --review phase 3`. There is no terminal `spado --chat`. The host's chat route reads `workflow context` and discusses it. `--root PATH` belongs to the underlying CLI commands when a different project needs explicit selection.
 
-The optional modular `/kickoff`, `/project-discovery`, `/feature-spec` and `/feature-workflow` skills are described in the [modular chapter](docs/manual/modular-provisioning.md). They are not SPDLC phases and are available only when installed. Third-party skills and native host commands have their own documentation; they are not additional SPADO CLI commands.
+The optional `/kickoff`, `/project-discovery`, `/feature-spec` and `/feature-workflow` skills are standalone catalog capabilities described in the [capability chapter](docs/manual/capabilities.md). They are not SPDLC phases and are available only when installed. Third-party skills and native host commands have their own documentation; they are not additional SPADO CLI commands.
 
 ## Agent recording and event reference
 
@@ -759,7 +729,7 @@ spado_python="$(uv tool dir)/spado/bin/python"
 | `--request FILE` | Required for `record`; omit for `status`. |
 | `--help`, `-h` | Argparse usage. |
 
-No `--human` script flag exists. Always omit `--request` for `status` and provide a nonempty request object for `record`: the current facade dispatches by request content, so `status --request FILE` can incorrectly call the write handler. This is recorded as a pending implementation bug in the coherence review. `record` uses the same services/permissions as `workflow record`; `status` requires CAOAO/coordinator authority. JSON success is the service result. Handled service failures report `persisted: false`, `pending` (record) or `unavailable` (status), error type and event ID, exiting `1`. This is not a durable retry queue. Retain the request and retry explicitly; a preceding automatic file sync may already have persisted. Malformed JSON can fail before the facade's handler.
+No `--human` script flag exists. Always omit `--request` for `status` and provide a nonempty request object for `record`: the current facade dispatches by request content, so `status --request FILE` can incorrectly call the write handler. This is listed as a current limit in the [implementation notes](docs/manual/implementation.md#current-limits). `record` uses the same services/permissions as `workflow record`; `status` requires CAOAO/coordinator authority. JSON success is the service result. Handled service failures report `persisted: false`, `pending` (record) or `unavailable` (status), error type and event ID, exiting `1`. This is not a durable retry queue. Retain the request and retry explicitly; a preceding automatic file sync may already have persisted. Malformed JSON can fail before the facade's handler.
 
 The Python functions `record(root, run_id, request)` and `read_status(root, run_id)` expose the same operations. The detailed contract is in [the source protocol](src/spado/runtime/protocol.md), installed as `.spado/protocol.md`.
 
@@ -851,7 +821,7 @@ Keep `.spado/local/` private and untracked. Generated `.spado/.gitignore` exclud
 These are three distinct update layers:
 
 1. **Tool:** pull your permanent checkout. Editable Python source changes take effect; reinstall when dependencies/entry points/extras change.
-2. **Project resources:** preview and repeat `spado init` to install current resources, or use `provision` for its own modular installation.
+2. **Project resources:** preview and repeat `spado init` to install current resources, including selected standalone capabilities.
 3. **Runs:** existing executions retain their workflow/organization snapshots. New runs use the installed definitions; there is no automatic run migration.
 
 ```bash
@@ -865,7 +835,7 @@ spado init
 
 Use the plain package instead of the extra when you use external embeddings. Do not run these project setup commands from the tool checkout by mistake.
 
-An edited managed file causes a conflict. Review its diff and preserve intentional customizations before reconciling it with the expected source. `init` has no force/interactive overwrite switch. Its installation is additive: changing the selected hosts/capabilities does not remove old resource files. `provision` has a separate selection/removal workflow; its ownership does not automatically transfer to `init`.
+An edited managed file causes a conflict. Review its diff and preserve intentional customizations before reconciling it with the expected source. `init` has no force/interactive overwrite switch. Its installation is additive: changing the selected hosts/capabilities does not remove old resource files. Removing a selection from config does not prune previously installed resources.
 
 ### Documents and continuation
 
@@ -879,15 +849,12 @@ In a partial run, existing upstream evidence can be supplied as a synchronized a
 
 `workflow export` is a readable run/event export, not a restore-capable backup. No SPADO backup/restore, credential-recovery, import, uninstall or delete-run command is provided. Use your database administration process if you need a full backup and include the relevant project files/credentials securely.
 
-Template cleanup applies only to `provision` when `.spado-template.json` and the SPADO package identify a template and cleanup is selected. It can remove `catalog`, `templates`, `src/spado`, tests, package files, named spec files and `USAGE.md`; the exact allowlist is in [paths.py](src/spado/paths.py). Unlisted files, including this manual's supplementary directory, remain. `init` does not do this cleanup. `--yes` accepts the wizard's cleanup default.
-
 ## Troubleshooting
 
 | Symptom / error | Meaning and action |
 |---|---|
 | `spado: command not found` | Check the tool installation and PATH; `uv tool update-shell` can configure the tool executable directory. Reopen the shell. |
-| Old `cwi`/`cwi-init` examples | Historical names; use current `spado` routes. No alias or automatic CWI-state migration exists. |
-| Missing `.spado/project.json` | You are in the wrong root or used capability-only/modular setup. Configure the organization before runtime commands. |
+| Missing `.spado/project.json` | You are in the wrong root or used capability-only setup. Configure the organization before runtime commands. |
 | Initial setup requires host/mode/embeddings/model | Supply all four for fresh workflow setup. Use no-workflow only for capability installation. |
 | PostgreSQL operation failed | Check Docker, `spado db up`, project port/password and any DSN override. |
 | Port already in use | Give simultaneously active projects distinct ports at initial setup; existing-port updates are currently unsupported by `init`. |
@@ -908,13 +875,9 @@ Template cleanup applies only to `provision` when `.spado-template.json` and the
 | Empty search / `index_complete: false` | Promote approved sources and index with the current model. Drafts are excluded. |
 | User edits conflict with installation | Review managed-file diffs; reconcile customizations before reinstalling. No `init --force`. |
 | Capability incompatible with Codex | Choose compatible resources; unsupported hooks/settings/agent payloads are rejected, not automatically converted. |
-| Capability no longer selected but files remain | Current `init` does not prune installations. See the coherence report before manual reconciliation. |
-| No catalog / source unavailable on provision rerun | Pass `--catalog` pointing to the permanent tool checkout. |
-| Re-run with `--yes` to apply | Provisioning has no interactive terminal. Preview first; `--yes` accepts every default, including applicable cleanup. |
+| Capability no longer selected but files remain | Current `init` does not prune installations. Review installation ownership before manual reconciliation. |
 | ID already used / literal secret detected | Choose a unique capability ID; use quoted `${VAR}` references instead of secret values. |
 | Host does not expose installed resources | Check the selected host and generated directories, then reload its project/session. Host discovery and permissions are host responsibilities. |
-| Kickoff repeatedly proposes discovery | Check its `spado:architecture-template` marker; follow the [modular workflow](docs/manual/modular-provisioning.md). |
 | MCP does not connect | Supply the selected server's required environment and host permission; catalog validation does not test a connection. |
-| `--verbose` rejected | It belongs only to `spado provision`; use command-specific help and the actual runtime error for other commands. |
 
-See [coherence findings](docs/manual/coherence.md) for source evidence and pending limitations. For implementation changes, edit canonical sources and run the checks described in [README](README.MD#development); do not treat the manual as executable agent instructions.
+See [implementation notes](docs/manual/implementation.md) for source evidence and pending limitations. For implementation changes, edit canonical sources and run the checks described in [README](README.MD#development); do not treat the manual as executable agent instructions.
