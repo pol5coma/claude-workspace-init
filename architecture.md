@@ -1,5 +1,7 @@
 # SPADO Architecture
 
+For installation, command syntax and operating procedures, see the [usage manual](USAGE.md). The [repository coherence review](docs/manual/coherence.md) distinguishes current implementation, historical CWI material and outstanding limitations; this document describes the common operating model.
+
 SPADO (Software Product Agentic Development Organization) provisions coding agents to work as a **C-organization**. Agents have executive or specialist responsibilities, skills model their behavior, and workflows coordinate their assignments and decisions.
 
 This document defines the common operating model for SPADO workflows and describes its current implementation. Full SPDLC is the first available workflow. Its phase numbering, deliverables and lifecycle decisions are workflow-specific applications of this model. The [README](README.MD) introduces the product and installation.

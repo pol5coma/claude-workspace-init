@@ -1,3 +1,5 @@
+> Historical design notes. The runtime loads the canonical [SPDLC definitions](spdlc/workflow.json) and [organization](../organizations/spdlc/organization.json), not this outline. Earlier acronyms, modes and integrations below are design history. Use the [SPADO usage manual](../../USAGE.md) for current commands and supported behavior.
+
 # Claude Workspace Init 
 
 ## Workflows

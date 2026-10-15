@@ -1,5 +1,7 @@
 > Historical design reference. Executable v1 definitions live in `catalog/organizations/spdlc/organization.json` and `catalog/workflows/spdlc/`. The maintained master document is [Full SPDLC](Full_SPDLC_Workflow.md); this earlier outline is not loaded by SPADO.
 
+> `cwi-init` below is a historical design name, not an installed command. For the current `spado init` and `spado provision` routes, see the [usage manual](../../USAGE.md).
+
 # Claude Workspace Init for Product Development Life Cycle (PDLC)
 
 Provisioned claude workspace with C-suite Agents & sub-agents, skills and tools for the different phases of the PDLC.

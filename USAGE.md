@@ -1,603 +1,920 @@
-# Using SPADO
+# SPADO usage manual
 
-> This guide covers the modular Claude workspace installer, `spado provision`. For organization setup, Full SPDLC, Codex, execution state and the four modes, use the [SPADO quick start](README.MD).
+The operating manual for **SPADO 0.2.0**, formerly CWI: repository structure, setup, daily use and **all 29 terminal commands and their parameters**. This describes the implementation in this checkout; check `spado --version` and command-specific `--help` on other versions.
 
-A complete, step-by-step guide. For the overview, see the [README](README.MD).
+[Product overview](README.MD) · [Architecture](architecture.md) · [Coherence review and known gaps](docs/manual/coherence.md)
 
-**Contents**
+## Contents
 
-1. [Install SPADO](#1-install-spado): once per machine
-2. [Set up a project](#2-set-up-a-project): `spado provision`
-3. [Work in Claude Code](#3-work-in-claude-code-kickoff): `/kickoff`
-4. [Add things to the catalog](#4-add-things-to-the-catalog): for maintainers of this template
-5. [Reference](#5-reference): the catalog in detail, what gets preselected, the Safety Guard rules
-6. [Troubleshooting](#6-troubleshooting)
+1. [From CWI to SPADO](#from-cwi-to-spado)
+2. [Repository map and sources of truth](#repository-map-and-sources-of-truth)
+3. [Installation and setup](#installation-and-setup)
+4. [First execution and everyday use](#first-execution-and-everyday-use)
+5. [Modes, plans, dependencies and states](#modes-plans-dependencies-and-states)
+6. [CLI reference](#cli-reference)
+7. [Host invocation reference](#host-invocation-reference)
+8. [Agent recording and event reference](#agent-recording-and-event-reference)
+9. [Configuration and environment](#configuration-and-environment)
+10. [Updates and maintenance](#updates-and-maintenance)
+11. [Troubleshooting](#troubleshooting)
 
----
+Supplemental chapters: [first-run and advanced event walkthrough](docs/manual/first-run.md), [modular provisioning and catalog walkthrough](docs/manual/modular-provisioning.md), [repository coherence review](docs/manual/coherence.md). The complete command reference stays in this file.
 
-## 1. Install SPADO
+## From CWI to SPADO
 
-You need:
+CWI provisioned a modular Claude workspace. SPADO retains that installer and adds organizations, reusable workflows and execution-state services. **There is one Python package and executable, `spado`. `cwi` and `cwi-init` are not current commands.** Existing CWI installations are not automatically migrated.
 
-| Requirement | Why | Check |
-| --- | --- | --- |
-| [uv](https://docs.astral.sh/uv/) | Installs and runs the `spado` CLI | `uv --version` |
-| Python 3.12+ | SPADO is written in Python. uv can provide it. | `python3 --version` |
-| [Claude Code](https://code.claude.com) | Where the workspace is used | `claude --version` |
-| Node.js 18+ *(optional)* | Only for the `archify` diagram skill | `node --version` |
+| Your goal | Use | Result |
+|---|---|---|
+| Work through the Full SPDLC organization | `spado init`, `spado db up`, then the host's `spdlc` entry skill | Installs resources, starts the state database, then lets the host coordinate agents. |
+| Install individual capabilities for Claude/Codex | `spado init --no-workflow --host HOST --capability TYPE:ID` | Selected compatible resources without a workflow or PostgreSQL. |
+| Use the original interactive Claude wizard | `spado provision` | Scans the project, suggests capabilities, configures instructions and previews changes. |
+| Inspect or record execution | `status`, `review`, `workflow`, `actor`, `docs` subcommands | Authenticated reads/writes against the configured project. |
+| Maintain reusable capabilities | `spado catalog …` | Reads/edits the source catalog, without updating installed projects. |
+
+`init` and `provision` are different installers, not mandatory successive steps. Their ownership records are separate; using both on the same files can produce conflicts. Choose the route you need.
+
+SPADO configures **Claude Code and Codex**. The host launches and runs agents; SPADO has no autonomous scheduler, graphical runtime UI or background document watcher. More hosts/workflows need implementation work.
+
+The organization consists of the Human, **CAOAO** (execution coordination), nine **Chief [Role] Agentic Officers** (domain decisions) and specialists (bounded work). CEAO owns executive direction; CAOAO coordinates execution. Skills provide behavioral instructions. See the [complete officer mapping](README.MD#chief-role-agentic-officers).
+
+## Repository map and sources of truth
+
+| Location | Purpose and edit guidance |
+|---|---|
+| `pyproject.toml`, `src/spado/cli.py` | Package/executable and command registration. |
+| `src/spado/commands`, `scanner`, `planning`, `install`, `state`, `claude_md`, `ui` | Active modular provisioner and catalog-authoring code inherited from CWI. `ui` is the terminal wizard, not a graphical runtime UI. |
+| `src/spado/workflows` | Definitions, modes, plans, gates and state transitions. |
+| `src/spado/runtime` | Setup, identities, PostgreSQL, events, protocol and embeddings. |
+| `src/spado/adapters` | Native host resources and entry skills. |
+| `catalog/skills`, `agents`, `scripts`, `hooks`, `mcp` | Modular resources with `spado.json` manifests. Author with catalog commands. |
+| `catalog/workflows/spdlc/` | Canonical `workflow.json`, rules and subphase briefs. Edit SPDLC here. |
+| `catalog/organizations/spdlc/organization.json` | Canonical officers, specialists and assignments. |
+| `catalog/organization-skills/` | Their behavioral instructions. |
+| `catalog/workflows/Full_SPDLC_Workflow.md` | Generated reading copy. Regenerate with `workflow render`; do not edit as the source. |
+| `catalog/workflows/tools/agent-record.py` | Source of the installed facade using the same services as the CLI. |
+| `catalog/c-suite/`, `catalog/workflows/c-suite-workflow.md`, `catalog/workflows/workflows.md` | Historical designs; not selected by the current runtime loader. |
+| `templates/`, `src/spado/claude_md/templates/` | Modular provisioner templates, separate from SPDLC runtime resources. |
+| `tests/` | Unit, CLI and integration verification. |
+
+Organization setup creates these resources **in the product repository**:
+
+| Installed location | Purpose |
+|---|---|
+| `.spado/project.json` | Project ID, hosts, mode, embeddings, capabilities and database port. |
+| `.spado/installation.json` | Organization/capability installer's managed-file hashes. |
+| `.spado/catalog/` | Installed workflow, organization and skill copies. |
+| `.spado/protocol.md`, `.spado/tools/agent-record.py` | Agent write contract and facade. |
+| `.spado/local/compose.yaml`, `database.password`, `human.token`, `actors/` | Local database configuration and private credentials. |
+| `.claude/agents/`, `.claude/skills/` | Native Claude organization resources. |
+| `.codex/agents/`, `.agents/skills/` | Native Codex organization resources. |
+| `.mcp.json`, `.claude/settings.json`, `.codex/config.toml` | Optional capability-specific host configuration. |
+| `.claude/spado-state.json` | Separate ownership/state for the modular `provision` installer. |
+| Docker named volume | PostgreSQL runs, actors, events, document revisions and embeddings. |
+
+Product documents remain ordinary files, commonly in `docs/`. The database retains recorded revisions/history. Source catalog, installed copies and pinned run snapshots are distinct. Editing README or architecture does not change agent instructions or existing executions automatically.
+
+## Installation and setup
+
+### Install the tool once
+
+Keep a permanent tool checkout separate from products:
+
+```text
+~/tools/spado/           source/catalog used by the editable installation
+~/projects/my-product/   product code, installed agents and project state
+```
+
+Use Python 3.12+ and `uv`. Organization execution also requires a coding-agent host and PostgreSQL/pgvector; the provided database commands use Docker with Compose. Modular provisioning needs no database. Local embeddings require a Python extra; external embeddings require a compatible endpoint and credential.
 
 ```bash
 git clone https://github.com/pol5coma/claude-workspace-init ~/tools/spado
 uv tool install -e ~/tools/spado
-spado --version          # spado 0.2.0
+spado --version
+spado --help
 ```
 
-> **Why install it as a tool?** SPADO's catalog stays in its own folder, and every project points to it. When you start a project *from the template*, SPADO deletes its own source from that project. The installed `spado` command keeps working.
-
-To update SPADO later, run `git -C ~/tools/spado pull`. The editable install picks up the change.
-
----
-
-## 2. Set up a project
-
-```mermaid
-flowchart TD
-    Q{"Do you already<br/>have a project?"}
-    Q -- "Yes" --> A["cd my-project<br/>spado provision --catalog ~/tools/spado/catalog"]
-    Q -- "No, start from scratch" --> B["git clone …/spado my-app<br/>cd my-app && spado provision"]
-    A --> S["8 guided steps · preview · apply"]
-    B --> S
-    S --> K["claude /kickoff"]
-```
-
-### Option A: a project you already have
-
-The catalog is **not copied** into your project. Only what you select is installed.
+The URL retains the repository's historical name. Editable installation reads code from that checkout; keep it in place. For local embeddings, install the extra in the **tool environment**:
 
 ```bash
-cd ~/projects/my-project
-git status                                                   # commit first, so `git diff` shows what SPADO added
-spado provision --catalog ~/tools/spado/catalog --dry-run   # see the plan, write nothing
-spado provision --catalog ~/tools/spado/catalog              # run it
+uv tool install --force -e "$HOME/tools/spado[local-embeddings]"
 ```
 
-### Option B: a new project from the template
+For development inside the SPADO checkout, use `uv sync --group dev` and `uv run spado …`; add `uv sync --extra local-embeddings` if needed. The development environment and `uv tool` environment are separate.
+
+### Configure an organization project
+
+The target directory must already exist:
 
 ```bash
-git clone https://github.com/pol5coma/claude-workspace-init my-app
-cd my-app
-mkdir -p docs/requirements && cp ~/somewhere/*.md docs/requirements/   # optional: your requirements
-spado provision
+mkdir -p ~/projects/my-product
+cd ~/projects/my-product
+spado init --host claude --host codex --mode semi-auto \
+  --embeddings local \
+  --embedding-model sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 \
+  --dry-run
 ```
 
-After a successful run SPADO removes its own files: `catalog/`, `templates/`, `src/spado/`, `tests/`, `pyproject.toml`, `uv.lock`, `.python-version`, `USAGE.md`, the spec docs and the template marker. Only your workspace remains.
-
-### The 8 steps
-
-Press **Enter** to accept the suggestion on any screen. **Space** toggles items in a list.
-
-| Step | What you see | What to do |
-| --- | --- | --- |
-| **1 · Workspace** | The project folder. If you run SPADO inside a git subfolder, it asks which root to use. Shows a notice if you have uncommitted changes. | Confirm |
-| **2 · Scan** | Reads manifests and lockfiles. It never runs your code. | Nothing |
-| **3 · Project profile** | **Existing project:** the detected type and stack with versions, for example "Full-stack · Python 3.12 · FastAPI 0.115 · React 19.0". **New project:** a few questions about what you are building, languages, frameworks, database, testing and infrastructure. | **Confirm**, **Edit**, **View evidence** (why each item was detected) or **Rescan** |
-| **4 · Instructions & docs** | Where instructions live: **AGENTS.md + CLAUDE.md** (recommended) or **CLAUDE.md only**. Then the safety rules, the essential commands, the docs skeleton and any extra global instruction. Shows the size of the result. | Accept, or edit commands and the list of protected commands |
-| **5 · Capabilities** | Five lists: Skills, Agents (grouped by family), Scripts, MCP, Hooks. Recommended items are ticked, and each shows **why**. | Tick or untick. Dependencies and conflicts are asked about. |
-| **6 · Review plan** | Every file to create, update or delete, and any warnings. Required tokens, such as `GITHUB_TOKEN`, and missing tools, such as `node`, are listed here. | **Apply**, **Review changes** (diffs), **Show all operations**, **Back** or **Cancel** |
-| **7 · Apply** | Progress such as "Applying 12/25 · .claude/agents/…". Writes are transactional: if anything fails, everything is rolled back. | Wait |
-| **8 · Next steps** | The order to work in, and the exact command. | Accept **"Open Claude Code now and start kickoff?"** |
-
-Nothing is written before **Apply**. **Cancel** leaves the project exactly as it was.
-
-### Existing files are safe
-
-| You already have | What SPADO does |
-| --- | --- |
-| `CLAUDE.md` | Adds `@AGENTS.md` at the top and keeps everything else. Sections you already have are not repeated in `AGENTS.md`. |
-| `AGENTS.md` | Asks: **keep**, **merge** (adds only missing sections), **replace** or **skip**. **Show diff** is always available. |
-| `.claude/settings.json` | Merges the hooks. Your permissions, env and other hooks stay. |
-| `.mcp.json` | Adds new servers. A server with the same name and a different config asks: keep or replace. |
-| A file SPADO wants to install, such as `.claude/agents/x.md` | Asks: keep yours or replace it. |
-| `docs/architecture.md` or other docs | Never touched. Only missing docs are created. |
-
-### Flags
-
-| Command | Use it to |
-| --- | --- |
-| `spado provision --dry-run` | See the full plan. Writes nothing. |
-| `spado provision --yes` | Accept every default with no questions. Good for scripts. |
-| `spado provision --catalog PATH` | Use a catalog outside the project. You need this for existing projects. |
-| `spado provision --root PATH` | Set up another folder. |
-| `spado provision --verbose` | Show debug logs and tracebacks. |
-
-### Running `spado provision` again
-
-Run it whenever you want to:
-
-- **Change the selection.** Untick a capability and SPADO removes **only the files it installed** for it. A file you edited is never deleted without asking.
-- **Refresh the instructions.** Choose **Rescan** on the profile screen to update the stack and versions after an upgrade.
-- **Check the workspace.** SPADO warns about any of its files you edited since installing.
-
-With the same answers, a rerun changes nothing ("Workspace already up to date").
-
----
-
-## 3. Work in Claude Code: `/kickoff`
-
-`spado provision` only provisions the workspace and runs no AI. The work happens in Claude Code, and **`/kickoff`** is the single entry point:
+Review `writes`, then repeat without `--dry-run`. Select only your intended host(s). Continue:
 
 ```bash
-claude "/kickoff"
+spado db up
+spado status --human
 ```
 
-### What `/kickoff` does
+An empty `runs` list is expected initially. `init` installs resources; `db up` starts PostgreSQL, initializes schema and creates the Human credential. Neither starts agents nor creates an execution.
 
-```mermaid
-flowchart TD
-    S["/kickoff<br/>reads project state<br/>(read-only script)"] --> A{"Architecture<br/>defined?"}
-    A -- "No · there is code" --> D1["project-discovery<br/>analyze the code with codebase-explorer"]
-    A -- "No · new project" --> D2["project-discovery<br/>requirements docs or interview"]
-    A -- "Yes" --> P{"A spec<br/>in progress?"}
-    D1 --> S
-    D2 --> S
-    P -- "Yes" --> W["feature-workflow<br/>resume it"]
-    P -- "No" --> R{"A spec<br/>ready?"}
-    R -- "Yes" --> W2["feature-workflow<br/>next in backlog order"]
-    R -- "No" --> F["feature-spec<br/>finish a draft, or spec the next backlog item"]
-    W --> S
-    W2 --> S
-    F --> S
-```
+For simultaneous projects, choose different `--database-port` values at initial setup (default `55432`). That flag is currently ignored when updating an existing project; see [known gaps](docs/manual/coherence.md#functional-gaps-and-operational-limits).
 
-1. **Reads the state** with a read-only script: the architecture (missing, template or defined), whether there is code, requirement documents, specs with their status and open questions, the backlog and existing diagrams.
-2. **Shows a short status** and **proposes the next step**. Nothing starts without your OK.
-3. **Runs that step** by delegating to the right skill, then checks the state again and proposes the next one.
+For external embeddings use `--embeddings external --embedding-model MODEL_ID --embedding-endpoint URL` and set `SPADO_EMBEDDING_API_KEY` through your environment. Indexing sends document chunks and searching sends queries to that provider. Local models download on first use. Setup and ordinary state operations do not encode embeddings.
 
-It is **resumable**. The state lives in the files, in each spec's `Status:` line and the `## Backlog` list, so running `/kickoff` tomorrow continues where you stopped.
-
-> **Order is enforced.** Until the architecture is written, `docs/architecture.md` keeps a `spado:architecture-template` marker. `feature-spec` and `feature-workflow` refuse to start while it is there.
-
-### Step 1: architecture with `project-discovery`
-
-It starts by asking **"Is the architecture already defined?"**
-
-| Your answer | What happens |
-| --- | --- |
-| **Yes, here is the path** | Uses that document and links it from `AGENTS.md`. |
-| **Yes, find it** | Searches `ARCHITECTURE.md`, `docs/**/architecture*`, ADR folders and README sections, then you confirm which one. |
-| **No, there is code** | Delegates to `codebase-explorer`. Fills `docs/architecture.md` (overview, structure, data flow, integrations, conventions), checks versions against the lockfiles, seeds the glossary and lists implicit decisions. |
-| **No, new project** | Uses your requirements, for example `docs/requirements/`, PRD or brief files, or interviews you. Writes the glossary, a proposed architecture, `docs/decisions/0001-stack.md` and an ordered backlog that starts with `project-setup`. |
-
-Every contradiction or gap becomes a question for you. It never invents business rules. At the end it offers an **architecture diagram** made with archify.
-
-### Step 2: specs with `feature-spec`
-
-Turns a feature into `docs/specs/<feature>.md`, based on `docs/specs/_template.md`:
-
-```markdown
-# Checkout
-Status: ready
-
-## Goal
-## User stories
-## Acceptance criteria        ← Given / When / Then, each one testable
-## Edge cases
-## Out of scope
-## Data and API changes
-## Open questions             ← unknowns go here, never into the criteria
-```
-
-It asks clarifying questions first, and marks the spec `ready` only when you agree.
-
-### Step 3: build with `feature-workflow`
-
-```mermaid
-flowchart LR
-    B["Baseline<br/>branch + tests/lint"] --> E["Explore<br/>codebase-explorer"]
-    E --> P["Plan<br/>slices · you approve"]
-    P --> I["Implement<br/>test first · 1 commit per slice"]
-    I --> V["Verify<br/>full suite · run the app"]
-    V --> R["Review<br/>code-reviewer · security-reviewer"]
-    R --> PR["PR + docs<br/>spec → done"]
-```
-
-**Ask, don't assume.** It stops and asks whenever:
-- a requirement is unclear, ambiguous or contradictory;
-- an important decision is missing (data model, public API, security, a new dependency, UX behaviour);
-- the spec and the code disagree;
-- the plan must change.
-
-It never commits to `main`, never force-pushes, and asks before anything destructive. After `project-setup` or an upgrade, it reminds you to run `spado provision` → **Rescan** so the stack versions in `AGENTS.md` stay accurate.
-
-You can also call any of these skills directly: `/project-discovery`, `/feature-spec`, `/feature-workflow`.
-
-### Diagrams with `archify`
-
-Installed by default. It needs Node.js 18+, and SPADO warns you if `node` is missing. The workflow skills offer it, and it is never required:
-
-| When | Skill | Diagram |
-| --- | --- | --- |
-| The architecture is written | `project-discovery` | Architecture, from the real code |
-| The architecture exists but has no diagram yet | `kickoff` | Architecture (offered once) |
-| A feature has a non-trivial flow | `feature-spec` | Workflow, sequence, dataflow or lifecycle |
-| A feature changed the structure | `feature-workflow` | Refreshed architecture, linked in the PR |
-
-Diagrams are saved in `docs/diagrams/<type>-<slug>/` and versioned with your docs. You can also ask at any time, for example "make a sequence diagram of the login flow". To use archify outside SPADO in every project, link a global install: `ln -s ~/.agents/skills/archify ~/.claude/skills/archify`.
-
-### `AGENTS.md`, `CLAUDE.md` and versions
-
-`AGENTS.md` is the [open standard](https://agents.md) read by Codex, Cursor, Gemini CLI, GitHub Copilot and Claude Code. Claude Code ignores it when a `CLAUDE.md` exists, so SPADO writes a `CLAUDE.md` whose first line imports it:
-
-```markdown
-@AGENTS.md
-
-<!-- Shared instructions for every coding agent live in AGENTS.md.
-     Add Claude Code-specific notes below this line. -->
-```
-
-A generated `AGENTS.md` looks like this:
-
-```markdown
-## Safety
-Never perform destructive database operations … without explicit user approval.
-Commands that always require explicit approval: `git push --force`, `git reset --hard`, `rm -rf`.
-
-## Stack
-Frontend:
-- TypeScript 5.5
-- React 18.3
-- Vite 5.4
-
-Write code for these versions. When an API differs between versions, check the official
-documentation for the version in use; never introduce APIs from another major version.
-
-## Commands
-- Run: `npm run dev`
-- Test: `npm test`
-
-## Project docs
-- Architecture and versions: `docs/architecture.md`. Read it before structural changes.
-- Business vocabulary: `docs/domain/glossary.md`.
-- Feature specs: `docs/specs/`. Read the spec before implementing a feature; if there is none, write one first.
-- Decisions: `docs/decisions/`. Record significant design decisions there.
-```
-
-Versions come from the lockfiles (`package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `uv.lock`, `poetry.lock`). A loose range such as `>=0.115` shows no version, because it would be a guess.
-
-### Hooks you get by default
-
-| Hook | When | What it does |
-| --- | --- | --- |
-| `safety-guard` | Before every Bash command and file edit | Blocks clearly destructive operations and protected files. Claude gets the reason and asks you. [Rules](#safety-guard-rules) |
-| `post-edit-validation` | After every file edit | Formats and lints **only the edited file** with the project's own tools (Ruff, Prettier, ESLint, gofmt, rustfmt), and sends problems back to Claude. It skips tools that are not configured. |
-
-### MCP tokens
-
-Some MCP servers need a token. SPADO lists them in step 6. Set them in your shell, never in the repo:
+### Install capabilities without a workflow
 
 ```bash
-export GITHUB_TOKEN=ghp_...
+spado init --no-workflow --host codex --capability mcp:github --dry-run
+spado init --no-workflow --host codex --capability mcp:github
 ```
 
-`.mcp.json` only stores the reference `${GITHUB_TOKEN}`. The first time, Claude Code asks you to approve the project's MCP servers.
+This creates capability resources and installation bookkeeping, without `.spado/project.json` or PostgreSQL. Supply the MCP credential separately. Repeated `--capability TYPE:ID` options also add capabilities to organization setup.
 
-### Check what Claude Code loaded
+For the interactive Claude-only alternative, run `spado provision --catalog ~/tools/spado/catalog --dry-run`, then repeat without `--dry-run`. See the [walkthrough](docs/manual/modular-provisioning.md). Its optional template cleanup removes bootstrap source from the template copy; install the editable tool from the separate permanent checkout.
 
-| Command in Claude Code | Shows |
-| --- | --- |
-| `/agents` | Installed agents, including `development-agents/` |
-| `/` | Skills such as `/kickoff`, `/archify`, `/feature-spec` |
-| `/hooks` | `safety-guard`, `post-edit-validation` |
-| `/mcp` | MCP servers and their status |
-| `/memory` | `CLAUDE.md` with the `AGENTS.md` import |
+## First execution and everyday use
 
-If Claude Code was already open while `spado provision` ran, restart it so it sees the new agents.
-
----
-
-## 4. Add things to the catalog
-
-For maintainers of this template. Run these commands from the repository root with `uv run spado …`, or `spado …` if it is installed.
-
-```mermaid
-flowchart LR
-    F["Your file<br/>SKILL.md · agent.md · script"] --> A["spado catalog add"]
-    A --> M["Writes spado.json + payload/<br/>asks what is missing"]
-    M --> V{"Catalog<br/>valid?"}
-    V -- "Yes" --> G["git commit + push<br/>→ every new project gets it"]
-    V -- "No" --> X["Nothing added<br/>error explains why"]
-```
-
-### What to pass for each type
-
-| Type | You pass | Extras | Where tools go |
-| --- | --- | --- | --- |
-| **Skill** | `SKILL.md`, or a folder containing it | `--ref file.md` → `references/`, `--script file` → `scripts/`, `--exclude test` | `allowed-tools:` in the frontmatter |
-| **Agent** | One `.md` file | `--script file` → `.claude/scripts/<id>/` | `tools:` and `model:` in the frontmatter |
-| **Hook** | The hook script | `--event`, `--matcher`, `--timeout` | n/a |
-| **Script** | The script file(s) | `--description` (required) | n/a |
-| **MCP** | The server name | `--url` + `--header K=V`, or `--command` + `--arg`, and `--env VAR` | Secrets always as `${VAR}` |
-
-<details>
-<summary><b>Skill example</b></summary>
-
-```markdown
----
-name: api-design
-description: REST API design rules. Use when adding or changing endpoints.
-allowed-tools: Read, Grep
----
-
-# API design
-…instructions for Claude…
-```
-
-```bash
-spado catalog add skill path/to/SKILL.md
-spado catalog add skill path/to/SKILL.md --ref rest-guide.md --script check.py
-spado catalog add skill path/to/api-design/                # whole folder
-spado catalog add skill ~/.agents/skills/archify --exclude test --default
-```
-</details>
-
-<details>
-<summary><b>Agent example</b></summary>
-
-```markdown
----
-name: dba
-description: Reviews SQL and migrations. Use before merging database changes.
-tools: Read, Grep, Bash
-model: sonnet
----
-
-You are a database reviewer…
-```
-
-```bash
-spado catalog add agent path/to/dba.md
-spado catalog add agent path/to/dba.md --script explain-query.py --depends script:run-quality-checks
-```
-
-If you run `add skill` on a file whose frontmatter has `tools:`, SPADO tells you it is an agent.
-
-A custom tool for an agent, such as a script that queries a database, is shipped with `--script`. The agent runs it through `Bash`. For a real tool, add an MCP server and make the agent `--depends mcp:<name>`.
-</details>
-
-<details>
-<summary><b>Hook example</b></summary>
-
-A hook receives the event JSON on stdin. Exit code `2` blocks the action, and stderr is shown to Claude as the reason.
-
-```bash
-spado catalog add hook block-prod.sh --event PreToolUse --matcher Bash -d "Blocks production deploys"
-spado catalog add hook notify.py --event Stop -d "Desktop notification when Claude finishes"
-```
-
-Events: `PreToolUse`, `PostToolUse`, `UserPromptSubmit`, `Stop`, `SubagentStop`, `SessionStart`, `SessionEnd`, `Notification`, `PreCompact`. `--matcher` applies only to `PreToolUse` and `PostToolUse`.
-</details>
-
-<details>
-<summary><b>Script and MCP examples</b></summary>
-
-```bash
-spado catalog add script seed-db.sh -d "Seeds the local database with demo data"
-
-spado catalog add mcp linear --url https://mcp.linear.app/mcp \
-  --header 'Authorization=Bearer ${LINEAR_TOKEN}'
-
-spado catalog add mcp postgres --command npx \
-  --arg -y --arg @modelcontextprotocol/server-postgres --arg '${DATABASE_URL}'
-```
-
-A real token in `--header` or `--env` is rejected: "looks like a literal secret".
-</details>
-
-### When is it ticked in `spado provision`?
-
-| Option | Effect |
-| --- | --- |
-| `--default` | Ticked in every project. |
-| `--type backend,fullstack` | Ticked for those project types: `backend`, `frontend`, `fullstack`, `ai`, `cli`, `library`, `data_ml`, `other`. |
-| `--tech fastapi,react` | Ticked when those technologies are detected. |
-| `--group <family> --group-default backend` | Ticked for that project type through its family. |
-| *(nothing)* | Listed, and the user ticks it manually. |
-| `--depends type:id` | Installs that capability too whenever this one is selected. |
-
-Without `--yes`, the command asks you these questions.
-
-### Families
-
-A family groups related capabilities in one folder, and decides which members are ticked for each project type.
+Open the configured product in your host. In **Claude chat**:
 
 ```text
-catalog/agents/development-agents/
-├── group.json               name + defaults per project type
-├── debugger/
-│   ├── spado.json
-│   └── payload/.claude/agents/development-agents/debugger.md
-└── …
+/spdlc --new-run --subphase 1.1 --mode semi-auto
+Start an independent opportunity assessment. The objective is to choose one product problem worth investigating. Ask for the initial business context, show the concrete plan, and wait for my approval before executing it.
 ```
 
-Grouped agents install into `.claude/agents/<family>/`, and Claude Code finds agents in subfolders.
+In **Codex chat**, use `$spdlc` with the same request. These are skill invocations, not shell commands: the shell would treat `$spdlc` as a variable.
+
+The host creates a run on your instruction, delegates CAOAO/officers/specialist, obtains the brief and prepares a plan. In `semi-auto`, approve the concrete plan before work. Officers review the evidence; CAOAO accepts the activity and promotes accepted revisions. Keep the returned run ID.
 
 ```bash
-spado catalog add agent terraform-expert.md --group devops-agents --group-default backend,fullstack
+spado status --run RUN_ID --human
+spado workflow context --run RUN_ID --subphase 1.1 --human
+spado review subphase 1.1 --run RUN_ID --human
+```
+
+Replace `RUN_ID` with the real UUID. `pending` means no activity was recorded, not that a background worker is running. See the [complete tutorial](docs/manual/first-run.md).
+
+| Goal | Action |
+|---|---|
+| Begin a complete workflow | Host: `spdlc --new-run --mode MODE`, plus your objective. |
+| Resume | Host: `spdlc --run RUN_ID`, naming the phase/subphase/activity. |
+| Advance within a full run | Keep the run ID and give an explicit reason; missing dependencies remain visible. |
+| Work outside a partial run's scope | Create an independent run; scope is not silently expanded. |
+| Discuss only | Host: `spado --chat --run RUN_ID`; identify the scope in your message. |
+| Inspect blockers or stale work | Terminal `spado review …`, or host `spado --review …`. |
+| Change a mode | Give explicit Human direction; the host records a `mode` event. No `spado mode` command exists. |
+| Return another day | Preserve run/credentials and resume with `--run`. There is no CLI pause/resume scheduler. |
+
+Commands never silently choose the latest run. Most infer selection only when exactly one run is accessible; `status` lists choices for zero/multiple runs. Explicit `--run` is preferable for repeatable operations.
+
+## Modes, plans, dependencies and states
+
+| Mode | Before execution | Execution/result |
+|---|---|---|
+| `agentic` | CAOAO validates the plan; no Human approval requests | Agents execute/review; report unresolved blockers without requesting Human intervention. |
+| `auto` | CAOAO validates | Ask the Human only for genuinely required information, authority or action. |
+| `semi-auto` | Human approves each plan version | Agents execute; officers review; CAOAO accepts. |
+| `manual` | Human approves and chooses `human`, `assisted` or `delegated` execution | Domain reviews remain required; Human also reviews the result and closes manual phases. |
+
+Voluntary Human participation is possible in all modes. Modes do not override host permissions. All modes use plans: workflow/phase runs need approved phase and activity plans; independent subphase runs need the activity plan only. Plans include objective, canonical deliverable, actions, criteria, input revision IDs/hashes and assumptions. Approval targets a specific plan ID/version and does not accept the result.
+
+An **activity** is one execution of a subphase. Full workflows follow phase order by default; subphases follow dependencies. Advances require a reason. Provisional work with missing inputs needs assumptions; acceptance waits for inputs, a revised approved plan and required reviews. Skipped prerequisites do not execute automatically.
+
+New activity mode precedence: explicit override → subphase override → phase override → run default. Existing activities retain their mode. A Human `mode` event targeting an activity clears its plan approval; changing a parent default does not rewrite existing activities or accepted history.
+
+| State | Meaning / next action |
+|---|---|
+| `pending` | No activity recorded; prepare a plan. |
+| `awaiting_plan_approval` | Obtain approval of the current plan/version. |
+| `ready` | Approved; start subject to current input/phase gates. |
+| `running` | Start recorded, not live process telemetry. |
+| `blocked` | Resolve the blocker and recheck before restarting. |
+| `provisional` | Missing prerequisites; acceptance blocked. |
+| `awaiting_review` | Delivered evidence awaits decisions. |
+| `needs_revalidation` | Changes made prior approvals/evidence stale. |
+| `accepted` | Activity gates passed; promotion remains separate. |
+| `not_applicable` | Responsible officers excluded a conditional subphase. Required subphases cannot be skipped this way. |
+
+SPDLC-specific: phase 6 has repeated operating cycles; phase 7 requires CEAO's recorded retirement decision. See [architecture](architecture.md) for details.
+
+## CLI reference
+
+### Conventions and shared options
+
+Uppercase `RUN_ID`, `ACTIVITY_ID`, `REVISION_ID`, `FILE` and similar values are placeholders. Replace them with actual values. Brackets in syntax mean optional arguments; do not type them.
+
+Every command/group accepts `--help`; `spado --version` prints the version; bare `spado` displays help. `--verbose`, `--root`, `--run` and `--human` are **not global options**.
+
+These **shared runtime options** apply to `status`, `review`, `actor create`, `workflow context|prepare|record|export` and every `docs` command:
+
+| Option | Default | Meaning |
+|---|---|---|
+| `--root PATH` | `.` | Configured project directory; no upward config discovery. |
+| `--run ID` | unset | Select run; infer only if exactly one is accessible. `status` instead lists zero/multiple choices. |
+| `--human` | false | Local Human credential for an actual Human action; otherwise delegated actor environment credentials. |
+
+`workflow create` shares `--root`/`--human`, without `--run`. Database commands share only `--root`. Installers have their own options.
+
+Runtime output is generally JSON. Catalog/provision output uses terminal tables/messages; `workflow render` emits Markdown; `db up` can print Docker output before JSON. Do not assume all stdout is pure JSON. Handled runtime failures generally exit `1`, parsing failures `2`. `provision` uses `1` for cancellation/known errors, `2` for unexpected failures and `130` for interruption. Some malformed requests/provider errors can still surface as Python exceptions.
+
+### Command index
+
+| Family | Commands |
+|---|---|
+| Root (4) | [`init`](#spado-init), [`provision`](#spado-provision), [`status`](#spado-status), [`review`](#spado-review) |
+| Workflow (7) | [`create`](#spado-workflow-create), [`context`](#spado-workflow-context), [`prepare`](#spado-workflow-prepare), [`record`](#spado-workflow-record), [`export`](#spado-workflow-export), [`validate`](#spado-workflow-validate), [`render`](#spado-workflow-render) |
+| Actor (1) | [`create`](#spado-actor-create) |
+| Database (3) | [`up`](#spado-db-up), [`down`](#spado-db-down), [`migrate`](#spado-db-migrate) |
+| Documents (4) | [`sync`](#spado-docs-sync), [`promote`](#spado-docs-promote), [`index`](#spado-docs-index), [`search`](#spado-docs-search) |
+| Catalog (10) | [`list`](#spado-catalog-list), [`validate`](#spado-catalog-validate), [`remove`](#spado-catalog-remove), [`add skill`](#spado-catalog-add-skill), [`add agent`](#spado-catalog-add-agent), [`add script`](#spado-catalog-add-script), [`add hook`](#spado-catalog-add-hook), [`add mcp`](#spado-catalog-add-mcp), [`group create`](#spado-catalog-group-create), [`group defaults`](#spado-catalog-group-defaults) |
+
+### spado init
+
+Install organization/host resources and optional capabilities. Requires filesystem access; no database connection or actor credential. Does not start agents.
+
+```text
+spado init [OPTIONS]
+```
+
+| Option | Default | Meaning / constraints |
+|---|---|---|
+| `--root PATH` | `.` | Existing product directory. |
+| `--host HOST` | unset | Repeatable `claude` or `codex`; required for fresh setup and capability-only installation. |
+| `--mode MODE` | unset | One of the four modes; required for fresh workflow setup. |
+| `--embeddings BACKEND` | unset | `local` or `external`; required for fresh workflow setup. |
+| `--embedding-model MODEL` | unset | Required for fresh workflow setup. |
+| `--embedding-endpoint URL` | `https://api.openai.com/v1/embeddings` | External endpoint; update caveats below. |
+| `--catalog PATH` | installed tool catalog | Root containing workflows, organizations and capabilities. |
+| `--database-port INTEGER` | `55432` | `1024..65535`; applied only on initial workflow setup. |
+| `--capability TYPE:ID` | none | Repeatable; dependencies and compatibility checked for all selected hosts. |
+| `--workflow` / `--no-workflow` | `--workflow` | SPDLC or capabilities only. Capability-only requires host/capability; workflow-specific flags have no effect in that route. |
+| `--dry-run` | false | Render, check conflicts and preview; no writes. |
+
+Existing workflow setup retains omitted settings. Explicit host/capability lists replace configured selection but do not remove old files. Mode changes affect the project default, not stored runs. Embedding/model changes use the supplied endpoint or its default; an endpoint-only update is ignored. Repeat a custom endpoint when updating a model/backend.
+
+**Effects/output:** managed resources, installation hashes, local DB configuration/password; JSON `writes`, `unchanged`, and workflow setup `next`. Edited/conflicting files block installation; no `--force` option exists.
+
+```bash
+spado init --host claude --mode auto --embeddings external --embedding-model MODEL_ID --dry-run
+spado init --no-workflow --host codex --capability mcp:github --dry-run
+```
+
+**Errors:** missing setup fields/root, invalid mode/provider/host, unsupported capabilities, dependency conflicts, edited managed files. See [updates](#updates-and-maintenance).
+
+### spado provision
+
+Interactive modular **Claude** workspace installer; needs project/catalog filesystem access, no workflow identity or database.
+
+```text
+spado provision [OPTIONS]
+```
+
+| Option | Default | Meaning |
+|---|---|---|
+| `--root PATH` | current directory with root discovery | Project to provision. |
+| `--catalog PATH` | target project’s `catalog/`, if present | Explicit source. This command does not fall back to the installed tool catalog. |
+| `--dry-run` | false | Scan/plan/preview with default answers; no writes. |
+| `--yes`, `-y` | false | Accept defaults, including template cleanup when detected. |
+| `--verbose`, `-v` | false | Debug logs/tracebacks for this command. |
+
+**Effects/output:** scans without executing product code; proposes instructions/capabilities; previews and applies the confirmed plan transactionally. Writes Claude resources, instructions/docs and `.claude/spado-state.json`. Deselection may remove owned files. Optional template cleanup removes the bootstrap allowlist. Cancellation before apply writes nothing. Without local/explicit catalog, configuration is limited to instructions and existing-state handling; supply `--catalog` to select capabilities.
+
+```bash
+spado provision --root ~/projects/my-product --catalog ~/tools/spado/catalog --dry-run
+spado provision --root ~/projects/my-product --catalog ~/tools/spado/catalog
+```
+
+**Errors:** unavailable catalog, noninteractive apply without `--yes`, conflicting files, changed preview preconditions. The wizard can offer to open Claude with `/kickoff`, a separate optional skill from SPDLC. See [all screens](docs/manual/modular-provisioning.md).
+
+### spado status
+
+Read last recorded state. **Human/CAOAO** for a selected run; accepts all shared runtime options. No additional arguments/options.
+
+```bash
+spado status --human
+spado status --run RUN_ID --human
+```
+
+**Effects/output:** read-only JSON with phase/subphase/activity state and plans, or run choices when zero/multiple runs exist. No live-process heartbeat. **Errors:** missing credentials/config, unavailable DB, unauthorized actor or unknown run.
+
+### spado review
+
+Structural consistency review. Coordinators can review all; officers/specialists must restrict the target to their delegated scope. All shared runtime options apply.
+
+```text
+spado review [TARGET] [IDENTIFIER] [--run ID] [--root PATH] [--human]
+```
+
+| Argument | Default | Meaning |
+|---|---|---|
+| `TARGET` | `all` | `all`, `phase`, `subphase`, `activity`. |
+| `IDENTIFIER` | unset | Required except for `all`; phase/subphase ID or activity UUID. Omit for `all`. |
+
+```bash
+spado review all --run RUN_ID --human
+spado review phase 3 --run RUN_ID --human
+spado review subphase 3.5 --run RUN_ID --human
+spado review activity ACTIVITY_ID --run RUN_ID --human
+```
+
+**Effects/output:** read-only findings, including changed files, and `persisted: false`. No sync/fixes. Semantic correctness requires responsible agents to inspect content. **Errors:** invalid target, missing/unknown ID, out-of-scope access.
+
+### spado workflow create
+
+Create a run and pin workflow/organization definitions. Normal entry is a **direct Human action** after setup/DB startup. Does not run agents.
+
+```text
+spado workflow create --objective TEXT [--phase N | --subphase N.N] [--mode MODE] [--root PATH] [--human]
+```
+
+| Option | Default | Meaning |
+|---|---|---|
+| `--objective TEXT` | required | Product/work objective. |
+| `--phase N` | unset | One-phase scope. |
+| `--subphase N.N` | unset | One-subphase scope; exclusive with `--phase`. |
+| `--mode MODE` | project default | Four-mode selection. |
+| `--root PATH` | `.` | Configured project. |
+| `--human` | false | Local Human credential; otherwise coordinator authorization required. |
+
+```bash
+spado workflow create --objective "Choose a product opportunity" --subphase 1.1 --mode semi-auto --human
+```
+
+**Effects/output:** run plus initial event, returning `{"run": "…"}`. No scope means full workflow. No `--run`/`--new-run` CLI options: every successful creation makes a new run. **Errors:** invalid/incompatible scopes, missing configuration/credentials, unavailable DB.
+
+### spado workflow context
+
+Read pinned definitions, roles, modes, dependencies, revisions and plans visible to the actor. All shared runtime options plus:
+
+| Option | Default | Meaning |
+|---|---|---|
+| `--phase N` | unset | Phase filter. |
+| `--subphase N.N` | unset | Subphase filter, exclusive with phase. |
+| `--activity ID` | unset | Select that activity's subphase, possibly including its other instances; exclusive with either other selector. |
+
+```bash
+spado workflow context --run RUN_ID --subphase 1.1 --human
+```
+
+**Effects/output:** read-only JSON with `run_version`, briefs, deliverables, criteria and missing inputs. No selector means workflow view filtered by actor scope. Reading definitions beyond a run's execution scope does not expand that scope. **Errors:** incompatible/unknown selectors, explicit access beyond delegation.
+
+### spado workflow prepare
+
+Create/resume an activity through **CAOAO/Human**. All shared runtime options plus **required `--request FILE`** containing a `prepare` JSON event.
+
+```bash
+spado workflow prepare --run RUN_ID --request prepare.json
+```
+
+**Effects/output:** records event, returns activity ID/state and new activity missing dependencies. A prior unaccepted activity resumes unless payload `new_instance` is set; resending `prepare` does not revise its plan. Owner must be a registered specialist in this run/subphase. See the [valid walkthrough](docs/manual/first-run.md#advanced-terminal-walkthrough).
+
+**Errors:** wrong event kind, invalid plan, unregistered owner, out-of-scope target, missing advance reason or retirement authorization. Shares pre-write sync behavior with `record` below.
+
+### spado workflow record
+
+Submit one authenticated event; authority depends on kind. All shared runtime options plus **required `--request FILE`**.
+
+```bash
+spado workflow record --run RUN_ID --request decision.json
+```
+
+**Effects/output:** event/state update and `run_version`. JSON needs `event_id`, `kind`, `payload`, nonempty `rationale`, optional `expected_version`. Retry identical content with the same ID/identity; changed content needs a new ID. See the [event reference](#event-reference).
+
+Before non-document events, changed tracked files visible to the actor are synchronized. Those sync events can persist even if the requested transition then fails: the whole CLI call is not one transaction. Re-read context after failure. Queries never perform this sync.
+
+**Errors:** stale plan/version, missing gates/evidence, unauthorized actor, missing tracked file, changed inputs outside scope or ID reused with different content. Approve/start/accept/mode are event kinds, not separate CLI commands.
+
+### spado workflow export
+
+Export a run and its event history. **Human/CAOAO**; all shared runtime options, no extra arguments.
+
+```bash
+spado workflow export --run RUN_ID --human > run-export.json
+```
+
+**Effects/output:** read-only `{run, events}` including document revision content; shell redirection writes the file. Not a database backup: omits credentials and embedding index. No import command exists. **Errors:** invalid run/selection, insufficient authority, DB errors.
+
+### spado workflow validate
+
+Validate canonical SPDLC definitions, roles, skill/brief files and dependencies. No project identity/DB. Only command-specific option: **`--catalog PATH`**, default installed tool catalog root.
+
+```bash
+spado workflow validate --catalog ~/tools/spado/catalog
+```
+
+**Effects/output:** read-only JSON counts (currently 7 phases, 62 subphases, 72 organization agents). **Errors:** missing files, inconsistent IDs/references, dependency cycles. Validates definitions, not execution completion.
+
+### spado workflow render
+
+Render canonical rules/briefs as Markdown. No project identity/DB. Only command-specific option: **`--catalog PATH`**, default installed tool catalog.
+
+```bash
+spado workflow render --catalog ~/tools/spado/catalog
+# Maintainer operation from the SPADO checkout:
+spado workflow render --catalog catalog > catalog/workflows/Full_SPDLC_Workflow.md
+```
+
+**Effects/output:** prints Markdown; shell redirection replaces the file. Does not install host resources or update runs. **Errors:** invalid/missing canonical definitions.
+
+### spado actor create
+
+Delegate an identity using required positional **`DEFINITION`**, a case-sensitive organization ID, and all shared runtime options.
+
+```bash
+spado actor create CAOAO --run RUN_ID --human
+# In CAOAO's session with its credential:
+spado actor create CPAO --run RUN_ID
+```
+
+**Effects/output:** scoped actor, delegation event and private `.spado/local/actors/UUID.token`; returns `actor` and absolute `token_file`, never the token. Does not launch an agent.
+
+Only Human delegates CAOAO. CAOAO delegates officers/specialists; officers delegate specialists within their domain; specialists cannot delegate. Human can also delegate domain identities directly, although normal orchestration goes through CAOAO. Discover specialist IDs in context. **Errors:** unknown definition, run/scope violation. Pass each token only to its assigned session.
+
+### spado db up
+
+Start project Compose PostgreSQL/pgvector, wait, initialize schema and create the Human token file if absent. Only command-specific option: **`--root PATH`**, default `.`. Requires workflow setup and running Docker/Compose, no actor token.
+
+```bash
+spado db up --root ~/projects/my-product
+```
+
+**Effects/output:** creates/uses the project's named volume; Docker output then `database: ready` and credential path. **Errors:** port collision, Docker startup or DB connection failure. An external DSN does not disable the Compose startup; see configuration.
+
+### spado db down
+
+Stop/remove project containers/network while retaining the named volume. Only command-specific option: **`--root PATH`**, default `.`. Requires project config/Docker, no actor token.
+
+```bash
+spado db down
+```
+
+**Effects/output:** Compose output, no dedicated JSON success object. Normal down/up retains state. **Errors:** missing config/Docker or Compose failure. No reset, volume-deletion or delete-run option is exposed.
+
+### spado db migrate
+
+Initialize/apply the current schema on a reachable configured DB. Only command-specific option: **`--root PATH`**, default `.`. No actor token required.
+
+```bash
+spado db migrate
+```
+
+**Effects/output:** DDL and `{"schema_version": 1}`. Does not start Docker/create Human token file. Not a CWI migration or arbitrary migration-version runner. **Errors:** missing config or DB access failure.
+
+### spado docs sync
+
+Record a file revision and invalidate affected recorded consumers. All shared runtime options plus:
+
+| Argument/option | Default | Meaning |
+|---|---|---|
+| `PATH` | required | Existing project-relative `.md`, `.txt`, `.rst`, `.json`; no outside paths or `.spado/local`. |
+| `--subphase N.N` | unset | Subphase attribution; omit for general context. |
+| `--depends REVISION_ID` | none | Repeatable consumed revision IDs, not paths. |
+
+```bash
+spado docs sync docs/vision.md --run RUN_ID --human
+spado docs sync docs/opportunity.md --subphase 1.1 --run RUN_ID
+```
+
+**Effects/output:** reads file, records content/hash, returns revision and affected consumers; unchanged latest content reuses its revision without updating dependency metadata alone. Does not edit/promote files. Human/CAOAO coordinate; officers are scoped; a specialist must own a running activity with an approved plan, including bounded work on provisional inputs. **Errors:** forbidden/missing path, invalid dependencies or authority/gates.
+
+### spado docs promote
+
+Make required positional **`REVISION`** the official version of its path. All shared runtime options.
+
+```bash
+spado docs promote REVISION_ID --run RUN_ID --human
+```
+
+**Effects/output:** updates official metadata, reports affected consumers; no file overwrite/restore. Human/CAOAO promote accepted activity outputs; only Human can attest initial external/general documents. Latest candidate must match the file on disk. **Errors:** unaccepted output, stale candidate, modified file, insufficient authority. Old official content stays official until successful promotion.
+
+### spado docs index
+
+Encode approved official revisions and write the semantic index. **Human/CAOAO**, all shared runtime options, no extras.
+
+```bash
+spado docs index --run RUN_ID --human
+```
+
+**Effects/output:** embedding writes, `indexed_chunks` and model identity. May download the local model/call the provider. Changing provider/model selects a different index identity; index again. **Errors:** missing dependencies/API key, provider/DB failure. Partial indexing can persist; rerun after resolving the cause.
+
+### spado docs search
+
+Search official approved revisions with required positional **`QUERY`**. Any authenticated actor in the run; all shared runtime options.
+
+```bash
+spado docs search "What problem are we investigating?" --run RUN_ID --human
+```
+
+**Effects/output:** no project/execution/index writes; query encoding can contact the provider or populate a local model cache. Up to five chunks with path/revision/digest/distance and `index_complete`; **no `--limit` CLI flag**. Drafts excluded. **Errors:** missing embedding setup, provider/DB failure. An incomplete index can explain empty results.
+
+### Catalog conventions and shared authoring options
+
+Catalog commands affect reusable source resources, not installed projects; no identity/DB, commit or push. `list`/`validate` use local `catalog` or fall back to the installed tool catalog if absent. Mutating commands default to local `catalog` **without fallback**; use explicit `--catalog` outside the source checkout.
+
+All five `catalog add` commands accept these options:
+
+| Option | Default | Meaning |
+|---|---|---|
+| `--catalog PATH` | `catalog` | Writable source catalog. |
+| `--id ID` | inferred | Identifier; unique across types. |
+| `--name TEXT` | inferred | Display name. |
+| `--description TEXT`, `-d TEXT` | input/derived | Description override; may prompt if omitted. |
+| `--default` / `--no-default` | unset; false noninteractively | Global preselection; interactive omission asks. |
+| `--type TYPES` | none | Comma-separated `backend`, `frontend`, `fullstack`, `ai`, `cli`, `library`, `data_ml`, `other`. |
+| `--tech TECHNOLOGIES` | none | Comma-separated technology recommendations. |
+| `--depends TYPE:ID` | none | Repeatable dependencies. |
+| `--conflicts TYPE:ID` | none | Repeatable conflicts. |
+| `--group FAMILY` | none | Capability family; grouped agents get a family target path. |
+| `--group-default TYPES` | none | Comma-separated family-default project types; requires `--group`. |
+| `--force` | false | Replace an existing capability of the same reference. |
+| `--yes`, `-y` | false | Use defaults without questions. Non-TTY catalog authoring also uses defaults. |
+
+Adds validate and write manifest/payload and applicable family metadata. Output is a tree and suggested Git command, not an automatic commit. Common errors: duplicate IDs, invalid frontmatter, unsafe paths, literal secrets, invalid references/conflicts. There is no `--hosts` option: review and explicitly edit `spado.json` compatibility. Default is Claude; declaring Codex does not make unsupported payloads renderable.
+
+### spado catalog list
+
+List capabilities and canonical workflows/organizations. Only command-specific option: **`--catalog PATH`**, default/fallback above.
+
+```bash
+spado catalog list --catalog ~/tools/spado/catalog
+```
+
+**Effects/output:** read-only table with references/defaults/recommendations/dependencies, then workflow/organization summaries. Currently the `Group` column displays capability names; use family metadata for membership. **Errors:** malformed catalog/workflow definitions.
+
+### spado catalog validate
+
+Validate manifests, payloads, references and canonical workflows. Only command-specific option: **`--catalog PATH`**.
+
+```bash
+spado catalog validate --catalog ~/tools/spado/catalog
+```
+
+**Effects/output:** read-only success counts/errors. Currently 423 modular capabilities; 72 organization agents are a separate set. Validation does not launch agents/test MCP connectivity. **Errors:** invalid manifests/payloads/dependencies or workflow definitions.
+
+### spado catalog remove
+
+Remove a source capability, not installed copies.
+
+| Argument/option | Default | Meaning |
+|---|---|---|
+| `REF` | required | `TYPE:ID`. |
+| `--catalog PATH` | `catalog` | Source catalog. |
+| `--force` | false | Remove even with dependents; here the shared help wording about replacement is misleading. |
+| `--yes`, `-y` | false | Skip confirmation. Non-TTY also skips prompts. |
+
+```bash
+spado catalog remove skill:my-example --catalog ~/tools/spado/catalog
+```
+
+**Effects/output:** deletes folder, updates family defaults, removes an empty family when its final member is removed; prints path. **Errors:** missing reference or dependents without force. Forced removal can leave the catalog invalid; validate afterward.
+
+### spado catalog add skill
+
+```text
+spado catalog add skill PATH [SHARED AUTHORING OPTIONS] [--ref FILE] [--script FILE] [--exclude PATTERN]
+```
+
+Required `PATH`: `SKILL.md` or containing folder. Additional repeatable options, default none: `--ref FILE` copies references, `--script FILE` copies helpers, `--exclude PATTERN` omits matching folder-import content. All shared authoring options apply.
+
+```bash
+spado catalog add skill ./my-skill --id my-skill --exclude test --yes
+```
+
+**Effects/output:** skill manifest/payload and tree. Skills use `allowed-tools:`; agent-style `tools:` triggers an interactive conversion/agent choice or a noninteractive error. **Errors:** missing SKILL.md, invalid frontmatter or shared authoring errors.
+
+### spado catalog add agent
+
+```text
+spado catalog add agent PATH [SHARED AUTHORING OPTIONS] [--script FILE]
+```
+
+Required `PATH`: agent Markdown with name/description, `tools:` and optional `model:` frontmatter. Repeatable `--script FILE`, default none, copies helpers to `.claude/scripts/ID/`. All shared authoring options apply.
+
+```bash
+spado catalog add agent ./research-agent.md --group research-agents --group-default backend --yes
+```
+
+**Effects/output:** manifest/agent/helpers/family metadata and tree. This is a modular agent, not a new SPDLC officer. **Errors:** missing file/frontmatter or shared authoring errors.
+
+### spado catalog add script
+
+```text
+spado catalog add script FILES... [SHARED AUTHORING OPTIONS]
+```
+
+One or more positional files required; no extra options beyond shared authoring options.
+
+```bash
+spado catalog add script ./check.sh ./check-helper.py --id my-check --description "Local checks" --yes
+```
+
+**Effects/output:** manifest/payload targeting project `scripts/`, then tree; does not execute scripts. **Errors:** missing files, unsafe/colliding paths, shared authoring errors.
+
+### spado catalog add hook
+
+```text
+spado catalog add hook SCRIPT --event EVENT [SHARED AUTHORING OPTIONS] [--matcher TEXT] [--timeout SECONDS] [--file FILE]
+```
+
+| Argument/option | Default | Meaning |
+|---|---|---|
+| `SCRIPT` | required | Hook script consuming hook JSON on stdin. |
+| `--event EVENT` | required | `PreToolUse`, `PostToolUse`, `UserPromptSubmit`, `Stop`, `SubagentStop`, `SessionStart`, `SessionEnd`, `Notification`, `PreCompact`. |
+| `--matcher TEXT` | unset | Tool matcher for applicable events. |
+| `--timeout SECONDS` | `30` | Hook timeout. |
+| `--file FILE` | none | Repeatable support files. |
+
+All shared authoring options apply. Event names reflect this builder, not a claim about every future host event.
+
+```bash
+spado catalog add hook ./check-edit.py --event PostToolUse --matcher 'Edit|Write' --timeout 20 --yes
+```
+
+**Effects/output:** Claude hook payload/settings fragment and tree. **Errors:** unsupported event/invalid script or shared authoring errors. Current adapter does not translate Claude hooks/settings to Codex.
+
+### spado catalog add mcp
+
+```text
+spado catalog add mcp SERVER [SHARED AUTHORING OPTIONS] (--url URL | --command EXECUTABLE) [MCP OPTIONS]
+```
+
+| Argument/option | Default | Meaning |
+|---|---|---|
+| `SERVER` | required | Server configuration name. |
+| `--url URL` | unset | Remote endpoint; exactly one of URL/command required. |
+| `--header KEY=VALUE` | none | Repeatable remote headers; quote `${VAR}` literally. |
+| `--transport TYPE` | `http` | `http` or `sse` for remote servers. |
+| `--command EXECUTABLE` | unset | Local stdio executable. |
+| `--arg VALUE` | none | Repeatable executable arguments; `--arg=--flag` passes a leading-dash value. |
+| `--env NAME` | none | Repeatable required environment variable names. |
+
+All shared authoring options apply.
+
+```bash
+spado catalog add mcp example --url https://example.com/mcp \
+  --header 'Authorization=Bearer ${EXAMPLE_TOKEN}' --env EXAMPLE_TOKEN --yes
+```
+
+The URL is illustrative, not a live service. **Effects/output:** manifest/MCP fragment and tree; no connection attempt. **Errors:** literal credentials, malformed header pairs, both/neither mechanisms. Use `http`/`sse`: the builder does not currently enforce transport choices. Codex installation additionally requires declared compatibility and supported interpolation.
+
+### spado catalog group create
+
+```text
+spado catalog group create TYPE GROUP [--name TEXT] [--description TEXT] [--catalog PATH]
+```
+
+| Argument/option | Default | Meaning |
+|---|---|---|
+| `TYPE` | required | `skill`, `agent`, `script`, `hook`, `mcp`. |
+| `GROUP` | required | Family ID. |
+| `--name TEXT` | inferred | Display name. |
+| `--description TEXT`, `-d TEXT` | empty/inferred | Description. |
+| `--catalog PATH` | `catalog` | Source catalog. |
+
+```bash
 spado catalog group create agent product-agents --name "Product agents"
-spado catalog group defaults agent development-agents backend debugger,test-automator,refactoring-specialist
 ```
 
-### Other catalog commands
+**Effects/output:** ensures family directory/`group.json`, prints `Group ready`. Add members with `--group`. **Errors:** invalid type/ID/path. No force/yes flags exposed.
+
+### spado catalog group defaults
+
+```text
+spado catalog group defaults TYPE GROUP PROJECT_TYPE MEMBERS [--catalog PATH]
+```
+
+All four positional arguments required. `TYPE` is a capability type, `GROUP` an existing family, `PROJECT_TYPE` exactly one of the eight project types, `MEMBERS` comma-separated member IDs (`''` clears). Only command-specific option: **`--catalog PATH`**, default `catalog`.
 
 ```bash
-spado catalog list                       # everything, with group, defaults and recommendations
-spado catalog validate                   # check the whole catalog
-spado catalog remove skill:old           # remove an entry (also from its family defaults)
-spado catalog add skill SKILL.md --force # replace an existing entry
+spado catalog group defaults agent development-agents backend debugger,test-automator
+spado catalog group defaults agent development-agents backend ''
 ```
 
-### Publish
+**Effects/output:** replaces that type's family defaults, validates and restores prior metadata on failure; prints selection. No installed-project changes. **Errors:** unknown group/member, invalid/multiple project types.
 
-The commands only change files under `catalog/`. Ship them like any other change:
+## Host invocation reference
+
+These are **instructions to installed entry skills**, interpreted by the host agent. They are not additional Typer commands or an independent deterministic command parser. The host translates them into CLI operations and native delegation.
+
+| Purpose | Claude chat | Codex chat |
+|---|---|---|
+| Full workflow | `/spdlc --mode auto` | `$spdlc --mode auto` |
+| Phase | `/spdlc --phase 3 --mode manual` | `$spdlc --phase 3 --mode manual` |
+| Subphase | `/spdlc --subphase 3.5 --mode semi-auto` | `$spdlc --subphase 3.5 --mode semi-auto` |
+| Existing activity | `/spdlc --activity ACTIVITY_ID --run RUN_ID` | `$spdlc --activity ACTIVITY_ID --run RUN_ID` |
+| Independent run | `/spdlc --new-run --subphase 1.1` | `$spdlc --new-run --subphase 1.1` |
+| State | `/spado --status --run RUN_ID` | `$spado --status --run RUN_ID` |
+| Review everything | `/spado --review all --run RUN_ID` | `$spado --review all --run RUN_ID` |
+| Review phase | `/spado --review phase 3 --run RUN_ID` | `$spado --review phase 3 --run RUN_ID` |
+| Review subphase | `/spado --review subphase 3.5 --run RUN_ID` | `$spado --review subphase 3.5 --run RUN_ID` |
+| Review activity | `/spado --review activity ACTIVITY_ID --run RUN_ID` | `$spado --review activity ACTIVITY_ID --run RUN_ID` |
+| Discussion only | `/spado --chat --run RUN_ID` | `$spado --chat --run RUN_ID` |
+
+`spdlc` accepts one target: whole workflow (no selector), `--phase`, `--subphase` or `--activity`. `--mode` uses the four modes; omission follows the configured/run rules. `--run` selects the existing execution; `--new-run` requests an independent execution and needs an objective in your message. Do not combine an existing activity/run selection with a request for a new run. The host should reuse the unambiguous conversation run unless explicitly asked to create another.
+
+For discussion, name the phase/subphase/activity in ordinary text after `--chat`. You can move between topics without writing anything. `spado` consultation must not create runs, sync/index documents, approve plans, write files/events or change external systems. Request execution explicitly through `spdlc` when ready.
+
+Terminal equivalents differ: use `spado status`, **not** `spado --status`; `spado review phase 3`, **not** `spado --review phase 3`. There is no terminal `spado --chat`. The host's chat route reads `workflow context` and discusses it. `--root PATH` belongs to the underlying CLI commands when a different project needs explicit selection.
+
+The optional modular `/kickoff`, `/project-discovery`, `/feature-spec` and `/feature-workflow` skills are described in the [modular chapter](docs/manual/modular-provisioning.md). They are not SPDLC phases and are available only when installed. Third-party skills and native host commands have their own documentation; they are not additional SPADO CLI commands.
+
+## Agent recording and event reference
+
+### Identity and script interface
+
+Human shell actions use `--human`. Agents use a delegated token, normally through `SPADO_ACTOR_TOKEN_FILE`:
 
 ```bash
-git add catalog/ && git commit -m "catalog: add api-design skill" && git push
+export SPADO_ACTOR_TOKEN_FILE='/absolute/path/returned/by/actor-create.token'
+spado workflow context --run RUN_ID --subphase 1.1
 ```
 
-Every project set up after the push can use the new capability.
+This path is a placeholder. If `SPADO_ACTOR_TOKEN` is also set, its nonempty value takes precedence. Never print tokens or use `--human` to bypass an agent's authority. A role name in a request does not authenticate an officer. These are application permissions, not an OS sandbox against the machine/database administrator.
 
----
+The installed facade is `.spado/tools/agent-record.py`. Run it using **a Python interpreter with SPADO installed**, not an arbitrary product Python:
 
-## 5. Reference
+```text
+SPADO_PYTHON .spado/tools/agent-record.py record --run RUN_ID --request FILE [--root PATH]
+SPADO_PYTHON .spado/tools/agent-record.py status --run RUN_ID [--root PATH]
+```
 
-### What gets preselected
+`SPADO_PYTHON` above denotes an interpreter path, not a command shipped by SPADO. For an editable `uv tool` installation, determine it with `uv tool dir`, then use the `spado/bin/python` inside that directory. For example, from a configured product on a POSIX shell:
 
-✓ means preselected. Everything can be changed on the capabilities screen.
+```bash
+spado_python="$(uv tool dir)/spado/bin/python"
+"$spado_python" .spado/tools/agent-record.py status --run RUN_ID
+```
 
-| Capability | backend | frontend | fullstack | ai | cli | library | data_ml | other |
-| --- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| `kickoff`, `project-discovery`, `archify` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| `safety-guard`, `post-edit-validation` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| `feature-spec`, `feature-workflow` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓¹ |
-| `testing`, `debugging`, `code-reviewer` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | |
-| `run-quality-checks` | ✓² | ✓² | ✓² | ✓² | ✓² | ✓² | ✓² | |
-| `backend-development` | ✓ | | ✓ | | | | | |
-| `frontend-development` | | ✓ | ✓ | | | | | |
-| `security-reviewer` | ✓ | | ✓ | ✓ | | | | |
-| `github` (MCP) | ✓³ | ✓³ | ✓³ | ✓³ | ✓³ | ✓³ | ✓³ | ✓³ |
+| Parameter | Default / rule |
+|---|---|
+| `record` or `status` | Required positional operation. |
+| `--run ID` | Required for both. |
+| `--root PATH` | `.`; configured product root. |
+| `--request FILE` | Required for `record`; omit for `status`. |
+| `--help`, `-h` | Argparse usage. |
 
-¹ Installed as dependencies of `kickoff`. ² Installed as a dependency of `code-reviewer`. ³ Only when GitHub Actions workflows are detected.
+No `--human` script flag exists. Always omit `--request` for `status` and provide a nonempty request object for `record`: the current facade dispatches by request content, so `status --request FILE` can incorrectly call the write handler. This is recorded as a pending implementation bug in the coherence review. `record` uses the same services/permissions as `workflow record`; `status` requires CAOAO/coordinator authority. JSON success is the service result. Handled service failures report `persisted: false`, `pending` (record) or `unavailable` (status), error type and event ID, exiting `1`. This is not a durable retry queue. Retain the request and retry explicitly; a preceding automatic file sync may already have persisted. Malformed JSON can fail before the facade's handler.
 
-Technologies also trigger recommendations. For example, a detected FastAPI ticks `backend-development`, and a detected Vitest ticks `testing`.
+The Python functions `record(root, run_id, request)` and `read_status(root, run_id)` expose the same operations. The detailed contract is in [the source protocol](src/spado/runtime/protocol.md), installed as `.spado/protocol.md`.
 
-### The `development-agents` family
-
-35 agents adapted from [davila7/claude-code-templates](https://github.com/davila7/claude-code-templates/tree/main/cli-tool/components/agents/development-tools) (MIT). 🔒 means read-only: no `Write` or `Edit`.
-
-**Preselected by project type** (from `catalog/agents/development-agents/group.json`):
-
-| Agent | backend | frontend | fullstack | ai | cli | library | data_ml |
-| --- | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| `debugger` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| `test-automator` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| `refactoring-specialist` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | |
-| `dependency-manager` | ✓ | ✓ | ✓ | | ✓ | ✓ | |
-| `codebase-explorer` 🔒 | ✓ | ✓ | ✓ | ✓ | | | |
-| `architect-reviewer` 🔒 | ✓ | | ✓ | ✓ | | ✓ | |
-| `performance-engineer` | ✓ | ✓ | ✓ | | | | ✓ |
-| `error-detective` 🔒 | ✓ | | ✓ | ✓ | | | |
-| `accessibility-tester` 🔒 | | ✓ | ✓ | | | | |
-| `cli-developer` | | | | | ✓ | | |
-| `unused-code-cleaner` | | | | | | ✓ | |
-
-<details>
-<summary><b>All 35 agents</b></summary>
-
-| Agent | What it does | Notes |
-| --- | --- | --- |
-| `accessibility-tester` 🔒 | WCAG accessibility audits | Recommended for frontend and full-stack |
-| `architect-reviewer` 🔒 | Reviews design decisions and architecture | |
-| `ascii-ui-mockup-generator` | ASCII mockups of UI layouts | |
-| `build-engineer` | Build performance and compilation times | |
-| `chaos-engineer` | Controlled failure experiments and resilience | |
-| `cli-developer` | Command-line tools and terminal apps | |
-| `code-simplifier` | Simplifies code without changing behaviour | |
-| `codebase-explorer` 🔒 | Maps an unfamiliar codebase | Used by `project-discovery` |
-| `codebase-pattern-finder` 🔒 | Finds existing patterns and examples | |
-| `command-expert` | CLI command design | Written for its source repo |
-| `context-manager` | Context in long multi-agent tasks | |
-| `debugger` | Diagnoses and fixes bugs | |
-| `dependency-manager` | Audits and updates dependencies | |
-| `dx-optimizer` | Developer workflow: builds, feedback loops | |
-| `error-detective` 🔒 | Correlates errors and logs | |
-| `flutter-go-reviewer` 🔒 | Flutter and Go code review | Recommended when Go or Dart is detected |
-| `general-purpose` | Generalist agent | ⚠️ Overrides Claude Code's built-in agent of the same name |
-| `laravel-expert-agent` | Laravel development | Recommended when Laravel is detected |
-| `launchdarkly-flag-cleanup` | Cleans up LaunchDarkly feature flags | Needs the LaunchDarkly MCP |
-| `mcp-expert` | MCP integrations | Written for its source repo |
-| `pagerduty-incident-responder` | PagerDuty incident response | Needs the PagerDuty and GitHub MCPs |
-| `performance-engineer` | Finds and removes bottlenecks | |
-| `performance-profiler` | Memory and latency profiling | |
-| `playwright-tester` | Playwright end-to-end tests | Recommended when Playwright is detected |
-| `qa-expert` | QA strategy and test plans | |
-| `refactoring-specialist` | Safe refactors of complex or duplicated code | |
-| `rootly-incident-responder` | Incident response with Rootly | Needs the Rootly MCP |
-| `senior-code-reviewer` 🔒 | Broad code review | Originally `code-reviewer`, renamed |
-| `slack-expert` | Slack apps and integrations | |
-| `technical-debt-manager` 🔒 | Technical debt analysis and planning | |
-| `test-automator` | Builds automated tests and frameworks | |
-| `test-engineer` | Test strategy and automation | |
-| `thinking-beast-mode` | Long autonomous multi-step tasks | |
-| `tooling-engineer` | Internal developer tools | |
-| `unused-code-cleaner` | Removes unused imports, functions and classes | |
-
-</details>
-
-> Each selected agent adds its description to Claude's context. If Claude Code warns that agent descriptions are too long, trim the lists in `group.json`.
-
-### The ECC packs
-
-302 skills and 71 agents imported from [affaan-m/ECC](https://github.com/affaan-m/ECC) (MIT, © 2026 Affaan Mustafa). They live directly in `catalog/skills/` and `catalog/agents/`, and their agents install into `.claude/agents/`. Each file ends with an attribution comment naming the source. Their content is unchanged, apart from an attribution line at the end of each file and the cleanup described below.
-
-| Pack | Contents | Preselected |
-| --- | --- | --- |
-| ECC skills (302) | **Languages and frameworks:** patterns, testing, security and verification for Python, Django, FastAPI, TypeScript, React, Vue, Nuxt, Next.js, Angular, Java, Spring Boot, Quarkus, Kotlin, Swift, Go, Rust, C++, C#, PHP, Laravel, Rails, Dart and Flutter, plus Postgres, MySQL, Redis, Prisma, Docker and Kubernetes. **Engineering:** API design, architecture decision records, hexagonal architecture, error handling, e2e testing, TDD, code review, git workflow, migrations, deployment. **Agent engineering:** harnesses, evals, loops, cost and token budgets, prompt optimization, orchestration. **Beyond code:** documentation, research, SEO, content, marketing, finance, logistics and other operations. | Only stack-specific skills, when that stack is detected |
-| ECC agents (71) | Reviewers and build-error resolvers per language or framework (`python-reviewer`, `react-build-resolver`, `go-reviewer`…), `planner`, `architect`, `tdd-guide`, `e2e-runner`, `doc-updater`, `docs-lookup`, `database-reviewer`, `performance-optimizer`, `refactor-cleaner`, `silent-failure-hunter`, open-source packaging, network and specialist agents. | Only stack-specific agents, when that stack is detected |
-
-Renamed to avoid clashing with existing capabilities: `ecc-safety-guard` (a skill, not the hook), `ecc-code-reviewer`, `ecc-code-simplifier` and `ecc-security-reviewer`.
-
-Eleven skills, for example `agent-eval`, declared `tools:` in their frontmatter. That is an agent field, which Claude Code ignores on skills. The line was removed, with no change in behaviour. It was not turned into `allowed-tools`, which would pre-approve those tools.
-
-To see everything, run `spado catalog list`. To change when one of them is preselected, edit `recommendation` or `default_selected` in its `spado.json`, for example `catalog/skills/tdd-workflow/spado.json`, then run `spado catalog validate`.
-
-> Each selected agent and skill adds its description to Claude's context. Pick what the project needs rather than whole families.
-
-### Safety Guard rules
-
-The guard **parses** shell commands into the executable and its arguments. It handles `&&`, `;`, `|`, newlines, `sudo`, `env`, `npx`, `uv run`, `bash -c`, `eval` and `$(…)`. It blocks only clear matches:
-
-| Area | Blocked examples |
-| --- | --- |
-| Infrastructure | `terraform destroy`, `terraform apply -destroy`, `pulumi destroy`, `cdk destroy`, `kubectl delete namespace`, `kubectl delete … --all`, `helm uninstall` |
-| Databases | `prisma migrate reset`, `prisma db push --force-reset`, `dropdb`, `alembic downgrade base`, `manage.py flush`, `rails db:drop`, SQL `DROP` / `TRUNCATE` / `DELETE` without `WHERE`, `redis-cli FLUSHALL` |
-| Containers and cloud | `docker compose down -v`, `docker volume rm`, `docker system prune --volumes`, `aws s3 rb --force`, `aws s3 rm --recursive`, RDS / DynamoDB / CloudFormation deletes |
-| Git | `git push --force` (allowed with `--force-with-lease`), `git reset --hard`, `git clean -f`, `git checkout -- .`, `git stash clear` |
-| Files | `rm -r` on `/`, `~`, `.`, `..`, `*`, `.git` or outside the project (temp folders allowed), `mkfs`, `dd of=/dev/…`, `shred` |
-| Protected paths | Writing or editing `.env*` (not `.env.example`), `*.pem`, `*.key`, SSH keys, `.git/`, the guard itself and SPADO state |
-
-Allowed on purpose: `rm -rf node_modules`, `rm -rf ./dist`, `git push`, `terraform plan`, `prisma migrate dev`, and `echo "terraform destroy"` (just text).
-
-Per-project overrides go in `.claude/safety-guard.json`. That file is protected, so only you can change it:
+### Request format
 
 ```json
 {
-  "protected_paths": ["config/production.yml"],
-  "allow_paths": [".env.local"],
-  "allow_commands": ["^terraform destroy -target=module\\.sandbox"],
-  "disabled_rules": ["git-reset-hard"]
+  "event_id": "15fab421-b404-4fb6-afc0-a328139d91d2",
+  "kind": "note",
+  "payload": {
+    "category": "decision",
+    "message": "Assess one opportunity before expanding the scope."
+  },
+  "rationale": "Keep the initial investigation bounded."
 }
 ```
 
-### Credits
+Save as `decision.json`, then submit with CAOAO's credential using `spado workflow record --run RUN_ID --request decision.json`. Generate a fresh UUID for a new event; keep it for identical retries. Optional `expected_version` asserts the current run version from context. If the version has changed, inspect current context before constructing a revised request.
 
-The third-party components are listed with their sources and licenses in the [README › Credits and sources](README.MD#credits-and-sources).
+### Event reference
 
----
+All writes below use `workflow record --request FILE` (or the facade), except where a convenience command is noted. Payload names are JSON keys; `plan` has the common structure below. Event actors must also belong to the correct project/run/scope.
 
-## 6. Troubleshooting
+| Kind | Payload | Authority and effect |
+|---|---|---|
+| `phase_plan` | `phase`, `plan`, optional `mode` | Human/CAOAO: version a phase plan, auto-validate in agentic/auto. |
+| `phase_approve` | `phase`, `plan_id`, `version` | Human in manual/semi-auto; otherwise Human/CAOAO. |
+| `prepare` | `subphase`, `owner`, `plan`; optional `mode`, `reason`, `new_instance` | Human/CAOAO; owner is delegated specialist UUID. `workflow prepare` wrapper available. |
+| `revise_plan` | `activity`, `plan` | Human/CAOAO; replaces plan, clears result reviews and reapplies mode gate. |
+| `approve_plan` | `activity`, `plan_id`, `version`; `arrangement` in manual | Human in manual/semi-auto; otherwise Human/CAOAO. Manual arrangement: `human`, `assisted`, `delegated`. |
+| `start` | `activity` | Assigned executor or coordinator; checks activity/phase plans and inputs. |
+| `deliver` | `activity`, `outputs`, `criteria_evidence` | Executor/coordinator; outputs are revision IDs, evidence maps each criterion to evidence. |
+| `domain_review` | `activity`, `decision`, `evidence` | Responsible officer in its own identity; `approved` or `changes_requested`. |
+| `human_review` | `activity`, `decision`, `evidence` | Human result review; same decision values. Required by manual mode. |
+| `accept` | `activity` | Human/CAOAO; requires current inputs, criteria and all applicable reviews. |
+| `block` | `activity`, `reason` | Assigned participant; records blocked work. |
+| `document` | `path`, `content`; optional `subphase`, `dependencies` | Authorized participant; prefer `docs sync` to read actual file content. |
+| `promote` | `revision` | Human/CAOAO for accepted outputs; Human attests initial external context. Prefer `docs promote`. |
+| `external_input` | `subphase`, `revision`, `evidence` | Responsible officer/Human: attest current official evidence as satisfying that upstream subphase's input contribution. |
+| `not_applicable` | `subphase`, `reason` | Every responsible officer must approve; only conditional subphases. |
+| `close_phase` | `phase` | Coordinator after all work accepted/N/A and plan valid; Human required in manual. |
+| `retirement` | `evidence` | CEAO: authorize SPDLC retirement where run scope permits. |
+| `mode` | `mode`; optional `phase`, `subphase` or `activity` | Human direction only; use at most one target. No target updates run default. |
+| `note` | `category`, `message`; optional `activity` or `subphase` | Assigned participant; global notes need coordinator. Categories: `question`, `decision`, `execution`, `handoff`, `human_question`. Agentic disallows `human_question`. |
 
-| Problem | Fix |
-| --- | --- |
-| `spado: command not found` | Run `uv tool install -e ~/tools/spado`, and make sure `~/.local/bin` is on your `PATH`. |
-| `No SPADO catalog found` | Pass `--catalog ~/tools/spado/catalog`, or run from the template folder. |
-| `Catalog source unavailable` on a rerun | Expected after cleanup. Pass `--catalog` to add or remove capabilities. |
-| `Re-run with --yes to apply` | No interactive terminal. Add `--yes`, or run it in a real terminal. |
-| `… changed since the preview` | A file changed during the run. Run `spado provision` again. |
-| `skill:archify needs node` | Install Node.js 18+. The skill is installed anyway. |
-| Agents missing in Claude Code | Restart Claude Code, then check `/agents`. |
-| The MCP server does not connect | Export its token, for example `GITHUB_TOKEN`, then approve the server in `/mcp`. |
-| `/kickoff` keeps proposing discovery | `docs/architecture.md` still has the `spado:architecture-template` line. Finish discovery, or remove the line. |
-| The Safety Guard blocked something you need | Run it yourself, or allow it in `.claude/safety-guard.json`. |
-| `The id '…' is already used` | Ids are unique across all types. Pass `--id another-name`. |
-| `looks like a literal secret` | Replace the token with `${VAR_NAME}`. |
-| Anything else | Run the same command with `--verbose`. |
+`run_created` and `delegation` are recorded by `workflow create` and `actor create`, not submitted as ordinary transition kinds.
+
+An activity plan contains `objective`, exact canonical `deliverable`, nonempty `actions`, `criteria` including the canonical exit criterion, and `inputs` mapping revision UUIDs to SHA-256 hashes. Supply `assumptions` for missing inputs. Read context first; do not invent revision IDs, criteria evidence or completed work. SPADO assigns plan identity/version/approval. Phase plans have the same structure with a phase-level target; explicit `reused_activities` identifies accepted activities from previous cycles.
+
+Revised input evidence can invalidate approvals and consumers. The system can only assess relationships it records; describe actual consumed revisions and ask responsible officers to review semantic effects. See the [advanced example](docs/manual/first-run.md#advanced-terminal-walkthrough).
+
+## Configuration and environment
+
+The generated `.spado/project.json` contains:
+
+| Field | Meaning |
+|---|---|
+| `schema_version` | Currently `1`. |
+| `project` | Generated project UUID; identity boundary, not a display label to casually rename. |
+| `hosts` | `claude`/`codex` list. |
+| `mode` | Default for new runs. |
+| `workflow` | Currently `spdlc`; another name alone does not install another workflow. |
+| `capabilities` | Explicit optional capability references. |
+| `database_port` | Local database port, default `55432`. |
+| `embeddings.backend`, `.model`, `.endpoint` | Provider/model configuration; local or external. |
+| `embeddings.key_env` | External credential variable, default `SPADO_EMBEDDING_API_KEY`; no dedicated CLI flag. |
+
+Prefer supported `init` updates to manual edits: configuration files are tracked by installation hashes, so manual changes can trigger conflicts on a later installation. Existing run snapshots remain pinned.
+
+| Environment variable | Used by / precedence |
+|---|---|
+| `SPADO_ACTOR_TOKEN_FILE` | Path to delegated actor credential. Used when direct token is absent/empty. |
+| `SPADO_ACTOR_TOKEN` | Direct actor token; a nonempty value overrides the file variable. |
+| `SPADO_EMBEDDING_API_KEY` | Default external embedding credential; `key_env` can select a different variable. |
+| `SPADO_DATABASE_URL` | Overrides generated local DSN for state services. |
+| Capability-specific names, e.g. `GITHUB_TOKEN` | MCP/tool requirements from selected manifests; not a universal SPADO credential. |
+| `SPADO_POSTGRES_TEST=1` | Maintainer-only switch for Docker integration tests; not runtime setup. |
+
+`--human` uses `.spado/local/human.token` instead of agent environment credentials. The fallback DSN uses localhost, project port, database/user `spado` and `.spado/local/database.password`. External embedding endpoints must use HTTPS, except local HTTP on `localhost`/`127.0.0.1`; the adapter still requires its configured key variable.
+
+`SPADO_DATABASE_URL` is an advanced connection override, **not a complete managed remote-DB mode**. `db up` still starts the local Compose service and `db down` still stops that local service. `db migrate` and state services use the override. Provision/bootstrap a remote database deliberately; do not assume local volume lifecycle commands control it.
+
+Keep `.spado/local/` private and untracked. Generated `.spado/.gitignore` excludes local data/backups. Versionable project configuration/resources are separate from private credentials and database contents.
+
+## Updates and maintenance
+
+### Tool, installed resources and run snapshots
+
+These are three distinct update layers:
+
+1. **Tool:** pull your permanent checkout. Editable Python source changes take effect; reinstall when dependencies/entry points/extras change.
+2. **Project resources:** preview and repeat `spado init` to install current resources, or use `provision` for its own modular installation.
+3. **Runs:** existing executions retain their workflow/organization snapshots. New runs use the installed definitions; there is no automatic run migration.
+
+```bash
+git -C ~/tools/spado pull
+uv tool install --force -e "$HOME/tools/spado[local-embeddings]"
+cd ~/projects/my-product
+spado init --dry-run
+# After inspecting the proposed changes:
+spado init
+```
+
+Use the plain package instead of the extra when you use external embeddings. Do not run these project setup commands from the tool checkout by mistake.
+
+An edited managed file causes a conflict. Review its diff and preserve intentional customizations before reconciling it with the expected source. `init` has no force/interactive overwrite switch. Its installation is additive: changing the selected hosts/capabilities does not remove old resource files. `provision` has a separate selection/removal workflow; its ownership does not automatically transfer to `init`.
+
+### Documents and continuation
+
+After editing a tracked product document, run `docs sync`, inspect review findings, revise affected plans and obtain fresh approvals. Promote only the accepted/current revision; index official content after promotion when you need semantic retrieval. Queries alone never perform synchronization.
+
+In a partial run, existing upstream evidence can be supplied as a synchronized and promoted document, then attested through `external_input` by a responsible officer or Human. That records suitability; it does not mark the upstream activity executed. Preserve the distinction in reviews.
+
+### Stop, retain and export
+
+`db down` retains the persistent volume; `db up` returns to it. Keep the associated project configuration/password and actor credentials as well as the database. Deleting the volume or credentials is not an ordinary reset procedure.
+
+`workflow export` is a readable run/event export, not a restore-capable backup. No SPADO backup/restore, credential-recovery, import, uninstall or delete-run command is provided. Use your database administration process if you need a full backup and include the relevant project files/credentials securely.
+
+Template cleanup applies only to `provision` when `.spado-template.json` and the SPADO package identify a template and cleanup is selected. It can remove `catalog`, `templates`, `src/spado`, tests, package files, named spec files and `USAGE.md`; the exact allowlist is in [paths.py](src/spado/paths.py). Unlisted files, including this manual's supplementary directory, remain. `init` does not do this cleanup. `--yes` accepts the wizard's cleanup default.
+
+## Troubleshooting
+
+| Symptom / error | Meaning and action |
+|---|---|
+| `spado: command not found` | Check the tool installation and PATH; `uv tool update-shell` can configure the tool executable directory. Reopen the shell. |
+| Old `cwi`/`cwi-init` examples | Historical names; use current `spado` routes. No alias or automatic CWI-state migration exists. |
+| Missing `.spado/project.json` | You are in the wrong root or used capability-only/modular setup. Configure the organization before runtime commands. |
+| Initial setup requires host/mode/embeddings/model | Supply all four for fresh workflow setup. Use no-workflow only for capability installation. |
+| PostgreSQL operation failed | Check Docker, `spado db up`, project port/password and any DSN override. |
+| Port already in use | Give simultaneously active projects distinct ports at initial setup; existing-port updates are currently unsupported by `init`. |
+| No Human token | Complete `db up`; do not substitute an agent token. Lost credentials on an existing DB need deliberate recovery, not assumed rebootstrap. |
+| Set `SPADO_ACTOR_TOKEN_FILE` / unauthorized actor | Pass the assigned token to that session; use `--human` only for actual Human actions. Check whether direct-token env overrides the file. |
+| Select an execution with `--run` | Inspect `spado status --human` and choose the intended run ID. |
+| Scope/delegation error | Use the assigned scope/identity; request CAOAO coordination or create a separate run outside current execution scope. |
+| Approval targets a stale plan / execution changed | Refresh context; review and approve current plan ID/version. Do not replay stale approval as a new decision. |
+| Phase plan required | Full/phase runs require a phase plan before activity execution; independent subphase runs do not. |
+| Activity not ready / inputs missing | Inspect status/review, approvals and missing prerequisites. Provisional results cannot be accepted early. |
+| Recorded document missing / changed outside scope | Restore the expected file or ask CAOAO to synchronize and revalidate its consumers. |
+| Document differs / only accepted outputs can be promoted | Sync the actual file, complete reviews/acceptance and promote its latest revision. |
+| Event ID reused with different content | Same ID is only for identical retries under the same identity/run. A changed decision needs a new ID. |
+| Facade reports pending/unavailable | Preserve request/ID, resolve failure, inspect context and retry. No background retry queue exists. |
+| `No module named spado` from agent-record.py | Use the Python environment containing SPADO, not the product's unrelated interpreter. |
+| Missing local embeddings package | Install the extra in the environment that runs the CLI/facade. |
+| Missing embedding key / provider failure | Check model, endpoint and key environment. External updates must repeat custom endpoints. |
+| Empty search / `index_complete: false` | Promote approved sources and index with the current model. Drafts are excluded. |
+| User edits conflict with installation | Review managed-file diffs; reconcile customizations before reinstalling. No `init --force`. |
+| Capability incompatible with Codex | Choose compatible resources; unsupported hooks/settings/agent payloads are rejected, not automatically converted. |
+| Capability no longer selected but files remain | Current `init` does not prune installations. See the coherence report before manual reconciliation. |
+| No catalog / source unavailable on provision rerun | Pass `--catalog` pointing to the permanent tool checkout. |
+| Re-run with `--yes` to apply | Provisioning has no interactive terminal. Preview first; `--yes` accepts every default, including applicable cleanup. |
+| ID already used / literal secret detected | Choose a unique capability ID; use quoted `${VAR}` references instead of secret values. |
+| Host does not expose installed resources | Check the selected host and generated directories, then reload its project/session. Host discovery and permissions are host responsibilities. |
+| Kickoff repeatedly proposes discovery | Check its `spado:architecture-template` marker; follow the [modular workflow](docs/manual/modular-provisioning.md). |
+| MCP does not connect | Supply the selected server's required environment and host permission; catalog validation does not test a connection. |
+| `--verbose` rejected | It belongs only to `spado provision`; use command-specific help and the actual runtime error for other commands. |
+
+See [coherence findings](docs/manual/coherence.md) for source evidence and pending limitations. For implementation changes, edit canonical sources and run the checks described in [README](README.MD#development); do not treat the manual as executable agent instructions.
