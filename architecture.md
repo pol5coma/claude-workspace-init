@@ -324,4 +324,18 @@ The current configuration installs Full SPDLC for Claude Code and Codex, or sele
 
 There is no autonomous agent scheduler or background filesystem watcher in v1. Host agents execute the assignments; explicit synchronization and pre-execution checks handle document changes.
 
-A future Human UI can display the workflow map, decisions, plans and approved documentation and submit edits through the same services. It must preserve identities, modes, revision history and impact checks. The UI is deferred; the CLI and host entry skills are the current interfaces.
+## 9. Next steps
+
+### Deterministic background execution
+
+Add an optional `--background-exec` mode backed by an internal SPADO worker and a LangGraph orchestration graph. The graph would select ready phases and subphases from the run's scope and recorded dependencies, invoke the assigned CAOAO, officers and specialists, and advance only after the existing plan, review and acceptance gates pass. Agents would still decide *how* to perform their assignments; the graph would control *when* each assignment may run. Independent subphase execution and interactive host-led orchestration would remain available.
+
+Persist graph checkpoints and correlate them with SPADO run and activity IDs. A long-lived worker, durable queue, retry policy and headless agent adapters are also required: LangGraph persistence alone does not keep work running after a host session closes. The worker should resume interrupted runs, wait for Human input when the selected mode requires it, and reconcile each step with SPADO's authoritative PostgreSQL state and event protocol. This makes execution independent of an open Claude Code or Codex conversation while retaining their installed agent identities, mandates and skills where the host supports headless invocation. Determinism applies to ordering and gates, not to the content produced by an agent.
+
+`--background-exec` is a proposed interface, not a current CLI option. See the [LangGraph persistence guide](https://docs.langchain.com/oss/python/langgraph/persistence) for checkpoints and the [LangSmith data plane documentation](https://docs.langchain.com/langsmith/data-plane) for an example of a background-worker architecture.
+
+### Human control UI
+
+Build a UI over the same authenticated services to inspect the organization and workflow map, active or waiting assignments, dependencies, status, plans, evidence, deliverables, reviews and confirmation requests at every level: specialist, domain officer and CAOAO. Show recorded decisions and concise evidence-based rationales for each actor, together with their sources and revision history; private internal reasoning is not an execution artifact and should not be presented as one.
+
+The Human should be able to give instructions to CAOAO, answer questions, review plans and results, and request a change of scope or priority. These actions must enter the existing identity, event, authority, mode and impact-check services so they are attributable and cannot bypass workflow gates. The UI is future work; the CLI and host entry skills remain the current interfaces.
