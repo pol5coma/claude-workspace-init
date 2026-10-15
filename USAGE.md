@@ -1,11 +1,13 @@
-# Using CWI
+# Using SPADO
+
+> This guide covers the modular Claude workspace installer, `spado provision`. For organization setup, Full SPDLC, Codex, execution state and the four modes, use the [SPADO quick start](README.MD).
 
 A complete, step-by-step guide. For the overview, see the [README](README.MD).
 
 **Contents**
 
-1. [Install CWI](#1-install-cwi): once per machine
-2. [Set up a project](#2-set-up-a-project): `cwi init`
+1. [Install SPADO](#1-install-spado): once per machine
+2. [Set up a project](#2-set-up-a-project): `spado provision`
 3. [Work in Claude Code](#3-work-in-claude-code-kickoff): `/kickoff`
 4. [Add things to the catalog](#4-add-things-to-the-catalog): for maintainers of this template
 5. [Reference](#5-reference): the catalog in detail, what gets preselected, the Safety Guard rules
@@ -13,26 +15,26 @@ A complete, step-by-step guide. For the overview, see the [README](README.MD).
 
 ---
 
-## 1. Install CWI
+## 1. Install SPADO
 
 You need:
 
 | Requirement | Why | Check |
 | --- | --- | --- |
-| [uv](https://docs.astral.sh/uv/) | Installs and runs the `cwi` CLI | `uv --version` |
-| Python 3.12+ | CWI is written in Python. uv can provide it. | `python3 --version` |
+| [uv](https://docs.astral.sh/uv/) | Installs and runs the `spado` CLI | `uv --version` |
+| Python 3.12+ | SPADO is written in Python. uv can provide it. | `python3 --version` |
 | [Claude Code](https://code.claude.com) | Where the workspace is used | `claude --version` |
 | Node.js 18+ *(optional)* | Only for the `archify` diagram skill | `node --version` |
 
 ```bash
-git clone https://github.com/pol5coma/claude-workspace-init ~/tools/claude-workspace-init
-uv tool install -e ~/tools/claude-workspace-init
-cwi --version          # cwi 0.1.0
+git clone https://github.com/pol5coma/claude-workspace-init ~/tools/spado
+uv tool install -e ~/tools/spado
+spado --version          # spado 0.2.0
 ```
 
-> **Why install it as a tool?** CWI's catalog stays in its own folder, and every project points to it. When you start a project *from the template*, CWI deletes its own source from that project. The installed `cwi` command keeps working.
+> **Why install it as a tool?** SPADO's catalog stays in its own folder, and every project points to it. When you start a project *from the template*, SPADO deletes its own source from that project. The installed `spado` command keeps working.
 
-To update CWI later, run `git -C ~/tools/claude-workspace-init pull`. The editable install picks up the change.
+To update SPADO later, run `git -C ~/tools/spado pull`. The editable install picks up the change.
 
 ---
 
@@ -41,8 +43,8 @@ To update CWI later, run `git -C ~/tools/claude-workspace-init pull`. The editab
 ```mermaid
 flowchart TD
     Q{"Do you already<br/>have a project?"}
-    Q -- "Yes" --> A["cd my-project<br/>cwi init --catalog ~/tools/claude-workspace-init/catalog"]
-    Q -- "No, start from scratch" --> B["git clone …/claude-workspace-init my-app<br/>cd my-app && cwi init"]
+    Q -- "Yes" --> A["cd my-project<br/>spado provision --catalog ~/tools/spado/catalog"]
+    Q -- "No, start from scratch" --> B["git clone …/spado my-app<br/>cd my-app && spado provision"]
     A --> S["8 guided steps · preview · apply"]
     B --> S
     S --> K["claude /kickoff"]
@@ -54,9 +56,9 @@ The catalog is **not copied** into your project. Only what you select is install
 
 ```bash
 cd ~/projects/my-project
-git status                                                   # commit first, so `git diff` shows what CWI added
-cwi init --catalog ~/tools/claude-workspace-init/catalog --dry-run   # see the plan, write nothing
-cwi init --catalog ~/tools/claude-workspace-init/catalog              # run it
+git status                                                   # commit first, so `git diff` shows what SPADO added
+spado provision --catalog ~/tools/spado/catalog --dry-run   # see the plan, write nothing
+spado provision --catalog ~/tools/spado/catalog              # run it
 ```
 
 ### Option B: a new project from the template
@@ -65,10 +67,10 @@ cwi init --catalog ~/tools/claude-workspace-init/catalog              # run it
 git clone https://github.com/pol5coma/claude-workspace-init my-app
 cd my-app
 mkdir -p docs/requirements && cp ~/somewhere/*.md docs/requirements/   # optional: your requirements
-cwi init
+spado provision
 ```
 
-After a successful run CWI removes its own files: `catalog/`, `templates/`, `src/cwi/`, `tests/`, `pyproject.toml`, `uv.lock`, `.python-version`, `USAGE.md`, the spec docs and the template marker. Only your workspace remains.
+After a successful run SPADO removes its own files: `catalog/`, `templates/`, `src/spado/`, `tests/`, `pyproject.toml`, `uv.lock`, `.python-version`, `USAGE.md`, the spec docs and the template marker. Only your workspace remains.
 
 ### The 8 steps
 
@@ -76,7 +78,7 @@ Press **Enter** to accept the suggestion on any screen. **Space** toggles items 
 
 | Step | What you see | What to do |
 | --- | --- | --- |
-| **1 · Workspace** | The project folder. If you run CWI inside a git subfolder, it asks which root to use. Shows a notice if you have uncommitted changes. | Confirm |
+| **1 · Workspace** | The project folder. If you run SPADO inside a git subfolder, it asks which root to use. Shows a notice if you have uncommitted changes. | Confirm |
 | **2 · Scan** | Reads manifests and lockfiles. It never runs your code. | Nothing |
 | **3 · Project profile** | **Existing project:** the detected type and stack with versions, for example "Full-stack · Python 3.12 · FastAPI 0.115 · React 19.0". **New project:** a few questions about what you are building, languages, frameworks, database, testing and infrastructure. | **Confirm**, **Edit**, **View evidence** (why each item was detected) or **Rescan** |
 | **4 · Instructions & docs** | Where instructions live: **AGENTS.md + CLAUDE.md** (recommended) or **CLAUDE.md only**. Then the safety rules, the essential commands, the docs skeleton and any extra global instruction. Shows the size of the result. | Accept, or edit commands and the list of protected commands |
@@ -89,32 +91,32 @@ Nothing is written before **Apply**. **Cancel** leaves the project exactly as it
 
 ### Existing files are safe
 
-| You already have | What CWI does |
+| You already have | What SPADO does |
 | --- | --- |
 | `CLAUDE.md` | Adds `@AGENTS.md` at the top and keeps everything else. Sections you already have are not repeated in `AGENTS.md`. |
 | `AGENTS.md` | Asks: **keep**, **merge** (adds only missing sections), **replace** or **skip**. **Show diff** is always available. |
 | `.claude/settings.json` | Merges the hooks. Your permissions, env and other hooks stay. |
 | `.mcp.json` | Adds new servers. A server with the same name and a different config asks: keep or replace. |
-| A file CWI wants to install, such as `.claude/agents/x.md` | Asks: keep yours or replace it. |
+| A file SPADO wants to install, such as `.claude/agents/x.md` | Asks: keep yours or replace it. |
 | `docs/architecture.md` or other docs | Never touched. Only missing docs are created. |
 
 ### Flags
 
 | Command | Use it to |
 | --- | --- |
-| `cwi init --dry-run` | See the full plan. Writes nothing. |
-| `cwi init --yes` | Accept every default with no questions. Good for scripts. |
-| `cwi init --catalog PATH` | Use a catalog outside the project. You need this for existing projects. |
-| `cwi init --root PATH` | Set up another folder. |
-| `cwi init --verbose` | Show debug logs and tracebacks. |
+| `spado provision --dry-run` | See the full plan. Writes nothing. |
+| `spado provision --yes` | Accept every default with no questions. Good for scripts. |
+| `spado provision --catalog PATH` | Use a catalog outside the project. You need this for existing projects. |
+| `spado provision --root PATH` | Set up another folder. |
+| `spado provision --verbose` | Show debug logs and tracebacks. |
 
-### Running `cwi init` again
+### Running `spado provision` again
 
 Run it whenever you want to:
 
-- **Change the selection.** Untick a capability and CWI removes **only the files it installed** for it. A file you edited is never deleted without asking.
+- **Change the selection.** Untick a capability and SPADO removes **only the files it installed** for it. A file you edited is never deleted without asking.
 - **Refresh the instructions.** Choose **Rescan** on the profile screen to update the stack and versions after an upgrade.
-- **Check the workspace.** CWI warns about any of its files you edited since installing.
+- **Check the workspace.** SPADO warns about any of its files you edited since installing.
 
 With the same answers, a rerun changes nothing ("Workspace already up to date").
 
@@ -122,7 +124,7 @@ With the same answers, a rerun changes nothing ("Workspace already up to date").
 
 ## 3. Work in Claude Code: `/kickoff`
 
-`cwi init` only provisions the workspace and runs no AI. The work happens in Claude Code, and **`/kickoff`** is the single entry point:
+`spado provision` only provisions the workspace and runs no AI. The work happens in Claude Code, and **`/kickoff`** is the single entry point:
 
 ```bash
 claude "/kickoff"
@@ -153,7 +155,7 @@ flowchart TD
 
 It is **resumable**. The state lives in the files, in each spec's `Status:` line and the `## Backlog` list, so running `/kickoff` tomorrow continues where you stopped.
 
-> **Order is enforced.** Until the architecture is written, `docs/architecture.md` keeps a `cwi:architecture-template` marker. `feature-spec` and `feature-workflow` refuse to start while it is there.
+> **Order is enforced.** Until the architecture is written, `docs/architecture.md` keeps a `spado:architecture-template` marker. `feature-spec` and `feature-workflow` refuse to start while it is there.
 
 ### Step 1: architecture with `project-discovery`
 
@@ -205,13 +207,13 @@ flowchart LR
 - the spec and the code disagree;
 - the plan must change.
 
-It never commits to `main`, never force-pushes, and asks before anything destructive. After `project-setup` or an upgrade, it reminds you to run `cwi init` → **Rescan** so the stack versions in `AGENTS.md` stay accurate.
+It never commits to `main`, never force-pushes, and asks before anything destructive. After `project-setup` or an upgrade, it reminds you to run `spado provision` → **Rescan** so the stack versions in `AGENTS.md` stay accurate.
 
 You can also call any of these skills directly: `/project-discovery`, `/feature-spec`, `/feature-workflow`.
 
 ### Diagrams with `archify`
 
-Installed by default. It needs Node.js 18+, and CWI warns you if `node` is missing. The workflow skills offer it, and it is never required:
+Installed by default. It needs Node.js 18+, and SPADO warns you if `node` is missing. The workflow skills offer it, and it is never required:
 
 | When | Skill | Diagram |
 | --- | --- | --- |
@@ -220,11 +222,11 @@ Installed by default. It needs Node.js 18+, and CWI warns you if `node` is missi
 | A feature has a non-trivial flow | `feature-spec` | Workflow, sequence, dataflow or lifecycle |
 | A feature changed the structure | `feature-workflow` | Refreshed architecture, linked in the PR |
 
-Diagrams are saved in `docs/diagrams/<type>-<slug>/` and versioned with your docs. You can also ask at any time, for example "make a sequence diagram of the login flow". To use archify outside CWI in every project, link a global install: `ln -s ~/.agents/skills/archify ~/.claude/skills/archify`.
+Diagrams are saved in `docs/diagrams/<type>-<slug>/` and versioned with your docs. You can also ask at any time, for example "make a sequence diagram of the login flow". To use archify outside SPADO in every project, link a global install: `ln -s ~/.agents/skills/archify ~/.claude/skills/archify`.
 
 ### `AGENTS.md`, `CLAUDE.md` and versions
 
-`AGENTS.md` is the [open standard](https://agents.md) read by Codex, Cursor, Gemini CLI, GitHub Copilot and Claude Code. Claude Code ignores it when a `CLAUDE.md` exists, so CWI writes a `CLAUDE.md` whose first line imports it:
+`AGENTS.md` is the [open standard](https://agents.md) read by Codex, Cursor, Gemini CLI, GitHub Copilot and Claude Code. Claude Code ignores it when a `CLAUDE.md` exists, so SPADO writes a `CLAUDE.md` whose first line imports it:
 
 ```markdown
 @AGENTS.md
@@ -271,7 +273,7 @@ Versions come from the lockfiles (`package-lock.json`, `pnpm-lock.yaml`, `yarn.l
 
 ### MCP tokens
 
-Some MCP servers need a token. CWI lists them in step 6. Set them in your shell, never in the repo:
+Some MCP servers need a token. SPADO lists them in step 6. Set them in your shell, never in the repo:
 
 ```bash
 export GITHUB_TOKEN=ghp_...
@@ -289,18 +291,18 @@ export GITHUB_TOKEN=ghp_...
 | `/mcp` | MCP servers and their status |
 | `/memory` | `CLAUDE.md` with the `AGENTS.md` import |
 
-If Claude Code was already open while `cwi init` ran, restart it so it sees the new agents.
+If Claude Code was already open while `spado provision` ran, restart it so it sees the new agents.
 
 ---
 
 ## 4. Add things to the catalog
 
-For maintainers of this template. Run these commands from the repository root with `uv run cwi …`, or `cwi …` if it is installed.
+For maintainers of this template. Run these commands from the repository root with `uv run spado …`, or `spado …` if it is installed.
 
 ```mermaid
 flowchart LR
-    F["Your file<br/>SKILL.md · agent.md · script"] --> A["cwi catalog add"]
-    A --> M["Writes cwi.json + payload/<br/>asks what is missing"]
+    F["Your file<br/>SKILL.md · agent.md · script"] --> A["spado catalog add"]
+    A --> M["Writes spado.json + payload/<br/>asks what is missing"]
     M --> V{"Catalog<br/>valid?"}
     V -- "Yes" --> G["git commit + push<br/>→ every new project gets it"]
     V -- "No" --> X["Nothing added<br/>error explains why"]
@@ -331,10 +333,10 @@ allowed-tools: Read, Grep
 ```
 
 ```bash
-cwi catalog add skill path/to/SKILL.md
-cwi catalog add skill path/to/SKILL.md --ref rest-guide.md --script check.py
-cwi catalog add skill path/to/api-design/                # whole folder
-cwi catalog add skill ~/.agents/skills/archify --exclude test --default
+spado catalog add skill path/to/SKILL.md
+spado catalog add skill path/to/SKILL.md --ref rest-guide.md --script check.py
+spado catalog add skill path/to/api-design/                # whole folder
+spado catalog add skill ~/.agents/skills/archify --exclude test --default
 ```
 </details>
 
@@ -353,11 +355,11 @@ You are a database reviewer…
 ```
 
 ```bash
-cwi catalog add agent path/to/dba.md
-cwi catalog add agent path/to/dba.md --script explain-query.py --depends script:run-quality-checks
+spado catalog add agent path/to/dba.md
+spado catalog add agent path/to/dba.md --script explain-query.py --depends script:run-quality-checks
 ```
 
-If you run `add skill` on a file whose frontmatter has `tools:`, CWI tells you it is an agent.
+If you run `add skill` on a file whose frontmatter has `tools:`, SPADO tells you it is an agent.
 
 A custom tool for an agent, such as a script that queries a database, is shipped with `--script`. The agent runs it through `Bash`. For a real tool, add an MCP server and make the agent `--depends mcp:<name>`.
 </details>
@@ -368,8 +370,8 @@ A custom tool for an agent, such as a script that queries a database, is shipped
 A hook receives the event JSON on stdin. Exit code `2` blocks the action, and stderr is shown to Claude as the reason.
 
 ```bash
-cwi catalog add hook block-prod.sh --event PreToolUse --matcher Bash -d "Blocks production deploys"
-cwi catalog add hook notify.py --event Stop -d "Desktop notification when Claude finishes"
+spado catalog add hook block-prod.sh --event PreToolUse --matcher Bash -d "Blocks production deploys"
+spado catalog add hook notify.py --event Stop -d "Desktop notification when Claude finishes"
 ```
 
 Events: `PreToolUse`, `PostToolUse`, `UserPromptSubmit`, `Stop`, `SubagentStop`, `SessionStart`, `SessionEnd`, `Notification`, `PreCompact`. `--matcher` applies only to `PreToolUse` and `PostToolUse`.
@@ -379,19 +381,19 @@ Events: `PreToolUse`, `PostToolUse`, `UserPromptSubmit`, `Stop`, `SubagentStop`,
 <summary><b>Script and MCP examples</b></summary>
 
 ```bash
-cwi catalog add script seed-db.sh -d "Seeds the local database with demo data"
+spado catalog add script seed-db.sh -d "Seeds the local database with demo data"
 
-cwi catalog add mcp linear --url https://mcp.linear.app/mcp \
+spado catalog add mcp linear --url https://mcp.linear.app/mcp \
   --header 'Authorization=Bearer ${LINEAR_TOKEN}'
 
-cwi catalog add mcp postgres --command npx \
+spado catalog add mcp postgres --command npx \
   --arg -y --arg @modelcontextprotocol/server-postgres --arg '${DATABASE_URL}'
 ```
 
 A real token in `--header` or `--env` is rejected: "looks like a literal secret".
 </details>
 
-### When is it ticked in `cwi init`?
+### When is it ticked in `spado provision`?
 
 | Option | Effect |
 | --- | --- |
@@ -412,7 +414,7 @@ A family groups related capabilities in one folder, and decides which members ar
 catalog/agents/development-agents/
 ├── group.json               name + defaults per project type
 ├── debugger/
-│   ├── cwi.json
+│   ├── spado.json
 │   └── payload/.claude/agents/development-agents/debugger.md
 └── …
 ```
@@ -420,18 +422,18 @@ catalog/agents/development-agents/
 Grouped agents install into `.claude/agents/<family>/`, and Claude Code finds agents in subfolders.
 
 ```bash
-cwi catalog add agent terraform-expert.md --group devops-agents --group-default backend,fullstack
-cwi catalog group create agent product-agents --name "Product agents"
-cwi catalog group defaults agent development-agents backend debugger,test-automator,refactoring-specialist
+spado catalog add agent terraform-expert.md --group devops-agents --group-default backend,fullstack
+spado catalog group create agent product-agents --name "Product agents"
+spado catalog group defaults agent development-agents backend debugger,test-automator,refactoring-specialist
 ```
 
 ### Other catalog commands
 
 ```bash
-cwi catalog list                       # everything, with group, defaults and recommendations
-cwi catalog validate                   # check the whole catalog
-cwi catalog remove skill:old           # remove an entry (also from its family defaults)
-cwi catalog add skill SKILL.md --force # replace an existing entry
+spado catalog list                       # everything, with group, defaults and recommendations
+spado catalog validate                   # check the whole catalog
+spado catalog remove skill:old           # remove an entry (also from its family defaults)
+spado catalog add skill SKILL.md --force # replace an existing entry
 ```
 
 ### Publish
@@ -546,7 +548,7 @@ Renamed to avoid clashing with existing capabilities: `ecc-safety-guard` (a skil
 
 Eleven skills, for example `agent-eval`, declared `tools:` in their frontmatter. That is an agent field, which Claude Code ignores on skills. The line was removed, with no change in behaviour. It was not turned into `allowed-tools`, which would pre-approve those tools.
 
-To see everything, run `cwi catalog list`. To change when one of them is preselected, edit `recommendation` or `default_selected` in its `cwi.json`, for example `catalog/skills/tdd-workflow/cwi.json`, then run `cwi catalog validate`.
+To see everything, run `spado catalog list`. To change when one of them is preselected, edit `recommendation` or `default_selected` in its `spado.json`, for example `catalog/skills/tdd-workflow/spado.json`, then run `spado catalog validate`.
 
 > Each selected agent and skill adds its description to Claude's context. Pick what the project needs rather than whole families.
 
@@ -561,7 +563,7 @@ The guard **parses** shell commands into the executable and its arguments. It ha
 | Containers and cloud | `docker compose down -v`, `docker volume rm`, `docker system prune --volumes`, `aws s3 rb --force`, `aws s3 rm --recursive`, RDS / DynamoDB / CloudFormation deletes |
 | Git | `git push --force` (allowed with `--force-with-lease`), `git reset --hard`, `git clean -f`, `git checkout -- .`, `git stash clear` |
 | Files | `rm -r` on `/`, `~`, `.`, `..`, `*`, `.git` or outside the project (temp folders allowed), `mkfs`, `dd of=/dev/…`, `shred` |
-| Protected paths | Writing or editing `.env*` (not `.env.example`), `*.pem`, `*.key`, SSH keys, `.git/`, the guard itself and CWI state |
+| Protected paths | Writing or editing `.env*` (not `.env.example`), `*.pem`, `*.key`, SSH keys, `.git/`, the guard itself and SPADO state |
 
 Allowed on purpose: `rm -rf node_modules`, `rm -rf ./dist`, `git push`, `terraform plan`, `prisma migrate dev`, and `echo "terraform destroy"` (just text).
 
@@ -586,15 +588,15 @@ The third-party components are listed with their sources and licenses in the [RE
 
 | Problem | Fix |
 | --- | --- |
-| `cwi: command not found` | Run `uv tool install -e ~/tools/claude-workspace-init`, and make sure `~/.local/bin` is on your `PATH`. |
-| `No CWI catalog found` | Pass `--catalog ~/tools/claude-workspace-init/catalog`, or run from the template folder. |
+| `spado: command not found` | Run `uv tool install -e ~/tools/spado`, and make sure `~/.local/bin` is on your `PATH`. |
+| `No SPADO catalog found` | Pass `--catalog ~/tools/spado/catalog`, or run from the template folder. |
 | `Catalog source unavailable` on a rerun | Expected after cleanup. Pass `--catalog` to add or remove capabilities. |
 | `Re-run with --yes to apply` | No interactive terminal. Add `--yes`, or run it in a real terminal. |
-| `… changed since the preview` | A file changed during the run. Run `cwi init` again. |
+| `… changed since the preview` | A file changed during the run. Run `spado provision` again. |
 | `skill:archify needs node` | Install Node.js 18+. The skill is installed anyway. |
 | Agents missing in Claude Code | Restart Claude Code, then check `/agents`. |
 | The MCP server does not connect | Export its token, for example `GITHUB_TOKEN`, then approve the server in `/mcp`. |
-| `/kickoff` keeps proposing discovery | `docs/architecture.md` still has the `cwi:architecture-template` line. Finish discovery, or remove the line. |
+| `/kickoff` keeps proposing discovery | `docs/architecture.md` still has the `spado:architecture-template` line. Finish discovery, or remove the line. |
 | The Safety Guard blocked something you need | Run it yourself, or allow it in `.claude/safety-guard.json`. |
 | `The id '…' is already used` | Ids are unique across all types. Pass `--id another-name`. |
 | `looks like a literal secret` | Replace the token with `${VAR_NAME}`. |
