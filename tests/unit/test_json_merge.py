@@ -1,6 +1,6 @@
 import pytest
 
-from cwi.install.json_merge import (
+from spado.install.json_merge import (
     deep_merge,
     fragment_hook_refs,
     merge_hooks,

@@ -3,10 +3,10 @@ import os
 
 import pytest
 
-from cwi.catalog.loader import load_catalog
-from cwi.catalog.validator import is_safe_relative, validate_catalog
-from cwi.domain.errors import CatalogError
-from cwi.domain.models import Capability, CapabilityManifest, Catalog
+from spado.catalog.loader import load_catalog
+from spado.catalog.validator import is_safe_relative, validate_catalog
+from spado.domain.errors import CatalogError
+from spado.domain.models import Capability, CapabilityManifest, Catalog
 from tests.helpers import REAL_CATALOG, add_capability, agent_md, minimal_catalog, skill_md
 
 
@@ -48,7 +48,7 @@ def test_missing_manifest_fails(tmp_path):
 def test_invalid_json_fails(tmp_path):
     d = tmp_path / "catalog" / "skills" / "broken"
     d.mkdir(parents=True)
-    (d / "cwi.json").write_text("{not json")
+    (d / "spado.json").write_text("{not json")
     with pytest.raises(CatalogError, match="Invalid JSON"):
         load_catalog(tmp_path / "catalog")
 
@@ -136,7 +136,7 @@ def test_payload_cannot_ship_reserved_files(tmp_path):
         "settings",
         {".claude/settings.json": "{}", "scripts/x.sh": "x"},
     )
-    with pytest.raises(CatalogError, match="CWI generates/merges it"):
+    with pytest.raises(CatalogError, match="SPADO generates/merges it"):
         load_catalog(tmp_path / "catalog")
 
 
@@ -168,7 +168,7 @@ def test_symlinked_payload_dir_rejected(tmp_path):
     catalog = tmp_path / "catalog"
     directory = catalog / "skills" / "x"
     directory.mkdir(parents=True)
-    (directory / "cwi.json").write_text(
+    (directory / "spado.json").write_text(
         json.dumps(
             {"schema_version": 1, "id": "x", "type": "skill", "name": "x", "description": "d"}
         )

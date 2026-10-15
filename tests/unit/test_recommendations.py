@@ -1,11 +1,11 @@
 import pytest
 
-from cwi.catalog.dependency_resolver import find_conflicts, resolve
-from cwi.catalog.loader import load_catalog
-from cwi.catalog.recommender import recommend
-from cwi.domain.enums import ProjectType
-from cwi.domain.errors import CatalogError
-from cwi.domain.models import ProjectProfile
+from spado.catalog.dependency_resolver import find_conflicts, resolve
+from spado.catalog.loader import load_catalog
+from spado.catalog.recommender import recommend
+from spado.domain.enums import ProjectType
+from spado.domain.errors import CatalogError
+from spado.domain.models import ProjectProfile
 from tests.helpers import REAL_CATALOG, add_capability, minimal_catalog, skill_md
 
 

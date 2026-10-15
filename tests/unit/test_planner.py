@@ -2,12 +2,12 @@ import json
 
 import pytest
 
-from cwi.catalog.loader import load_catalog
-from cwi.domain.enums import ClaudeMdMode, OperationType
-from cwi.domain.errors import ConflictError, PlanError
-from cwi.domain.models import ClaudeMdDecision, ProjectProfile
-from cwi.planning.planner import FileDecision, McpDecision, PlanInputs, build_plan, find_decisions
-from cwi.state.hashing import hash_tree
+from spado.catalog.loader import load_catalog
+from spado.domain.enums import ClaudeMdMode, OperationType
+from spado.domain.errors import ConflictError, PlanError
+from spado.domain.models import ClaudeMdDecision, ProjectProfile
+from spado.planning.planner import FileDecision, McpDecision, PlanInputs, build_plan, find_decisions
+from spado.state.hashing import hash_tree
 from tests.helpers import minimal_catalog
 
 
@@ -54,7 +54,7 @@ def test_plan_operation_order(setup):
         < targets.index(".claude/skills")
         < targets.index(".claude/skills/alpha/SKILL.md")
     )
-    assert targets[-1] == ".claude/cwi-state.json"
+    assert targets[-1] == ".claude/spado-state.json"
     assert {".mcp.json", ".claude/settings.json", "CLAUDE.md"} <= set(targets)
     assert plan.state.managed_files[".claude/skills/alpha/SKILL.md"].owner == "skill:alpha"
     assert plan.state.mcp_servers["epsilon"].owner == "mcp:epsilon"
@@ -134,35 +134,35 @@ def test_claude_md_keep_produces_no_operation(setup):
 def test_template_cleanup_requires_gate(setup):
     repo, catalog = setup
     (repo / "catalog").mkdir()
-    (repo / ".cwi-template.json").write_text("{}")
+    (repo / ".spado-template.json").write_text("{}")
     (repo / "pyproject.toml").write_text('[project]\nname = "someone-else"\n')
     plan = build_plan(inputs(repo, catalog, [], cleanup_template=True))
-    assert not any(op.owner == "cwi-template" for op in plan.operations)
+    assert not any(op.owner == "spado-template" for op in plan.operations)
     assert any("Bootstrap cleanup skipped" in w for w in plan.warnings)
 
 
 def test_template_cleanup_with_gate(setup):
     repo, catalog = setup
-    for d in ("catalog", "templates", "src/cwi", "tests", "src/myapp"):
+    for d in ("catalog", "templates", "src/spado", "tests", "src/myapp"):
         (repo / d).mkdir(parents=True)
-    (repo / ".cwi-template.json").write_text(
+    (repo / ".spado-template.json").write_text(
         json.dumps({"bootstrap_paths": ["catalog", "src", "tests", "../../etc"]})
     )
-    (repo / "pyproject.toml").write_text('[project]\nname = "claude-workspace-init"\n')
+    (repo / "pyproject.toml").write_text('[project]\nname = "spado"\n')
     plan = build_plan(inputs(repo, catalog, [], cleanup_template=True))
-    deleted = {op.target for op in plan.operations if op.owner == "cwi-template"}
+    deleted = {op.target for op in plan.operations if op.owner == "spado-template"}
     # The marker can only narrow the known bootstrap set: "src" and "../../etc" are ignored.
-    assert deleted == {"catalog", "tests", ".cwi-template.json", "src"}
+    assert deleted == {"catalog", "tests", ".spado-template.json", "src"}
     src = next(op for op in plan.operations if op.target == "src")
     assert src.only_if_empty
 
 
-def test_local_catalog_cleanup_only_when_it_looks_like_cwi(tmp_path):
+def test_local_catalog_cleanup_only_when_it_looks_like_spado(tmp_path):
     repo = tmp_path / "repo"
     catalog_dir = minimal_catalog(repo)
     catalog = load_catalog(catalog_dir)
     plan = build_plan(inputs(repo, catalog, ["skill:alpha"], cleanup_catalog=True))
-    assert any(op.target == "catalog" and op.owner == "cwi-catalog" for op in plan.operations)
+    assert any(op.target == "catalog" and op.owner == "spado-catalog" for op in plan.operations)
     (catalog_dir / "my-notes.txt").write_text("user file")
     plan = build_plan(inputs(repo, catalog, ["skill:alpha"], cleanup_catalog=True))
     assert not any(op.target == "catalog" for op in plan.operations)

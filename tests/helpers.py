@@ -10,10 +10,10 @@ from typing import Any
 
 from rich.console import Console
 
-from cwi.commands.init import InitOptions, InitOutcome, run_init
-from cwi.install.filesystem import FileSystem
-from cwi.state.hashing import hash_tree
-from cwi.ui.prompts import ScriptedPrompter
+from spado.commands.init import InitOptions, InitOutcome, run_init
+from spado.install.filesystem import FileSystem
+from spado.state.hashing import hash_tree
+from spado.ui.prompts import ScriptedPrompter
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = Path(__file__).resolve().parent / "fixtures" / "repos"
@@ -29,7 +29,7 @@ def copy_fixture(name: str, dest: Path) -> Path:
 
 def copy_catalog(dest: Path) -> Path:
     """Copy only the capability folders of the bundled catalog (not notes kept next to them)."""
-    from cwi.domain.enums import CapabilityType
+    from spado.domain.enums import CapabilityType
 
     target = dest / "catalog"
     target.mkdir(parents=True)
@@ -128,7 +128,7 @@ def add_capability(
 ) -> Path:
     directory = catalog / _PLURAL[cap_type] / cid
     directory.mkdir(parents=True, exist_ok=True)
-    (directory / "cwi.json").write_text(json.dumps(manifest(cap_type, cid, **manifest_overrides)))
+    (directory / "spado.json").write_text(json.dumps(manifest(cap_type, cid, **manifest_overrides)))
     for rel, content in (files or {}).items():
         path = directory / "payload" / rel
         path.parent.mkdir(parents=True, exist_ok=True)

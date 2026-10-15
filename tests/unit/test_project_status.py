@@ -9,7 +9,7 @@ import pytest
 from tests.helpers import REAL_CATALOG, tree
 
 SCRIPT = REAL_CATALOG / "skills/kickoff/payload/.claude/skills/kickoff/scripts/project-status.py"
-TEMPLATE = "<!-- cwi:architecture-template · run project-discovery -->\n# Architecture\n"
+TEMPLATE = "<!-- spado:architecture-template · run project-discovery -->\n# Architecture\n"
 
 
 def status(root):
@@ -47,7 +47,7 @@ def test_template_without_code_detects_requirements(tmp_path):
     write(tmp_path, "docs/architecture.md", TEMPLATE)
     write(tmp_path, "docs/requirements/vision.md", "# Vision\n")
     write(tmp_path, "docs/PRD-checkout.md", "# PRD\n")
-    write(tmp_path, ".claude/hooks/safety-guard.py", "x")  # CWI files are not project code
+    write(tmp_path, ".claude/hooks/safety-guard.py", "x")  # SPADO files are not project code
     write(tmp_path, "scripts/run-quality-checks.py", "x")
     data = status(tmp_path)
     assert data["architecture"]["state"] == "template" and data["code"] is False

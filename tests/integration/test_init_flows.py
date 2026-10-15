@@ -1,13 +1,14 @@
-"""Full `cwi init` flows against temporary copies of fixture repositories."""
+"""Full `spado provision` flows against temporary copies of fixture repositories."""
 
 import json
 import shutil
+from pathlib import Path
 
 import pytest
 
-from cwi.domain.errors import ApplyError, UserCancelled
-from cwi.state.repository import StateRepository
-from cwi.ui.prompts import Queue
+from spado.domain.errors import ApplyError, UserCancelled
+from spado.state.repository import StateRepository
+from spado.ui.prompts import Queue
 from tests.helpers import PROJECT_ROOT, failing, run, tree
 
 
@@ -60,7 +61,7 @@ def test_new_project_questions_create_workspace(tmp_repo, real_catalog):
     settings = load_json(root / ".claude" / "settings.json")
     assert any("safety-guard.py" in c for c in hook_commands(settings))
     assert any("post-edit-validation.py" in c for c in hook_commands(settings))
-    assert not (root / ".cwi").exists()  # transient transaction data removed
+    assert not (root / ".spado").exists()  # transient transaction data removed
     state = StateRepository(root).load()
     assert state.profile.project_type.value == "fullstack"
 
@@ -205,7 +206,7 @@ def test_switch_from_claude_only_to_agents_layout(tmp_repo, real_catalog):
     assert "## Safety" in (root / "CLAUDE.md").read_text()
     assert not (root / "AGENTS.md").exists()
     run(root, {"instructions.layout": "agents"}, catalog=real_catalog)
-    # CWI-owned, unmodified CLAUDE.md is replaced by the import; content moves to AGENTS.md.
+    # SPADO-owned, unmodified CLAUDE.md is replaced by the import; content moves to AGENTS.md.
     assert (root / "CLAUDE.md").read_text().startswith("@AGENTS.md")
     assert "## Safety" not in (root / "CLAUDE.md").read_text()
     assert "## Safety" in (root / "AGENTS.md").read_text()
@@ -374,7 +375,7 @@ def test_modified_managed_file_detected_and_kept(tmp_repo, real_catalog):
     agent.write_text(agent.read_text() + "\nTeam addition.\n")
     edited = agent.read_text()
     _, prompter, output = run(root, catalog=real_catalog)
-    assert "Modified CWI-managed file: .claude/agents/code-reviewer.md" in output
+    assert "Modified SPADO-managed file: .claude/agents/code-reviewer.md" in output
     assert "file:.claude/agents/code-reviewer.md" in prompter.asked
     assert agent.read_text() == edited  # never silently overwritten
     state = StateRepository(root).load()
@@ -393,7 +394,7 @@ def test_modified_managed_file_replace(tmp_repo, real_catalog):
     assert agent.read_text() == pristine
 
 
-def test_deselecting_removes_only_cwi_owned_resources(tmp_repo, real_catalog):
+def test_deselecting_removes_only_spado_owned_resources(tmp_repo, real_catalog):
     root = tmp_repo("existing-claude-config")
     run(root, catalog=real_catalog)
     assert (root / ".claude" / "skills" / "testing" / "SKILL.md").is_file()
@@ -437,7 +438,7 @@ def test_limited_mode_without_catalog(tmp_repo, real_catalog):
         failing(fail_on=".mcp.json"),
         failing(fail_on="CLAUDE.md"),
         failing(fail_on="AGENTS.md"),
-        failing(fail_on=".claude/cwi-state.json"),
+        failing(fail_on=".claude/spado-state.json"),
     ],
     ids=["first", "middle", "late", "settings", "mcp", "claude-md", "agents-md", "state"],
 )
@@ -450,7 +451,7 @@ def test_failed_apply_restores_repository(tmp_repo, real_catalog, factory):
     with pytest.raises(ApplyError, match="No project changes were kept"):
         run(root, catalog=real_catalog, filesystem_factory=factory)
     assert tree(root) == before
-    assert not (root / ".cwi").exists()
+    assert not (root / ".spado").exists()
 
 
 def test_failed_cleanup_restores_catalog(tmp_path, real_catalog):
@@ -500,7 +501,7 @@ def _copy_template(dest):
         "new_agents",
     )
     shutil.copytree(PROJECT_ROOT, dest, ignore=ignore)
-    for name in ("CWI_SPEC.md", "CWI_IMPLEMENTATION_GUIDE.md"):
+    for name in ("SPADO_SPEC.md", "SPADO_IMPLEMENTATION_GUIDE.md"):
         if not (dest / name).exists():
             (dest / name).write_text("spec\n")
     return dest
@@ -508,6 +509,11 @@ def _copy_template(dest):
 
 def test_template_init_leaves_minimal_claude_workspace(tmp_path):
     root = _copy_template(tmp_path / "my-new-app")
+    from spado.paths import DEFAULT_BOOTSTRAP_PATHS
+
+    # A local checkout can contain user-owned notes and drafts. Cleanup must preserve them.
+    owned_roots = {Path(path).parts[0] for path in DEFAULT_BOOTSTRAP_PATHS}
+    user_owned = {path.name for path in root.iterdir()} - owned_roots - {"README.MD", ".gitignore"}
     outcome, prompter, _ = run(
         root,
         {
@@ -519,24 +525,31 @@ def test_template_init_leaves_minimal_claude_workspace(tmp_path):
     assert "new.type" in prompter.asked  # the template itself is not an application
     assert outcome.plan.cleanup_template
     remaining = sorted(p.relative_to(root).as_posix() for p in root.iterdir())
-    assert remaining == [
-        ".claude",
-        ".gitignore",
-        "AGENTS.md",
-        "CLAUDE.md",
-        "README.MD",
-        "docs",
-        "scripts",
-    ]
+    assert remaining == sorted(
+        set(
+            [
+                ".claude",
+                ".gitignore",
+                "AGENTS.md",
+                "CLAUDE.md",
+                "README.MD",
+                "docs",
+                "scripts",
+            ]
+        )
+        | user_owned
+    )
     claude = sorted(p.relative_to(root).as_posix() for p in (root / ".claude").iterdir())
-    assert claude == [
-        ".claude/agents",
-        ".claude/cwi-state.json",
-        ".claude/hooks",
-        ".claude/scripts",
-        ".claude/settings.json",
-        ".claude/skills",
-    ]
+    assert claude == sorted(
+        [
+            ".claude/agents",
+            ".claude/spado-state.json",
+            ".claude/hooks",
+            ".claude/scripts",
+            ".claude/settings.json",
+            ".claude/skills",
+        ]
+    )
     # Second run: no catalog, no bootstrap files, nothing to change.
     before = tree(root)
     outcome, _, _ = run(root)
@@ -547,7 +560,7 @@ def test_template_init_leaves_minimal_claude_workspace(tmp_path):
 def test_template_init_can_keep_bootstrap_files(tmp_path):
     root = _copy_template(tmp_path / "keep")
     run(root, {"cleanup.template": False})
-    assert (root / "catalog").is_dir() and (root / "src" / "cwi").is_dir()
+    assert (root / "catalog").is_dir() and (root / "src" / "spado").is_dir()
     assert (root / "CLAUDE.md").is_file()
 
 

@@ -1,13 +1,13 @@
-from cwi.claude_md.generator import (
+from spado.claude_md.generator import (
     default_spec,
     estimate_size,
     load_template,
     render_claude_md,
     render_sections,
 )
-from cwi.claude_md.merger import classify_instruction, merge_claude_md, split_sections
-from cwi.domain.enums import ProjectType
-from cwi.domain.models import ClaudeMdSpec, DetectedCommand, ProjectProfile
+from spado.claude_md.merger import classify_instruction, merge_claude_md, split_sections
+from spado.domain.enums import ProjectType
+from spado.domain.models import ClaudeMdSpec, DetectedCommand, ProjectProfile
 
 
 def spec(**kw):
@@ -164,7 +164,7 @@ def test_project_docs_section_replaces_architecture():
 
 
 def test_scaffold_files():
-    from cwi.claude_md.docs import scaffold_files
+    from spado.claude_md.docs import scaffold_files
 
     profile = ProjectProfile(stack={"Frontend": ["TypeScript 5.5", "Vite"]})
     files = scaffold_files(profile, "demo")

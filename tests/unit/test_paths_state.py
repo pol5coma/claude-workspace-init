@@ -3,11 +3,11 @@ import os
 
 import pytest
 
-from cwi.domain.errors import StateError, UnsafePathError
-from cwi.domain.models import CWIState, ManagedFile
-from cwi.planning.safety import resolve_inside
-from cwi.state.hashing import hash_tree, sha256_file, sha256_text
-from cwi.state.repository import StateRepository
+from spado.domain.errors import StateError, UnsafePathError
+from spado.domain.models import ManagedFile, SPADOState
+from spado.planning.safety import resolve_inside
+from spado.state.hashing import hash_tree, sha256_file, sha256_text
+from spado.state.repository import StateRepository
 
 
 def test_resolve_inside_accepts_normal_paths(tmp_path):
@@ -45,8 +45,8 @@ def test_hashing(tmp_path):
 def test_state_roundtrip(tmp_path):
     repo = StateRepository(tmp_path)
     assert repo.load() is None
-    state = CWIState(
-        cwi_version="0.1.0",
+    state = SPADOState(
+        spado_version="0.1.0",
         initialized_at="t",
         managed_files={"a": ManagedFile(owner="o", sha256="h")},
     )
@@ -57,20 +57,20 @@ def test_state_roundtrip(tmp_path):
 
 def test_state_never_contains_secret_values(tmp_path, monkeypatch):
     monkeypatch.setenv("GITHUB_TOKEN", "ghp_supersecret")
-    state = CWIState(cwi_version="0.1.0", initialized_at="t")
+    state = SPADOState(spado_version="0.1.0", initialized_at="t")
     assert "ghp_supersecret" not in StateRepository.serialize(state)
 
 
 def test_unsupported_state_schema(tmp_path):
-    path = tmp_path / ".claude" / "cwi-state.json"
+    path = tmp_path / ".claude" / "spado-state.json"
     path.parent.mkdir()
     path.write_text(json.dumps({"schema_version": 99}))
-    with pytest.raises(StateError, match="Unsupported CWI state schema version: 99"):
+    with pytest.raises(StateError, match="Unsupported SPADO state schema version: 99"):
         StateRepository(tmp_path).load()
 
 
 def test_corrupt_state(tmp_path):
-    path = tmp_path / ".claude" / "cwi-state.json"
+    path = tmp_path / ".claude" / "spado-state.json"
     path.parent.mkdir()
     path.write_text("{")
     with pytest.raises(StateError):

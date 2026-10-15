@@ -1,10 +1,10 @@
-"""After cwi init: architecture-first order of skills, step headers, progress and the hand-off."""
+"""After spado provision: architecture-first order of skills, step headers, progress and the hand-off."""
 
-from cwi.install.executor import execute_plan
-from cwi.ui.prompts import ScriptedPrompter
+from spado.install.executor import execute_plan
+from spado.ui.prompts import ScriptedPrompter
 from tests.helpers import run
 
-MARKER = "cwi:architecture-template"
+MARKER = "spado:architecture-template"
 
 
 def test_scaffold_marks_architecture_as_template(tmp_repo, real_catalog):
@@ -58,7 +58,7 @@ def test_step_headers_and_next_steps(tmp_repo, real_catalog):
 
 
 def test_next_step_is_feature_spec_when_architecture_exists(tmp_repo, real_catalog):
-    from cwi.commands.init import next_steps
+    from spado.commands.init import next_steps
 
     root = tmp_repo("python-fastapi")
     outcome, _, _ = run(root, catalog=real_catalog)
@@ -86,7 +86,7 @@ def _run_interactive(root, catalog, *, which="/usr/bin/claude", yes=False, answe
 
     from rich.console import Console
 
-    from cwi.commands.init import InitOptions, run_init
+    from spado.commands.init import InitOptions, run_init
 
     calls = []
     prompter = InteractivePrompter(answers or {})
@@ -133,10 +133,10 @@ def test_no_launch_when_discovery_not_installed(tmp_repo, real_catalog):
 
 
 def test_progress_callback_once_per_operation(tmp_repo, real_catalog):
-    from cwi.catalog.loader import load_catalog
-    from cwi.domain.enums import ClaudeMdMode
-    from cwi.domain.models import ClaudeMdDecision, ProjectProfile
-    from cwi.planning.planner import PlanInputs, build_plan
+    from spado.catalog.loader import load_catalog
+    from spado.domain.enums import ClaudeMdMode
+    from spado.domain.models import ClaudeMdDecision, ProjectProfile
+    from spado.planning.planner import PlanInputs, build_plan
 
     root = tmp_repo("react-vite")
     catalog = load_catalog(real_catalog)

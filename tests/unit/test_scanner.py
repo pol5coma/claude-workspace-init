@@ -1,8 +1,8 @@
 from pathlib import Path
 
-from cwi.domain.enums import ProjectType
-from cwi.profile import profile_from_scan, uncertain_detections
-from cwi.scanner.scanner import scan_project
+from spado.domain.enums import ProjectType
+from spado.profile import profile_from_scan, uncertain_detections
+from spado.scanner.scanner import scan_project
 from tests.helpers import PROJECT_ROOT
 
 
@@ -104,7 +104,7 @@ def test_existing_claude_config_detected(tmp_repo):
     assert ec.agents == ["my-custom-agent"]
 
 
-def test_cwi_template_itself_is_not_an_application():
+def test_spado_template_itself_is_not_an_application():
     scan = scan_project(PROJECT_ROOT)
     assert scan.meaningful_project is False, scan.signals
 
@@ -151,7 +151,7 @@ def test_scan_does_not_execute_code(tmp_path):
 
 
 def test_version_resolution(tmp_path):
-    from cwi.scanner.versions import js_spec_version, py_spec_version, short
+    from spado.scanner.versions import js_spec_version, py_spec_version, short
 
     assert short("15.1.3") == "15.1" and short("19") == "19" and short(None) is None
     assert js_spec_version("^15.1.0") == "15.1" and js_spec_version("~5.4.2") == "5.4"

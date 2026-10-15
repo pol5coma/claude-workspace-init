@@ -1,12 +1,12 @@
-from cwi.domain.enums import CapabilityType, ClaudeMdMode, OperationType, ProjectType
-from cwi.domain.models import (
+from spado.domain.enums import CapabilityType, ClaudeMdMode, OperationType, ProjectType
+from spado.domain.models import (
     CapabilityManifest,
-    CWIState,
     DetectedCommand,
     InstallationPlan,
     ManagedFile,
     PlannedOperation,
     ProjectProfile,
+    SPADOState,
     normalize_tech,
 )
 
@@ -55,8 +55,8 @@ def test_profile_technologies_and_summary():
 
 
 def test_state_roundtrip():
-    state = CWIState(
-        cwi_version="0.1.0",
+    state = SPADOState(
+        spado_version="0.1.0",
         initialized_at="2026-10-06T12:00:00Z",
         profile=ProjectProfile(
             commands=[DetectedCommand(group="Project", label="Test", command="pytest", source="x")]
@@ -65,13 +65,13 @@ def test_state_roundtrip():
         selected_capabilities=["skill:testing"],
         managed_files={"CLAUDE.md": ManagedFile(owner="claude-md", sha256="abc")},
     )
-    again = CWIState.model_validate_json(state.model_dump_json())
+    again = SPADOState.model_validate_json(state.model_dump_json())
     assert again == state
 
 
 def test_plan_counts():
     ops = [
-        PlannedOperation(type=OperationType.MKDIR, target=".claude", owner="cwi", reason=""),
+        PlannedOperation(type=OperationType.MKDIR, target=".claude", owner="spado", reason=""),
         PlannedOperation(type=OperationType.COPY, target="a", source="/x", owner="o", reason=""),
         PlannedOperation(
             type=OperationType.MERGE_JSON,
@@ -82,12 +82,12 @@ def test_plan_counts():
             reason="",
         ),
         PlannedOperation(
-            type=OperationType.DELETE_DIR, target="catalog", owner="cwi-template", reason=""
+            type=OperationType.DELETE_DIR, target="catalog", owner="spado-template", reason=""
         ),
     ]
     plan = InstallationPlan(
         profile=ProjectProfile(),
         operations=ops,
-        state=CWIState(cwi_version="0.1.0", initialized_at="x"),
+        state=SPADOState(spado_version="0.1.0", initialized_at="x"),
     )
     assert plan.counts() == {"create": 1, "update": 1, "delete": 1}

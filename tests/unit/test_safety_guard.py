@@ -134,7 +134,7 @@ ALLOWED = [
     "kubectl get pods",
     "rm -rf node_modules",
     "rm -rf ./dist build",
-    "rm -rf /tmp/cwi-scratch",
+    "rm -rf /tmp/spado-scratch",
     "rm file.txt",
     "rm .env.example",
     "cat .env.example",
@@ -152,7 +152,7 @@ ALLOWED = [
 def test_blocks_destructive_commands(tmp_path, command):
     code, stderr = bash(tmp_path, command)
     assert code == 2, f"expected block for {command!r}"
-    assert "CWI Safety Guard blocked" in stderr
+    assert "SPADO Safety Guard blocked" in stderr
     assert "explicit approval" in stderr
 
 
@@ -180,7 +180,7 @@ def test_rm_outside_project_blocked_inside_allowed(tmp_path):
         ("certs/server.pem", True),
         ("deploy/id_rsa", True),
         (".git/config", True),
-        (".claude/cwi-state.json", True),
+        (".claude/spado-state.json", True),
         (".claude/hooks/safety-guard.py", True),
         ("src/app.py", False),
         (".claude/settings.json", False),
@@ -235,9 +235,9 @@ def test_unbalanced_quotes_still_checked(tmp_path):
 def test_rules_are_data():
     import importlib.util
 
-    spec = importlib.util.spec_from_file_location("cwi_safety_guard", GUARD)
+    spec = importlib.util.spec_from_file_location("spado_safety_guard", GUARD)
     module = importlib.util.module_from_spec(spec)
-    sys.modules["cwi_safety_guard"] = module
+    sys.modules["spado_safety_guard"] = module
     spec.loader.exec_module(module)
     names = [r.name for r in module.DANGEROUS_RULES]
     assert len(names) == len(set(names))

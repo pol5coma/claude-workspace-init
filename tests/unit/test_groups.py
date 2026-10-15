@@ -6,12 +6,12 @@ import shutil
 import pytest
 from typer.testing import CliRunner
 
-from cwi.catalog.loader import load_catalog
-from cwi.catalog.recommender import recommend
-from cwi.cli import app
-from cwi.domain.enums import ProjectType
-from cwi.domain.errors import CatalogError
-from cwi.domain.models import ProjectProfile
+from spado.catalog.loader import load_catalog
+from spado.catalog.recommender import recommend
+from spado.cli import app
+from spado.domain.enums import ProjectType
+from spado.domain.errors import CatalogError
+from spado.domain.models import ProjectProfile
 from tests.helpers import REAL_CATALOG, add_capability, agent_md, run, tree
 
 runner = CliRunner()
@@ -34,7 +34,7 @@ def make_group(catalog, gid="dev", defaults=None, members=("alpha", "beta"), cap
     for cid in members:
         d = group / cid
         d.mkdir()
-        (d / "cwi.json").write_text(
+        (d / "spado.json").write_text(
             json.dumps(
                 {"schema_version": 1, "id": cid, "type": cap_type, "name": cid, "description": "d"}
             )
@@ -62,7 +62,7 @@ def test_group_loads_and_sorts_after_ungrouped(tmp_path):
     add_capability(catalog, "agent", "solo", {".claude/agents/solo.md": agent_md("solo")})
     make_group(catalog, defaults={"backend": ["alpha"]})
     loaded = load_catalog(catalog)
-    from cwi.domain.enums import CapabilityType
+    from spado.domain.enums import CapabilityType
 
     assert [c.id for c in loaded.by_type(CapabilityType.AGENT)] == ["solo", "alpha", "beta"]
     assert loaded.require("agent:alpha").group == "dev"
@@ -111,7 +111,7 @@ def test_family_defaults_drive_recommendations(tmp_path):
             "does not match directory",
         ),
         (lambda g: (g / "alpha" / "group.json").write_text("{}"), "cannot be nested"),
-        (lambda g: (g / "cwi.json").write_text("{}"), "both a capability"),
+        (lambda g: (g / "spado.json").write_text("{}"), "both a capability"),
     ],
 )
 def test_group_validation(tmp_path, mutate, message):

@@ -1,4 +1,4 @@
-"""`cwi catalog` authoring: builders, writer and CLI."""
+"""`spado catalog` authoring: builders, writer and CLI."""
 
 import json
 import os
@@ -7,11 +7,11 @@ import shutil
 import pytest
 from typer.testing import CliRunner
 
-from cwi.authoring.builder import AuthoringError, Metadata, build_skill, set_frontmatter, slugify
-from cwi.authoring.writer import write_capability
-from cwi.catalog.frontmatter import parse_frontmatter
-from cwi.catalog.loader import load_catalog
-from cwi.cli import app
+from spado.authoring.builder import AuthoringError, Metadata, build_skill, set_frontmatter, slugify
+from spado.authoring.writer import write_capability
+from spado.catalog.frontmatter import parse_frontmatter
+from spado.catalog.loader import load_catalog
+from spado.cli import app
 from tests.helpers import REAL_CATALOG
 
 runner = CliRunner()
@@ -136,7 +136,7 @@ def test_agent_file_rejected_as_skill_non_interactive(catalog, sources):
     )
     result = cli("add", "skill", str(sources / "rev.md"), "--catalog", str(catalog), "--yes")
     assert result.exit_code == 1
-    assert "cwi catalog add agent" in result.stdout
+    assert "spado catalog add agent" in result.stdout
     assert not (catalog / "skills" / "rev").exists()
 
 
@@ -402,12 +402,12 @@ def test_new_capability_is_installed_by_init(catalog, sources, tmp_repo):
     root = tmp_repo("python-fastapi")
     run(root, catalog=catalog)
     assert (root / ".claude/skills/house-style/SKILL.md").is_file()
-    assert json.loads((root / ".claude/cwi-state.json").read_text())["selected_capabilities"][0]
+    assert json.loads((root / ".claude/spado-state.json").read_text())["selected_capabilities"][0]
 
 
 def test_tech_only_recommendation_preselects(catalog, sources):
-    from cwi.catalog.recommender import recommend
-    from cwi.domain.models import ProjectProfile
+    from spado.catalog.recommender import recommend
+    from spado.domain.models import ProjectProfile
 
     (sources / "pw.md").write_text("---\nname: pw\ndescription: Playwright helper\n---\nx\n")
     assert (
