@@ -7,12 +7,10 @@ import pytest
 from typer.testing import CliRunner
 
 from spado.catalog.loader import load_catalog
-from spado.catalog.recommender import recommend
 from spado.cli import app
 from spado.domain.enums import ProjectType
 from spado.domain.errors import CatalogError
-from spado.domain.models import ProjectProfile
-from tests.helpers import REAL_CATALOG, add_capability, agent_md, run, tree
+from tests.helpers import REAL_CATALOG, add_capability, agent_md, tree
 
 runner = CliRunner()
 
@@ -68,17 +66,13 @@ def test_group_loads_and_sorts_after_ungrouped(tmp_path):
     assert loaded.require("agent:alpha").group == "dev"
 
 
-def test_family_defaults_drive_recommendations(tmp_path):
+def test_family_defaults_are_preserved_as_catalog_metadata(tmp_path):
     catalog = tmp_path / "catalog"
     make_group(catalog, defaults={"backend": ["alpha"], "frontend": ["beta"]})
     loaded = load_catalog(catalog)
-    backend = recommend(loaded, ProjectProfile(project_type=ProjectType.BACKEND))
-    assert backend["agent:alpha"].preselected and not backend["agent:beta"].preselected
-    assert "Dev agents default for backend api projects" in backend["agent:alpha"].reason_text
-    assert recommend(loaded, ProjectProfile(project_type=ProjectType.FRONTEND))[
-        "agent:beta"
-    ].preselected
-    assert not any(r.preselected for r in recommend(loaded, ProjectProfile()).values())
+    group = loaded.group(loaded.require("agent:alpha").type, "dev")
+    assert group.defaults[ProjectType.BACKEND] == ["alpha"]
+    assert group.defaults[ProjectType.FRONTEND] == ["beta"]
 
 
 @pytest.mark.parametrize(
@@ -131,26 +125,55 @@ def test_grouped_agent_must_install_into_group_folder(tmp_path):
         load_catalog(catalog)
 
 
-def test_init_installs_family_and_removes_empty_folder(tmp_path, tmp_repo):
+def test_init_installs_grouped_agent_with_explicit_selection(tmp_path, tmp_repo):
     catalog = tmp_path / "catalog"
     make_group(catalog, defaults={"backend": ["alpha", "beta"]})
     root = tmp_repo("python-fastapi")
-    run(root, catalog=catalog)
+    args = [
+        "init",
+        "--root",
+        str(root),
+        "--catalog",
+        str(catalog),
+        "--host",
+        "claude",
+        "--no-workflow",
+        "--capability",
+        "agent:alpha",
+        "--capability",
+        "agent:beta",
+    ]
+    result = runner.invoke(app, args, catch_exceptions=False)
+    assert result.exit_code == 0, result.stdout
     assert (root / ".claude/agents/dev/alpha.md").is_file()
     assert (root / ".claude/agents/dev/beta.md").is_file()
     first = tree(root)
-    run(root, catalog=catalog)
+    result = runner.invoke(app, args, catch_exceptions=False)
+    assert result.exit_code == 0, result.stdout
     assert tree(root) == first
-    run(root, {"select.agent": []}, catalog=catalog)
-    assert not (root / ".claude/agents/dev").exists()  # emptied family folder removed
-    assert (root / ".claude/agents").is_dir()
 
 
-def test_local_grouped_catalog_is_cleaned_up(tmp_path, tmp_repo):
+def test_init_keeps_project_catalog(tmp_path, tmp_repo):
     root = tmp_repo("python-fastapi")
     make_group(root / "catalog", defaults={"backend": ["alpha"]})
-    outcome, _, _ = run(root)
-    assert outcome.applied and not (root / "catalog").exists()
+    result = runner.invoke(
+        app,
+        [
+            "init",
+            "--root",
+            str(root),
+            "--catalog",
+            str(root / "catalog"),
+            "--host",
+            "claude",
+            "--no-workflow",
+            "--capability",
+            "agent:alpha",
+        ],
+        catch_exceptions=False,
+    )
+    assert result.exit_code == 0, result.stdout
+    assert (root / "catalog/agents/dev/alpha/spado.json").is_file()
 
 
 # ---------------------------------------------------------------------------------------------

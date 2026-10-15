@@ -60,7 +60,7 @@ class Metadata:
     group: str | None = None  # family folder, e.g. "development-agents"
     group_defaults: list[ProjectType] = field(
         default_factory=list
-    )  # preselect for these types via the family
+    )  # suggest for these types via family metadata
 
 
 @dataclass
@@ -185,7 +185,7 @@ def _manifest(
             "project_types": [t.value for t in meta.project_types],
             "technologies": [t.lower() for t in meta.technologies],
         }
-        # Technologies without project types are the only relevance signal: let them preselect alone.
+        # Technologies without project types are the only relevance signal for metadata.
         if meta.require_technology or (meta.technologies and not meta.project_types):
             rec["require_technology"] = True
         manifest["recommendation"] = rec

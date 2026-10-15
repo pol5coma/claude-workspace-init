@@ -1,4 +1,4 @@
-"""Catalog validation. Bad template data must never reach the install step."""
+"""Catalog validation. Invalid catalog data must never reach installation."""
 
 from __future__ import annotations
 
@@ -20,7 +20,6 @@ RESERVED_TARGETS = {
     paths.rel(paths.SETTINGS_FILE),
     paths.rel(paths.SETTINGS_LOCAL_FILE),
     paths.rel(paths.MCP_FILE),
-    paths.rel(paths.STATE_FILE),
 }
 
 SECRET_KEY_PATTERN = re.compile(

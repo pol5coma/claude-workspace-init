@@ -1,6 +1,5 @@
 """`spado catalog` authoring: builders, writer and CLI."""
 
-import json
 import os
 import shutil
 
@@ -397,17 +396,29 @@ def test_new_capability_is_installed_by_init(catalog, sources, tmp_repo):
         ).exit_code
         == 0
     )
-    from tests.helpers import run
-
     root = tmp_repo("python-fastapi")
-    run(root, catalog=catalog)
+    result = runner.invoke(
+        app,
+        [
+            "init",
+            "--root",
+            str(root),
+            "--catalog",
+            str(catalog),
+            "--host",
+            "claude",
+            "--no-workflow",
+            "--capability",
+            "skill:house-style",
+        ],
+        catch_exceptions=False,
+    )
+    assert result.exit_code == 0, result.stdout
     assert (root / ".claude/skills/house-style/SKILL.md").is_file()
-    assert json.loads((root / ".claude/spado-state.json").read_text())["selected_capabilities"][0]
+    assert (root / ".spado/installation.json").is_file()
 
 
-def test_tech_only_recommendation_preselects(catalog, sources):
-    from spado.catalog.recommender import recommend
-    from spado.domain.models import ProjectProfile
+def test_tech_only_recommendation_metadata(catalog, sources):
 
     (sources / "pw.md").write_text("---\nname: pw\ndescription: Playwright helper\n---\nx\n")
     assert (
@@ -425,8 +436,7 @@ def test_tech_only_recommendation_preselects(catalog, sources):
     )
     loaded = load_catalog(catalog)
     assert loaded.get("agent:pw").manifest.recommendation.require_technology
-    assert recommend(loaded, ProjectProfile(test_tools=["Playwright"]))["agent:pw"].preselected
-    assert not recommend(loaded, ProjectProfile())["agent:pw"].preselected
+    assert loaded.get("agent:pw").manifest.recommendation.technologies == ["playwright"]
 
 
 def test_add_skill_folder_with_exclude(catalog, sources):

@@ -158,7 +158,7 @@ def initialize(
     ] = True,
     dry_run: Annotated[bool, typer.Option("--dry-run")] = False,
 ):
-    """Install the SPDLC organization and native host resources without starting agents."""
+    """Install the SPDLC organization or selected standalone capabilities."""
     root = root.resolve()
     if not root.is_dir():
         raise ValueError("Project root must already exist")

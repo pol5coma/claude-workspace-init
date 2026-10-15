@@ -1,4 +1,4 @@
-"""The only module that mutates the repository. Every path is containment-checked first."""
+"""Project-scoped filesystem operations with path containment checks."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import uuid
 from pathlib import Path
 
 from spado.domain.errors import UnsafePathError
-from spado.planning.safety import resolve_inside
+from spado.install.safety import resolve_inside
 
 
 class FileSystem:

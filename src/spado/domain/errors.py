@@ -1,36 +1,12 @@
-"""Explicit domain exceptions. Expected errors become clean CLI messages."""
+"""Expected errors for catalog and filesystem operations."""
 
 
 class SPADOError(Exception):
-    """Base class for every expected SPADO failure."""
+    """Base class for expected SPADO failures."""
 
 
 class CatalogError(SPADOError):
-    """The bundled catalog is invalid."""
-
-
-class ScanError(SPADOError):
-    """The project scan failed."""
-
-
-class ConflictError(SPADOError):
-    """A conflict needs a user decision and none was provided."""
-
-
-class PlanError(SPADOError):
-    """The installation plan could not be built."""
-
-
-class ApplyError(SPADOError):
-    """Applying the plan failed (changes rolled back)."""
-
-
-class ValidationError(SPADOError):
-    """The resulting workspace failed validation."""
-
-
-class StateError(SPADOError):
-    """The SPADO state file is unreadable or unsupported."""
+    """The capability catalog is invalid."""
 
 
 class UnsafePathError(SPADOError):
@@ -38,4 +14,4 @@ class UnsafePathError(SPADOError):
 
 
 class UserCancelled(SPADOError):
-    """The user cancelled the flow. Nothing was changed."""
+    """The user cancelled an interactive catalog operation."""

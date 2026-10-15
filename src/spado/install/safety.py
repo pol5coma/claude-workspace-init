@@ -1,4 +1,4 @@
-"""Path containment checks shared by the planner and the filesystem adapter."""
+"""Path containment checks for project writes."""
 
 from __future__ import annotations
 

@@ -124,10 +124,28 @@ def test_script_is_read_only(tmp_path):
 
 
 def test_installed_by_init_and_works(tmp_repo, real_catalog):
-    from tests.helpers import run
-
     root = tmp_repo("react-vite")
-    run(root, catalog=real_catalog)
+    from typer.testing import CliRunner
+
+    from spado.cli import app
+
+    result = CliRunner().invoke(
+        app,
+        [
+            "init",
+            "--root",
+            str(root),
+            "--host",
+            "claude",
+            "--no-workflow",
+            "--capability",
+            "skill:kickoff",
+            "--catalog",
+            str(real_catalog),
+        ],
+        catch_exceptions=False,
+    )
+    assert result.exit_code == 0, result.stdout
     installed = root / ".claude/skills/kickoff/scripts/project-status.py"
     assert installed.is_file()
     result = subprocess.run(

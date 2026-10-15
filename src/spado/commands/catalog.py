@@ -1,7 +1,6 @@
-"""`spado catalog`: author the template catalog (add, list, validate, remove).
+"""`spado catalog`: author reusable capabilities and groups.
 
-These commands edit files under catalog/ in the local repository. They never commit or push:
-new capabilities reach the GitHub template through a normal git commit.
+These commands edit source files under catalog/. They never commit or push.
 """
 
 from __future__ import annotations
@@ -29,15 +28,13 @@ from spado.authoring.builder import (
     parse_pairs,
     parse_project_types,
 )
+from spado.authoring.prompts import AutoPrompter, InquirerPrompter, Option, Prompter
 from spado.authoring.writer import remove_capability, write_capability
 from spado.catalog.loader import load_catalog
 from spado.domain.enums import ProjectType
 from spado.domain.errors import CatalogError, SPADOError, UserCancelled
-from spado.ui.prompts import AutoPrompter, InquirerPrompter, Option, Prompter
 
-catalog_app = typer.Typer(
-    help="Author the SPADO catalog of this template repository.", no_args_is_help=True
-)
+catalog_app = typer.Typer(help="Author the SPADO capability catalog.", no_args_is_help=True)
 add_app = typer.Typer(help="Add a capability to the catalog.", no_args_is_help=True)
 catalog_app.add_typer(add_app, name="add")
 
@@ -48,26 +45,29 @@ IdOpt = Annotated[
     str | None,
     typer.Option("--id", help="Capability id (default: from the file/frontmatter name)."),
 ]
-NameOpt = Annotated[
-    str | None, typer.Option("--name", help="Display name shown in spado provision.")
-]
+NameOpt = Annotated[str | None, typer.Option("--name", help="Display name for this capability.")]
 DescOpt = Annotated[
     str | None, typer.Option("--description", "-d", help="What it does and when to use it.")
 ]
 DefaultOpt = Annotated[
-    bool | None, typer.Option("--default/--no-default", help="Preselect it in every project.")
+    bool | None,
+    typer.Option(
+        "--default/--no-default",
+        help="Mark it as a default in catalog metadata (selection remains explicit).",
+    ),
 ]
 TypesOpt = Annotated[
     str | None,
     typer.Option(
         "--type",
-        help="Recommend for these project types: " + ",".join(t.value for t in ProjectType),
+        help="Suggest for these project types in catalog metadata: "
+        + ",".join(t.value for t in ProjectType),
     ),
 ]
 TechOpt = Annotated[
     str | None,
     typer.Option(
-        "--tech", help="Recommend when these technologies are detected (comma-separated)."
+        "--tech", help="Suggest for these technologies in catalog metadata (comma-separated)."
     ),
 ]
 DependsOpt = Annotated[
@@ -93,7 +93,7 @@ GroupDefaultOpt = Annotated[
     str | None,
     typer.Option(
         "--group-default",
-        help="Preselect it for these project types through its family (needs --group).",
+        help="Mark family defaults for these project types (needs --group).",
     ),
 ]
 
@@ -135,14 +135,16 @@ def _metadata(
         return meta
     if default is None:
         meta.default_selected = prompter.confirm(
-            "default", "Preselect it in every project (default)?", default=False
+            "default",
+            "Mark as a catalog default? (installation still requires explicit selection)",
+            default=False,
         )
     if not meta.default_selected and types is None:
         meta.project_types = [
             ProjectType(v)
             for v in prompter.checkbox(
                 "types",
-                "Recommend it for which project types? (none = only when selected manually)",
+                "Suggest it for which project types? (catalog metadata only)",
                 [Option(t.value, t.label) for t in ProjectType],
             )
         ]
@@ -150,7 +152,7 @@ def _metadata(
         meta.technologies = parse_list(
             prompter.text(
                 "tech",
-                "Recommend it when these technologies are detected (comma-separated, optional):",
+                "Suggest it for which technologies? (catalog metadata only; comma-separated):",
             )
         )
     return meta
@@ -179,7 +181,7 @@ def _finish(
     console.print(tree)
     rel = target.relative_to(Path.cwd()) if target.is_relative_to(Path.cwd()) else target
     console.print(
-        f"[dim]Commit it to ship it with the template:[/dim]  git add {rel} && git commit -m 'catalog: add {built.ref}'"
+        f"[dim]Commit it to publish it in the catalog:[/dim]  git add {rel} && git commit -m 'catalog: add {built.ref}'"
     )
 
 
@@ -644,12 +646,12 @@ def group_defaults(
     members: Annotated[
         str,
         typer.Argument(
-            help="Comma-separated member ids to preselect for that project type ('' clears)."
+            help="Comma-separated member ids to mark as family defaults for that project type ('' clears)."
         ),
     ],
     catalog: CatalogOpt = Path("catalog"),
 ) -> None:
-    """Set which family members are preselected for one project type."""
+    """Set family-default metadata for one project type."""
     from spado.authoring.groups import group_dir, read_group, write_group
 
     def go() -> None:

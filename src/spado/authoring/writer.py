@@ -48,7 +48,7 @@ def existing_ids(catalog_root: Path) -> dict[str, str]:
 def ensure_catalog_valid(catalog_root: Path) -> None:
     if not catalog_root.is_dir():
         raise AuthoringError(
-            f"Catalog not found: {catalog_root}. Run from the template root or pass --catalog."
+            f"Catalog not found: {catalog_root}. Run from the source checkout or pass --catalog."
         )
     try:
         load_catalog(catalog_root)

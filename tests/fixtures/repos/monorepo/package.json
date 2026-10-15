@@ -1,7 +1,0 @@
-{
-  "name": "acme",
-  "private": true,
-  "workspaces": ["apps/*", "packages/*"],
-  "scripts": { "lint": "turbo lint", "test": "turbo test" },
-  "devDependencies": { "turbo": "^2.0.0", "prettier": "^3.3.0" }
-}

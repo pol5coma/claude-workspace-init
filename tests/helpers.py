@@ -1,24 +1,16 @@
-"""Shared test helpers: fixture repos, scripted runs, catalog builders, failing filesystems."""
+"""Shared test helpers for fixture repositories and capability catalogs."""
 
 from __future__ import annotations
 
-import io
+import hashlib
 import json
 import shutil
 from pathlib import Path
 from typing import Any
 
-from rich.console import Console
-
-from spado.commands.init import InitOptions, InitOutcome, run_init
-from spado.install.filesystem import FileSystem
-from spado.state.hashing import hash_tree
-from spado.ui.prompts import ScriptedPrompter
-
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = Path(__file__).resolve().parent / "fixtures" / "repos"
 REAL_CATALOG = PROJECT_ROOT / "catalog"
-FIXED_NOW = "2026-10-06T12:00:00Z"
 
 
 def copy_fixture(name: str, dest: Path) -> Path:
@@ -45,56 +37,12 @@ def copy_catalog(dest: Path) -> Path:
 
 
 def tree(root: Path) -> dict[str, str]:
-    return hash_tree(root, ignore={".git"})
-
-
-def run(
-    root: Path,
-    answers: dict[str, Any] | None = None,
-    *,
-    catalog: Path | None = None,
-    dry_run: bool = False,
-    filesystem_factory=None,
-) -> tuple[InitOutcome, ScriptedPrompter, str]:
-    prompter = ScriptedPrompter(answers or {})
-    buffer = io.StringIO()
-    console = Console(file=buffer, width=120, force_terminal=False, color_system=None)
-    outcome = run_init(
-        InitOptions(
-            root=root,
-            catalog=catalog,
-            dry_run=dry_run,
-            yes=True,
-            prompter=prompter,
-            console=console,
-            filesystem_factory=filesystem_factory,
-            now=FIXED_NOW,
-        )
-    )
-    return outcome, prompter, buffer.getvalue()
-
-
-class FailingFileSystem(FileSystem):
-    """Raises after `fail_after` successful mutations (or on a matching target)."""
-
-    def __init__(
-        self, root: Path, fail_after: int | None = None, fail_on: str | None = None
-    ) -> None:
-        super().__init__(root)
-        self.fail_after = fail_after
-        self.fail_on = fail_on
-        self.mutations = 0
-
-    def before_mutation(self, action: str, rel: str) -> None:
-        if self.fail_on is not None and rel == self.fail_on:
-            raise OSError(f"injected failure on {rel}")
-        if self.fail_after is not None and self.mutations >= self.fail_after:
-            raise OSError(f"injected failure after {self.mutations} mutations ({action} {rel})")
-        self.mutations += 1
-
-
-def failing(fail_after: int | None = None, fail_on: str | None = None):
-    return lambda root: FailingFileSystem(root, fail_after=fail_after, fail_on=fail_on)
+    """Hash fixture files to verify read-only and idempotent commands."""
+    return {
+        str(path.relative_to(root)): hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in root.rglob("*")
+        if path.is_file() and ".git" not in path.relative_to(root).parts
+    }
 
 
 # ---------------------------------------------------------------------------------------------

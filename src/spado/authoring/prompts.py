@@ -1,4 +1,4 @@
-"""Prompt abstraction. Every question has a stable `key` so flows can be scripted and tested."""
+"""Prompt abstraction. Terminal prompts for catalog authoring."""
 
 from __future__ import annotations
 
@@ -62,45 +62,6 @@ class AutoPrompter:
     def text(self, key: str, message: str, default: str = "") -> str:
         self.asked.append(key)
         return self.overrides.get(key, default)
-
-
-class ScriptedPrompter(AutoPrompter):
-    """Answers from a script: key -> answer, or key -> list of answers consumed in order."""
-
-    def __init__(self, answers: dict[str, Any] | None = None) -> None:
-        super().__init__()
-        self.answers = dict(answers or {})
-
-    def _take(self, key: str, fallback: Any) -> Any:
-        if key not in self.answers:
-            return fallback
-        value = self.answers[key]
-        if isinstance(value, Queue):
-            return value.items.pop(0) if value.items else fallback
-        return value
-
-    def select(self, key: str, message: str, options: list[Option], default: Any = None) -> Any:
-        self.asked.append(key)
-        return self._take(key, _default_select(options, default))
-
-    def checkbox(self, key: str, message: str, options: list[Option]) -> list[Any]:
-        self.asked.append(key)
-        return self._take(key, [o.value for o in options if o.checked and not o.separator])
-
-    def confirm(self, key: str, message: str, default: bool = True) -> bool:
-        self.asked.append(key)
-        return self._take(key, default)
-
-    def text(self, key: str, message: str, default: str = "") -> str:
-        self.asked.append(key)
-        return self._take(key, default)
-
-
-@dataclass
-class Queue:
-    """Sequence of answers for a prompt key that is asked several times."""
-
-    items: list[Any]
 
 
 class InquirerPrompter:

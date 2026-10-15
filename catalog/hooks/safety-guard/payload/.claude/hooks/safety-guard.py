@@ -287,7 +287,9 @@ DEFAULT_PROTECTED = (
     "id_ed25519*",
     "id_ecdsa*",
     ".git/**",
-    ".claude/spado-state.json",
+    ".spado/project.json",
+    ".spado/installation.json",
+    ".spado/local/**",
     ".claude/hooks/safety-guard.py",
     ".claude/safety-guard.json",
 )

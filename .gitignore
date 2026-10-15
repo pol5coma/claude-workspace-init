@@ -1,7 +1,3 @@
-# CWI internal docs (implementation manual + product spec), kept out of git
-CWI_SPEC.md
-CWI_IMPLEMENTATION_GUIDE.md
-
 # Python
 .venv/
 __pycache__/
@@ -12,9 +8,6 @@ __pycache__/
 dist/
 build/
 *.egg-info/
-
-# CWI transient transaction data
-.cwi/
 
 # OS
 .DS_Store
