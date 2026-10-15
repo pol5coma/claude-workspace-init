@@ -1,214 +1,177 @@
-# Claude Workspace Init (CWI)
+# SPADO — Software Product Agentic Development Organization
 
-**Set up Claude Code for any project in one command. Then let Claude work in the right order: architecture, specs, implementation.**
+SPADO provisions coding agents to work as a **C-organization**: an organization of agents with executive responsibilities, specialist assignments and a shared way of planning, executing and reviewing work.
 
-> Start with everything available. Finish with only what the project needs.
+It configures **Claude Code and Codex** with native agents, skills, workflows and optional tools and MCP integrations. The host runs the agents; SPADO supplies their organizational definitions, operating instructions and shared execution state. The architecture is designed to accommodate other coding agents through additional host adapters.
 
-![Python](https://img.shields.io/badge/python-3.12%2B-3776AB)
-![Package manager](https://img.shields.io/badge/uv-required-DE5FE9)
-![Claude Code](https://img.shields.io/badge/Claude%20Code-skills%20%C2%B7%20agents%20%C2%B7%20hooks%20%C2%B7%20MCP-D97757)
-![AGENTS.md](https://img.shields.io/badge/AGENTS.md-supported-2ea44f)
+## The agentic organization paradigm
 
-CWI ships a **catalog** of Claude Code capabilities: skills, agents, hooks, scripts and MCP servers. `cwi init` scans your project and recommends what fits. It shows you every change before writing anything and installs only what you choose. The result is a lean workspace, with no copy of the full catalog.
+SPADO applies an organizational model to software product work. **Chief [Role] Agentic Officers**, collectively called **C-Agents**, lead business and technical domains. Each officer has a mandate: objectives, decision responsibilities, delegation boundaries and required reviews. Specialists carry out bounded assignments and return deliverables with evidence.
 
-Then, inside Claude Code, **`/kickoff`** takes over. It checks the project state and guides you step by step: define the architecture, write the feature specs, then implement them.
+An officer maintains direction across the relevant phases and iterations. For example, the Technology officer contributes to feasibility, design, development and operations, commissioning specialist work and reviewing its technical conclusions. Recorded plans, artifacts and decisions preserve continuity between agent sessions.
 
-📘 **Step-by-step guide: [USAGE.md](USAGE.md)**
+Every officer and specialist is an agent. **Skills model its behavior**, while authorized tools and MCP integrations provide capabilities. **Workflows coordinate the work** by defining inputs, dependencies, deliverables and decision criteria. The Human sets the objective and delegates authority; the selected mode determines when agents request Human participation.
 
----
+### Chief [Role] Agentic Officers
 
-## How it works
+The naming convention inserts **A** for **Agentic** immediately before the final **O** of the traditional executive acronym: `CEO → CEAO`, `CTO → CTAO`. Compound roles retain their initials: `CISO → CISAO`.
+
+| Traditional role | C-Agent | Full title | Primary responsibility |
+|---|---|---|---|
+| CEO | CEAO | Chief Executive Agentic Officer | Business direction, investment and product lifecycle decisions. |
+| CPO | CPAO | Chief Product Agentic Officer | Product strategy, discovery, priorities and product acceptance. |
+| CTO | CTAO | Chief Technology Agentic Officer | Technical feasibility, architecture, engineering and technical readiness. |
+| CMO | CMAO | Chief Marketing Agentic Officer | Positioning, brand, go-to-market strategy and lifecycle marketing. |
+| CFO | CFAO | Chief Financial Agentic Officer | Budgets, economic viability, unit economics and financial controls. |
+| COO | COAO | Chief Operating Agentic Officer | Service operations, support and operational readiness. |
+| CRO | CRAO | Chief Revenue Agentic Officer | Sales strategy, revenue operations and renewals. |
+| CISO | CISAO | Chief Information Security Agentic Officer | Security assessment, risk decisions and security response. |
+| CLO | CLAO | Chief Legal Agentic Officer | Legal and contractual assessments, coordinating with the privacy owner. |
+
+**CAOAO — Chief Agent Orchestrator Agentic Officer** coordinates this organization. Its role is `Agent Orchestrator`: it maintains the execution plan, distributes context, coordinates dependencies and consolidates outcomes. **CEAO owns business direction; CAOAO coordinates execution across domains.** Each domain officer retains its assigned decision authority.
+
+### How the levels work together
 
 ```mermaid
-flowchart LR
-    subgraph T["Terminal · deterministic, no AI"]
-        A["cwi init"] --> B["Scan project<br/>stack · versions · commands"]
-        B --> C["Choose capabilities<br/>recommended preselected"]
-        C --> D["Preview every change<br/>diffs · nothing written yet"]
-        D --> E["Apply safely<br/>backup · rollback · validate"]
-    end
-    subgraph CC["Claude Code · AI"]
-        F["/kickoff"] --> G["1 · Architecture<br/>project-discovery"]
-        G --> H["2 · Specs<br/>feature-spec"]
-        H --> I["3 · Implementation<br/>feature-workflow"]
-        I -. next feature .-> F
-    end
-    E -- "opens Claude Code" --> F
+flowchart TD
+    H["Human"] -->|"Objective, scope and delegation"| O["CAOAO"]
+    O -->|"Plans, context and assignments"| C["C-Agents: domain officers"]
+    C -->|"Bounded briefs and skills"| S["Specialists: activity subagents"]
+    S -->|"Deliverables, evidence and blockers"| C
+    C -->|"Domain decisions and escalations"| O
+    O -->|"Progress and mode-dependent questions"| H
 ```
 
-| Phase | Tool | What you get |
-| --- | --- | --- |
-| **Provision** | `cwi init` (CLI) | `AGENTS.md` + `CLAUDE.md`, a `docs/` skeleton, and the skills, agents, hooks and MCP servers you selected. |
-| **Architecture** | `/kickoff` → `project-discovery` | `docs/architecture.md` written from your code or your requirements, a glossary, decisions, an optional diagram. |
-| **Specs** | `/kickoff` → `feature-spec` | `docs/specs/<feature>.md` with testable acceptance criteria and open questions. |
-| **Build** | `/kickoff` → `feature-workflow` | Branch, plan, test-first slices, verification, independent review, PR description. |
+The Human selects the scope and participation mode. CAOAO coordinates the relevant officers, who commission specialist work and review the evidence within their domains. CAOAO consolidates the decisions, checks the applicable gates and updates the shared plan. Cross-domain work requires each responsible officer's conclusion.
 
----
+For example, when evaluating a product opportunity, CAOAO coordinates **CPAO**, **CTAO** and **CFAO**. Their specialists investigate customer value, technical feasibility and economics. The officers review those findings; CPAO coordinates the product assessment, while CEAO decides material investment or strategic changes where required. CAOAO records the resulting direction and coordinates the next assignments.
 
-## Quick start
+## Workflows and participation
 
-### 1. Install once
+The first available workflow is [**Full SPDLC**](catalog/workflows/Full_SPDLC_Workflow.md): 7 phases and 62 reusable subphases covering a software product from idea to retirement. Its organization defines one CAOAO, nine domain officers and 62 specialist assignments. Execution brings in the roles needed for the selected scope.
 
-You need [uv](https://docs.astral.sh/uv/) and Python 3.12 or newer.
+A user can invoke the full workflow, a phase or a subphase, and resume a selected run or start an independent one. The four modes—**agentic**, **auto**, **semi-auto** and **manual**—control Human checkpoints; the Human can contribute voluntarily in every mode. See [invocations and modes](#work-from-your-agentic-host) below.
+
+Future workflows will use the same organizational model with their own scope and definitions. Skills and other capabilities can also be provisioned independently. See [architecture.md](architecture.md) for the common operating model, authority, agent lifecycle and recording protocol. The current implementation provides CLI services and host configurations; graphical UI and an autonomous agent scheduler are outside v1.
+
+## Start a project
+
+Install Python 3.12+, uv, and Docker with Compose. From this checkout:
 
 ```bash
-git clone https://github.com/pol5coma/claude-workspace-init ~/tools/claude-workspace-init
-uv tool install -e ~/tools/claude-workspace-init
-cwi --version
+uv sync --group dev
+uv tool install -e .
+spado --version
 ```
 
-### 2a. Add it to a project you already have
+In the product repository, explicitly choose hosts, execution mode and an embedding provider:
 
 ```bash
-cd my-project
-cwi init --catalog ~/tools/claude-workspace-init/catalog --dry-run   # preview only
-cwi init --catalog ~/tools/claude-workspace-init/catalog              # do it
+spado init --host claude --host codex --mode semi-auto \
+  --embeddings local --embedding-model sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 \
+  --dry-run
+spado init --host claude --host codex --mode semi-auto \
+  --embeddings local --embedding-model sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+spado db up
 ```
 
-### 2b. Or start a new project from this template
+For local embeddings install `spado[local-embeddings]` in the CLI environment: `uv tool install --force -e ".[local-embeddings]"` from this checkout. For development with `uv run spado`, use `uv sync --extra local-embeddings`. The configured model is downloaded when first used. Alternatively select `--embeddings external --embedding-model MODEL` and set `SPADO_EMBEDDING_API_KEY`. The external adapter uses the OpenAI-compatible embeddings request/response contract; `--embedding-endpoint` selects its endpoint. It sends indexed text and search queries to that configured provider.
+
+PostgreSQL/pgvector runs in a project-specific container and persistent volume, bound to localhost. `spado db down` stops it without deleting the volume. Choose `--database-port` on initial setup when multiple projects run simultaneously.
+
+## Work from your agentic host
+
+| Action | Claude Code | Codex |
+|---|---|---|
+| Whole workflow | `/spdlc --mode auto` | `$spdlc --mode auto` |
+| Phase | `/spdlc --phase 3 --mode manual` | `$spdlc --phase 3 --mode manual` |
+| Subphase | `/spdlc --subphase 3.5 --mode semi-auto` | `$spdlc --subphase 3.5 --mode semi-auto` |
+| State | `/spado --status` | `$spado --status` |
+| Review | `/spado --review phase 3` | `$spado --review phase 3` |
+| Conversation | `/spado --chat` | `$spado --chat` |
+
+Entry skills translate these requests to SPADO services and native agent delegation. `--run ID` selects an existing execution; `--new-run` asks the host to create an independent execution. The original scope stays intact when advancing within a full workflow. Missing inputs remain visible and provisional outputs cannot be accepted prematurely. Phases progress sequentially by default; subphases follow their input dependencies. Activity means a concrete subphase instance.
+
+| Mode | Before execution | Result |
+|---|---|---|
+| agentic | Agents validate the versioned plan | Domain agents review; no Human approval requests |
+| auto | Agents validate; ask the Human only when needed | Same exception-based participation |
+| semi-auto | Human approves the plan | Agents review and accept |
+| manual | Human approves and chooses human, assisted or delegated work | Human also reviews the result |
+
+Human intervention is always possible. Plans name the deliverable, inputs, actions, assumptions and exit criteria. Modes never override host permissions. Status, review and conversation do not modify files or execution records. Status reports the last recorded state, not guaranteed live process telemetry.
+
+## CLI and evidence
 
 ```bash
-git clone https://github.com/pol5coma/claude-workspace-init my-app
-cd my-app
-cwi init        # removes CWI's own files after a successful run
+spado workflow create --objective "Validate a product opportunity" --human
+spado actor create CAOAO --run RUN_ID --human
+# Give the returned token-file path to the CAOAO session as SPADO_ACTOR_TOKEN_FILE.
+spado workflow context --run RUN_ID --subphase 1.1
+spado status --run RUN_ID --human
+spado review all --run RUN_ID --human
+spado docs sync docs/vision.md --run RUN_ID --human
+spado docs promote REVISION_ID --run RUN_ID --human
+spado docs index --run RUN_ID --human
+spado docs search "product positioning" --run RUN_ID --human
+spado workflow export --run RUN_ID --human
 ```
 
-### 3. Start working in Claude Code
+Use `--human` only for a direct Human action or an explicitly authorized initial delegation. Agent operations use their delegated credentials. Tokens are stored under `.spado/local/`, never included in the event log or printed. Application permissions do not isolate agents from a trusted local administrator who can access database credentials.
+
+Files remain the documentation source of truth. The database preserves immutable revisions and their approval history; editing a file does not replace the approved revision. Synchronization identifies affected recorded consumers and revokes stale gates. Semantic search returns current approved sources; relational state controls dependencies, authority and acceptance. Structural review reports known relationships; the responsible agents must assess semantic contradictions.
+
+The exact write protocol is documented in [the state protocol](src/spado/runtime/protocol.md), installed as `.spado/protocol.md`. `agent-record.py`, installed under `.spado/tools/`, uses the same services. Queries do not synchronize documents; synchronization happens explicitly or before write commands. There is no background filesystem watcher.
+
+## Modular capabilities
+
+The existing catalog of skills, agents, scripts, hooks and MCP remains available:
 
 ```bash
-claude "/kickoff"
+spado catalog list
+spado catalog validate
+spado init --no-workflow --host codex --capability mcp:github
+spado provision --dry-run
 ```
 
-When `cwi init` finishes, it offers to open Claude Code with `/kickoff` already started.
+`spado provision` retains the existing interactive Claude workspace installer. `spado init` provisions organizations, or capabilities alone with `--no-workflow`. Optional resources can be added to workflow setup with repeated `--capability TYPE:ID` flags. Dependencies and conflicts are resolved before writing. Host configuration is merged additively; conflicting user edits block installation.
 
----
+Capabilities use `spado.json` manifests. Imported resources default to Claude compatibility until reviewed; declare `hosts` explicitly to opt into Codex support. Unsupported hooks, agents or host-specific payloads are rejected rather than silently translated. GitHub MCP is available on both hosts. Existing CWI installations are not automatically migrated, and no `cwi` command alias is provided.
 
-## What ends up in your project
+## Architecture and authoring
 
-```text
-my-project/
-├── AGENTS.md            shared instructions for every coding agent: safety, stack + versions, commands, docs
-├── CLAUDE.md            @AGENTS.md  ← Claude Code imports the shared file; add Claude-only notes below
-├── docs/
-│   ├── architecture.md  structure, data flow, integrations, "Stack & versions" table
-│   ├── domain/glossary.md
-│   ├── specs/           one spec per feature + ordered backlog in README.md
-│   ├── decisions/       short design decision records
-│   └── diagrams/        archify diagrams (created when you ask for one)
-├── .mcp.json            only if you picked an MCP server (secrets as ${VAR})
-├── scripts/             only if you picked a project script
-└── .claude/
-    ├── settings.json    hooks (safety-guard, post-edit-validation)
-    ├── skills/          only the selected skills
-    ├── agents/          only the selected agents (+ development-agents/)
-    ├── hooks/           hook scripts
-    └── cwi-state.json   what CWI installed (paths, owners, hashes; never secrets)
+See [architecture.md](architecture.md). Author workflow rules and subphase briefs in `catalog/workflows/spdlc/`, organization mandates in `catalog/organizations/spdlc/`, and behavior skills in `catalog/organization-skills/`. The master document is generated:
+
+```bash
+spado workflow validate
+spado workflow render > catalog/workflows/Full_SPDLC_Workflow.md
 ```
 
-Claude Code finds all of it automatically the next time you open the project. You can check with `/agents`, `/hooks`, `/mcp` and `/memory`, or type `/` to list the skills.
+Executions snapshot the workflow, full briefs, organization and a content digest. New catalog versions do not silently change existing runs. Installation ownership is tracked separately from execution state.
 
----
+## Development
 
-## Highlights
+```bash
+uv run pytest
+uv run ruff check src/spado tests
+uv run ruff format --check src/spado tests
+SPADO_POSTGRES_TEST=1 uv run pytest tests/integration/test_runtime_postgres.py
+```
 
-| | |
-| --- | --- |
-| 🔍 **Detect before asking** | Reads manifests and lockfiles only, and never runs project code. Finds languages, frameworks, **exact versions**, databases, infrastructure, test tools and commands, each with its evidence. |
-| 🧭 **Recommend, don't impose** | Deterministic recommendations by project type and technology, with the reason shown. You decide. |
-| 👀 **Show before changing** | A full plan and diffs of every existing file before anything is written. Cancel means zero changes. |
-| 🛟 **Never destroy your work** | Transactional apply with backup and rollback. Existing `CLAUDE.md`, settings and MCP config are merged, never overwritten. CWI only removes what it installed. |
-| 🔁 **Idempotent** | Running it twice with the same answers changes nothing. Files you edited are detected by hash and never replaced silently. |
-| 🤝 **Works with every agent** | `AGENTS.md` (the [agents.md](https://agents.md) standard) holds the shared instructions. `CLAUDE.md` imports it. |
-| 🛡️ **Safety Guard** | A hook that blocks destructive commands such as `terraform destroy`, `prisma migrate reset`, `git push --force` or `rm -rf /`, and edits to `.env` or keys, before they run. |
-| 📌 **Version-pinned** | The stack in `AGENTS.md` lists the real versions and tells agents to code for them. |
-
----
-
-## The catalog
-
-Items marked ⭐ are preselected in every project. The others are recommended according to the project type or the technologies detected, and you can always change the selection.
-
-### Workflow skills: the `/kickoff` path
-
-| Skill | What it does |
-| --- | --- |
-| ⭐ `kickoff` | The entry point in Claude Code. It reads the project state and runs the next step in order: architecture, then specs, then implementation. Resumable. |
-| ⭐ `project-discovery` | Defines the architecture. It finds an existing one, analyzes the code with `codebase-explorer`, or builds one from your requirements documents. |
-| `feature-spec` | Turns a request into `docs/specs/<feature>.md`: acceptance criteria (Given / When / Then), edge cases, open questions. Never invents business rules. |
-| `feature-workflow` | Implements a feature from its spec: branch, plan, test-first slices with small commits, verification, independent review, PR. It always asks when something is unclear. |
-| ⭐ `archify` | Interactive HTML diagrams of architecture, workflows, sequences, dataflows and lifecycles, from requirements or from the code. Needs Node.js 18+. |
-
-### Engineering skills
-
-| Skill | What it does |
-| --- | --- |
-| `testing` | Runs the smallest relevant test scope first. Includes a related-test finder. |
-| `debugging` | Reproduce, isolate, hypothesize, fix, add a regression test. |
-| `backend-development` | API, validation, persistence and migration conventions, with FastAPI, Django and Express references. |
-| `frontend-development` | Components, state, forms, accessibility and styling, with React, Next.js, Vue and Svelte references. |
-
-### Agents
-
-| Agent | What it does |
-| --- | --- |
-| `code-reviewer` | Reviews the diff for correctness and tests, and runs the project's quality checks (read-only). |
-| `security-reviewer` | Finds injection, authorization, secrets and unsafe-dependency issues. Includes an offline dependency inventory (read-only). |
-| **`development-agents/`** (35) | A family of development, maintenance, review and testing agents. Each project type preselects a subset. [Full list in USAGE.md](USAGE.md#the-development-agents-family). |
-| **ECC agents** (71) | Language and framework reviewers and build resolvers, planners, TDD guide, documentation, open-source and specialist agents, in `catalog/agents/`. Stack-specific ones are preselected when that stack is detected. [Details](USAGE.md#the-ecc-packs). |
-
-### Hooks, scripts and MCP
-
-| Capability | What it does |
-| --- | --- |
-| ⭐ `safety-guard` (hook) | Blocks clearly destructive commands and edits to protected files before they run. It parses commands, so `echo "terraform destroy"` is allowed. |
-| ⭐ `post-edit-validation` (hook) | After each edit, formats and lints **only that file** with the project's own tools. It never installs anything. |
-| `run-quality-checks` (script) | Runs only the linters, type checkers and tests the project is configured for. |
-| `github` (MCP) | GitHub's remote MCP server: issues, pull requests, code search and Actions. Needs `GITHUB_TOKEN`. |
-
-### ECC skill pack
-
-**302 skills** in `catalog/skills/`: patterns, testing and security for many languages and frameworks; agent engineering; architecture, documentation and research; business and operations. Stack-specific skills, such as `django-patterns` or `react-testing`, are preselected only when that stack is detected. Everything else is listed for you to pick. [Details](USAGE.md#the-ecc-packs).
-
-Add your own with `cwi catalog add`. See [USAGE.md › Add to the catalog](USAGE.md#4-add-things-to-the-catalog).
-
----
+The PostgreSQL tests create a disposable Compose project and remove only that project's test volume. They exercise real pgvector, transactional retries, concurrent writes, scoped identities, lifecycle gates and read-only CLI operations. Embedding provider unit tests use controlled responses; they do not make paid API calls or download models.
 
 ## Credits and sources
 
-CWI builds on great open-source work. Every third-party component keeps its license notice.
+SPADO builds on great open-source work. Every third-party component keeps its license notice.
 
-| Component | Source | License | What CWI changed |
+| Component | Source | License | What SPADO changed |
 | --- | --- | --- | --- |
 | `archify` skill | [tt-a1i/archify](https://github.com/tt-a1i/archify) v3.0.1, based on [Cocoon-AI/architecture-diagram-generator](https://github.com/Cocoon-AI/architecture-diagram-generator) | MIT | Bundled unchanged, except the `test/` folder. `LICENSE` and `THIRD_PARTY_NOTICES.md` are included. |
 | `development-agents/` family (35 agents) | [davila7/claude-code-templates](https://github.com/davila7/claude-code-templates), [`cli-tool/components/agents/development-tools`](https://github.com/davila7/claude-code-templates/tree/main/cli-tool/components/agents/development-tools) | MIT, © 2025 Daniel (San) Ávila | Reviewers made read-only, non-Claude Code tool names translated, invalid models fixed, `code-reviewer` renamed `senior-code-reviewer`. Each file carries an attribution comment. |
 | 302 skills and 71 agents | [affaan-m/ECC](https://github.com/affaan-m/ECC) | MIT, © 2026 Affaan Mustafa | Imported into `catalog/skills/` and `catalog/agents/`, with content unchanged except for removing an ineffective `tools:` line from 11 skills. Four were renamed to avoid clashes: `ecc-safety-guard`, `ecc-code-reviewer`, `ecc-code-simplifier` and `ecc-security-reviewer`. Stack-specific items get technology recommendations. Each file carries an attribution comment. |
 | `github` MCP server | [github/github-mcp-server](https://github.com/github/github-mcp-server), remote endpoint `api.githubcopilot.com/mcp/` | MIT | Configuration only. The token is a `${GITHUB_TOKEN}` reference. |
-| `AGENTS.md` format | [agents.md](https://agents.md) open standard | n/a | CWI generates it and imports it from `CLAUDE.md`. |
+| `AGENTS.md` format | [agents.md](https://agents.md) open standard | n/a | SPADO generates it and imports it from `CLAUDE.md`. |
 
-Written for CWI: the `kickoff`, `project-discovery`, `feature-spec`, `feature-workflow`, `testing`, `debugging`, `backend-development` and `frontend-development` skills, the `code-reviewer` and `security-reviewer` agents, the `safety-guard` and `post-edit-validation` hooks, the `run-quality-checks` script, and the `cwi` CLI.
+Written for SPADO: the `kickoff`, `project-discovery`, `feature-spec`, `feature-workflow`, `testing`, `debugging`, `backend-development` and `frontend-development` skills, the `code-reviewer` and `security-reviewer` agents, the `safety-guard` and `post-edit-validation` hooks, the `run-quality-checks` script, and the `spado` CLI.
 
 Built on the Claude Code project conventions for [skills](https://code.claude.com/docs/en/skills), [subagents](https://code.claude.com/docs/en/sub-agents), [hooks](https://code.claude.com/docs/en/hooks), [MCP](https://code.claude.com/docs/en/mcp) and [memory / AGENTS.md](https://code.claude.com/docs/en/memory).
-
----
-
-## Development
-
-```bash
-uv sync
-uv run pytest                                       # unit, integration and end-to-end tests
-uv run ruff check . && uv run ruff format --check .
-uv run cwi catalog validate
-uv run cwi init --dry-run
-```
-
-```text
-src/cwi/
-├── scanner/     reads the project (never prints, never executes project code)
-├── catalog/     loads, validates and recommends capabilities
-├── claude_md/   renders AGENTS.md / CLAUDE.md and the docs skeleton
-├── planning/    builds the full plan (never prompts, never writes)
-├── install/     applies the plan transactionally (never decides)
-├── authoring/   `cwi catalog add`
-├── ui/          screens and prompts
-└── paths.py     every Claude Code path contract in one place
-```
