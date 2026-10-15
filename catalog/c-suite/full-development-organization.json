@@ -141,5 +141,7 @@
         }
       }
     ]
-  }
+  },
+  "status": "historical_reference",
+  "canonical_organization": "../organizations/spdlc/organization.json"
 }
