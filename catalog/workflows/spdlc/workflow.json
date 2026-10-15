@@ -9,6 +9,7 @@
     {
       "id": "1",
       "title": "Idea & Strategy",
+      "slug": "idea-strategy",
       "introduction": "Frame the opportunity, make assumptions explicit and authorize a bounded investment in Discovery.",
       "subphases": [
         "1.1",
@@ -23,6 +24,7 @@
     {
       "id": "2",
       "title": "Discovery",
+      "slug": "discovery",
       "introduction": "Establish evidence about the problem, solution concepts, demand, economics and feasibility, then record a cross-functional decision.",
       "subphases": [
         "2.1",
@@ -36,6 +38,7 @@
     {
       "id": "3",
       "title": "Definition and Design",
+      "slug": "definition-design",
       "introduction": "Define and validate the next useful product increment, its quality and technical approach, the brand and its route to market.\n\n**Sequencing note:** 3.12 and 3.13 preserve the existing numbering; follow their dependencies rather than postponing this work until the end of phase 3.",
       "subphases": [
         "3.1",
@@ -57,6 +60,7 @@
     {
       "id": "4",
       "title": "Development and Validation",
+      "slug": "development-validation",
       "introduction": "Build and validate increments, prepare operations and produce a release candidate with explicit readiness evidence.",
       "subphases": [
         "4.1",
@@ -76,6 +80,7 @@
     {
       "id": "5",
       "title": "Launch",
+      "slug": "launch",
       "introduction": "Deploy and introduce the approved product to its intended audience, stabilize the launch and establish ongoing ownership.",
       "subphases": [
         "5.1",
@@ -94,6 +99,7 @@
     {
       "id": "6",
       "title": "Operation and Evolution",
+      "slug": "operation-evolution",
       "introduction": "Operate the product continuously, learn from outcomes and deliver proportionate improvements through repeated iterations.",
       "subphases": [
         "6.1",
@@ -114,6 +120,7 @@
     {
       "id": "7",
       "title": "Retirement or Replacement",
+      "slug": "retirement-replacement",
       "introduction": "Carry out an authorized transition or closure while managing affected users, data, dependencies and residual obligations.",
       "subphases": [
         "7.1",
@@ -129,6 +136,7 @@
     "1.1": {
       "id": "1.1",
       "title": "Initial ideation and opportunity assessment",
+      "slug": "initial-ideation",
       "phase": "1",
       "brief": "subphases/1.1.md",
       "owners": [
@@ -146,6 +154,7 @@
     "1.2": {
       "id": "1.2",
       "title": "Define product vision and strategic goals",
+      "slug": "product-vision",
       "phase": "1",
       "brief": "subphases/1.2.md",
       "owners": [
@@ -165,6 +174,7 @@
     "1.3": {
       "id": "1.3",
       "title": "Define initial target audience and value proposition",
+      "slug": "target-audience",
       "phase": "1",
       "brief": "subphases/1.3.md",
       "owners": [
@@ -184,6 +194,7 @@
     "1.4": {
       "id": "1.4",
       "title": "Define the business model",
+      "slug": "business-model",
       "phase": "1",
       "brief": "subphases/1.4.md",
       "owners": [
@@ -206,6 +217,7 @@
     "1.5": {
       "id": "1.5",
       "title": "Identify strategic assumptions, risks and constraints",
+      "slug": "assumptions-risks",
       "phase": "1",
       "brief": "subphases/1.5.md",
       "owners": [
@@ -228,6 +240,7 @@
     "1.6": {
       "id": "1.6",
       "title": "Define the initial budget and resource allocation",
+      "slug": "budget-resources",
       "phase": "1",
       "brief": "subphases/1.6.md",
       "owners": [
@@ -249,6 +262,7 @@
     "2.1": {
       "id": "2.1",
       "title": "Market and user research",
+      "slug": "market-user-research",
       "phase": "2",
       "brief": "subphases/2.1.md",
       "owners": [
@@ -270,6 +284,7 @@
     "2.2": {
       "id": "2.2",
       "title": "Problem validation",
+      "slug": "problem-validation",
       "phase": "2",
       "brief": "subphases/2.2.md",
       "owners": [
@@ -288,6 +303,7 @@
     "2.3": {
       "id": "2.3",
       "title": "Explore solution concepts",
+      "slug": "solution-concepts",
       "phase": "2",
       "brief": "subphases/2.3.md",
       "owners": [
@@ -306,6 +322,7 @@
     "2.4": {
       "id": "2.4",
       "title": "Evaluate demand",
+      "slug": "demand-validation",
       "phase": "2",
       "brief": "subphases/2.4.md",
       "owners": [
@@ -326,6 +343,7 @@
     "2.5": {
       "id": "2.5",
       "title": "Evaluate economic viability and technical feasibility",
+      "slug": "business-tech-feasibility",
       "phase": "2",
       "brief": "subphases/2.5.md",
       "owners": [
@@ -350,6 +368,7 @@
     "3.1": {
       "id": "3.1",
       "title": "Define scope and priorities",
+      "slug": "scope-priorities",
       "phase": "3",
       "brief": "subphases/3.1.md",
       "owners": [
@@ -369,6 +388,7 @@
     "3.2": {
       "id": "3.2",
       "title": "Specify behaviour",
+      "slug": "product-behavior",
       "phase": "3",
       "brief": "subphases/3.2.md",
       "owners": [
@@ -387,6 +407,7 @@
     "3.3": {
       "id": "3.3",
       "title": "Define quality requirements",
+      "slug": "quality-requirements",
       "phase": "3",
       "brief": "subphases/3.3.md",
       "owners": [
@@ -409,6 +430,7 @@
     "3.4": {
       "id": "3.4",
       "title": "Design the experience (UX)",
+      "slug": "ux-design",
       "phase": "3",
       "brief": "subphases/3.4.md",
       "owners": [
@@ -428,6 +450,7 @@
     "3.5": {
       "id": "3.5",
       "title": "Design the user interface",
+      "slug": "ui-design",
       "phase": "3",
       "brief": "subphases/3.5.md",
       "owners": [
@@ -449,6 +472,7 @@
     "3.6": {
       "id": "3.6",
       "title": "Design the technical solution",
+      "slug": "technical-design",
       "phase": "3",
       "brief": "subphases/3.6.md",
       "owners": [
@@ -468,6 +492,7 @@
     "3.7": {
       "id": "3.7",
       "title": "Align product & offer",
+      "slug": "product-offer",
       "phase": "3",
       "brief": "subphases/3.7.md",
       "owners": [
@@ -490,6 +515,7 @@
     "3.8": {
       "id": "3.8",
       "title": "Prototype and validate the experience",
+      "slug": "prototype-validation",
       "phase": "3",
       "brief": "subphases/3.8.md",
       "owners": [
@@ -509,6 +535,7 @@
     "3.9": {
       "id": "3.9",
       "title": "Resolve technical uncertainty",
+      "slug": "technical-uncertainty",
       "phase": "3",
       "brief": "subphases/3.9.md",
       "owners": [
@@ -529,6 +556,7 @@
     "3.10": {
       "id": "3.10",
       "title": "Define measurement",
+      "slug": "measurement-plan",
       "phase": "3",
       "brief": "subphases/3.10.md",
       "owners": [
@@ -551,6 +579,7 @@
     "3.11": {
       "id": "3.11",
       "title": "Plan development",
+      "slug": "development-plan",
       "phase": "3",
       "brief": "subphases/3.11.md",
       "owners": [
@@ -576,6 +605,7 @@
     "3.12": {
       "id": "3.12",
       "title": "Define brand identity and communication principles",
+      "slug": "brand-identity",
       "phase": "3",
       "brief": "subphases/3.12.md",
       "owners": [
@@ -597,6 +627,7 @@
     "3.13": {
       "id": "3.13",
       "title": "Define the go-to-market strategy",
+      "slug": "go-to-market",
       "phase": "3",
       "brief": "subphases/3.13.md",
       "owners": [
@@ -621,6 +652,7 @@
     "4.1": {
       "id": "4.1",
       "title": "Prepare development environments and delivery foundations",
+      "slug": "development-foundations",
       "phase": "4",
       "brief": "subphases/4.1.md",
       "owners": [
@@ -641,6 +673,7 @@
     "4.2": {
       "id": "4.2",
       "title": "Implement product features incrementally",
+      "slug": "feature-implementation",
       "phase": "4",
       "brief": "subphases/4.2.md",
       "owners": [
@@ -664,6 +697,7 @@
     "4.3": {
       "id": "4.3",
       "title": "Implement integrations and data handling",
+      "slug": "integrations-data",
       "phase": "4",
       "brief": "subphases/4.3.md",
       "owners": [
@@ -685,6 +719,7 @@
     "4.4": {
       "id": "4.4",
       "title": "Review code quality and maintainability",
+      "slug": "code-quality",
       "phase": "4",
       "brief": "subphases/4.4.md",
       "owners": [
@@ -704,6 +739,7 @@
     "4.5": {
       "id": "4.5",
       "title": "Perform functional and regression testing",
+      "slug": "functional-testing",
       "phase": "4",
       "brief": "subphases/4.5.md",
       "owners": [
@@ -726,6 +762,7 @@
     "4.6": {
       "id": "4.6",
       "title": "Validate non-functional requirements",
+      "slug": "non-functional-testing",
       "phase": "4",
       "brief": "subphases/4.6.md",
       "owners": [
@@ -748,6 +785,7 @@
     "4.7": {
       "id": "4.7",
       "title": "Implement and verify security and privacy controls",
+      "slug": "security-privacy-controls",
       "phase": "4",
       "brief": "subphases/4.7.md",
       "owners": [
@@ -770,6 +808,7 @@
     "4.8": {
       "id": "4.8",
       "title": "Implement analytics and observability",
+      "slug": "analytics-observability",
       "phase": "4",
       "brief": "subphases/4.8.md",
       "owners": [
@@ -792,6 +831,7 @@
     "4.9": {
       "id": "4.9",
       "title": "Validate product acceptance and usability",
+      "slug": "acceptance-usability",
       "phase": "4",
       "brief": "subphases/4.9.md",
       "owners": [
@@ -813,6 +853,7 @@
     "4.10": {
       "id": "4.10",
       "title": "Prepare operations and support",
+      "slug": "operations-support",
       "phase": "4",
       "brief": "subphases/4.10.md",
       "owners": [
@@ -834,6 +875,7 @@
     "4.11": {
       "id": "4.11",
       "title": "Verify release readiness",
+      "slug": "release-readiness",
       "phase": "4",
       "brief": "subphases/4.11.md",
       "owners": [
@@ -861,6 +903,7 @@
     "5.1": {
       "id": "5.1",
       "title": "Coordinate the launch and confirm readiness",
+      "slug": "launch-readiness",
       "phase": "5",
       "brief": "subphases/5.1.md",
       "owners": [
@@ -885,6 +928,7 @@
     "5.2": {
       "id": "5.2",
       "title": "Confirm legal, privacy and security readiness",
+      "slug": "launch-compliance",
       "phase": "5",
       "brief": "subphases/5.2.md",
       "owners": [
@@ -909,6 +953,7 @@
     "5.3": {
       "id": "5.3",
       "title": "Finalize marketing and launch design assets",
+      "slug": "launch-assets",
       "phase": "5",
       "brief": "subphases/5.3.md",
       "owners": [
@@ -931,6 +976,7 @@
     "5.4": {
       "id": "5.4",
       "title": "Prepare acquisition and commercial channels",
+      "slug": "acquisition-channels",
       "phase": "5",
       "brief": "subphases/5.4.md",
       "owners": [
@@ -952,6 +998,7 @@
     "5.5": {
       "id": "5.5",
       "title": "Deploy the approved release to production",
+      "slug": "production-deployment",
       "phase": "5",
       "brief": "subphases/5.5.md",
       "owners": [
@@ -972,6 +1019,7 @@
     "5.6": {
       "id": "5.6",
       "title": "Conduct a pilot or controlled rollout",
+      "slug": "controlled-rollout",
       "phase": "5",
       "brief": "subphases/5.6.md",
       "owners": [
@@ -993,6 +1041,7 @@
     "5.7": {
       "id": "5.7",
       "title": "Activate public launch and acquisition campaigns",
+      "slug": "public-launch",
       "phase": "5",
       "brief": "subphases/5.7.md",
       "owners": [
@@ -1017,6 +1066,7 @@
     "5.8": {
       "id": "5.8",
       "title": "Onboard and support the first users",
+      "slug": "user-onboarding",
       "phase": "5",
       "brief": "subphases/5.8.md",
       "owners": [
@@ -1037,6 +1087,7 @@
     "5.9": {
       "id": "5.9",
       "title": "Monitor and stabilize the launch",
+      "slug": "launch-stabilization",
       "phase": "5",
       "brief": "subphases/5.9.md",
       "owners": [
@@ -1059,6 +1110,7 @@
     "5.10": {
       "id": "5.10",
       "title": "Evaluate launch outcomes and transition to ongoing operations",
+      "slug": "launch-evaluation",
       "phase": "5",
       "brief": "subphases/5.10.md",
       "owners": [
@@ -1080,6 +1132,7 @@
     "6.1": {
       "id": "6.1",
       "title": "Operate and monitor the service",
+      "slug": "service-operations",
       "phase": "6",
       "brief": "subphases/6.1.md",
       "owners": [
@@ -1101,6 +1154,7 @@
     "6.2": {
       "id": "6.2",
       "title": "Provide customer support and customer success",
+      "slug": "customer-support",
       "phase": "6",
       "brief": "subphases/6.2.md",
       "owners": [
@@ -1120,6 +1174,7 @@
     "6.3": {
       "id": "6.3",
       "title": "Manage incidents and recovery",
+      "slug": "incident-recovery",
       "phase": "6",
       "brief": "subphases/6.3.md",
       "owners": [
@@ -1141,6 +1196,7 @@
     "6.4": {
       "id": "6.4",
       "title": "Maintain technical health",
+      "slug": "technical-health",
       "phase": "6",
       "brief": "subphases/6.4.md",
       "owners": [
@@ -1160,6 +1216,7 @@
     "6.5": {
       "id": "6.5",
       "title": "Maintain security, privacy and compliance",
+      "slug": "security-compliance",
       "phase": "6",
       "brief": "subphases/6.5.md",
       "owners": [
@@ -1181,6 +1238,7 @@
     "6.6": {
       "id": "6.6",
       "title": "Measure product and business outcomes",
+      "slug": "outcome-measurement",
       "phase": "6",
       "brief": "subphases/6.6.md",
       "owners": [
@@ -1204,6 +1262,7 @@
     "6.7": {
       "id": "6.7",
       "title": "Improve adoption, retention and commercial growth",
+      "slug": "adoption-retention-growth",
       "phase": "6",
       "brief": "subphases/6.7.md",
       "owners": [
@@ -1226,6 +1285,7 @@
     "6.8": {
       "id": "6.8",
       "title": "Conduct continuous discovery",
+      "slug": "continuous-discovery",
       "phase": "6",
       "brief": "subphases/6.8.md",
       "owners": [
@@ -1245,6 +1305,7 @@
     "6.9": {
       "id": "6.9",
       "title": "Prioritize the evolution roadmap",
+      "slug": "evolution-roadmap",
       "phase": "6",
       "brief": "subphases/6.9.md",
       "owners": [
@@ -1269,6 +1330,7 @@
     "6.10": {
       "id": "6.10",
       "title": "Deliver and evaluate improvements",
+      "slug": "improvement-delivery",
       "phase": "6",
       "brief": "subphases/6.10.md",
       "owners": [
@@ -1288,6 +1350,7 @@
     "6.11": {
       "id": "6.11",
       "title": "Optimize operational and economic efficiency",
+      "slug": "operational-efficiency",
       "phase": "6",
       "brief": "subphases/6.11.md",
       "owners": [
@@ -1309,6 +1372,7 @@
     "6.12": {
       "id": "6.12",
       "title": "Review strategic direction and lifecycle decisions",
+      "slug": "lifecycle-review",
       "phase": "6",
       "brief": "subphases/6.12.md",
       "owners": [
@@ -1334,6 +1398,7 @@
     "7.1": {
       "id": "7.1",
       "title": "Decide and approve retirement or replacement",
+      "slug": "retirement-decision",
       "phase": "7",
       "brief": "subphases/7.1.md",
       "owners": [
@@ -1355,6 +1420,7 @@
     "7.2": {
       "id": "7.2",
       "title": "Plan and communicate the transition",
+      "slug": "transition-plan",
       "phase": "7",
       "brief": "subphases/7.2.md",
       "owners": [
@@ -1376,6 +1442,7 @@
     "7.3": {
       "id": "7.3",
       "title": "Transition users and data",
+      "slug": "user-data-transition",
       "phase": "7",
       "brief": "subphases/7.3.md",
       "owners": [
@@ -1395,6 +1462,7 @@
     "7.4": {
       "id": "7.4",
       "title": "Decommission the product securely",
+      "slug": "secure-decommission",
       "phase": "7",
       "brief": "subphases/7.4.md",
       "owners": [
@@ -1417,6 +1485,7 @@
     "7.5": {
       "id": "7.5",
       "title": "Complete commercial and operational closure",
+      "slug": "commercial-closure",
       "phase": "7",
       "brief": "subphases/7.5.md",
       "owners": [

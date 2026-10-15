@@ -7,7 +7,9 @@ for an identical retry), `kind`, `payload`, `rationale`, and optionally
 SPADO_ACTOR_TOKEN, never by a role name in the request. Responses include the
 execution version. Approval is a separate event targeting a plan ID and version.
 
-Use `spado workflow context --run RUN --subphase N.N` before constructing a request.
+Use `spado workflow context --run RUN --subphase SLUG` before constructing a request.
+`spado workflow validate` lists phase and subphase slugs. Request payloads may use a slug
+or numeric ID for `phase` and `subphase`; the CLI resolves it to the numeric ID stored in run events.
 It returns the exact deliverable, exit criterion, current dependencies and assigned
 roles. `spado actor create DEFINITION --run RUN` returns a credential file for the
 new agent; pass it only to that assignment. The local Human credential is used with
@@ -66,7 +68,7 @@ embedding provider to encode the query; it does not rebuild the index. Conversat
 must not invoke write commands. Human approval of a conversational proposal alone
 does not start execution.
 
-Use `spado docs sync PATH --run RUN [--subphase N.N] [--depends REVISION]` to record
+Use `spado docs sync PATH --run RUN [--subphase SLUG] [--depends REVISION]` to record
 an edited document. Changes invalidate recorded consumers and remove stale gates.
 The prior official revision stays official until explicit promotion. Use
 `spado docs index --run RUN` to index approved revisions. Model changes use a

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from pathlib import Path
 
 from spado.workflows.models import Organization, Workflow
@@ -29,6 +30,21 @@ def load_workflow(root: Path, workflow_id: str = "spdlc") -> tuple[Workflow, Org
     ids = [s for p in workflow.phases for s in p.subphases]
     if len(set(ids)) != len(ids) or set(ids) != set(workflow.subphases):
         raise ValueError("Every subphase must belong to exactly one phase")
+    phase_slugs = [phase.slug for phase in workflow.phases]
+    if any(
+        slug is None or not re.fullmatch(r"[a-z][a-z0-9]*(?:-[a-z0-9]+)*", slug)
+        for slug in phase_slugs
+    ):
+        raise ValueError("Every phase needs a lowercase hyphenated slug")
+    if len(set(phase_slugs)) != len(phase_slugs):
+        raise ValueError("Phase slugs must be unique within a workflow")
+    slugs = [subphase.slug for subphase in workflow.subphases.values()]
+    if any(
+        slug is None or not re.fullmatch(r"[a-z][a-z0-9]*(?:-[a-z0-9]+)*", slug) for slug in slugs
+    ):
+        raise ValueError("Every subphase needs a lowercase hyphenated slug")
+    if len(set(slugs)) != len(slugs):
+        raise ValueError("Subphase slugs must be unique within a workflow")
     for phase in workflow.phases:
         for sid in phase.subphases:
             subphase = workflow.subphases[sid]

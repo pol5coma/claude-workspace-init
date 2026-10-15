@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from datetime import UTC, datetime
 from enum import StrEnum
 from typing import Literal
@@ -14,6 +15,10 @@ def uid() -> str:
 
 def now() -> str:
     return datetime.now(UTC).isoformat()
+
+
+def _title_slug(title: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")
 
 
 class Model(BaseModel):
@@ -69,6 +74,7 @@ class Organization(Model):
 class Subphase(Model):
     id: str
     title: str
+    slug: str | None = None  # Absent in runs created before named subphases.
     phase: str
     brief: str
     brief_content: str = ""
@@ -83,6 +89,7 @@ class Subphase(Model):
 class Phase(Model):
     id: str
     title: str
+    slug: str | None = None  # Absent in runs created before named phases.
     introduction: str = ""
     subphases: list[str]
     lifecycle: Literal["sequential", "recurring", "conditional"] = "sequential"
@@ -100,7 +107,59 @@ class Workflow(Model):
     phases: list[Phase]
     subphases: dict[str, Subphase]
 
+    def resolve_phase(self, name: str) -> str:
+        for phase in self.phases:
+            if phase.id == name:
+                return phase.id
+        for phase in self.phases:
+            if phase.slug == name:
+                return phase.id
+        # Older run snapshots lack slugs; full titles and their compact forms remain usable.
+        matches = [
+            phase.id
+            for phase in self.phases
+            if _title_slug(phase.title) == name
+            or re.sub(r"-(and|or)-", "-", _title_slug(phase.title)) == name
+        ]
+        if len(matches) == 1:
+            return matches[0]
+        if len(matches) > 1:
+            raise ValueError(f"Ambiguous phase slug: {name}")
+        raise ValueError(f"Unknown phase: {name}; list slugs with `spado workflow validate`")
+
+    def resolve_subphase(self, name: str) -> str:
+        if name in self.subphases:
+            return name
+        matches = [sid for sid, subphase in self.subphases.items() if subphase.slug == name]
+        if not matches:
+            # Full title-based names were previously public slugs; retain them as aliases.
+            matches = [
+                sid
+                for sid, subphase in self.subphases.items()
+                if _title_slug(subphase.title) == name
+            ]
+        if not matches:
+            # Older run snapshots have no slug. Allow a unique title prefix there.
+            matches = [
+                sid
+                for sid, subphase in self.subphases.items()
+                if subphase.slug is None and _title_slug(subphase.title).startswith(name + "-")
+            ]
+        if len(matches) == 1:
+            return matches[0]
+        if len(matches) > 1:
+            raise ValueError(f"Ambiguous subphase slug: {name}")
+        raise ValueError(f"Unknown subphase: {name}; list slugs with `spado workflow validate`")
+
+    def resolve_scope(self, scope: Scope) -> Scope:
+        if scope.kind == "phase":
+            return Scope(kind="phase", id=self.resolve_phase(scope.id))
+        if scope.kind == "subphase":
+            return Scope(kind="subphase", id=self.resolve_subphase(scope.id))
+        return scope
+
     def select(self, scope: Scope) -> list[str]:
+        scope = self.resolve_scope(scope)
         if scope.kind == "workflow":
             return [s for p in self.phases for s in p.subphases]
         if scope.kind == "phase":

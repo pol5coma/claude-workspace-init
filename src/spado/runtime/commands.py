@@ -288,14 +288,20 @@ def create_actor(
 def create_run(
     objective: Annotated[str, typer.Option("--objective")],
     root: Root = Path("."),
-    phase: str | None = None,
-    subphase: str | None = None,
+    phase: Annotated[str | None, typer.Option("--phase", help="Phase slug or numeric ID.")] = None,
+    subphase: Annotated[
+        str | None,
+        typer.Option(
+            "--subphase",
+            help="Subphase slug; numeric IDs also work. List with `spado workflow validate`.",
+        ),
+    ] = None,
     mode: Mode | None = None,
     human: Human = False,
 ):
     cfg, store, token = session(root, human)
     workflow, organization = load_workflow(root / ".spado/catalog", cfg.workflow)
-    scope = target_scope(phase, subphase)
+    scope = workflow.resolve_scope(target_scope(phase, subphase))
     workflow.select(scope)
     run = Run(
         project=cfg.project,
@@ -312,8 +318,10 @@ def create_run(
 @guarded
 def context(
     run_id: RunId = None,
-    phase: str | None = None,
-    subphase: str | None = None,
+    phase: Annotated[str | None, typer.Option("--phase", help="Phase slug or numeric ID.")] = None,
+    subphase: Annotated[
+        str | None, typer.Option("--subphase", help="Subphase slug or numeric ID.")
+    ] = None,
     activity: str | None = None,
     root: Root = Path("."),
     human: Human = False,
@@ -376,13 +384,21 @@ def context(
 def record_request(root: Path, request: dict, run_id: str | None, human=False) -> dict:
     _, store, token = session(root, human)
     selected = select_run(store, token, run_id)
+    payload = request["payload"]
+    if isinstance(payload.get("phase"), str) or isinstance(payload.get("subphase"), str):
+        run, _ = store.load(token, selected)
+        payload = {**payload}
+        if isinstance(payload.get("phase"), str):
+            payload["phase"] = run.workflow.resolve_phase(payload["phase"])
+        if isinstance(payload.get("subphase"), str):
+            payload["subphase"] = run.workflow.resolve_subphase(payload["subphase"])
     if request["kind"] != "document":
         _sync_changed(root, store, token, selected)
     return store.record(
         token,
         selected,
         request["kind"],
-        request["payload"],
+        payload,
         request["rationale"],
         request["event_id"],
         request.get("expected_version"),
@@ -434,6 +450,10 @@ def validate_catalog(catalog: Annotated[Path | None, typer.Option("--catalog")] 
                 "phases": len(workflow.phases),
                 "subphases": len(workflow.subphases),
                 "agents": len(organization.agents),
+                "phase_slugs": {phase.id: phase.slug for phase in workflow.phases},
+                "subphase_slugs": {
+                    sid: subphase.slug for sid, subphase in workflow.subphases.items()
+                },
             }
         )
     )
@@ -517,7 +537,9 @@ def show_review(
 def sync_document(
     path: Path,
     run_id: RunId = None,
-    subphase: str | None = None,
+    subphase: Annotated[
+        str | None, typer.Option("--subphase", help="Subphase slug or numeric ID.")
+    ] = None,
     depends: Annotated[list[str] | None, typer.Option("--depends")] = None,
     root: Root = Path("."),
     human: Human = False,

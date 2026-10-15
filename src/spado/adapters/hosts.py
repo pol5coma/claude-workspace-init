@@ -7,7 +7,7 @@ from spado.workflows.catalog import load_workflow
 
 CONTROL = """Use SPADO's project context and the current run ID. Translate the invocation:
 - --status -> `spado status [--run ID]`.
-- --review all|phase N|subphase N.N|activity ID -> `spado review TARGET [ID] --run ID`.
+- --review all|phase SLUG|subphase SLUG|activity ID -> `spado review TARGET [ID] --run ID`.
 - --chat -> read `spado workflow context --run ID` and the requested phase/subphase briefs; discuss only.
 Status, review and chat MUST NOT write project files, create runs, synchronize docs, index content,
 persist events, approve plans or change external systems. Report suggestions without applying them.
@@ -23,9 +23,11 @@ agent escape hatch. Host tool permissions always apply.
 EXECUTION = """Coordinate the installed SPDLC organization through CAOAO.
 Read `.spado/catalog/workflows/spdlc/rules.md` and use `spado workflow context` for selected briefs.
 The workflow has phases and reusable subphases; an activity is a concrete execution of a subphase.
-`--phase N`, `--subphase N.N` or `--activity ID` chooses the target; `--mode` overrides its mode.
+`--phase SLUG`, `--subphase SLUG` or `--activity ID` chooses the target; `--mode` overrides its mode.
+Find installed phase and subphase slugs with `spado workflow validate --catalog .spado/catalog`.
+Numeric phase and subphase IDs remain valid for older calls.
 Use the conversation's run unless --new-run was explicitly requested. To start a run, use
-`spado workflow create --objective TEXT --mode MODE [--phase N|--subphase N.N] --human` only on
+`spado workflow create --objective TEXT --mode MODE [--phase SLUG|--subphase SLUG] --human` only on
 the Human's instruction to begin. Register CAOAO via `spado actor create CAOAO --run ID --human`.
 Delegate officers and specialists with `spado actor create DEFINITION --run ID` using the parent token.
 Pass each returned token-file path only to its assigned agent; instantiate native agents by their
