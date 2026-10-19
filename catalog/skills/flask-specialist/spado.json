@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "id": "flask-specialist",
+  "type": "skill",
+  "name": "Flask specialist",
+  "description": "Build Python web applications with Flask, using the application factory pattern, Blueprints, and Flask-SQLAlchemy. Covers project structure, authentication, and configuration management. Use when creating Flask projects, organizing with Blueprints, implementing authentication, or troubleshooting circular imports, application context errors, or Blueprint registration.",
+  "recommendation": {
+    "project_types": [
+      "backend"
+    ],
+    "technologies": [
+      "python",
+      "flask"
+    ]
+  },
+  "dependencies": [],
+  "conflicts": []
+}
