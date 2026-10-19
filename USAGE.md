@@ -905,6 +905,7 @@ In a partial run, existing upstream evidence can be supplied as a synchronized a
 | Symptom / error | Meaning and action |
 |---|---|
 | `spado: command not found` | Check the tool installation and PATH; `uv tool update-shell` can configure the tool executable directory. Reopen the shell. |
+| Claude Code reports `Unknown command: /spdlc` | Check that the project has `.claude/skills/spdlc/SKILL.md`. If it was configured only for Codex, run `spado init --host codex --host claude` in that project to retain both hosts, then start a new Claude Code session there. Codex's `$spdlc` skill does not install Claude's `/spdlc` skill. |
 | Missing `.spado/project.json` | You are in the wrong root or used capability-only setup. Configure the organization before runtime commands. |
 | `Initial setup requires --host, --mode, --embeddings and --embedding-model` | `spado init` is non-interactive. Supply all four on the first workflow installation; see the [Codex example](#configure-an-organization-project). Use `--no-workflow` only for capability installation. |
 | PostgreSQL operation failed | Check Docker, `spado db up`, project port/password and any DSN override. |
