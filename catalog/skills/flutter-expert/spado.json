@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "id": "flutter-expert",
+  "type": "skill",
+  "name": "Flutter expert",
+  "description": "Use when building cross-platform applications with Flutter 3+ and Dart. Invoke for widget development, Riverpod/Bloc state management, GoRouter navigation, platform-specific implementations, performance optimization.",
+  "recommendation": {
+    "project_types": [
+      "frontend"
+    ],
+    "technologies": [
+      "flutter",
+      "dart"
+    ]
+  },
+  "dependencies": [],
+  "conflicts": []
+}

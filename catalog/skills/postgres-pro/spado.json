@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "id": "postgres-pro",
+  "type": "skill",
+  "name": "Postgres pro",
+  "description": "Use when optimizing PostgreSQL queries, configuring replication, or implementing advanced database features. Invoke for EXPLAIN analysis, JSONB operations, extension usage, VACUUM tuning, performance monitoring.",
+  "recommendation": {
+    "project_types": [
+      "backend",
+      "data_ml"
+    ],
+    "technologies": [
+      "postgresql"
+    ]
+  },
+  "dependencies": [],
+  "conflicts": []
+}
