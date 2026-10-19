@@ -4,6 +4,9 @@
   "type": "skill",
   "name": "Django celery",
   "description": "Django + Celery async task patterns — configuration, task design, beat scheduling, retries, canvas workflows, monitoring, and testing. Use when adding background jobs, scheduled tasks, or async processing to a Django app.",
+  "categories": [
+    "backend"
+  ],
   "recommendation": {
     "project_types": [],
     "technologies": [

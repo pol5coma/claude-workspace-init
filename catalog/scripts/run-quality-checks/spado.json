@@ -4,6 +4,10 @@
   "type": "script",
   "name": "Run quality checks",
   "description": "Runs only the linters, type checkers and tests the project is configured for (ruff, mypy, pytest, eslint, prettier, tsc).",
+  "categories": [
+    "quality",
+    "workflow"
+  ],
   "tags": [
     "quality",
     "ci"

@@ -4,6 +4,10 @@
   "type": "hook",
   "name": "Safety Guard",
   "description": "Blocks clearly destructive commands (database resets, force pushes, infra destroy, dangerous rm) and edits to protected files before they run.",
+  "categories": [
+    "security",
+    "workflow"
+  ],
   "tags": ["safety", "default"],
   "default_selected": true,
   "dependencies": [],

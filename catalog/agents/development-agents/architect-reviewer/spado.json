@@ -4,6 +4,9 @@
   "type": "agent",
   "name": "Architect reviewer",
   "description": "Use this agent when you need to evaluate system design decisions, architectural patterns, and technology choices at the macro level. Specifically:\\ \\",
+  "categories": [
+    "architecture"
+  ],
   "dependencies": [],
   "conflicts": []
 }

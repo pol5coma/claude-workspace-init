@@ -4,6 +4,9 @@
   "type": "agent",
   "name": "Ascii ui mockup generator",
   "description": "Specialist in creating ASCII mockups for UI concepts, generating multiple visualization options for layouts, forms, dashboards, and interfaces before implementation",
+  "categories": [
+    "frontend"
+  ],
   "dependencies": [],
   "conflicts": []
 }

@@ -4,6 +4,9 @@
   "type": "agent",
   "name": "Laravel expert agent",
   "description": "Expert Laravel development assistant specializing in modern Laravel 12+ applications with Eloquent, Artisan, testing, and best practices",
+  "categories": [
+    "backend"
+  ],
   "recommendation": {
     "project_types": [],
     "technologies": [

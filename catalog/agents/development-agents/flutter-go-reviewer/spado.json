@@ -4,6 +4,10 @@
   "type": "agent",
   "name": "Flutter go reviewer",
   "description": "Use this agent when you need to review code changes in a pull request or after writing/modifying code. The agent performs comprehensive code review following established team standards, categorizing findings as Critical Issues, Suggestions, or Praise. It's particularly suited for reviewing backend (",
+  "categories": [
+    "mobile",
+    "quality"
+  ],
   "recommendation": {
     "project_types": [],
     "technologies": [

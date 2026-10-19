@@ -4,6 +4,9 @@
   "type": "agent",
   "name": "Security reviewer",
   "description": "Reviews changes for injection, authz, secrets and unsafe dependencies; ships an offline dependency inventory script.",
+  "categories": [
+    "security"
+  ],
   "tags": ["security", "review"],
   "recommendation": {
     "project_types": ["backend", "fullstack", "ai"],

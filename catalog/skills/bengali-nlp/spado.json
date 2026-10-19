@@ -4,6 +4,9 @@
   "type": "skill",
   "name": "Bengali nlp",
   "description": "Bengali (Bangla) text processing patterns including Unicode normalization, script detection, tokenization, conjunct handling, and Bangla-specific NLP best practices for AI applications.",
+  "categories": [
+    "ai"
+  ],
   "dependencies": [],
   "conflicts": []
 }

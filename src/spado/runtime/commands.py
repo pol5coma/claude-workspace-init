@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 import subprocess
+import sys
 from functools import wraps
 from pathlib import Path
 from typing import Annotated
@@ -10,6 +11,8 @@ from typing import Annotated
 import psycopg
 import typer
 
+from spado.domain.enums import Category
+from spado.domain.errors import SPADOError
 from spado.runtime import config
 from spado.runtime.config import Embeddings, ProjectConfig, dump
 from spado.runtime.install import install, resources
@@ -36,7 +39,7 @@ def guarded(fn):
     def wrapped(*args, **kwargs):
         try:
             return fn(*args, **kwargs)
-        except (ValueError, PermissionError, KeyError, OSError, psycopg.Error) as exc:
+        except (ValueError, PermissionError, KeyError, OSError, psycopg.Error, SPADOError) as exc:
             # Do not expose connection strings or provider credentials in exception details.
             message = (
                 "PostgreSQL operation failed; check `spado db up` and database configuration"
@@ -130,6 +133,54 @@ def _sync_changed(root, store, token, run_id):
             )
 
 
+def interactive_terminal() -> bool:
+    return sys.stdin.isatty() and sys.stdout.isatty()
+
+
+def capability_prompter():
+    from spado.authoring.prompts import InquirerPrompter
+
+    return InquirerPrompter()
+
+
+def choose_capabilities(
+    root: Path, catalog_path: Path, hosts: list[str] | None, merges: dict, dry_run: bool
+) -> tuple[list[str], list[str]]:
+    """Interactive picker: browse categories, select, preview, confirm."""
+    from rich.console import Console
+
+    from spado.adapters.capabilities import render_capabilities
+    from spado.catalog.dependency_resolver import resolve
+    from spado.catalog.loader import load_catalog
+    from spado.domain.errors import UserCancelled
+    from spado.install.picker import pick
+
+    loaded = load_catalog(catalog_path)
+    prompter = capability_prompter()
+    hosts, selected = pick(loaded, prompter, hosts)
+    resolution = resolve(selected, loaded)
+    preview = install(
+        root,
+        render_capabilities(root, catalog_path, hosts, selected),
+        dry_run=True,
+        merge_preconditions=merges,
+    )
+    console = Console(stderr=True)
+    console.print(f"\n[bold]{len(resolution.final)} capabilities for {', '.join(hosts)}:[/bold]")
+    for ref in resolution.final:
+        note = (
+            f"  [dim](required by {resolution.added[ref]})[/dim]" if ref in resolution.added else ""
+        )
+        console.print(f"  • {ref}{note}")
+    console.print(f"[dim]{len(preview['writes'])} files to write in {root}[/dim]\n")
+    if dry_run:
+        typer.echo(dump(preview))
+        return hosts, selected
+    if not prompter.confirm("confirm", "Install them now?", default=True):
+        raise UserCancelled("Cancelled. Nothing was installed.")
+    return hosts, selected
+
+
 @guarded
 def initialize(
     root: Root = Path("."),
@@ -150,6 +201,13 @@ def initialize(
         list[str] | None,
         typer.Option("--capability", help="Optional catalog reference; repeatable."),
     ] = None,
+    category: Annotated[
+        list[Category] | None,
+        typer.Option(
+            "--category",
+            help="With --no-workflow: install every capability in this category; repeatable.",
+        ),
+    ] = None,
     workflow: Annotated[
         bool,
         typer.Option(
@@ -158,7 +216,11 @@ def initialize(
     ] = True,
     dry_run: Annotated[bool, typer.Option("--dry-run")] = False,
 ):
-    """Install the SPDLC organization or selected standalone capabilities."""
+    """Install the SPDLC organization or selected standalone capabilities.
+
+    With --no-workflow and neither --capability nor --category, an interactive terminal
+    opens a category picker.
+    """
     root = root.resolve()
     if not root.is_dir():
         raise ValueError("Project root must already exist")
@@ -171,10 +233,30 @@ def initialize(
         path = FileSystem(root).path(relative)
         if path.is_file():
             merges[relative] = sha(path.read_bytes())
+    if category and workflow:
+        raise ValueError("--category is only available with --no-workflow")
     if not workflow:
-        if not host or not capability:
-            raise ValueError("Capability-only setup requires --host and --capability")
-        output = render_capabilities(root, catalog or config.default_catalog(), host, capability)
+        catalog_path = catalog or config.default_catalog()
+        selected = list(capability or [])
+        if category:
+            from spado.catalog.loader import load_catalog
+            from spado.install.picker import refs_in_categories
+
+            if not host:
+                raise ValueError("--category requires --host")
+            selected = sorted(
+                {*selected, *refs_in_categories(load_catalog(catalog_path), host, category)}
+            )
+        if not selected and interactive_terminal():
+            host, selected = choose_capabilities(root, catalog_path, host, merges, dry_run)
+            if dry_run:
+                return
+        if not host or not selected:
+            raise ValueError(
+                "Capability-only setup requires --host and --capability or --category "
+                "(run it in an interactive terminal to pick from the catalog)"
+            )
+        output = render_capabilities(root, catalog_path, host, selected)
         typer.echo(dump(install(root, output, dry_run=dry_run, merge_preconditions=merges)))
         return
     existing = config.load(root) if (root / ".spado/project.json").exists() else None

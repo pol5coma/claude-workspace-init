@@ -4,6 +4,10 @@
   "type": "agent",
   "name": "Dependency manager",
   "description": "Use this agent when you need to audit dependencies for vulnerabilities, resolve version conflicts, optimize bundle sizes, or implement automated dependency updates. Specifically:\\ \\",
+  "categories": [
+    "infrastructure",
+    "security"
+  ],
   "dependencies": [],
   "conflicts": []
 }

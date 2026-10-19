@@ -4,6 +4,9 @@
   "type": "skill",
   "name": "Backend development",
   "description": "Conventions for API endpoints, validation, persistence and migrations, with framework references loaded on demand.",
+  "categories": [
+    "backend"
+  ],
   "tags": ["backend", "api"],
   "recommendation": {
     "project_types": ["backend", "fullstack"],

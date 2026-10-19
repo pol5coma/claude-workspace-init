@@ -27,7 +27,8 @@ SPADO uses one package and one project installer, `spado init`. Select a whole S
 | Your goal | Use | Result |
 |---|---|---|
 | Work through Full SPDLC | `spado init`, `spado db up`, then the host's `spdlc` entry skill | Installs the organization and runtime configuration, starts PostgreSQL and lets the host coordinate agents. |
-| Install selected capabilities for Claude/Codex | `spado init --no-workflow --host HOST --capability TYPE:ID` | Installs compatible skills, agents, scripts, hooks or MCP without workflow state or PostgreSQL. |
+| Pick skills, agents and MCP by category | `spado init --no-workflow` in a terminal | Interactive picker: choose hosts, browse categories, tick capabilities, confirm. No workflow state or PostgreSQL. |
+| Install selected capabilities for Claude/Codex | `spado init --no-workflow --host HOST --capability TYPE:ID` or `--category CATEGORY` | Installs compatible skills, agents, scripts, hooks or MCP without workflow state or PostgreSQL. |
 | Add capabilities to Full SPDLC | Repeat `--capability TYPE:ID` during workflow setup | Installs optional resources alongside the organization. |
 | Inspect or record execution | `status`, `review`, `workflow`, `actor`, `docs` commands | Authenticated reads and writes against a configured workflow project. |
 | Maintain the reusable catalog | `spado catalog …` | Edits source definitions; installed projects update when `spado init` is repeated. |
@@ -143,14 +144,59 @@ For external embeddings use `--embeddings external --embedding-model MODEL_ID --
 
 ### Install capabilities without a workflow
 
+Capability-only setup provisions skills, agents, MCP servers, hooks and scripts into the project. It creates no `.spado/project.json`, PostgreSQL, run state or memory; only the files and `.spado/installation.json` bookkeeping.
+
+#### Interactive picker
+
+In the product directory, run without `--capability` or `--category`:
+
 ```bash
-spado init --no-workflow --host codex --capability mcp:github --dry-run
-spado init --no-workflow --host codex --capability mcp:github
+cd ~/projects/my-product
+spado init --no-workflow             # pick, preview, confirm, install
+spado init --no-workflow --dry-run   # pick and preview only
 ```
 
-This creates capability resources and installation bookkeeping, without `.spado/project.json` or PostgreSQL. Supply the MCP credential separately. Repeated `--capability TYPE:ID` options also add capabilities to organization setup.
+1. **Hosts**: Claude Code (preselected) and/or Codex. Skipped when `--host` is given.
+2. **Categories**: each [category](#capability-categories) shows how many capabilities are compatible with the chosen hosts.
+3. **Capabilities**: one list grouped under the chosen categories. A capability in several chosen categories appears once, under the first. Keys: `space` toggles, `a` toggles all, `i` inverts, `enter` confirms.
+4. **Summary**: the final references, including dependencies added automatically (`required by …`), and the number of files to write.
+5. **Confirm**: `Install them now?` writes the files and prints the usual JSON `writes`/`unchanged`. With `--dry-run` it prints the preview and stops.
 
-Select capabilities explicitly with repeated `--capability TYPE:ID` flags. Catalog `default_selected` and group defaults remain metadata; `init` does not scan a project or apply automatic recommendations. See the [capability walkthrough](docs/manual/capabilities.md).
+Selecting nothing, or declining the confirmation, cancels with exit code 1 and writes nothing. The picker opens only when stdin and stdout are a terminal; elsewhere (CI, scripts, pipes) use the flags below.
+
+#### Non-interactive selection
+
+```bash
+spado init --no-workflow --host claude --category backend --category testing --dry-run
+spado init --no-workflow --host codex --capability mcp:github
+spado init --no-workflow --host claude --category data --capability skill:flask-specialist
+```
+
+`--category` installs every capability of that category compatible with **all** selected hosts; it combines with `--capability`. Supply MCP credentials separately. Repeated `--capability TYPE:ID` options also add capabilities to organization setup; `--category` is capability-only.
+
+Catalog `default_selected`, project-type recommendations and group defaults remain metadata; `init` does not scan a project or apply automatic recommendations. See the [capability walkthrough](docs/manual/capabilities.md).
+
+#### Capability categories
+
+Each catalog manifest lists one or more `categories`. Use the ID with `--category`.
+
+| ID | Shown as | Typical content |
+|---|---|---|
+| `architecture` | Architecture & system design | Architects, ADRs, API and system design, diagrams. |
+| `backend` | Backend & APIs | Django, FastAPI, Flask, Spring Boot, Laravel, NestJS, Go and other server frameworks. |
+| `frontend` | Frontend & UI | React, Vue, Angular, Next.js, Nuxt, Vite, accessibility, design systems, motion. |
+| `mobile` | Mobile & desktop | Flutter, React Native, Swift/SwiftUI, Kotlin/Android, desktop E2E. |
+| `data` | Databases & data | PostgreSQL, MySQL, SQL, Redis, ClickHouse, ORMs, migrations. |
+| `ai` | AI, ML & LLM applications | RAG, fine-tuning, PyTorch, MCP servers, LLM cost and evaluation. |
+| `infrastructure` | Infrastructure, DevOps & networking | Docker, Kubernetes, Terraform, deployment, incidents, networks. |
+| `security` | Security & compliance | Security reviews and scans, framework security, HIPAA/PHI, safety guards. |
+| `testing` | Testing & QA | TDD, unit/E2E testing per language, verification loops, QA agents. |
+| `quality` | Code review, quality & debugging | Reviewers, refactoring, debugging, build-error resolvers, performance. |
+| `languages` | Languages & coding standards | Python, TypeScript, Go, Rust, Kotlin, Java, C++, .NET idioms and reviewers. |
+| `workflow` | Development workflow & agent tooling | Feature specs, orchestration, planning, git/GitHub, Claude Code harness tools. |
+| `product` | Product, content & business | Product discovery, research, marketing, content, media, business operations. |
+
+`spado catalog list` shows each capability's categories.
 
 ## First execution and everyday use
 
@@ -289,7 +335,8 @@ spado init [OPTIONS]
 | `--catalog PATH` | installed tool catalog | Root containing workflows, organizations and capabilities. |
 | `--database-port INTEGER` | `55432` | `1024..65535`; applied only on initial workflow setup. |
 | `--capability TYPE:ID` | none | Repeatable; dependencies and compatibility checked for all selected hosts. |
-| `--workflow` / `--no-workflow` | `--workflow` | SPDLC or capabilities only. Capability-only requires host/capability; workflow-specific flags have no effect in that route. |
+| `--category CATEGORY` | none | Repeatable; with `--no-workflow` only. Adds every [category](#capability-categories) member compatible with all selected hosts. Requires `--host`. |
+| `--workflow` / `--no-workflow` | `--workflow` | SPDLC or capabilities only. Capability-only needs `--host` plus `--capability`/`--category`, or an interactive terminal, where omitting both opens the [picker](#interactive-picker). Workflow-specific flags have no effect in that route. |
 | `--dry-run` | false | Render, check conflicts and preview; no writes. |
 
 Existing workflow setup retains omitted settings. Explicit host/capability lists replace configured selection but do not remove old files. Mode changes affect the project default, not stored runs. Embedding/model changes use the supplied endpoint or its default; an endpoint-only update is ignored. Repeat a custom endpoint when updating a model/backend.
@@ -299,9 +346,11 @@ Existing workflow setup retains omitted settings. Explicit host/capability lists
 ```bash
 spado init --host claude --mode auto --embeddings external --embedding-model MODEL_ID --dry-run
 spado init --no-workflow --host codex --capability mcp:github --dry-run
+spado init --no-workflow --host claude --category backend --dry-run
+spado init --no-workflow                     # interactive picker in a terminal
 ```
 
-**Errors:** missing setup fields/root, invalid mode/provider/host, unsupported capabilities, dependency conflicts, edited managed files. See [updates](#updates-and-maintenance).
+**Errors:** missing setup fields/root, invalid mode/provider/host/category, `--category` without `--no-workflow` or `--host`, capability-only setup with nothing selected outside a terminal, picker cancelled, unsupported capabilities, dependency conflicts, edited managed files. See [updates](#updates-and-maintenance).
 
 ### spado status
 
@@ -544,6 +593,7 @@ All five `catalog add` commands accept these options:
 | `--id ID` | inferred | Identifier; unique across types. |
 | `--name TEXT` | inferred | Display name. |
 | `--description TEXT`, `-d TEXT` | input/derived | Description override; may prompt if omitted. |
+| `--category CATEGORIES` | none; interactive omission asks | Comma-separated [categories](#capability-categories) used by the `init` picker and `--category`. |
 | `--default` / `--no-default` | unset; false noninteractively | Default-selection metadata; interactive omission asks. Current `init` selects explicitly. |
 | `--type TYPES` | none | Comma-separated `backend`, `frontend`, `fullstack`, `ai`, `cli`, `library`, `data_ml`, `other`. |
 | `--tech TECHNOLOGIES` | none | Comma-separated technology recommendations. |
@@ -564,7 +614,7 @@ List capabilities and canonical workflows/organizations. Only command-specific o
 spado catalog list --catalog ~/tools/spado/catalog
 ```
 
-**Effects/output:** read-only table with references/defaults/recommendations/dependencies, then workflow/organization summaries. Currently the `Group` column displays capability names; use family metadata for membership. **Errors:** malformed catalog/workflow definitions.
+**Effects/output:** read-only table with references/categories/defaults/recommendations/dependencies, then workflow/organization summaries. Currently the `Group` column displays capability names; use family metadata for membership. **Errors:** malformed catalog/workflow definitions.
 
 ### spado catalog validate
 
@@ -574,7 +624,7 @@ Validate manifests, payloads, references and canonical workflows. Only command-s
 spado catalog validate --catalog ~/tools/spado/catalog
 ```
 
-**Effects/output:** read-only success counts/errors. Currently 423 modular capabilities; 72 organization agents are a separate set. Validation does not launch agents/test MCP connectivity. **Errors:** invalid manifests/payloads/dependencies or workflow definitions.
+**Effects/output:** read-only success counts/errors. Currently 449 modular capabilities; 72 organization agents are a separate set. Validation does not launch agents/test MCP connectivity. **Errors:** invalid manifests/payloads/dependencies or workflow definitions.
 
 ### spado catalog remove
 
@@ -602,7 +652,7 @@ spado catalog add skill PATH [SHARED AUTHORING OPTIONS] [--ref FILE] [--script F
 Required `PATH`: `SKILL.md` or containing folder. Additional repeatable options, default none: `--ref FILE` copies references, `--script FILE` copies helpers, `--exclude PATTERN` omits matching folder-import content. All shared authoring options apply.
 
 ```bash
-spado catalog add skill ./my-skill --id my-skill --exclude test --yes
+spado catalog add skill ./my-skill --id my-skill --category backend,testing --exclude test --yes
 ```
 
 **Effects/output:** skill manifest/payload and tree. Skills use `allowed-tools:`; agent-style `tools:` triggers an interactive conversion/agent choice or a noninteractive error. **Errors:** missing SKILL.md, invalid frontmatter or shared authoring errors.
@@ -906,8 +956,9 @@ In a partial run, existing upstream evidence can be supplied as a synchronized a
 |---|---|
 | `spado: command not found` | Check the tool installation and PATH; `uv tool update-shell` can configure the tool executable directory. Reopen the shell. |
 | Claude Code reports `Unknown command: /spdlc` | Check that the project has `.claude/skills/spdlc/SKILL.md`. If it was configured only for Codex, run `spado init --host codex --host claude` in that project to retain both hosts, then start a new Claude Code session there. Codex's `$spdlc` skill does not install Claude's `/spdlc` skill. |
+| `Capability-only setup requires --host and --capability or --category` | You ran `--no-workflow` without a selection outside an interactive terminal. Pass `--host` with `--capability`/`--category`, or run it in a terminal to open the picker. |
 | Missing `.spado/project.json` | You are in the wrong root or used capability-only setup. Configure the organization before runtime commands. |
-| `Initial setup requires --host, --mode, --embeddings and --embedding-model` | `spado init` is non-interactive. Supply all four on the first workflow installation; see the [Codex example](#configure-an-organization-project). Use `--no-workflow` only for capability installation. |
+| `Initial setup requires --host, --mode, --embeddings and --embedding-model` | Workflow setup is non-interactive. Supply all four on the first workflow installation; see the [Codex example](#configure-an-organization-project). Use `--no-workflow` only for capability installation. |
 | PostgreSQL operation failed | Check Docker, `spado db up`, project port/password and any DSN override. |
 | Port already in use | Give simultaneously active projects distinct ports at initial setup; existing-port updates are currently unsupported by `init`. |
 | No Human token | Complete `db up`; do not substitute an agent token. Lost credentials on an existing DB need deliberate recovery, not assumed rebootstrap. |

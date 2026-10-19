@@ -4,6 +4,9 @@
   "type": "agent",
   "name": "Slack expert",
   "description": "Use this agent when developing Slack applications, implementing Slack API integrations, or reviewing Slack bot code for security and best practices. Specifically:\\ \\",
+  "categories": [
+    "backend"
+  ],
   "dependencies": [],
   "conflicts": []
 }

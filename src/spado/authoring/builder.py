@@ -12,7 +12,7 @@ from typing import Any
 
 from spado import paths
 from spado.catalog.frontmatter import parse_frontmatter
-from spado.domain.enums import CapabilityType, ProjectType
+from spado.domain.enums import CapabilityType, Category, ProjectType
 from spado.domain.errors import SPADOError
 
 HOOK_EVENTS = (
@@ -51,6 +51,7 @@ class Metadata:
     name: str | None = None
     description: str | None = None
     default_selected: bool = False
+    categories: list[Category] = field(default_factory=list)
     project_types: list[ProjectType] = field(default_factory=list)
     technologies: list[str] = field(default_factory=list)
     require_technology: bool = False
@@ -176,6 +177,8 @@ def _manifest(
         "name": name,
         "description": description,
     }
+    if meta.categories:
+        manifest["categories"] = [c.value for c in meta.categories]
     if meta.tags:
         manifest["tags"] = meta.tags
     if meta.default_selected:
@@ -473,6 +476,19 @@ def parse_project_types(raw: str | None) -> list[ProjectType]:
         except ValueError as exc:
             valid = ", ".join(t.value for t in ProjectType)
             raise AuthoringError(f"Unknown project type '{item}'. Use: {valid}") from exc
+    return result
+
+
+def parse_categories(raw: str | None) -> list[Category]:
+    result: list[Category] = []
+    for item in parse_list(raw):
+        try:
+            category = Category(item.lower())
+        except ValueError as exc:
+            valid = ", ".join(c.value for c in Category)
+            raise AuthoringError(f"Unknown category '{item}'. Use: {valid}") from exc
+        if category not in result:
+            result.append(category)
     return result
 
 

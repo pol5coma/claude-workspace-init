@@ -4,6 +4,9 @@
   "type": "mcp",
   "name": "GitHub",
   "description": "GitHub's remote MCP server: issues, pull requests, code search and Actions from Claude.",
+  "categories": [
+    "workflow"
+  ],
   "tags": [
     "github",
     "vcs"

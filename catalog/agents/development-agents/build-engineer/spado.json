@@ -4,6 +4,9 @@
   "type": "agent",
   "name": "Build engineer",
   "description": "Use this agent when you need to optimize build performance, reduce compilation times, or scale build systems across growing teams. Specifically:\\ \\",
+  "categories": [
+    "infrastructure"
+  ],
   "dependencies": [],
   "conflicts": []
 }

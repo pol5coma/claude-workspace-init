@@ -56,3 +56,42 @@ PROJECT_TYPE_LABELS: dict[ProjectType, str] = {
     ProjectType.DATA_ML: "Data / ML project",
     ProjectType.OTHER: "Other",
 }
+
+
+class Category(StrEnum):
+    """Topical catalog categories used to browse and select capabilities."""
+
+    ARCHITECTURE = "architecture"
+    BACKEND = "backend"
+    FRONTEND = "frontend"
+    MOBILE = "mobile"
+    DATA = "data"
+    AI = "ai"
+    INFRASTRUCTURE = "infrastructure"
+    SECURITY = "security"
+    TESTING = "testing"
+    QUALITY = "quality"
+    LANGUAGES = "languages"
+    WORKFLOW = "workflow"
+    PRODUCT = "product"
+
+    @property
+    def label(self) -> str:
+        return CATEGORY_LABELS[self]
+
+
+CATEGORY_LABELS: dict[Category, str] = {
+    Category.ARCHITECTURE: "Architecture & system design",
+    Category.BACKEND: "Backend & APIs",
+    Category.FRONTEND: "Frontend & UI",
+    Category.MOBILE: "Mobile & desktop",
+    Category.DATA: "Databases & data",
+    Category.AI: "AI, ML & LLM applications",
+    Category.INFRASTRUCTURE: "Infrastructure, DevOps & networking",
+    Category.SECURITY: "Security & compliance",
+    Category.TESTING: "Testing & QA",
+    Category.QUALITY: "Code review, quality & debugging",
+    Category.LANGUAGES: "Languages & coding standards",
+    Category.WORKFLOW: "Development workflow & agent tooling",
+    Category.PRODUCT: "Product, content & business",
+}

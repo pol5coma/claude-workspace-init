@@ -4,6 +4,9 @@
   "type": "agent",
   "name": "Playwright tester",
   "description": "Testing mode for Playwright tests",
+  "categories": [
+    "testing"
+  ],
   "recommendation": {
     "project_types": [],
     "technologies": [

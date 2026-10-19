@@ -4,6 +4,10 @@
   "type": "agent",
   "name": "Homelab architect",
   "description": "Designs home and small-lab network plans from hardware inventory, goals, and operator experience level, with safe staged changes and rollback guidance.",
+  "categories": [
+    "architecture",
+    "infrastructure"
+  ],
   "dependencies": [],
   "conflicts": []
 }

@@ -4,6 +4,9 @@
   "type": "agent",
   "name": "Codebase explorer",
   "description": "Deep-dive analysis of unfamiliar codebases. Generates a structured mental model of any project — tech stack, architecture, patterns, entry points, data flow — and optionally creates a CLAUDE.md with findings.",
+  "categories": [
+    "workflow"
+  ],
   "dependencies": [],
   "conflicts": []
 }

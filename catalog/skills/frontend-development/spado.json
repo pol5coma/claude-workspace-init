@@ -4,6 +4,9 @@
   "type": "skill",
   "name": "Frontend development",
   "description": "Conventions for components, state, data fetching, accessibility and styling, with framework references loaded on demand.",
+  "categories": [
+    "frontend"
+  ],
   "tags": ["frontend", "ui"],
   "recommendation": {
     "project_types": ["frontend", "fullstack"],

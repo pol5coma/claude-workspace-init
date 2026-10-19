@@ -4,6 +4,9 @@
   "type": "agent",
   "name": "Rootly incident responder",
   "description": "Experienced SRE specialist for production incident response using Rootly incident management platform. INVOKE THIS SKILL when: - User asks to investigate, analyze, or respond to a production incident - User mentions incident IDs, outages, or system failures - User needs help with on-call handoffs or",
+  "categories": [
+    "infrastructure"
+  ],
   "dependencies": [],
   "conflicts": []
 }

@@ -4,6 +4,9 @@
   "type": "agent",
   "name": "Code reviewer",
   "description": "Reviews a diff for correctness, readability and test coverage; runs the project's quality checks.",
+  "categories": [
+    "quality"
+  ],
   "tags": ["review", "quality"],
   "recommendation": {
     "project_types": ["backend", "frontend", "fullstack", "ai", "cli", "library", "data_ml"],

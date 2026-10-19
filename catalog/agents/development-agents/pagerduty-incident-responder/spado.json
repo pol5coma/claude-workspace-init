@@ -4,6 +4,9 @@
   "type": "agent",
   "name": "Pagerduty incident responder",
   "description": "Responds to PagerDuty incidents by analyzing incident context, identifying recent code changes, and suggesting fixes via GitHub PRs.",
+  "categories": [
+    "infrastructure"
+  ],
   "dependencies": [],
   "conflicts": []
 }

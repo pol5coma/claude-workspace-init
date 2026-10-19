@@ -4,6 +4,9 @@
   "type": "agent",
   "name": "Code architect",
   "description": "Designs feature architectures by analyzing existing codebase patterns and conventions, then providing implementation blueprints with concrete files, interfaces, data flow, and build order.",
+  "categories": [
+    "architecture"
+  ],
   "dependencies": [],
   "conflicts": []
 }

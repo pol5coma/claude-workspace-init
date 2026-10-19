@@ -4,6 +4,10 @@
   "type": "agent",
   "name": "Network architect",
   "description": "Designs enterprise or multi-site network architecture from requirements, using existing network skills for focused routing, validation, automation, and troubleshooting detail.",
+  "categories": [
+    "architecture",
+    "infrastructure"
+  ],
   "dependencies": [],
   "conflicts": []
 }

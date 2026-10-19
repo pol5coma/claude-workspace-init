@@ -24,6 +24,7 @@ from spado.authoring.builder import (
     build_mcp,
     build_script,
     build_skill,
+    parse_categories,
     parse_list,
     parse_pairs,
     parse_project_types,
@@ -31,7 +32,7 @@ from spado.authoring.builder import (
 from spado.authoring.prompts import AutoPrompter, InquirerPrompter, Option, Prompter
 from spado.authoring.writer import remove_capability, write_capability
 from spado.catalog.loader import load_catalog
-from spado.domain.enums import ProjectType
+from spado.domain.enums import Category, ProjectType
 from spado.domain.errors import CatalogError, SPADOError, UserCancelled
 
 catalog_app = typer.Typer(help="Author the SPADO capability catalog.", no_args_is_help=True)
@@ -54,6 +55,14 @@ DefaultOpt = Annotated[
     typer.Option(
         "--default/--no-default",
         help="Mark it as a default in catalog metadata (selection remains explicit).",
+    ),
+]
+CategoryOpt = Annotated[
+    str | None,
+    typer.Option(
+        "--category",
+        help="Topical categories for browsing and `init --category` (comma-separated): "
+        + ",".join(c.value for c in Category),
     ),
 ]
 TypesOpt = Annotated[
@@ -113,6 +122,7 @@ def _metadata(
     tech: str | None,
     depends: list[str] | None,
     conflicts: list[str] | None,
+    category: str | None = None,
     group: str | None = None,
     group_default: str | None = None,
     ask_recommendation: bool = True,
@@ -124,6 +134,7 @@ def _metadata(
         name=name,
         description=description,
         default_selected=bool(default),
+        categories=parse_categories(category),
         project_types=parse_project_types(types),
         technologies=parse_list(tech),
         dependencies=list(depends or []),
@@ -131,6 +142,15 @@ def _metadata(
         group=group,
         group_defaults=parse_project_types(group_default),
     )
+    if prompter.interactive and category is None:
+        meta.categories = [
+            Category(v)
+            for v in prompter.checkbox(
+                "categories",
+                "Which categories does it belong to? (used by `spado init` selection)",
+                [Option(c.value, c.label) for c in Category],
+            )
+        ]
     if not prompter.interactive or not ask_recommendation:
         return meta
     if default is None:
@@ -234,6 +254,7 @@ def add_skill(
     name: NameOpt = None,
     description: DescOpt = None,
     default: DefaultOpt = None,
+    category: CategoryOpt = None,
     types: TypesOpt = None,
     tech: TechOpt = None,
     depends: DependsOpt = None,
@@ -261,6 +282,7 @@ def add_skill(
             name=name,
             description=description,
             default=default,
+            category=category,
             types=types,
             tech=tech,
             depends=depends,
@@ -316,6 +338,7 @@ def add_agent(
     name: NameOpt = None,
     description: DescOpt = None,
     default: DefaultOpt = None,
+    category: CategoryOpt = None,
     types: TypesOpt = None,
     tech: TechOpt = None,
     depends: DependsOpt = None,
@@ -335,6 +358,7 @@ def add_agent(
             name=name,
             description=description,
             default=default,
+            category=category,
             types=types,
             tech=tech,
             depends=depends,
@@ -370,6 +394,7 @@ def add_hook(
     name: NameOpt = None,
     description: DescOpt = None,
     default: DefaultOpt = None,
+    category: CategoryOpt = None,
     types: TypesOpt = None,
     tech: TechOpt = None,
     depends: DependsOpt = None,
@@ -390,6 +415,7 @@ def add_hook(
             name=name,
             description=description,
             default=default,
+            category=category,
             types=types,
             tech=tech,
             depends=depends,
@@ -421,6 +447,7 @@ def add_script(
     name: NameOpt = None,
     description: DescOpt = None,
     default: DefaultOpt = None,
+    category: CategoryOpt = None,
     types: TypesOpt = None,
     tech: TechOpt = None,
     depends: DependsOpt = None,
@@ -441,6 +468,7 @@ def add_script(
             name=name,
             description=description,
             default=default,
+            category=category,
             types=types,
             tech=tech,
             depends=depends,
@@ -479,6 +507,7 @@ def add_mcp(
     name: NameOpt = None,
     description: DescOpt = None,
     default: DefaultOpt = None,
+    category: CategoryOpt = None,
     types: TypesOpt = None,
     tech: TechOpt = None,
     depends: DependsOpt = None,
@@ -499,6 +528,7 @@ def add_mcp(
             name=name,
             description=description,
             default=default,
+            category=category,
             types=types,
             tech=tech,
             depends=depends,
@@ -533,7 +563,7 @@ def list_capabilities(catalog: CatalogOpt = Path("catalog")) -> None:
             raise AuthoringError(str(exc)) from exc
         table = Table(title=f"SPADO catalog ({len(loaded.capabilities)})")
         table.add_column("Reference", no_wrap=True)
-        for column in ("Group", "Default", "Recommended for", "Depends on"):
+        for column in ("Group", "Categories", "Default", "Recommended for", "Depends on"):
             table.add_column(column)
         for cap in loaded.capabilities:
             rec = cap.manifest.recommendation
@@ -543,6 +573,7 @@ def list_capabilities(catalog: CatalogOpt = Path("catalog")) -> None:
             table.add_row(
                 cap.ref,
                 cap.manifest.name,
+                ", ".join(c.value for c in cap.manifest.categories),
                 "yes" if cap.manifest.default_selected else "",
                 recommended,
                 ", ".join(cap.manifest.dependencies),

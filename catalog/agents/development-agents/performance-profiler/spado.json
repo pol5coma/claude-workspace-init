@@ -4,6 +4,9 @@
   "type": "agent",
   "name": "Performance profiler",
   "description": "Performance analysis and optimization specialist. Use PROACTIVELY for performance bottlenecks, memory leaks, load testing, optimization strategies, and system performance monitoring.",
+  "categories": [
+    "quality"
+  ],
   "dependencies": [],
   "conflicts": []
 }

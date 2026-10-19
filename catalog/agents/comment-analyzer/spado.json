@@ -4,6 +4,9 @@
   "type": "agent",
   "name": "Comment analyzer",
   "description": "Analyze code comments for accuracy, completeness, maintainability, and comment rot risk.",
+  "categories": [
+    "quality"
+  ],
   "dependencies": [],
   "conflicts": []
 }

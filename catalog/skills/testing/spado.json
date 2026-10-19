@@ -4,6 +4,9 @@
   "type": "skill",
   "name": "Testing",
   "description": "Helps Claude select and run the smallest relevant test scope before escalating to the full suite.",
+  "categories": [
+    "testing"
+  ],
   "tags": ["testing", "quality"],
   "recommendation": {
     "project_types": ["backend", "frontend", "fullstack", "ai", "cli", "library", "data_ml"],

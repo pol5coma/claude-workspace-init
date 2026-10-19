@@ -4,6 +4,9 @@
   "type": "agent",
   "name": "Test engineer",
   "description": "Test automation and quality assurance specialist. Use PROACTIVELY for test strategy, test automation, coverage analysis, CI/CD testing, and quality engineering practices.",
+  "categories": [
+    "testing"
+  ],
   "dependencies": [],
   "conflicts": []
 }

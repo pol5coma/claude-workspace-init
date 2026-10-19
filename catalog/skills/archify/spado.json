@@ -4,6 +4,9 @@
   "type": "skill",
   "name": "Archify",
   "description": "Interactive HTML diagrams (architecture, workflow, sequence, dataflow, lifecycle) from requirements or repository evidence. Requires Node.js 18+.",
+  "categories": [
+    "architecture"
+  ],
   "default_selected": true,
   "dependencies": [],
   "conflicts": [],

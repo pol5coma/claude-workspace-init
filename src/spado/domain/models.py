@@ -7,7 +7,7 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-from spado.domain.enums import CapabilityType, ProjectType
+from spado.domain.enums import CapabilityType, Category, ProjectType
 
 
 class RecommendationRules(BaseModel):
@@ -46,6 +46,7 @@ class CapabilityManifest(BaseModel):
     name: str
     description: str
     tags: list[str] = Field(default_factory=list)
+    categories: list[Category] = Field(default_factory=list)
     hosts: list[str] = Field(default_factory=lambda: ["claude"])
     default_selected: bool = False
     recommendation: RecommendationRules | None = None

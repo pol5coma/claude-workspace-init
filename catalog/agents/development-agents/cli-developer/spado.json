@@ -4,6 +4,9 @@
   "type": "agent",
   "name": "Cli developer",
   "description": "Use this agent when building command-line tools and terminal applications that require intuitive command design, cross-platform compatibility, and optimized developer experience. Specifically:\\ \\",
+  "categories": [
+    "backend"
+  ],
   "dependencies": [],
   "conflicts": []
 }

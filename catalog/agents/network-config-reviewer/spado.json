@@ -4,6 +4,9 @@
   "type": "agent",
   "name": "Network config reviewer",
   "description": "Reviews router and switch configurations for security, correctness, stale references, risky change-window commands, and missing operational guardrails.",
+  "categories": [
+    "infrastructure"
+  ],
   "dependencies": [],
   "conflicts": []
 }

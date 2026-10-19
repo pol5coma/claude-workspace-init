@@ -4,6 +4,9 @@
   "type": "skill",
   "name": "Continuous agent loop",
   "description": "Patterns for continuous autonomous agent loops with quality gates, evals, and recovery controls. Use when running an agent loop that must self-check, gate on evals, and recover from failures.",
+  "categories": [
+    "workflow"
+  ],
   "dependencies": [],
   "conflicts": []
 }

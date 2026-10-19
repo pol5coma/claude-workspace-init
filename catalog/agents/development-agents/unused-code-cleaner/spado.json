@@ -4,6 +4,9 @@
   "type": "agent",
   "name": "Unused code cleaner",
   "description": "Detects and removes unused code (imports, functions, classes) across multiple languages. Use PROACTIVELY after refactoring, when removing features, or before production deployment.",
+  "categories": [
+    "quality"
+  ],
   "dependencies": [],
   "conflicts": []
 }
