@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "redis-core",
+  "type": "skill",
+  "name": "Redis core",
+  "description": "Core Redis modeling guidance — choose the right data structure (String, Hash, List, Set, Sorted Set, JSON, Stream, Vector Set) and use consistent colon-separated key names. Use when designing a Redis data model, caching objects, deciding between Hash and JSON, building counters, leaderboards, membership sets, or session stores, or when reviewing/cleaning up Redis key naming.",
+  "recommendation": {
+    "project_types": [
+      "backend"
+    ],
+    "technologies": [
+      "redis"
+    ]
+  },
+  "dependencies": [],
+  "conflicts": []
+}

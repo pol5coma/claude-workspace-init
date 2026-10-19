@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "redis-semantic-cache",
+  "type": "skill",
+  "name": "Redis semantic cache",
+  "description": "Redis LangCache guidance for semantic caching of LLM responses on Redis Cloud — calling search/set via the SDK or REST API, tuning the similarity threshold, separating caches per task type, and filtering with custom attributes. Use when caching LLM completions or RAG answers to cut API cost and latency, building a cache-aside layer in front of OpenAI / Anthropic / etc., tuning hit rate vs precision, or splitting one app's LLM workloads into multiple LangCache caches.",
+  "recommendation": {
+    "project_types": [
+      "ai"
+    ],
+    "technologies": [
+      "redis"
+    ]
+  },
+  "dependencies": [],
+  "conflicts": []
+}

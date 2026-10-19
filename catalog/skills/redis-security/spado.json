@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "redis-security",
+  "type": "skill",
+  "name": "Redis security",
+  "description": "Redis security guidance covering authentication (requirepass and ACL users), TLS, ACL-based least-privilege access control, restricting network exposure via bind and protected-mode, firewall rules, and disabling dangerous commands. Use when deploying Redis to production, defining ACL users for an application, configuring TLS connections, locking down a Redis instance behind a firewall, or auditing a Redis deployment for security hardening.",
+  "recommendation": {
+    "project_types": [
+      "backend"
+    ],
+    "technologies": [
+      "redis"
+    ]
+  },
+  "dependencies": [],
+  "conflicts": []
+}
