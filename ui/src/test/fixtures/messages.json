@@ -1,0 +1,1405 @@
+{
+ "messages": [
+  {
+   "id": "5c1b72a0-dec4-4a0d-a20e-e1605d9e76e1",
+   "timestamp": "2026-10-19T09:01:00+00:00",
+   "source": "transcript",
+   "kind": "human_prompt",
+   "from": "85aeee08-903e-4e60-b03a-a13a4ae18d1c",
+   "to": [
+    "host"
+   ],
+   "summary": "/spdlc --new-run --phase idea-strategy --mode semi-auto",
+   "text": "/spdlc --new-run --phase idea-strategy --mode semi-auto\nWe want to help independent physiotherapists fill cancelled appointments. Assess the opportunity and frame the strategy. Show me each plan before executing it.",
+   "session": "demo-session"
+  },
+  {
+   "id": "eacb5338-65db-458e-9a54-ac7a636554a0",
+   "timestamp": "2026-10-19T09:04:00+00:00",
+   "source": "db",
+   "kind": "run_created",
+   "category": null,
+   "from": "85aeee08-903e-4e60-b03a-a13a4ae18d1c",
+   "to": [
+    "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+   ],
+   "summary": "Started phase run (1)",
+   "rationale": "Choose one product opportunity worth investigating and frame its strategy",
+   "subphase": null,
+   "activity": null,
+   "payload": {
+    "scope": {
+     "kind": "phase",
+     "id": "1"
+    },
+    "workflow_version": "1.0.0"
+   },
+   "result": {
+    "run": "ac7bcc98-8cb5-4662-b5bd-a064a9a80521"
+   }
+  },
+  {
+   "id": "adadbe14-7a77-43ca-affd-9d96a867f38e",
+   "timestamp": "2026-10-19T09:05:00+00:00",
+   "source": "transcript",
+   "kind": "delegation_prompt",
+   "from": "host",
+   "to": [
+    "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+   ],
+   "summary": "caoao: act as Chief Agent Orchestrator Agentic Officer",
+   "text": "You are Chief Agent Orchestrator Agentic Officer for SPADO run ac7bcc98-8cb5-4662-b5bd-a064a9a80521.\nSPADO_ACTOR_TOKEN_FILE=.spado/local/actors/0bcef1a5-36b3-483b-9918-1c9a5d4e029c.token\n\nCoordinate assignments, context, dependencies, plans and consolidation. Domain decisions remain with their named officers.",
+   "session": "demo-session",
+   "subagent_type": "caoao"
+  },
+  {
+   "id": "b59fdcff-bcb3-4a42-aa66-f17ca4126048",
+   "timestamp": "2026-10-19T09:08:00+00:00",
+   "source": "db",
+   "kind": "delegation",
+   "category": null,
+   "from": "85aeee08-903e-4e60-b03a-a13a4ae18d1c",
+   "to": [
+    "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+   ],
+   "summary": "Delegated CAOAO",
+   "rationale": "Coordinate assignments, context, dependencies, plans and consolidation. Domain decisions remain with their named officers.",
+   "subphase": null,
+   "activity": null,
+   "payload": {
+    "id": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c",
+    "project": "demo",
+    "definition": "CAOAO",
+    "level": "orchestrator",
+    "run_id": "ac7bcc98-8cb5-4662-b5bd-a064a9a80521",
+    "subphases": [],
+    "parent_id": "85aeee08-903e-4e60-b03a-a13a4ae18d1c"
+   },
+   "result": {
+    "actor": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+   }
+  },
+  {
+   "id": "677bd223-c908-4c86-8ae3-0b2a472a185c",
+   "timestamp": "2026-10-19T09:09:00+00:00",
+   "source": "transcript",
+   "kind": "delegation_prompt",
+   "from": "host",
+   "to": [
+    "63a2048a-78e9-4c57-845e-475e05c936fa"
+   ],
+   "summary": "ceao: act as Chief Executive Agentic Officer",
+   "text": "You are Chief Executive Agentic Officer for SPADO run ac7bcc98-8cb5-4662-b5bd-a064a9a80521.\nSPADO_ACTOR_TOKEN_FILE=.spado/local/actors/63a2048a-78e9-4c57-845e-475e05c936fa.token\n\nBusiness direction, strategic priorities, material investment and product lifecycle decisions. Own the decisions assigned to this role in the versioned activity briefs. Delegate specialist execution, review its evidence and record domain conclusions. Do not replace another officer's required review or expand the Human's delegation.",
+   "session": "demo-session",
+   "subagent_type": "ceao"
+  },
+  {
+   "id": "b5208f04-8486-4d99-86dc-35918a127d2e",
+   "timestamp": "2026-10-19T09:12:00+00:00",
+   "source": "db",
+   "kind": "delegation",
+   "category": null,
+   "from": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c",
+   "to": [
+    "63a2048a-78e9-4c57-845e-475e05c936fa"
+   ],
+   "summary": "Delegated CEAO",
+   "rationale": "Business direction, strategic priorities, material investment and product lifecycle decisions. Own the decisions assigned to this role in the versioned activity briefs. Delegate specialist execution, review its evidence and record domain conclusions. Do not replace another officer's required review or expand the Human's delegation.",
+   "subphase": null,
+   "activity": null,
+   "payload": {
+    "id": "63a2048a-78e9-4c57-845e-475e05c936fa",
+    "project": "demo",
+    "definition": "CEAO",
+    "level": "officer",
+    "run_id": "ac7bcc98-8cb5-4662-b5bd-a064a9a80521",
+    "subphases": [
+     "1.1",
+     "1.2",
+     "1.4",
+     "1.5",
+     "1.6",
+     "2.5",
+     "6.12",
+     "7.1"
+    ],
+    "parent_id": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+   },
+   "result": {
+    "actor": "63a2048a-78e9-4c57-845e-475e05c936fa"
+   }
+  },
+  {
+   "id": "8037bbe4-ef6e-4f40-8e46-01b252812ddb",
+   "timestamp": "2026-10-19T09:13:00+00:00",
+   "source": "transcript",
+   "kind": "delegation_prompt",
+   "from": "host",
+   "to": [
+    "909545f5-cab5-47ad-8064-bc8a70e50144"
+   ],
+   "summary": "cpao: act as Chief Product Agentic Officer",
+   "text": "You are Chief Product Agentic Officer for SPADO run ac7bcc98-8cb5-4662-b5bd-a064a9a80521.\nSPADO_ACTOR_TOKEN_FILE=.spado/local/actors/909545f5-cab5-47ad-8064-bc8a70e50144.token\n\nProduct strategy, discovery decisions, scope, prioritization, customer value and product acceptance. Own the decisions assigned to this role in the versioned activity briefs. Delegate specialist execution, review its evidence and record domain conclusions. Do not replace another officer's required review or expand the Human's delegation.",
+   "session": "demo-session",
+   "subagent_type": "cpao"
+  },
+  {
+   "id": "45d15861-3f6f-4a1a-9670-76119c847bd6",
+   "timestamp": "2026-10-19T09:16:00+00:00",
+   "source": "db",
+   "kind": "delegation",
+   "category": null,
+   "from": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c",
+   "to": [
+    "909545f5-cab5-47ad-8064-bc8a70e50144"
+   ],
+   "summary": "Delegated CPAO",
+   "rationale": "Product strategy, discovery decisions, scope, prioritization, customer value and product acceptance. Own the decisions assigned to this role in the versioned activity briefs. Delegate specialist execution, review its evidence and record domain conclusions. Do not replace another officer's required review or expand the Human's delegation.",
+   "subphase": null,
+   "activity": null,
+   "payload": {
+    "id": "909545f5-cab5-47ad-8064-bc8a70e50144",
+    "project": "demo",
+    "definition": "CPAO",
+    "level": "officer",
+    "run_id": "ac7bcc98-8cb5-4662-b5bd-a064a9a80521",
+    "subphases": [
+     "1.1",
+     "1.2",
+     "1.3",
+     "1.4",
+     "1.5",
+     "2.1",
+     "2.2",
+     "2.3",
+     "2.4",
+     "2.5",
+     "3.1",
+     "3.2",
+     "3.3",
+     "3.4",
+     "3.5",
+     "3.7",
+     "3.8",
+     "3.10",
+     "3.11",
+     "3.12",
+     "3.13",
+     "4.2",
+     "4.5",
+     "4.6",
+     "4.8",
+     "4.9",
+     "4.11",
+     "5.1",
+     "5.3",
+     "5.6",
+     "5.8",
+     "5.10",
+     "6.6",
+     "6.7",
+     "6.8",
+     "6.9",
+     "6.10",
+     "6.12",
+     "7.1",
+     "7.2"
+    ],
+    "parent_id": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+   },
+   "result": {
+    "actor": "909545f5-cab5-47ad-8064-bc8a70e50144"
+   }
+  },
+  {
+   "id": "716a6ca6-59d2-41bf-8db6-564adc380ac6",
+   "timestamp": "2026-10-19T09:17:00+00:00",
+   "source": "transcript",
+   "kind": "delegation_prompt",
+   "from": "host",
+   "to": [
+    "ae972ae2-b595-4f9d-b00e-31f46e9171ed"
+   ],
+   "summary": "cmao: act as Chief Marketing Agentic Officer",
+   "text": "You are Chief Marketing Agentic Officer for SPADO run ac7bcc98-8cb5-4662-b5bd-a064a9a80521.\nSPADO_ACTOR_TOKEN_FILE=.spado/local/actors/ae972ae2-b595-4f9d-b00e-31f46e9171ed.token\n\nMarket positioning, brand, go-to-market strategy, acquisition and lifecycle marketing. Own the decisions assigned to this role in the versioned activity briefs. Delegate specialist execution, review its evidence and record domain conclusions. Do not replace another officer's required review or expand the Human's delegation.",
+   "session": "demo-session",
+   "subagent_type": "cmao"
+  },
+  {
+   "id": "f22a9cf9-8817-4b6e-928b-812a4022cc2b",
+   "timestamp": "2026-10-19T09:20:00+00:00",
+   "source": "db",
+   "kind": "delegation",
+   "category": null,
+   "from": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c",
+   "to": [
+    "ae972ae2-b595-4f9d-b00e-31f46e9171ed"
+   ],
+   "summary": "Delegated CMAO",
+   "rationale": "Market positioning, brand, go-to-market strategy, acquisition and lifecycle marketing. Own the decisions assigned to this role in the versioned activity briefs. Delegate specialist execution, review its evidence and record domain conclusions. Do not replace another officer's required review or expand the Human's delegation.",
+   "subphase": null,
+   "activity": null,
+   "payload": {
+    "id": "ae972ae2-b595-4f9d-b00e-31f46e9171ed",
+    "project": "demo",
+    "definition": "CMAO",
+    "level": "officer",
+    "run_id": "ac7bcc98-8cb5-4662-b5bd-a064a9a80521",
+    "subphases": [
+     "1.3",
+     "1.4",
+     "1.5",
+     "2.1",
+     "2.4",
+     "3.5",
+     "3.7",
+     "3.10",
+     "3.12",
+     "3.13",
+     "5.1",
+     "5.3",
+     "5.4",
+     "5.7",
+     "6.6",
+     "6.7",
+     "6.9",
+     "6.12",
+     "7.2"
+    ],
+    "parent_id": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+   },
+   "result": {
+    "actor": "ae972ae2-b595-4f9d-b00e-31f46e9171ed"
+   }
+  },
+  {
+   "id": "02185242-db89-4010-9d7b-c6fe7185c603",
+   "timestamp": "2026-10-19T09:21:00+00:00",
+   "source": "transcript",
+   "kind": "delegation_prompt",
+   "from": "host",
+   "to": [
+    "b14057d1-e6e8-4239-8319-a4f6c08cc3a8"
+   ],
+   "summary": "spdlc-1-1: act as Founder / Business Lead — 1.1",
+   "text": "You are Founder / Business Lead — 1.1 for SPADO run ac7bcc98-8cb5-4662-b5bd-a064a9a80521.\nSPADO_ACTOR_TOKEN_FILE=.spado/local/actors/b14057d1-e6e8-4239-8319-a4f6c08cc3a8.token\n\nExecute 1.1: Initial ideation and opportunity assessment. Operational owner: Founder / Business Lead. Required contributors: Founder/Business Lead, Product Manager and relevant stakeholders, with Marketing, Finance and Engineering input. Report to CEAO, CPAO; execution does not confer acceptance authority.",
+   "session": "demo-session",
+   "subagent_type": "spdlc-1-1"
+  },
+  {
+   "id": "78064cfc-65a9-4ee3-87dd-13594061859c",
+   "timestamp": "2026-10-19T09:24:00+00:00",
+   "source": "db",
+   "kind": "delegation",
+   "category": null,
+   "from": "63a2048a-78e9-4c57-845e-475e05c936fa",
+   "to": [
+    "b14057d1-e6e8-4239-8319-a4f6c08cc3a8"
+   ],
+   "summary": "Delegated spdlc-1-1",
+   "rationale": "Execute 1.1: Initial ideation and opportunity assessment. Operational owner: Founder / Business Lead. Required contributors: Founder/Business Lead, Product Manager and relevant stakeholders, with Marketing, Finance and Engineering input. Report to CEAO, CPAO; execution does not confer acceptance authority.",
+   "subphase": null,
+   "activity": null,
+   "payload": {
+    "id": "b14057d1-e6e8-4239-8319-a4f6c08cc3a8",
+    "project": "demo",
+    "definition": "spdlc-1-1",
+    "level": "specialist",
+    "run_id": "ac7bcc98-8cb5-4662-b5bd-a064a9a80521",
+    "subphases": [
+     "1.1"
+    ],
+    "parent_id": "63a2048a-78e9-4c57-845e-475e05c936fa"
+   },
+   "result": {
+    "actor": "b14057d1-e6e8-4239-8319-a4f6c08cc3a8"
+   }
+  },
+  {
+   "id": "6d2e71a4-f4fa-49c7-a550-99c446e0a918",
+   "timestamp": "2026-10-19T09:25:00+00:00",
+   "source": "transcript",
+   "kind": "delegation_prompt",
+   "from": "host",
+   "to": [
+    "5bca4d06-527e-4423-89ef-96fdd38d54a1"
+   ],
+   "summary": "spdlc-1-3: act as Product Marketing Manager — 1.3",
+   "text": "You are Product Marketing Manager — 1.3 for SPADO run ac7bcc98-8cb5-4662-b5bd-a064a9a80521.\nSPADO_ACTOR_TOKEN_FILE=.spado/local/actors/5bca4d06-527e-4423-89ef-96fdd38d54a1.token\n\nExecute 1.3: Define initial target audience and value proposition. Operational owner: Product Marketing Manager. Required contributors: Product Manager and Product Marketing Manager, with UX Researcher input. Report to CPAO, CMAO; execution does not confer acceptance authority.",
+   "session": "demo-session",
+   "subagent_type": "spdlc-1-3"
+  },
+  {
+   "id": "f0ffc86e-ea1c-4fc9-92d4-092bbb6c4586",
+   "timestamp": "2026-10-19T09:28:00+00:00",
+   "source": "db",
+   "kind": "delegation",
+   "category": null,
+   "from": "ae972ae2-b595-4f9d-b00e-31f46e9171ed",
+   "to": [
+    "5bca4d06-527e-4423-89ef-96fdd38d54a1"
+   ],
+   "summary": "Delegated spdlc-1-3",
+   "rationale": "Execute 1.3: Define initial target audience and value proposition. Operational owner: Product Marketing Manager. Required contributors: Product Manager and Product Marketing Manager, with UX Researcher input. Report to CPAO, CMAO; execution does not confer acceptance authority.",
+   "subphase": null,
+   "activity": null,
+   "payload": {
+    "id": "5bca4d06-527e-4423-89ef-96fdd38d54a1",
+    "project": "demo",
+    "definition": "spdlc-1-3",
+    "level": "specialist",
+    "run_id": "ac7bcc98-8cb5-4662-b5bd-a064a9a80521",
+    "subphases": [
+     "1.3"
+    ],
+    "parent_id": "ae972ae2-b595-4f9d-b00e-31f46e9171ed"
+   },
+   "result": {
+    "actor": "5bca4d06-527e-4423-89ef-96fdd38d54a1"
+   }
+  },
+  {
+   "id": "b1047e7e-3144-4f6d-82c2-81ff169f7421",
+   "timestamp": "2026-10-19T09:29:00+00:00",
+   "source": "transcript",
+   "kind": "delegation_prompt",
+   "from": "host",
+   "to": [
+    "6962d14d-3d47-454d-a3cc-8d883234a7cc"
+   ],
+   "summary": "spdlc-1-2: act as Product Manager — 1.2",
+   "text": "You are Product Manager — 1.2 for SPADO run ac7bcc98-8cb5-4662-b5bd-a064a9a80521.\nSPADO_ACTOR_TOKEN_FILE=.spado/local/actors/6962d14d-3d47-454d-a3cc-8d883234a7cc.token\n\nExecute 1.2: Define product vision and strategic goals. Operational owner: Product Manager. Required contributors: Product Manager and Business/Strategy Lead, working with executive stakeholders. Report to CEAO, CPAO; execution does not confer acceptance authority.",
+   "session": "demo-session",
+   "subagent_type": "spdlc-1-2"
+  },
+  {
+   "id": "0f747705-4d80-4025-993b-2950ec9201b3",
+   "timestamp": "2026-10-19T09:32:00+00:00",
+   "source": "db",
+   "kind": "delegation",
+   "category": null,
+   "from": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c",
+   "to": [
+    "6962d14d-3d47-454d-a3cc-8d883234a7cc"
+   ],
+   "summary": "Delegated spdlc-1-2",
+   "rationale": "Execute 1.2: Define product vision and strategic goals. Operational owner: Product Manager. Required contributors: Product Manager and Business/Strategy Lead, working with executive stakeholders. Report to CEAO, CPAO; execution does not confer acceptance authority.",
+   "subphase": null,
+   "activity": null,
+   "payload": {
+    "id": "6962d14d-3d47-454d-a3cc-8d883234a7cc",
+    "project": "demo",
+    "definition": "spdlc-1-2",
+    "level": "specialist",
+    "run_id": "ac7bcc98-8cb5-4662-b5bd-a064a9a80521",
+    "subphases": [
+     "1.2"
+    ],
+    "parent_id": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+   },
+   "result": {
+    "actor": "6962d14d-3d47-454d-a3cc-8d883234a7cc"
+   }
+  },
+  {
+   "id": "64e5a968-0b0f-4b10-b815-cbdb6e5bcb83",
+   "timestamp": "2026-10-19T09:35:00+00:00",
+   "source": "db",
+   "kind": "phase_plan",
+   "category": null,
+   "from": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c",
+   "to": [
+    "63a2048a-78e9-4c57-845e-475e05c936fa",
+    "909545f5-cab5-47ad-8064-bc8a70e50144",
+    "ae972ae2-b595-4f9d-b00e-31f46e9171ed",
+    "def:CFAO",
+    "def:CTAO",
+    "85aeee08-903e-4e60-b03a-a13a4ae18d1c"
+   ],
+   "summary": "Phase 1 plan v1",
+   "rationale": "Phase 1 is the first incomplete phase of the selected scope.",
+   "subphase": null,
+   "activity": null,
+   "payload": {
+    "phase": "1",
+    "plan": {
+     "objective": "Select an opportunity, its vision, audience and business model",
+     "deliverable": "Accepted Idea & Strategy outputs for subphases 1.1–1.6",
+     "actions": [
+      "Assess opportunities (1.1)",
+      "Define vision (1.2) and audience (1.3) on the chosen opportunity",
+      "Frame business model, risks and budget (1.4–1.6)"
+     ],
+     "criteria": [
+      "Each subphase accepted by its domain officers"
+     ]
+    }
+   },
+   "result": {
+    "phase": "1",
+    "plan": {
+     "id": "9334cf04-dbab-419a-ae74-d44fbe621b26",
+     "version": 1,
+     "objective": "Select an opportunity, its vision, audience and business model",
+     "deliverable": "Accepted Idea & Strategy outputs for subphases 1.1–1.6",
+     "actions": [
+      "Assess opportunities (1.1)",
+      "Define vision (1.2) and audience (1.3) on the chosen opportunity",
+      "Frame business model, risks and budget (1.4–1.6)"
+     ],
+     "criteria": [
+      "Each subphase accepted by its domain officers"
+     ],
+     "inputs": {},
+     "assumptions": [],
+     "missing_dependencies": [],
+     "reused_activities": [],
+     "approved_by": null,
+     "approved_at": null
+    },
+    "run_version": 1
+   }
+  },
+  {
+   "id": "5fcf7bbd-42c4-435e-8573-7bee7195994f",
+   "timestamp": "2026-10-19T09:36:00+00:00",
+   "source": "transcript",
+   "kind": "host_reply",
+   "from": "host",
+   "to": [
+    "85aeee08-903e-4e60-b03a-a13a4ae18d1c"
+   ],
+   "summary": "Phase 1 plan ready for approval",
+   "text": "CAOAO prepared the phase 1 plan v1. Do you approve it?",
+   "session": "demo-session"
+  },
+  {
+   "id": "60087a82-04e3-4ecd-8534-eeb3014e553f",
+   "timestamp": "2026-10-19T09:37:00+00:00",
+   "source": "transcript",
+   "kind": "human_prompt",
+   "from": "85aeee08-903e-4e60-b03a-a13a4ae18d1c",
+   "to": [
+    "host"
+   ],
+   "summary": "Approve phase plan",
+   "text": "Approved, go ahead.",
+   "session": "demo-session"
+  },
+  {
+   "id": "c4db735a-7c47-45ea-878c-02b5d9a9f9b4",
+   "timestamp": "2026-10-19T09:40:00+00:00",
+   "source": "db",
+   "kind": "phase_approve",
+   "category": null,
+   "from": "85aeee08-903e-4e60-b03a-a13a4ae18d1c",
+   "to": [
+    "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+   ],
+   "summary": "Approved phase 1 plan",
+   "rationale": "Human approved the phase plan in chat.",
+   "subphase": null,
+   "activity": null,
+   "payload": {
+    "phase": "1",
+    "plan_id": "9334cf04-dbab-419a-ae74-d44fbe621b26",
+    "version": 1
+   },
+   "result": {
+    "phase": "1",
+    "plan_id": "9334cf04-dbab-419a-ae74-d44fbe621b26",
+    "run_version": 2
+   }
+  },
+  {
+   "id": "9e07061f-9a1a-4153-93a9-abf4e947a50b",
+   "timestamp": "2026-10-19T09:43:00+00:00",
+   "source": "db",
+   "kind": "prepare",
+   "category": null,
+   "from": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c",
+   "to": [
+    "b14057d1-e6e8-4239-8319-a4f6c08cc3a8",
+    "63a2048a-78e9-4c57-845e-475e05c936fa",
+    "909545f5-cab5-47ad-8064-bc8a70e50144",
+    "85aeee08-903e-4e60-b03a-a13a4ae18d1c"
+   ],
+   "summary": "Plan for 1.1: Assess five opportunity ideas and choose one to investigate",
+   "rationale": "Brief 1.1 assigns the Founder / Business Lead under CEAO and CPAO.",
+   "subphase": "1.1",
+   "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+   "payload": {
+    "subphase": "1.1",
+    "owner": "b14057d1-e6e8-4239-8319-a4f6c08cc3a8",
+    "plan": {
+     "objective": "Assess five opportunity ideas and choose one to investigate",
+     "deliverable": "Shortlisted ideas, initial opportunity statements, selection criteria and rationale for the opportunity chosen for investigation.",
+     "actions": [
+      "List candidate ideas",
+      "Score them against selection criteria",
+      "Record rejected ideas and unknowns"
+     ],
+     "criteria": [
+      "At least one opportunity has a clear problem hypothesis, intended beneficiary and selection rationale; rejected ideas and major unknowns are recorded."
+     ]
+    }
+   },
+   "result": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+    "status": "awaiting_plan_approval",
+    "missing": [],
+    "out_of_order": false,
+    "run_version": 3
+   }
+  },
+  {
+   "id": "6e4986b3-8c85-46a8-8d12-c3b4df86206a",
+   "timestamp": "2026-10-19T09:46:00+00:00",
+   "source": "db",
+   "kind": "note",
+   "category": "human_question",
+   "from": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c",
+   "to": [
+    "85aeee08-903e-4e60-b03a-a13a4ae18d1c"
+   ],
+   "summary": "human question: Plan v1 for 1.1 is ready. Approve?",
+   "rationale": "Semi-auto mode requires Human plan approval.",
+   "subphase": "1.1",
+   "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+   "payload": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+    "category": "human_question",
+    "message": "Plan v1 for 1.1 is ready. Approve?"
+   },
+   "result": {
+    "recorded": true,
+    "category": "human_question",
+    "run_version": 4
+   }
+  },
+  {
+   "id": "fe8f0629-067e-414f-8513-8f6af4518998",
+   "timestamp": "2026-10-19T09:47:00+00:00",
+   "source": "transcript",
+   "kind": "human_prompt",
+   "from": "85aeee08-903e-4e60-b03a-a13a4ae18d1c",
+   "to": [
+    "host"
+   ],
+   "summary": "Approve plan 1.1",
+   "text": "Yes, approve the 1.1 plan.",
+   "session": "demo-session"
+  },
+  {
+   "id": "63fa13d4-e2ed-4a9e-ba53-95b539d8f76b",
+   "timestamp": "2026-10-19T09:50:00+00:00",
+   "source": "db",
+   "kind": "approve_plan",
+   "category": null,
+   "from": "85aeee08-903e-4e60-b03a-a13a4ae18d1c",
+   "to": [
+    "b14057d1-e6e8-4239-8319-a4f6c08cc3a8",
+    "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+   ],
+   "summary": "Approved plan v1",
+   "rationale": "Human approved plan v1 in chat.",
+   "subphase": "1.1",
+   "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+   "payload": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+    "plan_id": "4b4657e6-942c-44b1-aca4-32afd3c0ab83",
+    "version": 1
+   },
+   "result": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+    "status": "ready",
+    "run_version": 5
+   }
+  },
+  {
+   "id": "f445662d-a14f-44a5-a106-0f40e60064f5",
+   "timestamp": "2026-10-19T09:53:00+00:00",
+   "source": "db",
+   "kind": "start",
+   "category": null,
+   "from": "b14057d1-e6e8-4239-8319-a4f6c08cc3a8",
+   "to": [
+    "63a2048a-78e9-4c57-845e-475e05c936fa",
+    "909545f5-cab5-47ad-8064-bc8a70e50144",
+    "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+   ],
+   "summary": "Started work on 1.1",
+   "rationale": "Plan approved and no missing inputs.",
+   "subphase": "1.1",
+   "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+   "payload": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0"
+   },
+   "result": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+    "status": "running",
+    "run_version": 6
+   }
+  },
+  {
+   "id": "49724be7-54c6-4e0b-8efa-c706c84bcbac",
+   "timestamp": "2026-10-19T09:56:00+00:00",
+   "source": "db",
+   "kind": "document",
+   "category": null,
+   "from": "b14057d1-e6e8-4239-8319-a4f6c08cc3a8",
+   "to": [
+    "63a2048a-78e9-4c57-845e-475e05c936fa",
+    "909545f5-cab5-47ad-8064-bc8a70e50144"
+   ],
+   "summary": "Wrote docs/strategy/opportunities.md",
+   "rationale": "First draft of the opportunity assessment.",
+   "subphase": "1.1",
+   "activity": null,
+   "payload": {
+    "path": "docs/strategy/opportunities.md",
+    "subphase": "1.1",
+    "content": "# Opportunities\n\n1. **Cancellation backfill for physiotherapists** — chosen.\n2. Group class scheduling.\n3. Insurance pre-authorisation.\n"
+   },
+   "result": {
+    "revision": "6f829506-bcb6-485f-962e-db84d92e7ff2",
+    "affected": [],
+    "run_version": 7
+   }
+  },
+  {
+   "id": "06309714-ad71-4e75-ba8e-9078a2236dc8",
+   "timestamp": "2026-10-19T09:59:00+00:00",
+   "source": "db",
+   "kind": "deliver",
+   "category": null,
+   "from": "b14057d1-e6e8-4239-8319-a4f6c08cc3a8",
+   "to": [
+    "63a2048a-78e9-4c57-845e-475e05c936fa",
+    "909545f5-cab5-47ad-8064-bc8a70e50144"
+   ],
+   "summary": "Delivered 1 output(s) for review",
+   "rationale": "Draft covers the shortlist and the chosen opportunity.",
+   "subphase": "1.1",
+   "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+   "payload": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+    "outputs": [
+     "6f829506-bcb6-485f-962e-db84d92e7ff2"
+    ],
+    "criteria_evidence": {
+     "At least one opportunity has a clear problem hypothesis, intended beneficiary and selection rationale; rejected ideas and major unknowns are recorded.": "docs/strategy/opportunities.md"
+    }
+   },
+   "result": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+    "status": "awaiting_review",
+    "run_version": 8
+   }
+  },
+  {
+   "id": "04fd350c-3fdf-4d7e-bf83-8fc14a5b8ad2",
+   "timestamp": "2026-10-19T10:00:00+00:00",
+   "source": "transcript",
+   "kind": "subagent_report",
+   "from": "b14057d1-e6e8-4239-8319-a4f6c08cc3a8",
+   "to": [
+    "host"
+   ],
+   "summary": "Delivered opportunity assessment v1",
+   "text": "Delivered docs/strategy/opportunities.md with three ideas and the chosen opportunity.",
+   "session": "demo-session"
+  },
+  {
+   "id": "1f75c494-c6d4-494d-a8bc-51633c5a0b21",
+   "timestamp": "2026-10-19T10:03:00+00:00",
+   "source": "db",
+   "kind": "domain_review",
+   "category": null,
+   "from": "63a2048a-78e9-4c57-845e-475e05c936fa",
+   "to": [
+    "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+   ],
+   "summary": "approved: Clear problem hypothesis and beneficiary.",
+   "rationale": "Business review of the draft.",
+   "subphase": "1.1",
+   "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+   "payload": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+    "decision": "approved",
+    "evidence": "Clear problem hypothesis and beneficiary."
+   },
+   "result": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+    "status": "awaiting_review",
+    "run_version": 9
+   }
+  },
+  {
+   "id": "d2d38920-cfd1-4c8e-b78d-eb871563d95e",
+   "timestamp": "2026-10-19T10:06:00+00:00",
+   "source": "db",
+   "kind": "domain_review",
+   "category": null,
+   "from": "909545f5-cab5-47ad-8064-bc8a70e50144",
+   "to": [
+    "0bcef1a5-36b3-483b-9918-1c9a5d4e029c",
+    "b14057d1-e6e8-4239-8319-a4f6c08cc3a8"
+   ],
+   "summary": "changes requested: Rejected ideas lack reasons and major unknowns are missing.",
+   "rationale": "Exit criterion requires rejected ideas and unknowns.",
+   "subphase": "1.1",
+   "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+   "payload": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+    "decision": "changes_requested",
+    "evidence": "Rejected ideas lack reasons and major unknowns are missing."
+   },
+   "result": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+    "status": "blocked",
+    "run_version": 10
+   }
+  },
+  {
+   "id": "49b13de4-5aa1-449d-b97f-f514be0fb1fc",
+   "timestamp": "2026-10-19T10:09:00+00:00",
+   "source": "db",
+   "kind": "note",
+   "category": "execution",
+   "from": "b14057d1-e6e8-4239-8319-a4f6c08cc3a8",
+   "to": [
+    "63a2048a-78e9-4c57-845e-475e05c936fa",
+    "909545f5-cab5-47ad-8064-bc8a70e50144",
+    "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+   ],
+   "summary": "execution: Adding rejection rationale and an unknowns section.",
+   "rationale": "Responding to CPAO.",
+   "subphase": "1.1",
+   "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+   "payload": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+    "category": "execution",
+    "message": "Adding rejection rationale and an unknowns section."
+   },
+   "result": {
+    "recorded": true,
+    "category": "execution",
+    "run_version": 11
+   }
+  },
+  {
+   "id": "583474cb-3ad3-4b26-b08b-f57ad1980e15",
+   "timestamp": "2026-10-19T10:12:00+00:00",
+   "source": "db",
+   "kind": "start",
+   "category": null,
+   "from": "b14057d1-e6e8-4239-8319-a4f6c08cc3a8",
+   "to": [
+    "63a2048a-78e9-4c57-845e-475e05c936fa",
+    "909545f5-cab5-47ad-8064-bc8a70e50144",
+    "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+   ],
+   "summary": "Started work on 1.1",
+   "rationale": "Resuming after requested changes.",
+   "subphase": "1.1",
+   "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+   "payload": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0"
+   },
+   "result": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+    "status": "running",
+    "run_version": 12
+   }
+  },
+  {
+   "id": "741ac55f-6433-43e6-8e9d-39223b5ec7e7",
+   "timestamp": "2026-10-19T10:15:00+00:00",
+   "source": "db",
+   "kind": "document",
+   "category": null,
+   "from": "b14057d1-e6e8-4239-8319-a4f6c08cc3a8",
+   "to": [
+    "63a2048a-78e9-4c57-845e-475e05c936fa",
+    "909545f5-cab5-47ad-8064-bc8a70e50144"
+   ],
+   "summary": "Wrote docs/strategy/opportunities.md",
+   "rationale": "Corrected assessment with rejection reasons and unknowns.",
+   "subphase": "1.1",
+   "activity": null,
+   "payload": {
+    "path": "docs/strategy/opportunities.md",
+    "subphase": "1.1",
+    "content": "# Opportunities\n\n## Chosen\n**Cancellation backfill for physiotherapists**: clinics lose 12–18% of slots to late cancellations.\n\n## Rejected\n- Group class scheduling — crowded market.\n- Insurance pre-authorisation — regulatory dependency.\n\n## Unknowns\n- Willingness to pay per filled slot.\n- Patient opt-in rates for short-notice offers.\n"
+   },
+   "result": {
+    "revision": "145ed674-0d75-4909-a80c-a1650f0200a8",
+    "affected": [],
+    "run_version": 13
+   }
+  },
+  {
+   "id": "0b961761-5d01-448c-adfe-cc4b379cfac4",
+   "timestamp": "2026-10-19T10:18:00+00:00",
+   "source": "db",
+   "kind": "deliver",
+   "category": null,
+   "from": "b14057d1-e6e8-4239-8319-a4f6c08cc3a8",
+   "to": [
+    "63a2048a-78e9-4c57-845e-475e05c936fa",
+    "909545f5-cab5-47ad-8064-bc8a70e50144"
+   ],
+   "summary": "Delivered 1 output(s) for review",
+   "rationale": "All exit criteria evidenced.",
+   "subphase": "1.1",
+   "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+   "payload": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+    "outputs": [
+     "145ed674-0d75-4909-a80c-a1650f0200a8"
+    ],
+    "criteria_evidence": {
+     "At least one opportunity has a clear problem hypothesis, intended beneficiary and selection rationale; rejected ideas and major unknowns are recorded.": "docs/strategy/opportunities.md#unknowns"
+    }
+   },
+   "result": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+    "status": "awaiting_review",
+    "run_version": 14
+   }
+  },
+  {
+   "id": "9a57e279-182c-4381-9518-3c0fea22539a",
+   "timestamp": "2026-10-19T10:21:00+00:00",
+   "source": "db",
+   "kind": "domain_review",
+   "category": null,
+   "from": "63a2048a-78e9-4c57-845e-475e05c936fa",
+   "to": [
+    "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+   ],
+   "summary": "approved: Still coherent after corrections.",
+   "rationale": "Business review.",
+   "subphase": "1.1",
+   "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+   "payload": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+    "decision": "approved",
+    "evidence": "Still coherent after corrections."
+   },
+   "result": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+    "status": "awaiting_review",
+    "run_version": 15
+   }
+  },
+  {
+   "id": "18d8158a-e6d2-4a00-8f2d-0667a25ea3cc",
+   "timestamp": "2026-10-19T10:24:00+00:00",
+   "source": "db",
+   "kind": "domain_review",
+   "category": null,
+   "from": "909545f5-cab5-47ad-8064-bc8a70e50144",
+   "to": [
+    "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+   ],
+   "summary": "approved: Rejections and unknowns recorded.",
+   "rationale": "Product review.",
+   "subphase": "1.1",
+   "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+   "payload": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+    "decision": "approved",
+    "evidence": "Rejections and unknowns recorded."
+   },
+   "result": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+    "status": "awaiting_review",
+    "run_version": 16
+   }
+  },
+  {
+   "id": "e3f4c040-e448-4a16-8811-6399993563fa",
+   "timestamp": "2026-10-19T10:27:00+00:00",
+   "source": "db",
+   "kind": "accept",
+   "category": null,
+   "from": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c",
+   "to": [
+    "85aeee08-903e-4e60-b03a-a13a4ae18d1c",
+    "b14057d1-e6e8-4239-8319-a4f6c08cc3a8",
+    "63a2048a-78e9-4c57-845e-475e05c936fa",
+    "909545f5-cab5-47ad-8064-bc8a70e50144"
+   ],
+   "summary": "Accepted 1.1",
+   "rationale": "Both owner officers approved; gates pass.",
+   "subphase": "1.1",
+   "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+   "payload": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0"
+   },
+   "result": {
+    "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+    "status": "accepted",
+    "run_version": 17
+   }
+  },
+  {
+   "id": "869095bd-2dd1-44dd-8588-f3bfa82791ba",
+   "timestamp": "2026-10-19T10:30:00+00:00",
+   "source": "db",
+   "kind": "promote",
+   "category": null,
+   "from": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c",
+   "to": [
+    "85aeee08-903e-4e60-b03a-a13a4ae18d1c"
+   ],
+   "summary": "Promoted docs/strategy/opportunities.md to official",
+   "rationale": "Accepted output becomes official.",
+   "subphase": null,
+   "activity": null,
+   "payload": {
+    "revision": "145ed674-0d75-4909-a80c-a1650f0200a8"
+   },
+   "result": {
+    "revision": "145ed674-0d75-4909-a80c-a1650f0200a8",
+    "affected": [],
+    "run_version": 18
+   }
+  },
+  {
+   "id": "8d0c5415-2d81-4115-aac0-d989a9f04d23",
+   "timestamp": "2026-10-19T10:33:00+00:00",
+   "source": "db",
+   "kind": "prepare",
+   "category": null,
+   "from": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c",
+   "to": [
+    "5bca4d06-527e-4423-89ef-96fdd38d54a1",
+    "909545f5-cab5-47ad-8064-bc8a70e50144",
+    "ae972ae2-b595-4f9d-b00e-31f46e9171ed",
+    "85aeee08-903e-4e60-b03a-a13a4ae18d1c"
+   ],
+   "summary": "Plan for 1.3: Define the initial audience and value proposition",
+   "rationale": "1.1 is accepted, so 1.3 has its input.",
+   "subphase": "1.3",
+   "activity": "e0ff489d-c65e-4a93-be27-ecdae633254f",
+   "payload": {
+    "subphase": "1.3",
+    "owner": "5bca4d06-527e-4423-89ef-96fdd38d54a1",
+    "plan": {
+     "objective": "Define the initial audience and value proposition",
+     "deliverable": "Initial user and buyer segment hypotheses, problem statements, value proposition and differentiation hypotheses.",
+     "actions": [
+      "Segment clinics",
+      "Draft value proposition"
+     ],
+     "criteria": [
+      "Users and buyers are distinguished where relevant; the proposed problem, value and differentiation are explicit and assumptions are labelled."
+     ]
+    }
+   },
+   "result": {
+    "activity": "e0ff489d-c65e-4a93-be27-ecdae633254f",
+    "status": "awaiting_plan_approval",
+    "missing": [],
+    "out_of_order": false,
+    "run_version": 19
+   }
+  },
+  {
+   "id": "dfc9a689-1c0f-41ce-8d86-75394577b7c0",
+   "timestamp": "2026-10-19T10:34:00+00:00",
+   "source": "transcript",
+   "kind": "human_prompt",
+   "from": "85aeee08-903e-4e60-b03a-a13a4ae18d1c",
+   "to": [
+    "host"
+   ],
+   "summary": "Approve plan 1.3",
+   "text": "Approve 1.3.",
+   "session": "demo-session"
+  },
+  {
+   "id": "7136135e-2e02-457e-8fb3-ea4541363887",
+   "timestamp": "2026-10-19T10:37:00+00:00",
+   "source": "db",
+   "kind": "approve_plan",
+   "category": null,
+   "from": "85aeee08-903e-4e60-b03a-a13a4ae18d1c",
+   "to": [
+    "5bca4d06-527e-4423-89ef-96fdd38d54a1",
+    "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+   ],
+   "summary": "Approved plan v1",
+   "rationale": "Human approved in chat.",
+   "subphase": "1.3",
+   "activity": "e0ff489d-c65e-4a93-be27-ecdae633254f",
+   "payload": {
+    "activity": "e0ff489d-c65e-4a93-be27-ecdae633254f",
+    "plan_id": "24d85fdc-a710-42cc-a4e7-3aee52742ed0",
+    "version": 1
+   },
+   "result": {
+    "activity": "e0ff489d-c65e-4a93-be27-ecdae633254f",
+    "status": "ready",
+    "run_version": 20
+   }
+  },
+  {
+   "id": "c134dbec-a6aa-4fce-9a22-d68d901dcdfa",
+   "timestamp": "2026-10-19T10:40:00+00:00",
+   "source": "db",
+   "kind": "start",
+   "category": null,
+   "from": "5bca4d06-527e-4423-89ef-96fdd38d54a1",
+   "to": [
+    "909545f5-cab5-47ad-8064-bc8a70e50144",
+    "ae972ae2-b595-4f9d-b00e-31f46e9171ed",
+    "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+   ],
+   "summary": "Started work on 1.3",
+   "rationale": "Plan approved.",
+   "subphase": "1.3",
+   "activity": "e0ff489d-c65e-4a93-be27-ecdae633254f",
+   "payload": {
+    "activity": "e0ff489d-c65e-4a93-be27-ecdae633254f"
+   },
+   "result": {
+    "activity": "e0ff489d-c65e-4a93-be27-ecdae633254f",
+    "status": "running",
+    "run_version": 21
+   }
+  },
+  {
+   "id": "c511e04e-089f-49d4-b5f7-a6918cec0356",
+   "timestamp": "2026-10-19T10:43:00+00:00",
+   "source": "db",
+   "kind": "document",
+   "category": null,
+   "from": "5bca4d06-527e-4423-89ef-96fdd38d54a1",
+   "to": [
+    "909545f5-cab5-47ad-8064-bc8a70e50144",
+    "ae972ae2-b595-4f9d-b00e-31f46e9171ed"
+   ],
+   "summary": "Wrote docs/strategy/audience.md",
+   "rationale": "Audience draft.",
+   "subphase": "1.3",
+   "activity": null,
+   "payload": {
+    "path": "docs/strategy/audience.md",
+    "subphase": "1.3",
+    "content": "# Audience\n\nIndependent clinics with 2–10 practitioners and online booking.\n"
+   },
+   "result": {
+    "revision": "d597db1d-39cd-4085-a7ff-5bbd62eea859",
+    "affected": [],
+    "run_version": 22
+   }
+  },
+  {
+   "id": "9f5e33f5-4570-4784-9ca6-a32f9ab06e07",
+   "timestamp": "2026-10-19T10:46:00+00:00",
+   "source": "db",
+   "kind": "deliver",
+   "category": null,
+   "from": "5bca4d06-527e-4423-89ef-96fdd38d54a1",
+   "to": [
+    "909545f5-cab5-47ad-8064-bc8a70e50144",
+    "ae972ae2-b595-4f9d-b00e-31f46e9171ed"
+   ],
+   "summary": "Delivered 1 output(s) for review",
+   "rationale": "Audience and value proposition drafted.",
+   "subphase": "1.3",
+   "activity": "e0ff489d-c65e-4a93-be27-ecdae633254f",
+   "payload": {
+    "activity": "e0ff489d-c65e-4a93-be27-ecdae633254f",
+    "outputs": [
+     "d597db1d-39cd-4085-a7ff-5bbd62eea859"
+    ],
+    "criteria_evidence": {
+     "Users and buyers are distinguished where relevant; the proposed problem, value and differentiation are explicit and assumptions are labelled.": "docs/strategy/audience.md"
+    }
+   },
+   "result": {
+    "activity": "e0ff489d-c65e-4a93-be27-ecdae633254f",
+    "status": "awaiting_review",
+    "run_version": 23
+   }
+  },
+  {
+   "id": "21109bdd-062a-45da-828a-8425e1b483e4",
+   "timestamp": "2026-10-19T10:49:00+00:00",
+   "source": "db",
+   "kind": "domain_review",
+   "category": null,
+   "from": "909545f5-cab5-47ad-8064-bc8a70e50144",
+   "to": [
+    "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+   ],
+   "summary": "approved: Segment is specific and reachable.",
+   "rationale": "Product review.",
+   "subphase": "1.3",
+   "activity": "e0ff489d-c65e-4a93-be27-ecdae633254f",
+   "payload": {
+    "activity": "e0ff489d-c65e-4a93-be27-ecdae633254f",
+    "decision": "approved",
+    "evidence": "Segment is specific and reachable."
+   },
+   "result": {
+    "activity": "e0ff489d-c65e-4a93-be27-ecdae633254f",
+    "status": "awaiting_review",
+    "run_version": 24
+   }
+  },
+  {
+   "id": "a4ae9188-db83-4513-9946-a97e1da31810",
+   "timestamp": "2026-10-19T10:52:00+00:00",
+   "source": "db",
+   "kind": "prepare",
+   "category": null,
+   "from": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c",
+   "to": [
+    "6962d14d-3d47-454d-a3cc-8d883234a7cc",
+    "63a2048a-78e9-4c57-845e-475e05c936fa",
+    "909545f5-cab5-47ad-8064-bc8a70e50144",
+    "85aeee08-903e-4e60-b03a-a13a4ae18d1c"
+   ],
+   "summary": "Plan for 1.2: Write the product vision and strategic goals",
+   "rationale": "1.1 accepted; vision can start.",
+   "subphase": "1.2",
+   "activity": "141b9a6d-ef72-4b0c-8351-010a9c3d18da",
+   "payload": {
+    "subphase": "1.2",
+    "owner": "6962d14d-3d47-454d-a3cc-8d883234a7cc",
+    "plan": {
+     "objective": "Write the product vision and strategic goals",
+     "deliverable": "Product vision statement, strategic objectives, initial outcome metrics and guiding product principles.",
+     "actions": [
+      "Draft vision",
+      "Set three goals"
+     ],
+     "criteria": [
+      "Vision, intended outcomes, strategic boundaries and initial success measures are understandable and agreed by the designated business and product decision owners."
+     ]
+    }
+   },
+   "result": {
+    "activity": "141b9a6d-ef72-4b0c-8351-010a9c3d18da",
+    "status": "awaiting_plan_approval",
+    "missing": [],
+    "out_of_order": false,
+    "run_version": 25
+   }
+  },
+  {
+   "id": "f1036539-6504-4301-bddf-4d2efad13086",
+   "timestamp": "2026-10-19T10:55:00+00:00",
+   "source": "db",
+   "kind": "note",
+   "category": "human_question",
+   "from": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c",
+   "to": [
+    "85aeee08-903e-4e60-b03a-a13a4ae18d1c"
+   ],
+   "summary": "human question: Plan v1 for 1.2 awaits your approval.",
+   "rationale": "Semi-auto mode requires Human plan approval.",
+   "subphase": "1.2",
+   "activity": "141b9a6d-ef72-4b0c-8351-010a9c3d18da",
+   "payload": {
+    "activity": "141b9a6d-ef72-4b0c-8351-010a9c3d18da",
+    "category": "human_question",
+    "message": "Plan v1 for 1.2 awaits your approval."
+   },
+   "result": {
+    "recorded": true,
+    "category": "human_question",
+    "run_version": 26
+   }
+  },
+  {
+   "id": "94eefa68-f976-4afc-916e-555d2066b58e",
+   "timestamp": "2026-10-19T10:58:00+00:00",
+   "source": "db",
+   "kind": "note",
+   "category": "question",
+   "from": "ae972ae2-b595-4f9d-b00e-31f46e9171ed",
+   "to": [
+    "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+   ],
+   "summary": "question: Should 1.3 include clinic owners as buyers as well as users?",
+   "rationale": "Pending marketing review.",
+   "subphase": "1.3",
+   "activity": "e0ff489d-c65e-4a93-be27-ecdae633254f",
+   "payload": {
+    "activity": "e0ff489d-c65e-4a93-be27-ecdae633254f",
+    "category": "question",
+    "message": "Should 1.3 include clinic owners as buyers as well as users?"
+   },
+   "result": {
+    "recorded": true,
+    "category": "question",
+    "run_version": 27
+   }
+  }
+ ],
+ "actors": [
+  {
+   "id": "85aeee08-903e-4e60-b03a-a13a4ae18d1c",
+   "project": "demo",
+   "definition": "Human",
+   "level": "human",
+   "run_id": null,
+   "subphases": [],
+   "parent_id": null
+  },
+  {
+   "id": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c",
+   "project": "demo",
+   "definition": "CAOAO",
+   "level": "orchestrator",
+   "run_id": "ac7bcc98-8cb5-4662-b5bd-a064a9a80521",
+   "subphases": [],
+   "parent_id": "85aeee08-903e-4e60-b03a-a13a4ae18d1c"
+  },
+  {
+   "id": "63a2048a-78e9-4c57-845e-475e05c936fa",
+   "project": "demo",
+   "definition": "CEAO",
+   "level": "officer",
+   "run_id": "ac7bcc98-8cb5-4662-b5bd-a064a9a80521",
+   "subphases": [
+    "1.1",
+    "1.2",
+    "1.4",
+    "1.5",
+    "1.6",
+    "2.5",
+    "6.12",
+    "7.1"
+   ],
+   "parent_id": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+  },
+  {
+   "id": "909545f5-cab5-47ad-8064-bc8a70e50144",
+   "project": "demo",
+   "definition": "CPAO",
+   "level": "officer",
+   "run_id": "ac7bcc98-8cb5-4662-b5bd-a064a9a80521",
+   "subphases": [
+    "1.1",
+    "1.2",
+    "1.3",
+    "1.4",
+    "1.5",
+    "2.1",
+    "2.2",
+    "2.3",
+    "2.4",
+    "2.5",
+    "3.1",
+    "3.2",
+    "3.3",
+    "3.4",
+    "3.5",
+    "3.7",
+    "3.8",
+    "3.10",
+    "3.11",
+    "3.12",
+    "3.13",
+    "4.2",
+    "4.5",
+    "4.6",
+    "4.8",
+    "4.9",
+    "4.11",
+    "5.1",
+    "5.3",
+    "5.6",
+    "5.8",
+    "5.10",
+    "6.6",
+    "6.7",
+    "6.8",
+    "6.9",
+    "6.10",
+    "6.12",
+    "7.1",
+    "7.2"
+   ],
+   "parent_id": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+  },
+  {
+   "id": "ae972ae2-b595-4f9d-b00e-31f46e9171ed",
+   "project": "demo",
+   "definition": "CMAO",
+   "level": "officer",
+   "run_id": "ac7bcc98-8cb5-4662-b5bd-a064a9a80521",
+   "subphases": [
+    "1.3",
+    "1.4",
+    "1.5",
+    "2.1",
+    "2.4",
+    "3.5",
+    "3.7",
+    "3.10",
+    "3.12",
+    "3.13",
+    "5.1",
+    "5.3",
+    "5.4",
+    "5.7",
+    "6.6",
+    "6.7",
+    "6.9",
+    "6.12",
+    "7.2"
+   ],
+   "parent_id": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+  },
+  {
+   "id": "b14057d1-e6e8-4239-8319-a4f6c08cc3a8",
+   "project": "demo",
+   "definition": "spdlc-1-1",
+   "level": "specialist",
+   "run_id": "ac7bcc98-8cb5-4662-b5bd-a064a9a80521",
+   "subphases": [
+    "1.1"
+   ],
+   "parent_id": "63a2048a-78e9-4c57-845e-475e05c936fa"
+  },
+  {
+   "id": "5bca4d06-527e-4423-89ef-96fdd38d54a1",
+   "project": "demo",
+   "definition": "spdlc-1-3",
+   "level": "specialist",
+   "run_id": "ac7bcc98-8cb5-4662-b5bd-a064a9a80521",
+   "subphases": [
+    "1.3"
+   ],
+   "parent_id": "ae972ae2-b595-4f9d-b00e-31f46e9171ed"
+  },
+  {
+   "id": "6962d14d-3d47-454d-a3cc-8d883234a7cc",
+   "project": "demo",
+   "definition": "spdlc-1-2",
+   "level": "specialist",
+   "run_id": "ac7bcc98-8cb5-4662-b5bd-a064a9a80521",
+   "subphases": [
+    "1.2"
+   ],
+   "parent_id": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+  }
+ ],
+ "transcripts": {
+  "available": true,
+  "folder": "demo",
+  "sessions": [
+   "demo-session"
+  ]
+ },
+ "threads": []
+}

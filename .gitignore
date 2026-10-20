@@ -16,3 +16,7 @@ drafts/
 # SPADO local runtime data (project configuration remains versionable)
 .spado/local/
 .spado/backups/
+
+# spado ui: web app build output (npm --prefix ui run build) and dependencies
+src/spado/ui/static/
+ui/node_modules/

@@ -1,0 +1,44 @@
+[
+ {
+  "id": "6f829506-bcb6-485f-962e-db84d92e7ff2",
+  "sequence": 1,
+  "path": "docs/strategy/opportunities.md",
+  "digest": "5e43259a251836f51ff1c609b117be261059409364244e8e18e468e2bf2518a1",
+  "author": "b14057d1-e6e8-4239-8319-a4f6c08cc3a8",
+  "subphase": "1.1",
+  "dependencies": [],
+  "approved_by": null,
+  "supersedes": null,
+  "created_at": "2026-10-19T09:56:00+00:00",
+  "official": false,
+  "size": 136
+ },
+ {
+  "id": "145ed674-0d75-4909-a80c-a1650f0200a8",
+  "sequence": 2,
+  "path": "docs/strategy/opportunities.md",
+  "digest": "38fee0d795a39ba06e0abaa3e6c0bb9bea80e309a47dd74b483b72883353aff1",
+  "author": "b14057d1-e6e8-4239-8319-a4f6c08cc3a8",
+  "subphase": "1.1",
+  "dependencies": [],
+  "approved_by": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c",
+  "supersedes": "6f829506-bcb6-485f-962e-db84d92e7ff2",
+  "created_at": "2026-10-19T10:15:00+00:00",
+  "official": true,
+  "size": 337
+ },
+ {
+  "id": "d597db1d-39cd-4085-a7ff-5bbd62eea859",
+  "sequence": 3,
+  "path": "docs/strategy/audience.md",
+  "digest": "f437ff7ff8e7eae8fa20c27bfcf3bd5b275dac68edb419a7e0882e030f0fc7ae",
+  "author": "5bca4d06-527e-4423-89ef-96fdd38d54a1",
+  "subphase": "1.3",
+  "dependencies": [],
+  "approved_by": null,
+  "supersedes": null,
+  "created_at": "2026-10-19T10:43:00+00:00",
+  "official": false,
+  "size": 76
+ }
+]
