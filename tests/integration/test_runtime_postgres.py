@@ -353,3 +353,30 @@ def test_cli_queries_do_not_write_files_or_database(state, tmp_path, monkeypatch
         assert isinstance(json.loads(response.stdout), dict)
     assert {str(p): p.read_bytes() for p in tmp_path.rglob("*") if p.is_file()} == before
     assert store.events(token, run.id) == events
+
+
+def test_ui_reads_postgres_without_writing_or_leaking_credentials(state):
+    from spado.ui.server import Api
+    from spado.ui.source import PostgresSource
+
+    store, run, human, token, specialist, specialist_token = state
+    source = PostgresSource.__new__(PostgresSource)
+    source.label, source.store, source._token, source.transcript_dir = "test", store, human, None
+    before = store.pulse(human, run.id)
+    api = Api(source)
+    base = f"/api/runs/{run.id}"
+    assert [r["objective"] for r in api.get("/api/runs")] == ["Integration fixture"]
+    actors = api.get(f"{base}/db/actors")
+    assert {a["definition"] for a in actors} == {"Human", "CAOAO", "spdlc-1-1"}
+    assert all("token_hash" not in a for a in actors)
+    org = api.get(f"{base}/organization")
+    caoao = next(i for i in org["instances"] if i["definition"] == "CAOAO")
+    assert caoao["event_kinds"] == {"delegation": 1}
+    kinds = [m["kind"] for m in api.get(f"{base}/messages")["messages"]]
+    assert kinds == ["run_created", "delegation", "delegation"]
+    assert api.get(f"{base}/db/embeddings") == []
+    pulse = api.get(f"{base}/pulse")
+    assert pulse.pop("transcripts") == 0.0
+    assert pulse == before == store.pulse(human, run.id)  # reading changed nothing
+    with pytest.raises(PermissionError):
+        store.actors(specialist_token, run.id)

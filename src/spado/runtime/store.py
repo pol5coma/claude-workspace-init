@@ -96,6 +96,10 @@ class Store:
                     "id": r[0]["id"],
                     "workflow": r[0]["workflow"]["id"],
                     "scope": r[0]["scope"],
+                    "objective": r[0]["objective"],
+                    "mode": r[0]["mode"],
+                    "version": r[0]["version"],
+                    "created_at": r[0]["created_at"],
                     "updated_at": r[0]["updated_at"],
                 }
                 for r in rows
@@ -233,6 +237,45 @@ class Store:
                 (event_id, self.project, run_id, actor.id, kind, Jsonb(request), Jsonb(result)),
             )
             return json.loads(json.dumps(result))
+
+    def pulse(self, token: str, run_id: str) -> dict:
+        """Cheap change detector for viewers: version, last update and event count."""
+        with self.connection(readonly=True) as conn:
+            actor = self._actor(conn, token)
+            run = self._run(conn, run_id)
+            authorize(run, actor, coordinator=True)
+            count = conn.execute(
+                "SELECT count(*) FROM spado_events WHERE project=%s AND run_id=%s",
+                (self.project, run_id),
+            ).fetchone()[0]
+            return {"version": run.version, "updated_at": run.updated_at, "event_count": count}
+
+    def actors(self, token: str, run_id: str) -> list[dict]:
+        """Actors of one run plus the Human, without credential hashes."""
+        with self.connection(readonly=True) as conn:
+            actor = self._actor(conn, token)
+            run = self._run(conn, run_id)
+            authorize(run, actor, coordinator=True)
+            return [
+                r[0]
+                for r in conn.execute(
+                    "SELECT data FROM spado_actors WHERE project=%s AND (data->>'run_id'=%s OR data->>'level'='human') ORDER BY id",
+                    (self.project, run_id),
+                ).fetchall()
+            ]
+
+    def embedding_stats(self, token: str, run_id: str) -> list[dict]:
+        with self.connection(readonly=True) as conn:
+            actor = self._actor(conn, token)
+            run = self._run(conn, run_id)
+            authorize(run, actor, coordinator=True)
+            rows = conn.execute(
+                "SELECT revision_id, model, count(*), sum(length(content)) FROM spado_embeddings WHERE project=%s AND run_id=%s GROUP BY revision_id, model ORDER BY revision_id, model",
+                (self.project, run_id),
+            ).fetchall()
+            return [
+                {"revision": r[0], "model": r[1], "chunks": r[2], "characters": r[3]} for r in rows
+            ]
 
     def events(self, token: str, run_id: str) -> list[dict]:
         with self.connection(readonly=True) as conn:
