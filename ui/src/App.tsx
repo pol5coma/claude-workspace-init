@@ -12,6 +12,7 @@ import {
 } from "./api";
 import { Directory } from "./lib/people";
 import { formatTime } from "./lib/status";
+import { setTheme, useTheme } from "./lib/theme";
 import { COrganization } from "./views/COrganization";
 import { Communication } from "./views/Communication";
 import { Database } from "./views/Database";
@@ -33,6 +34,7 @@ function readHash(): { run?: string; tab?: Tab } {
 }
 
 export function App() {
+  const theme = useTheme();
   const runs = useRuns();
   const source = useSource();
   const initial = readHash();
@@ -70,6 +72,14 @@ export function App() {
           {source.data?.label === "demo" ? "Demo data" : source.data?.label.split("/").filter(Boolean).at(-1)}
           {" · read-only"}
         </span>
+        <button
+          className="icon-button"
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+          title={theme === "dark" ? "Light mode" : "Dark mode"}
+        >
+          {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+        </button>
       </header>
       {!current ? (
         <div className="empty" style={{ gridRow: "2 / 4" }}>
@@ -89,6 +99,23 @@ export function App() {
         <RunView key={current} runId={current} tab={tab} setTab={setTab} />
       )}
     </div>
+  );
+}
+
+function SunIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" aria-hidden>
+      <circle cx="8" cy="8" r="3" />
+      <path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1.06 1.06M11.54 11.54l1.06 1.06M3.4 12.6l1.06-1.06M11.54 4.46l1.06-1.06" />
+    </svg>
+  );
+}
+
+function MoonIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" aria-hidden>
+      <path d="M13.5 9.6A5.75 5.75 0 0 1 6.4 2.5a5.75 5.75 0 1 0 7.1 7.1Z" />
+    </svg>
   );
 }
 

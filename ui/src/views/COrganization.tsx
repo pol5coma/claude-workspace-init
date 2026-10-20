@@ -20,6 +20,7 @@ import { TierBand } from "../components/TierBand";
 import { type ChartEdge, handlesFor, layoutOrgChart } from "../lib/orgchart";
 import { type Directory, domainColor, HOST } from "../lib/people";
 import { kindColor } from "../lib/status";
+import { readFlag, useTheme, writeFlag } from "../lib/theme";
 
 const nodeTypes = {
   band: TierBand,
@@ -37,6 +38,7 @@ const EDGE_STYLE: Record<ChartEdge["kind"], React.CSSProperties> = {
   session: { stroke: "var(--accent)", strokeWidth: 1, strokeDasharray: "5 6", opacity: 0.7 },
 };
 const RECENT = 3;
+const LEGEND_KEY = "spado-legend";
 
 type Props = {
   overview: Overview;
@@ -70,6 +72,8 @@ function humanPending(overview: Overview): string[] {
 
 export function COrganization({ overview, org, messages, documents, directory, onOpenDocument }: Props) {
   const [showAll, setShowAll] = useState(false);
+  const [showLegend, setShowLegend] = useState(() => readFlag(LEGEND_KEY, true));
+  const theme = useTheme();
   const [selected, setSelected] = useState<string | null>(null);
   const [flash, setFlash] = useState<Set<string>>(new Set());
   const seen = useRef<number | null>(null);
@@ -191,6 +195,17 @@ export function COrganization({ overview, org, messages, documents, directory, o
           <input type="checkbox" checked={showAll} onChange={(e) => setShowAll(e.target.checked)} />
           Whole organization
         </label>
+        <label className="switch">
+          <input
+            type="checkbox"
+            checked={showLegend}
+            onChange={(e) => {
+              setShowLegend(e.target.checked);
+              writeFlag(LEGEND_KEY, e.target.checked);
+            }}
+          />
+          Legend
+        </label>
       </div>
       <ReactFlow
         key={`${showAll}:${includeHost}`}
@@ -204,7 +219,7 @@ export function COrganization({ overview, org, messages, documents, directory, o
         panOnScroll
         zoomOnPinch
         zoomOnDoubleClick={false}
-        colorMode="system"
+        colorMode={theme}
         nodesConnectable={false}
         onNodeClick={(_, node) => node.type !== "band" && setSelected(node.id)}
         onPaneClick={() => setSelected(null)}
@@ -212,25 +227,27 @@ export function COrganization({ overview, org, messages, documents, directory, o
         <Background gap={28} size={1} color="var(--hairline-strong)" />
         <Controls showInteractive={false} position="bottom-right" style={{ margin: 18 }} />
       </ReactFlow>
-      <div className="org-legend glass">
-        <span>
-          <span className="legend-line" />
-          reports to
-        </span>
-        <span>
-          <span className="legend-line dashed" />
-          co-owner
-        </span>
-        <span>
-          <span className="legend-line dotted" />
-          delegated by
-        </span>
-        <span>
-          <span className="legend-line message" />
-          latest messages
-        </span>
-        <span className="muted">Dashed card · not delegated yet</span>
-      </div>
+      {showLegend && (
+        <div className="org-legend glass">
+          <span>
+            <span className="legend-line" />
+            reports to
+          </span>
+          <span>
+            <span className="legend-line dashed" />
+            co-owner
+          </span>
+          <span>
+            <span className="legend-line dotted" />
+            delegated by
+          </span>
+          <span>
+            <span className="legend-line message" />
+            latest messages
+          </span>
+          <span className="muted">Dashed card · not delegated yet</span>
+        </div>
+      )}
       {selected && (
         <ActorPanel
           nodeId={selected}
