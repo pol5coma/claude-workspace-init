@@ -676,10 +676,9 @@ button.tag:hover {
   bottom: 14px;
   width: min(500px, calc(100vw - 28px));
   border-radius: var(--r-lg);
-  background: var(--glass);
-  backdrop-filter: saturate(180%) blur(24px);
-  -webkit-backdrop-filter: saturate(180%) blur(24px);
-  border: 1px solid var(--hairline);
+  background: var(--surface);
+  opacity: 1;
+  border: 1px solid var(--hairline-strong);
   box-shadow: var(--shadow-lg);
   z-index: 10;
   display: flex;
