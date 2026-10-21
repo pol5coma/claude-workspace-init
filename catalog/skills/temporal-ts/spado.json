@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "id": "temporal-ts",
+  "type": "skill",
+  "name": "Temporal ts",
+  "description": "Build durable workflows with Temporal's TypeScript SDK in a Next.js + TypeScript app. Use when writing or reviewing Temporal workflows, activities, workers, signals, queries, updates, retries, timeouts or workflow tests, or when wiring a Next.js route handler / server action to start and inspect workflows. Trigger terms: Temporal, temporal.io, @temporalio, workflow, activity, worker, task queue, signal, query, update, durable execution.",
+  "categories": [
+    "backend"
+  ],
+  "recommendation": {
+    "project_types": [
+      "backend",
+      "fullstack"
+    ],
+    "technologies": [
+      "typescript",
+      "temporal",
+      "nextjs"
+    ]
+  },
+  "dependencies": [],
+  "conflicts": []
+}
