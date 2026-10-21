@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "id": "nextjs-expert",
+  "type": "skill",
+  "name": "Nextjs expert",
+  "description": "Use for implementation, review, debugging, and architecture guidance for Next.js applications. Covers App Router and Pages Router, React Server and Client Components, routing, data fetching, caching, mutations, streaming, metadata, images, performance, and migrations. Always adapt guidance to the repository's installed Next.js version and verify version-sensitive APIs in the official documentation.",
+  "categories": [
+    "frontend",
+    "backend"
+  ],
+  "recommendation": {
+    "project_types": [
+      "fullstack",
+      "frontend"
+    ],
+    "technologies": [
+      "nextjs",
+      "react",
+      "typescript"
+    ]
+  },
+  "dependencies": [],
+  "conflicts": []
+}
