@@ -94,6 +94,8 @@ PostgreSQL/pgvector runs in a project-specific container and persistent volume, 
 | Review | `/spado --review phase 3` | `$spado --review phase 3` |
 | Conversation | `/spado --chat` | `$spado --chat` |
 
+To watch the C-organization work, run **`spado ui`** in the project: a local, read-only web view with the organization chart (Human → CAOAO → C-Agents → specialists), the messages between them including delegation prompts, workflow state, documents and database rows. `spado ui --demo` shows a synthetic run without a database. See [Visualize executions](USAGE.md#visualize-executions-spado-ui).
+
 Entry skills translate these requests to SPADO services and native agent delegation. `--run ID` selects an existing execution; `--new-run` asks the host to create an independent execution. The original scope stays intact when advancing within a full workflow. Missing inputs remain visible and provisional outputs cannot be accepted prematurely. Phases progress sequentially by default; subphases follow their input dependencies. Activity means a concrete subphase instance.
 
 Use `spado workflow validate` to list phase and subphase slugs. Numeric IDs such as `3` and `3.5` remain valid.
@@ -161,7 +163,10 @@ uv run pytest
 uv run ruff check src/spado tests
 uv run ruff format --check src/spado tests
 SPADO_POSTGRES_TEST=1 uv run pytest tests/integration/test_runtime_postgres.py
+npm --prefix ui ci && npm --prefix ui test && npm --prefix ui run build   # spado ui web app
 ```
+
+`npm --prefix ui run dev` serves the web app with hot reload against a running `spado ui --port 8765` (or `--demo`). `npm --prefix ui run fixtures` regenerates the demo JSON used by its tests.
 
 The PostgreSQL tests create a disposable Compose project and remove only that project's test volume. They exercise real pgvector, transactional retries, concurrent writes, scoped identities, lifecycle gates and read-only CLI operations. Embedding provider unit tests use controlled responses; they do not make paid API calls or download models.
 

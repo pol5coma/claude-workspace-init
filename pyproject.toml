@@ -31,6 +31,8 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/spado"]
+# The compiled `spado ui` web app is gitignored but shipped when built beforehand.
+artifacts = ["src/spado/ui/static/**"]
 
 [tool.hatch.build.targets.wheel.force-include]
 "catalog" = "spado/bundled_catalog"
@@ -62,6 +64,7 @@ extend-exclude = [
     "catalog/skills/archify",
     "new_skills",
     "new_agents",
+    "ui",
 ]
 
 [tool.ruff.lint]

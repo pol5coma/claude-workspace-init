@@ -1,6 +1,6 @@
 # SPADO usage manual
 
-The operating manual for **SPADO 0.2.0**: repository structure, setup, daily use and **all 28 terminal commands and their parameters**. This describes the implementation in this checkout; check `spado --version` and command-specific `--help` on other versions.
+The operating manual for **SPADO 0.2.0**: repository structure, setup, daily use and **all 29 terminal commands and their parameters**. This describes the implementation in this checkout; check `spado --version` and command-specific `--help` on other versions.
 
 [Product overview](README.MD) · [Architecture](architecture.md) · [Implementation notes](docs/manual/implementation.md)
 
@@ -30,6 +30,7 @@ SPADO uses one package and one project installer, `spado init`. Select a whole S
 | Pick skills, agents and MCP by category | `spado init --no-workflow` in a terminal | Interactive picker: choose hosts, browse categories, tick capabilities, confirm. No workflow state or PostgreSQL. |
 | Install selected capabilities for Claude/Codex | `spado init --no-workflow --host HOST --capability TYPE:ID` or `--category CATEGORY` | Installs compatible skills, agents, scripts, hooks or MCP without workflow state or PostgreSQL. |
 | Add capabilities to Full SPDLC | Repeat `--capability TYPE:ID` during workflow setup | Installs optional resources alongside the organization. |
+| Watch an execution | `spado ui` in the configured project | Local read-only web view: C-organization chart, communication, workflow state, documents and database rows. |
 | Inspect or record execution | `status`, `review`, `workflow`, `actor`, `docs` commands | Authenticated reads and writes against a configured workflow project. |
 | Maintain the reusable catalog | `spado catalog …` | Edits source definitions; installed projects update when `spado init` is repeated. |
 
@@ -46,6 +47,7 @@ The organization consists of the Human, **CAOAO** (execution coordination), nine
 | `src/spado/workflows` | Definitions, modes, plans, gates and state transitions. |
 | `src/spado/runtime` | Setup, identities, PostgreSQL, events, protocol and embeddings. |
 | `src/spado/adapters` | Native host resources and entry skills. |
+| `src/spado/ui`, `ui/` | `spado ui`: read-only API and data sources (Python), and the React/Vite web app whose build lands in `src/spado/ui/static/`. |
 | `catalog/skills`, `agents`, `scripts`, `hooks`, `mcp` | Modular resources with `spado.json` manifests. Author with catalog commands. |
 | `catalog/workflows/spdlc/` | Canonical `workflow.json`, rules and subphase briefs. Edit SPDLC here. |
 | `catalog/organizations/spdlc/organization.json` | Canonical officers, specialists and assignments. |
@@ -234,10 +236,34 @@ Replace `RUN_ID` with the real UUID. `pending` means no activity was recorded, n
 | Work outside a partial run's scope | Create an independent run; scope is not silently expanded. |
 | Discuss only | Host: `spado --chat --run RUN_ID`; identify the scope in your message. |
 | Inspect blockers or stale work | Terminal `spado review …`, or host `spado --review …`. |
+| Watch the organization work | Terminal `spado ui`; see [Visualize executions](#visualize-executions-spado-ui). |
 | Change a mode | Give explicit Human direction; the host records a `mode` event. No `spado mode` command exists. |
 | Return another day | Preserve run/credentials and resume with `--run`. There is no CLI pause/resume scheduler. |
 
 Commands never silently choose the latest run. Most infer selection only when exactly one run is accessible; `status` lists choices for zero/multiple runs. Explicit `--run` is preferable for repeatable operations.
+
+### Visualize executions: spado ui
+
+`spado ui` opens a local, **read-only** web view of the project's runs, whether they cover the full workflow, a phase or a subphase. Leave it open while the host executes: it polls every 2 seconds and refreshes when the recorded state or a transcript changes.
+
+```bash
+cd ~/projects/my-product
+spado db up                  # if it is not running
+spado ui                     # opens http://127.0.0.1:8765/
+spado ui --demo              # synthetic phase 1 run that unfolds live; no database needed
+```
+
+| Tab | What it shows |
+|---|---|
+| **C-Organization** | Organization chart by tier: **Human** → **CAOAO** (plus the Claude Code session) → **C-suite** officers → **specialists** under the officer that owns their subphase. Solid lines: reports to; dashed: co-owner of the subphase; dotted: actual delegation when it bypasses the reporting line. Dashed cards are in scope but not delegated yet. Cards show subphase status, reviews given (✓/✗), plans, outputs and last action; the latest messages are drawn as animated arrows and involved cards flash. *Show whole organization* adds the officers outside the scope. Click a card for its mandate, identities, reviews, documents, messages and transcript thread. |
+| **Workflow** | Phases and subphases coloured by state, the run scope, main phase and phase plans. Click a subphase for its brief data, plan versions, approvals, owner, per-officer reviews, criterion evidence, outputs and review findings. |
+| **Communication** | Every recorded event as a message *from → to*, merged with the transcript: Human prompts, delegation prompts sent to each agent, `spado` commands and subagent reports. Sequence diagram (one lane per member, ordered by tier) or chat view; filter by member, kind, subphase and source. Click a message for its text, payload and result. |
+| **Documents** | Document revisions per path: official, candidate or superseded, author, approval and digest. Rendered Markdown and a diff with the previous revision. |
+| **Database** | The run's rows in `spado_runs`, `spado_events`, `spado_actors` and `spado_embeddings` (chunk counts). Credential hashes are never sent. |
+
+**Data sources.** The database provides state and events; SPADO stores who acted, and the viewer derives the addressees from the run (subphase owners, the activity's specialist, CAOAO, the Human). Prompts are not stored in the database: they come from local Claude Code transcripts under `~/.claude/projects/`, matched to the run ID and linked to actors through the token path in each delegation prompt (otherwise by role name). The transcript format is internal to Claude Code and read on a best-effort basis; Codex sessions are not covered. Use `--no-transcripts` to show database events only.
+
+**Limits.** The view shows the last recorded state, not live process telemetry. It cannot approve, review or change anything: approvals stay in the host chat. It binds to 127.0.0.1, rejects other `Host` headers and non-GET requests, and keeps the Human credential in the server process.
 
 ### Phase selectors
 
@@ -309,7 +335,7 @@ Runtime output is generally JSON. Catalog output uses terminal tables/messages; 
 
 | Family | Commands |
 |---|---|
-| Root (3) | [`init`](#spado-init), [`status`](#spado-status), [`review`](#spado-review) |
+| Root (4) | [`init`](#spado-init), [`status`](#spado-status), [`review`](#spado-review), [`ui`](#spado-ui) |
 | Workflow (7) | [`create`](#spado-workflow-create), [`context`](#spado-workflow-context), [`prepare`](#spado-workflow-prepare), [`record`](#spado-workflow-record), [`export`](#spado-workflow-export), [`validate`](#spado-workflow-validate), [`render`](#spado-workflow-render) |
 | Actor (1) | [`create`](#spado-actor-create) |
 | Database (3) | [`up`](#spado-db-up), [`down`](#spado-db-down), [`migrate`](#spado-db-migrate) |
@@ -386,6 +412,28 @@ spado review activity ACTIVITY_ID --run RUN_ID --human
 ```
 
 **Effects/output:** read-only findings, including changed files, and `persisted: false`. No sync/fixes. Semantic correctness requires responsible agents to inspect content. **Errors:** invalid target, missing/unknown ID, out-of-scope access.
+
+### spado ui
+
+Serve the read-only web view described in [Visualize executions](#visualize-executions-spado-ui). Uses the local Human credential (`--human` is implied; it never leaves the server process).
+
+| Option | Default | Meaning |
+|---|---|---|
+| `--root PATH` | `.` | Configured project. Not needed with `--demo`. |
+| `--port INTEGER` | `8765` | Local port; always bound to 127.0.0.1. |
+| `--demo` | false | Serve a synthetic Idea & Strategy run built with the real domain engine instead of the database. |
+| `--demo-step SECONDS` | `2.0` | Reveal one more demo event every step; `0` shows the whole run. |
+| `--transcripts DIR` | detected | Claude Code transcript folder; detected from the project path under `~/.claude/projects/`. |
+| `--transcripts-enabled` / `--no-transcripts` | enabled | Merge local Claude Code transcripts into the communication view. |
+| `--browser` / `--no-browser` | `--browser` | Open the page in the default browser. |
+
+```bash
+spado ui
+spado ui --port 9000 --no-browser --no-transcripts
+spado ui --demo --demo-step 0
+```
+
+**Effects/output:** a local HTTP server until Ctrl+C; JSON API under `/api/`. No database writes: every query runs in a READ ONLY transaction. **Errors:** missing project configuration or Human credential, unavailable database (the page reports it), port in use. If the web app is not built, the page explains how: `npm --prefix ui ci && npm --prefix ui run build`.
 
 ### spado workflow create
 

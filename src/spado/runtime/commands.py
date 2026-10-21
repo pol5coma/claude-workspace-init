@@ -704,7 +704,58 @@ def search_documents(
     )
 
 
+@guarded
+def serve_ui(
+    root: Root = Path("."),
+    port: Annotated[int, typer.Option("--port", help="Local port (127.0.0.1 only).")] = 8765,
+    demo: Annotated[
+        bool, typer.Option("--demo", help="Serve a synthetic run instead of the project database.")
+    ] = False,
+    demo_step: Annotated[
+        float,
+        typer.Option("--demo-step", help="Seconds between revealed demo events; 0 shows all."),
+    ] = 2.0,
+    transcripts: Annotated[
+        Path | None,
+        typer.Option("--transcripts", help="Claude Code transcript folder for this project."),
+    ] = None,
+    use_transcripts: Annotated[
+        bool,
+        typer.Option(
+            "--transcripts-enabled/--no-transcripts", help="Read local Claude Code transcripts."
+        ),
+    ] = True,
+    browser: Annotated[
+        bool, typer.Option("--browser/--no-browser", help="Open the web app in a browser.")
+    ] = True,
+):
+    """Open a read-only web view of runs: organization, communication, documents and database."""
+    import webbrowser
+
+    from spado.ui.server import make_server
+    from spado.ui.source import PostgresSource
+
+    if demo:
+        from spado.ui.demo import DemoSource
+
+        source = DemoSource(config.default_catalog(), step=demo_step)
+    else:
+        source = PostgresSource(root, transcripts, use_transcripts)
+    server = make_server(source, port)
+    url = f"http://127.0.0.1:{server.server_address[1]}/"
+    typer.echo(f"spado ui ({source.label}) on {url} — read-only; Ctrl+C to stop", err=True)
+    if browser:
+        webbrowser.open(url)
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        server.server_close()
+
+
 def register(app: typer.Typer):
+    app.command("ui")(serve_ui)
     app.command("init")(initialize)
     app.command("status")(show_status)
     app.command("review")(show_review)

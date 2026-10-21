@@ -17,4 +17,6 @@ drafts/
 .spado/local/
 .spado/backups/
 
-node_modules/
+# spado ui: web app build output (npm --prefix ui run build) and dependencies
+src/spado/ui/static/
+ui/node_modules/

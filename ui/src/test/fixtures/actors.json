@@ -1,0 +1,150 @@
+[
+ {
+  "id": "85aeee08-903e-4e60-b03a-a13a4ae18d1c",
+  "project": "demo",
+  "definition": "Human",
+  "level": "human",
+  "run_id": null,
+  "subphases": [],
+  "parent_id": null
+ },
+ {
+  "id": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c",
+  "project": "demo",
+  "definition": "CAOAO",
+  "level": "orchestrator",
+  "run_id": "ac7bcc98-8cb5-4662-b5bd-a064a9a80521",
+  "subphases": [],
+  "parent_id": "85aeee08-903e-4e60-b03a-a13a4ae18d1c"
+ },
+ {
+  "id": "63a2048a-78e9-4c57-845e-475e05c936fa",
+  "project": "demo",
+  "definition": "CEAO",
+  "level": "officer",
+  "run_id": "ac7bcc98-8cb5-4662-b5bd-a064a9a80521",
+  "subphases": [
+   "1.1",
+   "1.2",
+   "1.4",
+   "1.5",
+   "1.6",
+   "2.5",
+   "6.12",
+   "7.1"
+  ],
+  "parent_id": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+ },
+ {
+  "id": "909545f5-cab5-47ad-8064-bc8a70e50144",
+  "project": "demo",
+  "definition": "CPAO",
+  "level": "officer",
+  "run_id": "ac7bcc98-8cb5-4662-b5bd-a064a9a80521",
+  "subphases": [
+   "1.1",
+   "1.2",
+   "1.3",
+   "1.4",
+   "1.5",
+   "2.1",
+   "2.2",
+   "2.3",
+   "2.4",
+   "2.5",
+   "3.1",
+   "3.2",
+   "3.3",
+   "3.4",
+   "3.5",
+   "3.7",
+   "3.8",
+   "3.10",
+   "3.11",
+   "3.12",
+   "3.13",
+   "4.2",
+   "4.5",
+   "4.6",
+   "4.8",
+   "4.9",
+   "4.11",
+   "5.1",
+   "5.3",
+   "5.6",
+   "5.8",
+   "5.10",
+   "6.6",
+   "6.7",
+   "6.8",
+   "6.9",
+   "6.10",
+   "6.12",
+   "7.1",
+   "7.2"
+  ],
+  "parent_id": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+ },
+ {
+  "id": "ae972ae2-b595-4f9d-b00e-31f46e9171ed",
+  "project": "demo",
+  "definition": "CMAO",
+  "level": "officer",
+  "run_id": "ac7bcc98-8cb5-4662-b5bd-a064a9a80521",
+  "subphases": [
+   "1.3",
+   "1.4",
+   "1.5",
+   "2.1",
+   "2.4",
+   "3.5",
+   "3.7",
+   "3.10",
+   "3.12",
+   "3.13",
+   "5.1",
+   "5.3",
+   "5.4",
+   "5.7",
+   "6.6",
+   "6.7",
+   "6.9",
+   "6.12",
+   "7.2"
+  ],
+  "parent_id": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+ },
+ {
+  "id": "b14057d1-e6e8-4239-8319-a4f6c08cc3a8",
+  "project": "demo",
+  "definition": "spdlc-1-1",
+  "level": "specialist",
+  "run_id": "ac7bcc98-8cb5-4662-b5bd-a064a9a80521",
+  "subphases": [
+   "1.1"
+  ],
+  "parent_id": "63a2048a-78e9-4c57-845e-475e05c936fa"
+ },
+ {
+  "id": "5bca4d06-527e-4423-89ef-96fdd38d54a1",
+  "project": "demo",
+  "definition": "spdlc-1-3",
+  "level": "specialist",
+  "run_id": "ac7bcc98-8cb5-4662-b5bd-a064a9a80521",
+  "subphases": [
+   "1.3"
+  ],
+  "parent_id": "ae972ae2-b595-4f9d-b00e-31f46e9171ed"
+ },
+ {
+  "id": "6962d14d-3d47-454d-a3cc-8d883234a7cc",
+  "project": "demo",
+  "definition": "spdlc-1-2",
+  "level": "specialist",
+  "run_id": "ac7bcc98-8cb5-4662-b5bd-a064a9a80521",
+  "subphases": [
+   "1.2"
+  ],
+  "parent_id": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c"
+ }
+]

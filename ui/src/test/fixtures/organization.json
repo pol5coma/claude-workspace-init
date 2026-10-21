@@ -1,0 +1,1955 @@
+{
+ "tiers": [
+  {
+   "level": "human",
+   "label": "Human"
+  },
+  {
+   "level": "orchestrator",
+   "label": "Orchestration"
+  },
+  {
+   "level": "officer",
+   "label": "C-suite"
+  },
+  {
+   "level": "specialist",
+   "label": "Specialists"
+  }
+ ],
+ "scope_subphases": [
+  "1.1",
+  "1.2",
+  "1.3",
+  "1.4",
+  "1.5",
+  "1.6"
+ ],
+ "definitions": [
+  {
+   "id": "Human",
+   "name": "Human",
+   "acronym": "Human",
+   "traditional": null,
+   "level": "human",
+   "mandate": "Sets the objective, scope and delegation; approves where the mode requires it.",
+   "skills": [],
+   "subphases": [],
+   "scope_subphases": [],
+   "reports_to": [],
+   "in_scope": true
+  },
+  {
+   "id": "CAOAO",
+   "name": "Chief Agent Orchestrator Agentic Officer",
+   "acronym": "CAOAO",
+   "traditional": null,
+   "level": "orchestrator",
+   "mandate": "Coordinate assignments, context, dependencies, plans and consolidation. Domain decisions remain with their named officers.",
+   "skills": [
+    "spado-caoao"
+   ],
+   "subphases": [],
+   "scope_subphases": [],
+   "reports_to": [
+    "Human"
+   ],
+   "in_scope": true
+  },
+  {
+   "id": "CEAO",
+   "name": "Chief Executive Agentic Officer",
+   "acronym": "CEAO",
+   "traditional": "CEO",
+   "level": "officer",
+   "mandate": "Business direction, strategic priorities, material investment and product lifecycle decisions. Own the decisions assigned to this role in the versioned activity briefs. Delegate specialist execution, review its evidence and record domain conclusions. Do not replace another officer's required review or expand the Human's delegation.",
+   "skills": [
+    "spado-ceao"
+   ],
+   "subphases": [
+    "1.1",
+    "1.2",
+    "1.4",
+    "1.5",
+    "1.6",
+    "2.5",
+    "6.12",
+    "7.1"
+   ],
+   "scope_subphases": [
+    "1.1",
+    "1.2",
+    "1.4",
+    "1.5",
+    "1.6"
+   ],
+   "reports_to": [
+    "CAOAO"
+   ],
+   "in_scope": true
+  },
+  {
+   "id": "CPAO",
+   "name": "Chief Product Agentic Officer",
+   "acronym": "CPAO",
+   "traditional": "CPO",
+   "level": "officer",
+   "mandate": "Product strategy, discovery decisions, scope, prioritization, customer value and product acceptance. Own the decisions assigned to this role in the versioned activity briefs. Delegate specialist execution, review its evidence and record domain conclusions. Do not replace another officer's required review or expand the Human's delegation.",
+   "skills": [
+    "spado-cpao"
+   ],
+   "subphases": [
+    "1.1",
+    "1.2",
+    "1.3",
+    "1.4",
+    "1.5",
+    "2.1",
+    "2.2",
+    "2.3",
+    "2.4",
+    "2.5",
+    "3.1",
+    "3.2",
+    "3.3",
+    "3.4",
+    "3.5",
+    "3.7",
+    "3.8",
+    "3.10",
+    "3.11",
+    "3.12",
+    "3.13",
+    "4.2",
+    "4.5",
+    "4.6",
+    "4.8",
+    "4.9",
+    "4.11",
+    "5.1",
+    "5.3",
+    "5.6",
+    "5.8",
+    "5.10",
+    "6.6",
+    "6.7",
+    "6.8",
+    "6.9",
+    "6.10",
+    "6.12",
+    "7.1",
+    "7.2"
+   ],
+   "scope_subphases": [
+    "1.1",
+    "1.2",
+    "1.3",
+    "1.4",
+    "1.5"
+   ],
+   "reports_to": [
+    "CAOAO"
+   ],
+   "in_scope": true
+  },
+  {
+   "id": "CTAO",
+   "name": "Chief Technology Agentic Officer",
+   "acronym": "CTAO",
+   "traditional": "CTO",
+   "level": "officer",
+   "mandate": "Technical feasibility, architecture, engineering, technical release readiness and technical operations. Own the decisions assigned to this role in the versioned activity briefs. Delegate specialist execution, review its evidence and record domain conclusions. Do not replace another officer's required review or expand the Human's delegation.",
+   "skills": [
+    "spado-ctao"
+   ],
+   "subphases": [
+    "1.5",
+    "2.5",
+    "3.3",
+    "3.6",
+    "3.9",
+    "3.10",
+    "3.11",
+    "4.1",
+    "4.2",
+    "4.3",
+    "4.4",
+    "4.5",
+    "4.6",
+    "4.7",
+    "4.8",
+    "4.10",
+    "4.11",
+    "5.1",
+    "5.2",
+    "5.5",
+    "5.6",
+    "5.9",
+    "6.1",
+    "6.3",
+    "6.4",
+    "6.5",
+    "6.9",
+    "6.10",
+    "6.11",
+    "6.12",
+    "7.1",
+    "7.3",
+    "7.4"
+   ],
+   "scope_subphases": [
+    "1.5"
+   ],
+   "reports_to": [
+    "CAOAO"
+   ],
+   "in_scope": true
+  },
+  {
+   "id": "CMAO",
+   "name": "Chief Marketing Agentic Officer",
+   "acronym": "CMAO",
+   "traditional": "CMO",
+   "level": "officer",
+   "mandate": "Market positioning, brand, go-to-market strategy, acquisition and lifecycle marketing. Own the decisions assigned to this role in the versioned activity briefs. Delegate specialist execution, review its evidence and record domain conclusions. Do not replace another officer's required review or expand the Human's delegation.",
+   "skills": [
+    "spado-cmao"
+   ],
+   "subphases": [
+    "1.3",
+    "1.4",
+    "1.5",
+    "2.1",
+    "2.4",
+    "3.5",
+    "3.7",
+    "3.10",
+    "3.12",
+    "3.13",
+    "5.1",
+    "5.3",
+    "5.4",
+    "5.7",
+    "6.6",
+    "6.7",
+    "6.9",
+    "6.12",
+    "7.2"
+   ],
+   "scope_subphases": [
+    "1.3",
+    "1.4",
+    "1.5"
+   ],
+   "reports_to": [
+    "CAOAO"
+   ],
+   "in_scope": true
+  },
+  {
+   "id": "CFAO",
+   "name": "Chief Financial Agentic Officer",
+   "acronym": "CFAO",
+   "traditional": "CFO",
+   "level": "officer",
+   "mandate": "Financial planning, economic viability, budget assessments, unit economics and financial controls. Own the decisions assigned to this role in the versioned activity briefs. Delegate specialist execution, review its evidence and record domain conclusions. Do not replace another officer's required review or expand the Human's delegation.",
+   "skills": [
+    "spado-cfao"
+   ],
+   "subphases": [
+    "1.4",
+    "1.5",
+    "1.6",
+    "2.5",
+    "3.7",
+    "3.13",
+    "6.6",
+    "6.9",
+    "6.11",
+    "6.12",
+    "7.1",
+    "7.5"
+   ],
+   "scope_subphases": [
+    "1.4",
+    "1.5",
+    "1.6"
+   ],
+   "reports_to": [
+    "CAOAO"
+   ],
+   "in_scope": true
+  },
+  {
+   "id": "COAO",
+   "name": "Chief Operating Agentic Officer",
+   "acronym": "COAO",
+   "traditional": "COO",
+   "level": "officer",
+   "mandate": "Service operations, support, operational readiness, customer transition and operational closure. Own the decisions assigned to this role in the versioned activity briefs. Delegate specialist execution, review its evidence and record domain conclusions. Do not replace another officer's required review or expand the Human's delegation.",
+   "skills": [
+    "spado-coao"
+   ],
+   "subphases": [
+    "3.3",
+    "4.6",
+    "4.10",
+    "4.11",
+    "5.1",
+    "5.6",
+    "5.8",
+    "5.9",
+    "5.10",
+    "6.1",
+    "6.2",
+    "6.3",
+    "6.6",
+    "6.9",
+    "6.11",
+    "6.12",
+    "7.2",
+    "7.3",
+    "7.5"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CAOAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "CRAO",
+   "name": "Chief Revenue Agentic Officer",
+   "acronym": "CRAO",
+   "traditional": "CRO",
+   "level": "officer",
+   "mandate": "Sales strategy, revenue operations and renewals where a separate revenue function is applicable. Own the decisions assigned to this role in the versioned activity briefs. Delegate specialist execution, review its evidence and record domain conclusions. Do not replace another officer's required review or expand the Human's delegation.",
+   "skills": [
+    "spado-crao"
+   ],
+   "subphases": [
+    "3.13",
+    "5.4",
+    "5.7",
+    "6.7"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CAOAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "CISAO",
+   "name": "Chief Information Security Agentic Officer",
+   "acronym": "CISAO",
+   "traditional": "CISO",
+   "level": "officer",
+   "mandate": "Security oversight, assessments, security-risk decisions within its mandate and security response. Own the decisions assigned to this role in the versioned activity briefs. Delegate specialist execution, review its evidence and record domain conclusions. Do not replace another officer's required review or expand the Human's delegation.",
+   "skills": [
+    "spado-cisao"
+   ],
+   "subphases": [
+    "4.7",
+    "4.11",
+    "5.2",
+    "5.9",
+    "6.3",
+    "6.5",
+    "7.4"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CAOAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "CLAO",
+   "name": "Chief Legal Agentic Officer",
+   "acronym": "CLAO",
+   "traditional": "CLO",
+   "level": "officer",
+   "mandate": "Legal and contractual assessments and readiness decisions, working with the designated privacy owner where relevant. Own the decisions assigned to this role in the versioned activity briefs. Delegate specialist execution, review its evidence and record domain conclusions. Do not replace another officer's required review or expand the Human's delegation.",
+   "skills": [
+    "spado-clao"
+   ],
+   "subphases": [
+    "5.2",
+    "6.5",
+    "7.2",
+    "7.4",
+    "7.5"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CAOAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-1-1",
+   "name": "Founder / Business Lead — 1.1",
+   "acronym": "SPDLC-1-1",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 1.1: Initial ideation and opportunity assessment. Operational owner: Founder / Business Lead. Required contributors: Founder/Business Lead, Product Manager and relevant stakeholders, with Marketing, Finance and Engineering input. Report to CEAO, CPAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-1-1"
+   ],
+   "subphases": [
+    "1.1"
+   ],
+   "scope_subphases": [
+    "1.1"
+   ],
+   "reports_to": [
+    "CEAO",
+    "CPAO"
+   ],
+   "in_scope": true
+  },
+  {
+   "id": "spdlc-1-2",
+   "name": "Product Manager — 1.2",
+   "acronym": "SPDLC-1-2",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 1.2: Define product vision and strategic goals. Operational owner: Product Manager. Required contributors: Product Manager and Business/Strategy Lead, working with executive stakeholders. Report to CEAO, CPAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-1-2"
+   ],
+   "subphases": [
+    "1.2"
+   ],
+   "scope_subphases": [
+    "1.2"
+   ],
+   "reports_to": [
+    "CEAO",
+    "CPAO"
+   ],
+   "in_scope": true
+  },
+  {
+   "id": "spdlc-1-3",
+   "name": "Product Marketing Manager — 1.3",
+   "acronym": "SPDLC-1-3",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 1.3: Define initial target audience and value proposition. Operational owner: Product Marketing Manager. Required contributors: Product Manager and Product Marketing Manager, with UX Researcher input. Report to CPAO, CMAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-1-3"
+   ],
+   "subphases": [
+    "1.3"
+   ],
+   "scope_subphases": [
+    "1.3"
+   ],
+   "reports_to": [
+    "CPAO",
+    "CMAO"
+   ],
+   "in_scope": true
+  },
+  {
+   "id": "spdlc-1-4",
+   "name": "Business / Strategy Lead — 1.4",
+   "acronym": "SPDLC-1-4",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 1.4: Define the business model. Operational owner: Business / Strategy Lead. Required contributors: Business/Strategy Analyst, Finance Analyst, Product Manager and Product Marketing Manager. Report to CEAO, CFAO, CPAO, CMAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-1-4"
+   ],
+   "subphases": [
+    "1.4"
+   ],
+   "scope_subphases": [
+    "1.4"
+   ],
+   "reports_to": [
+    "CEAO",
+    "CFAO",
+    "CPAO",
+    "CMAO"
+   ],
+   "in_scope": true
+  },
+  {
+   "id": "spdlc-1-5",
+   "name": "Product Manager — 1.5",
+   "acronym": "SPDLC-1-5",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 1.5: Identify strategic assumptions, risks and constraints. Operational owner: Product Manager. Required contributors: Product Manager, UX Researcher, Business/Finance Analyst and Tech Lead, with relevant specialists. Report to CPAO, CEAO, CFAO, CTAO, CMAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-1-5"
+   ],
+   "subphases": [
+    "1.5"
+   ],
+   "scope_subphases": [
+    "1.5"
+   ],
+   "reports_to": [
+    "CPAO",
+    "CEAO",
+    "CFAO",
+    "CTAO",
+    "CMAO"
+   ],
+   "in_scope": true
+  },
+  {
+   "id": "spdlc-1-6",
+   "name": "Finance Lead / Finance Analyst — 1.6",
+   "acronym": "SPDLC-1-6",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 1.6: Define the initial budget and resource allocation. Operational owner: Finance Lead / Finance Analyst. Required contributors: Finance Analyst, Product Manager and relevant functional leads, with CTAO and CMAO input. Report to CEAO, CFAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-1-6"
+   ],
+   "subphases": [
+    "1.6"
+   ],
+   "scope_subphases": [
+    "1.6"
+   ],
+   "reports_to": [
+    "CEAO",
+    "CFAO"
+   ],
+   "in_scope": true
+  },
+  {
+   "id": "spdlc-2-1",
+   "name": "UX Researcher — 2.1",
+   "acronym": "SPDLC-2-1",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 2.1: Market and user research. Operational owner: UX Researcher. Required contributors: UX Researcher, Product Manager and Product Marketing Manager, with Market/Data Analyst support when needed. Report to CPAO, CMAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-2-1"
+   ],
+   "subphases": [
+    "2.1"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CPAO",
+    "CMAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-2-2",
+   "name": "Product Manager — 2.2",
+   "acronym": "SPDLC-2-2",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 2.2: Problem validation. Operational owner: Product Manager. Required contributors: UX Researcher and Product Manager, with Product/Data Analyst support. Report to CPAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-2-2"
+   ],
+   "subphases": [
+    "2.2"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CPAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-2-3",
+   "name": "Product Designer — 2.3",
+   "acronym": "SPDLC-2-3",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 2.3: Explore solution concepts. Operational owner: Product Designer. Required contributors: Product Manager, Product Designer and UX Researcher, with Tech Lead and Product Marketing Manager input. Report to CPAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-2-3"
+   ],
+   "subphases": [
+    "2.3"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CPAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-2-4",
+   "name": "Product Marketing Manager — 2.4",
+   "acronym": "SPDLC-2-4",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 2.4: Evaluate demand. Operational owner: Product Marketing Manager. Required contributors: Product Marketing Manager, Product Manager and Growth Marketer, with UX Researcher and Data Analyst support. Report to CMAO, CPAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-2-4"
+   ],
+   "subphases": [
+    "2.4"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CMAO",
+    "CPAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-2-5",
+   "name": "Product Manager — 2.5",
+   "acronym": "SPDLC-2-5",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 2.5: Evaluate economic viability and technical feasibility. Operational owner: Product Manager. Required contributors: Finance/Business Analyst, Product Manager, Tech Lead and Software Architect, with Engineering and Operations input. Report to CFAO, CTAO, CPAO, CEAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-2-5"
+   ],
+   "subphases": [
+    "2.5"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CFAO",
+    "CTAO",
+    "CPAO",
+    "CEAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-3-1",
+   "name": "Product Manager — 3.1",
+   "acronym": "SPDLC-3-1",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 3.1: Define scope and priorities. Operational owner: Product Manager. Required contributors: Product Manager, Design team and Engineering team. Report to CPAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-3-1"
+   ],
+   "subphases": [
+    "3.1"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CPAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-3-2",
+   "name": "Product Manager / Business Analyst — 3.2",
+   "acronym": "SPDLC-3-2",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 3.2: Specify behaviour. Operational owner: Product Manager / Business Analyst. Required contributors: Product Manager / Business Analyst, with Design and Engineering input. Report to CPAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-3-2"
+   ],
+   "subphases": [
+    "3.2"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CPAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-3-3",
+   "name": "Tech Lead — 3.3",
+   "acronym": "SPDLC-3-3",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 3.3: Define quality requirements. Operational owner: Tech Lead. Required contributors: Tech Lead, Security team, design team, and operations team. Report to CTAO, CPAO, COAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-3-3"
+   ],
+   "subphases": [
+    "3.3"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CTAO",
+    "CPAO",
+    "COAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-3-4",
+   "name": "Product Designer — 3.4",
+   "acronym": "SPDLC-3-4",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 3.4: Design the experience (UX). Operational owner: Product Designer. Required contributors: UX Designer, UX Researcher and UX Writer. Report to CPAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-3-4"
+   ],
+   "subphases": [
+    "3.4"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CPAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-3-5",
+   "name": "Product / UI Designer — 3.5",
+   "acronym": "SPDLC-3-5",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 3.5: Design the user interface. Operational owner: Product / UI Designer. Required contributors: Product/UI Designer and Brand Designer, with Engineering input on feasibility. Report to CPAO, CMAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-3-5"
+   ],
+   "subphases": [
+    "3.5"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CPAO",
+    "CMAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-3-6",
+   "name": "Tech Lead / Software Architect — 3.6",
+   "acronym": "SPDLC-3-6",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 3.6: Design the technical solution. Operational owner: Tech Lead / Software Architect. Required contributors: Software Architects, Tech Lead and Engineering team, with Security and Operations input. Report to CTAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-3-6"
+   ],
+   "subphases": [
+    "3.6"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CTAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-3-7",
+   "name": "Product Marketing Manager — 3.7",
+   "acronym": "SPDLC-3-7",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 3.7: Align product & offer. Operational owner: Product Marketing Manager. Required contributors: Product Marketing Manager and Product Manager, with Finance input. Report to CMAO, CPAO, CFAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-3-7"
+   ],
+   "subphases": [
+    "3.7"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CMAO",
+    "CPAO",
+    "CFAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-3-8",
+   "name": "UX Researcher — 3.8",
+   "acronym": "SPDLC-3-8",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 3.8: Prototype and validate the experience. Operational owner: UX Researcher. Required contributors: Product Designer, UX Researcher and Product Manager. Report to CPAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-3-8"
+   ],
+   "subphases": [
+    "3.8"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CPAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-3-9",
+   "name": "Tech Lead — 3.9",
+   "acronym": "SPDLC-3-9",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 3.9: Resolve technical uncertainty. Operational owner: Tech Lead. Required contributors: Tech Lead, Software Architects and relevant engineers, with specialists as needed. Report to CTAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-3-9"
+   ],
+   "subphases": [
+    "3.9"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CTAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-3-10",
+   "name": "Product / Data Analyst — 3.10",
+   "acronym": "SPDLC-3-10",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 3.10: Define measurement. Operational owner: Product / Data Analyst. Required contributors: Product/Data Analyst and Product Manager, with Growth Marketing and Engineering input. Report to CPAO, CMAO, CTAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-3-10"
+   ],
+   "subphases": [
+    "3.10"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CPAO",
+    "CMAO",
+    "CTAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-3-11",
+   "name": "Engineering Manager / Tech Lead — 3.11",
+   "acronym": "SPDLC-3-11",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 3.11: Plan development. Operational owner: Engineering Manager / Tech Lead. Required contributors: Product Manager, Engineering Manager and Tech Lead, with Design, Engineering, QA and Operations input. Report to CPAO, CTAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-3-11"
+   ],
+   "subphases": [
+    "3.11"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CPAO",
+    "CTAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-3-12",
+   "name": "Brand / Creative Lead — 3.12",
+   "acronym": "SPDLC-3-12",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 3.12: Define brand identity and communication principles. Operational owner: Brand / Creative Lead. Required contributors: Brand/Creative Lead, Brand Designer and Copywriter, with Product Marketing, Product Design and UX Writing input. Report to CMAO, CPAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-3-12"
+   ],
+   "subphases": [
+    "3.12"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CMAO",
+    "CPAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-3-13",
+   "name": "Product Marketing Manager — 3.13",
+   "acronym": "SPDLC-3-13",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 3.13: Define the go-to-market strategy. Operational owner: Product Marketing Manager. Required contributors: Product Marketing Manager, Growth Marketing Lead and Product Manager, with Sales, Customer Success, Finance and Data input. Report to CMAO, CPAO, CFAO, CRAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-3-13"
+   ],
+   "subphases": [
+    "3.13"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CMAO",
+    "CPAO",
+    "CFAO",
+    "CRAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-4-1",
+   "name": "Platform / DevOps Lead — 4.1",
+   "acronym": "SPDLC-4-1",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 4.1: Prepare development environments and delivery foundations. Operational owner: Platform / DevOps Lead. Required contributors: Tech Lead, Engineering team and Platform/DevOps Engineers, with Security input. Report to CTAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-4-1"
+   ],
+   "subphases": [
+    "4.1"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CTAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-4-2",
+   "name": "Tech Lead — 4.2",
+   "acronym": "SPDLC-4-2",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 4.2: Implement product features incrementally. Operational owner: Tech Lead. Required contributors: Engineering team and Tech Lead, collaborating with Product Manager and Product Designer. Report to CTAO, CPAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-4-2"
+   ],
+   "subphases": [
+    "4.2"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CTAO",
+    "CPAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-4-3",
+   "name": "Backend / Integration Lead — 4.3",
+   "acronym": "SPDLC-4-3",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 4.3: Implement integrations and data handling. Operational owner: Backend / Integration Lead. Required contributors: Backend/Integration Engineers, Data Engineers and relevant specialists, with QA and Security input. Report to CTAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-4-3"
+   ],
+   "subphases": [
+    "4.3"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CTAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-4-4",
+   "name": "Tech Lead — 4.4",
+   "acronym": "SPDLC-4-4",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 4.4: Review code quality and maintainability. Operational owner: Tech Lead. Required contributors: Peer Engineers, Tech Lead and Software Architect where applicable. Report to CTAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-4-4"
+   ],
+   "subphases": [
+    "4.4"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CTAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-4-5",
+   "name": "QA Lead — 4.5",
+   "acronym": "SPDLC-4-5",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 4.5: Perform functional and regression testing. Operational owner: QA Lead. Required contributors: QA Engineers, Engineering team and Product Manager. Report to CTAO, CPAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-4-5"
+   ],
+   "subphases": [
+    "4.5"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CTAO",
+    "CPAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-4-6",
+   "name": "QA / Performance Test Lead — 4.6",
+   "acronym": "SPDLC-4-6",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 4.6: Validate non-functional requirements. Operational owner: QA / Performance Test Lead. Required contributors: QA Engineers, Engineering team, Platform/SRE Engineers and Accessibility Specialists where needed. Report to CTAO, CPAO, COAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-4-6"
+   ],
+   "subphases": [
+    "4.6"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CTAO",
+    "CPAO",
+    "COAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-4-7",
+   "name": "Security Lead — 4.7",
+   "acronym": "SPDLC-4-7",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 4.7: Implement and verify security and privacy controls. Operational owner: Security Lead. Required contributors: Engineering team, Security Engineers and relevant privacy specialists. Report to CTAO, CISAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-4-7"
+   ],
+   "subphases": [
+    "4.7"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CTAO",
+    "CISAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-4-8",
+   "name": "Analytics / Instrumentation Lead — 4.8",
+   "acronym": "SPDLC-4-8",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 4.8: Implement analytics and observability. Operational owner: Analytics / Instrumentation Lead. Required contributors: Engineering team, Product/Data Analyst and Platform/SRE Engineers, with Growth Marketing and Security input. Report to CTAO, CPAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-4-8"
+   ],
+   "subphases": [
+    "4.8"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CTAO",
+    "CPAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-4-9",
+   "name": "Product Manager — 4.9",
+   "acronym": "SPDLC-4-9",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 4.9: Validate product acceptance and usability. Operational owner: Product Manager. Required contributors: Product Manager, Product Designer, UX Researcher and QA, with relevant stakeholders and representative users participating. Report to CPAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-4-9"
+   ],
+   "subphases": [
+    "4.9"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CPAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-4-10",
+   "name": "Operations Lead — 4.10",
+   "acronym": "SPDLC-4-10",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 4.10: Prepare operations and support. Operational owner: Operations Lead. Required contributors: Operations, Customer Support/Success, Platform/SRE and Engineering teams, with Product and Security input. Report to COAO, CTAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-4-10"
+   ],
+   "subphases": [
+    "4.10"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "COAO",
+    "CTAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-4-11",
+   "name": "Engineering Manager / Release Lead — 4.11",
+   "acronym": "SPDLC-4-11",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 4.11: Verify release readiness. Operational owner: Engineering Manager / Release Lead. Required contributors: Engineering Manager/Tech Lead, QA Lead, Product Manager, Platform/DevOps and Operations representatives. Report to CTAO, CPAO, COAO, CISAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-4-11"
+   ],
+   "subphases": [
+    "4.11"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CTAO",
+    "CPAO",
+    "COAO",
+    "CISAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-5-1",
+   "name": "Product Manager / Launch Lead — 5.1",
+   "acronym": "SPDLC-5-1",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 5.1: Coordinate the launch and confirm readiness. Operational owner: Product Manager / Launch Lead. Required contributors: Product Manager, Product Marketing Manager, Engineering Lead and Operations Lead. Report to CPAO, CTAO, CMAO, COAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-5-1"
+   ],
+   "subphases": [
+    "5.1"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CPAO",
+    "CTAO",
+    "CMAO",
+    "COAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-5-2",
+   "name": "Legal / Privacy Lead — 5.2",
+   "acronym": "SPDLC-5-2",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 5.2: Confirm legal, privacy and security readiness. Operational owner: Legal / Privacy Lead. Required contributors: Legal Counsel, Privacy Specialists and Security Engineers, collaborating with Product, Engineering and Marketing. Report to CLAO, CISAO, CTAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-5-2"
+   ],
+   "subphases": [
+    "5.2"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CLAO",
+    "CISAO",
+    "CTAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-5-3",
+   "name": "Brand / Creative Lead — 5.3",
+   "acronym": "SPDLC-5-3",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 5.3: Finalize marketing and launch design assets. Operational owner: Brand / Creative Lead. Required contributors: Product Marketing Manager, Brand/Visual Designer, Copywriter and Content team, with Product Designer input. Report to CMAO, CPAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-5-3"
+   ],
+   "subphases": [
+    "5.3"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CMAO",
+    "CPAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-5-4",
+   "name": "Growth / Marketing Operations Lead — 5.4",
+   "acronym": "SPDLC-5-4",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 5.4: Prepare acquisition and commercial channels. Operational owner: Growth / Marketing Operations Lead. Required contributors: Growth Marketing, Marketing Operations, Sales Operations and Product Marketing, with Engineering and Finance support. Report to CMAO, CRAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-5-4"
+   ],
+   "subphases": [
+    "5.4"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CMAO",
+    "CRAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-5-5",
+   "name": "Platform / DevOps Lead — 5.5",
+   "acronym": "SPDLC-5-5",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 5.5: Deploy the approved release to production. Operational owner: Platform / DevOps Lead. Required contributors: Platform/DevOps Engineers, Engineering team, Tech Lead and QA, with Security support. Report to CTAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-5-5"
+   ],
+   "subphases": [
+    "5.5"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CTAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-5-6",
+   "name": "Product Manager — 5.6",
+   "acronym": "SPDLC-5-6",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 5.6: Conduct a pilot or controlled rollout. Operational owner: Product Manager. Required contributors: Product Manager, Engineering, QA, Customer Success/Support and UX Researcher. Report to CPAO, CTAO, COAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-5-6"
+   ],
+   "subphases": [
+    "5.6"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CPAO",
+    "CTAO",
+    "COAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-5-7",
+   "name": "Growth Marketing Lead — 5.7",
+   "acronym": "SPDLC-5-7",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 5.7: Activate public launch and acquisition campaigns. Operational owner: Growth Marketing Lead. Required contributors: Growth Marketers, Content and Social teams, PR/Communications, Partnership Managers and Sales. Report to CMAO, CRAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-5-7"
+   ],
+   "subphases": [
+    "5.7"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CMAO",
+    "CRAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-5-8",
+   "name": "Customer Success / Support Lead — 5.8",
+   "acronym": "SPDLC-5-8",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 5.8: Onboard and support the first users. Operational owner: Customer Success / Support Lead. Required contributors: Customer Success, Customer Support, Product Manager and Engineering, with Lifecycle Marketing input. Report to COAO, CPAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-5-8"
+   ],
+   "subphases": [
+    "5.8"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "COAO",
+    "CPAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-5-9",
+   "name": "Engineering Manager / Incident Lead — 5.9",
+   "acronym": "SPDLC-5-9",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 5.9: Monitor and stabilize the launch. Operational owner: Engineering Manager / Incident Lead. Required contributors: Engineering, Platform/SRE, Security, QA, Support and Product/Data Analysts. Report to CTAO, CISAO, COAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-5-9"
+   ],
+   "subphases": [
+    "5.9"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CTAO",
+    "CISAO",
+    "COAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-5-10",
+   "name": "Product Manager — 5.10",
+   "acronym": "SPDLC-5-10",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 5.10: Evaluate launch outcomes and transition to ongoing operations. Operational owner: Product Manager. Required contributors: Product Manager, Product/Data Analyst, Marketing, Engineering, Operations and Finance representatives. Report to CPAO, COAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-5-10"
+   ],
+   "subphases": [
+    "5.10"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CPAO",
+    "COAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-6-1",
+   "name": "Platform / SRE Lead — 6.1",
+   "acronym": "SPDLC-6-1",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 6.1: Operate and monitor the service. Operational owner: Platform / SRE Lead. Required contributors: Platform/SRE Engineers, Engineering team and Operations. Report to CTAO, COAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-6-1"
+   ],
+   "subphases": [
+    "6.1"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CTAO",
+    "COAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-6-2",
+   "name": "Customer Success / Support Lead — 6.2",
+   "acronym": "SPDLC-6-2",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 6.2: Provide customer support and customer success. Operational owner: Customer Success / Support Lead. Required contributors: Customer Support, Customer Success and Operations, with Product and Engineering support. Report to COAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-6-2"
+   ],
+   "subphases": [
+    "6.2"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "COAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-6-3",
+   "name": "Designated Incident Commander — 6.3",
+   "acronym": "SPDLC-6-3",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 6.3: Manage incidents and recovery. Operational owner: Designated Incident Commander. Required contributors: On-call Engineers, Platform/SRE, Security, Support and relevant service owners. Report to CTAO, CISAO, COAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-6-3"
+   ],
+   "subphases": [
+    "6.3"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CTAO",
+    "CISAO",
+    "COAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-6-4",
+   "name": "Tech Lead — 6.4",
+   "acronym": "SPDLC-6-4",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 6.4: Maintain technical health. Operational owner: Tech Lead. Required contributors: Engineering team, Tech Lead, Platform Engineers and QA. Report to CTAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-6-4"
+   ],
+   "subphases": [
+    "6.4"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CTAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-6-5",
+   "name": "Security Lead — 6.5",
+   "acronym": "SPDLC-6-5",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 6.5: Maintain security, privacy and compliance. Operational owner: Security Lead. Required contributors: Security Engineers, Engineering, Privacy Specialists, Legal and Operations. Report to CISAO, CLAO, CTAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-6-5"
+   ],
+   "subphases": [
+    "6.5"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CISAO",
+    "CLAO",
+    "CTAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-6-6",
+   "name": "Product / Data Analyst — 6.6",
+   "acronym": "SPDLC-6-6",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 6.6: Measure product and business outcomes. Operational owner: Product / Data Analyst. Required contributors: Product/Data Analysts, Product Manager, Marketing Analysts, Finance and Operations Analysts. Report to CPAO, CMAO, CFAO, COAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-6-6"
+   ],
+   "subphases": [
+    "6.6"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CPAO",
+    "CMAO",
+    "CFAO",
+    "COAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-6-7",
+   "name": "Growth / Lifecycle Lead — 6.7",
+   "acronym": "SPDLC-6-7",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 6.7: Improve adoption, retention and commercial growth. Operational owner: Growth / Lifecycle Lead. Required contributors: Growth Marketing, Lifecycle/CRM Marketing, Product, Customer Success and Sales. Report to CMAO, CPAO, CRAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-6-7"
+   ],
+   "subphases": [
+    "6.7"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CMAO",
+    "CPAO",
+    "CRAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-6-8",
+   "name": "Product Manager — 6.8",
+   "acronym": "SPDLC-6-8",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 6.8: Conduct continuous discovery. Operational owner: Product Manager. Required contributors: Product Manager, UX Researcher, Product Designer and Product/Data Analyst, with Marketing and Customer Success input. Report to CPAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-6-8"
+   ],
+   "subphases": [
+    "6.8"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CPAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-6-9",
+   "name": "Product Manager — 6.9",
+   "acronym": "SPDLC-6-9",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 6.9: Prioritize the evolution roadmap. Operational owner: Product Manager. Required contributors: Product Manager, Engineering Manager, Tech Lead and relevant functional leads. Report to CPAO, CTAO, COAO, CMAO, CFAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-6-9"
+   ],
+   "subphases": [
+    "6.9"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CPAO",
+    "CTAO",
+    "COAO",
+    "CMAO",
+    "CFAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-6-10",
+   "name": "Engineering Manager / Delivery Lead — 6.10",
+   "acronym": "SPDLC-6-10",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 6.10: Deliver and evaluate improvements. Operational owner: Engineering Manager / Delivery Lead. Required contributors: Product, Design, Engineering, QA and Data teams, with Marketing and Operations involved as needed. Report to CTAO, CPAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-6-10"
+   ],
+   "subphases": [
+    "6.10"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CTAO",
+    "CPAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-6-11",
+   "name": "Finance / Operations Analyst — 6.11",
+   "acronym": "SPDLC-6-11",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 6.11: Optimize operational and economic efficiency. Operational owner: Finance / Operations Analyst. Required contributors: Finance Analysts, Platform/Engineering, Operations and Marketing Analysts. Report to CFAO, CTAO, COAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-6-11"
+   ],
+   "subphases": [
+    "6.11"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CFAO",
+    "CTAO",
+    "COAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-6-12",
+   "name": "Product / Business Strategy Lead — 6.12",
+   "acronym": "SPDLC-6-12",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 6.12: Review strategic direction and lifecycle decisions. Operational owner: Product / Business Strategy Lead. Required contributors: Product and Business/Strategy leads, supported by Finance, Data and relevant functional teams. Report to CEAO, CPAO, CFAO, CTAO, CMAO, COAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-6-12"
+   ],
+   "subphases": [
+    "6.12"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CEAO",
+    "CPAO",
+    "CFAO",
+    "CTAO",
+    "CMAO",
+    "COAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-7-1",
+   "name": "Product Manager — 7.1",
+   "acronym": "SPDLC-7-1",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 7.1: Decide and approve retirement or replacement. Operational owner: Product Manager. Required contributors: Product Manager and Business/Strategy Lead, with Finance, Engineering and Operations input. Report to CEAO, CPAO, CFAO, CTAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-7-1"
+   ],
+   "subphases": [
+    "7.1"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CEAO",
+    "CPAO",
+    "CFAO",
+    "CTAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-7-2",
+   "name": "Operations Lead — 7.2",
+   "acronym": "SPDLC-7-2",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 7.2: Plan and communicate the transition. Operational owner: Operations Lead. Required contributors: Product Manager, Operations, Customer Success, Marketing/Communications and Legal. Report to COAO, CPAO, CMAO, CLAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-7-2"
+   ],
+   "subphases": [
+    "7.2"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "COAO",
+    "CPAO",
+    "CMAO",
+    "CLAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-7-3",
+   "name": "Migration / Transition Lead — 7.3",
+   "acronym": "SPDLC-7-3",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 7.3: Transition users and data. Operational owner: Migration / Transition Lead. Required contributors: Engineering, Data Engineers, QA and Customer Success, with Security and Privacy input. Report to CTAO, COAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-7-3"
+   ],
+   "subphases": [
+    "7.3"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CTAO",
+    "COAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-7-4",
+   "name": "Platform / DevOps Lead — 7.4",
+   "acronym": "SPDLC-7-4",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 7.4: Decommission the product securely. Operational owner: Platform / DevOps Lead. Required contributors: Engineering, Platform/DevOps, Security and Data teams. Report to CTAO, CISAO, CLAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-7-4"
+   ],
+   "subphases": [
+    "7.4"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "CTAO",
+    "CISAO",
+    "CLAO"
+   ],
+   "in_scope": false
+  },
+  {
+   "id": "spdlc-7-5",
+   "name": "Operations Lead — 7.5",
+   "acronym": "SPDLC-7-5",
+   "traditional": null,
+   "level": "specialist",
+   "mandate": "Execute 7.5: Complete commercial and operational closure. Operational owner: Operations Lead. Required contributors: Operations, Finance, Legal, Customer Success and Product Manager. Report to COAO, CFAO, CLAO; execution does not confer acceptance authority.",
+   "skills": [
+    "spdlc-7-5"
+   ],
+   "subphases": [
+    "7.5"
+   ],
+   "scope_subphases": [],
+   "reports_to": [
+    "COAO",
+    "CFAO",
+    "CLAO"
+   ],
+   "in_scope": false
+  }
+ ],
+ "instances": [
+  {
+   "id": "85aeee08-903e-4e60-b03a-a13a4ae18d1c",
+   "definition": "Human",
+   "level": "human",
+   "parent_id": null,
+   "subphases": [],
+   "event_count": 5,
+   "event_kinds": {
+    "run_created": 1,
+    "delegation": 1,
+    "phase_approve": 1,
+    "approve_plan": 2
+   },
+   "last_event": {
+    "kind": "approve_plan",
+    "timestamp": "2026-10-19T10:37:00+00:00"
+   },
+   "activities": [],
+   "reviews": []
+  },
+  {
+   "id": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c",
+   "definition": "CAOAO",
+   "level": "orchestrator",
+   "parent_id": "85aeee08-903e-4e60-b03a-a13a4ae18d1c",
+   "subphases": [],
+   "event_count": 12,
+   "event_kinds": {
+    "delegation": 4,
+    "phase_plan": 1,
+    "prepare": 3,
+    "note": 2,
+    "accept": 1,
+    "promote": 1
+   },
+   "last_event": {
+    "kind": "note",
+    "timestamp": "2026-10-19T10:55:00+00:00"
+   },
+   "activities": [],
+   "reviews": []
+  },
+  {
+   "id": "63a2048a-78e9-4c57-845e-475e05c936fa",
+   "definition": "CEAO",
+   "level": "officer",
+   "parent_id": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c",
+   "subphases": [
+    "1.1",
+    "1.2",
+    "1.4",
+    "1.5",
+    "1.6",
+    "2.5",
+    "6.12",
+    "7.1"
+   ],
+   "event_count": 3,
+   "event_kinds": {
+    "delegation": 1,
+    "domain_review": 2
+   },
+   "last_event": {
+    "kind": "domain_review",
+    "timestamp": "2026-10-19T10:21:00+00:00"
+   },
+   "activities": [],
+   "reviews": [
+    {
+     "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+     "subphase": "1.1",
+     "decision": "approved",
+     "evidence": "Clear problem hypothesis and beneficiary.",
+     "timestamp": "2026-10-19T10:03:00+00:00"
+    },
+    {
+     "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+     "subphase": "1.1",
+     "decision": "approved",
+     "evidence": "Still coherent after corrections.",
+     "timestamp": "2026-10-19T10:21:00+00:00"
+    }
+   ]
+  },
+  {
+   "id": "909545f5-cab5-47ad-8064-bc8a70e50144",
+   "definition": "CPAO",
+   "level": "officer",
+   "parent_id": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c",
+   "subphases": [
+    "1.1",
+    "1.2",
+    "1.3",
+    "1.4",
+    "1.5",
+    "2.1",
+    "2.2",
+    "2.3",
+    "2.4",
+    "2.5",
+    "3.1",
+    "3.2",
+    "3.3",
+    "3.4",
+    "3.5",
+    "3.7",
+    "3.8",
+    "3.10",
+    "3.11",
+    "3.12",
+    "3.13",
+    "4.2",
+    "4.5",
+    "4.6",
+    "4.8",
+    "4.9",
+    "4.11",
+    "5.1",
+    "5.3",
+    "5.6",
+    "5.8",
+    "5.10",
+    "6.6",
+    "6.7",
+    "6.8",
+    "6.9",
+    "6.10",
+    "6.12",
+    "7.1",
+    "7.2"
+   ],
+   "event_count": 3,
+   "event_kinds": {
+    "domain_review": 3
+   },
+   "last_event": {
+    "kind": "domain_review",
+    "timestamp": "2026-10-19T10:49:00+00:00"
+   },
+   "activities": [],
+   "reviews": [
+    {
+     "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+     "subphase": "1.1",
+     "decision": "changes_requested",
+     "evidence": "Rejected ideas lack reasons and major unknowns are missing.",
+     "timestamp": "2026-10-19T10:06:00+00:00"
+    },
+    {
+     "activity": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+     "subphase": "1.1",
+     "decision": "approved",
+     "evidence": "Rejections and unknowns recorded.",
+     "timestamp": "2026-10-19T10:24:00+00:00"
+    },
+    {
+     "activity": "e0ff489d-c65e-4a93-be27-ecdae633254f",
+     "subphase": "1.3",
+     "decision": "approved",
+     "evidence": "Segment is specific and reachable.",
+     "timestamp": "2026-10-19T10:49:00+00:00"
+    }
+   ]
+  },
+  {
+   "id": "ae972ae2-b595-4f9d-b00e-31f46e9171ed",
+   "definition": "CMAO",
+   "level": "officer",
+   "parent_id": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c",
+   "subphases": [
+    "1.3",
+    "1.4",
+    "1.5",
+    "2.1",
+    "2.4",
+    "3.5",
+    "3.7",
+    "3.10",
+    "3.12",
+    "3.13",
+    "5.1",
+    "5.3",
+    "5.4",
+    "5.7",
+    "6.6",
+    "6.7",
+    "6.9",
+    "6.12",
+    "7.2"
+   ],
+   "event_count": 2,
+   "event_kinds": {
+    "delegation": 1,
+    "note": 1
+   },
+   "last_event": {
+    "kind": "note",
+    "timestamp": "2026-10-19T10:58:00+00:00"
+   },
+   "activities": [],
+   "reviews": []
+  },
+  {
+   "id": "b14057d1-e6e8-4239-8319-a4f6c08cc3a8",
+   "definition": "spdlc-1-1",
+   "level": "specialist",
+   "parent_id": "63a2048a-78e9-4c57-845e-475e05c936fa",
+   "subphases": [
+    "1.1"
+   ],
+   "event_count": 7,
+   "event_kinds": {
+    "start": 2,
+    "document": 2,
+    "deliver": 2,
+    "note": 1
+   },
+   "last_event": {
+    "kind": "deliver",
+    "timestamp": "2026-10-19T10:18:00+00:00"
+   },
+   "activities": [
+    {
+     "id": "4f255c22-fc91-408d-8303-92fd62acc1d0",
+     "subphase": "1.1",
+     "status": "accepted",
+     "plan_version": 1,
+     "outputs": [
+      "145ed674-0d75-4909-a80c-a1650f0200a8"
+     ]
+    }
+   ],
+   "reviews": []
+  },
+  {
+   "id": "5bca4d06-527e-4423-89ef-96fdd38d54a1",
+   "definition": "spdlc-1-3",
+   "level": "specialist",
+   "parent_id": "ae972ae2-b595-4f9d-b00e-31f46e9171ed",
+   "subphases": [
+    "1.3"
+   ],
+   "event_count": 3,
+   "event_kinds": {
+    "start": 1,
+    "document": 1,
+    "deliver": 1
+   },
+   "last_event": {
+    "kind": "deliver",
+    "timestamp": "2026-10-19T10:46:00+00:00"
+   },
+   "activities": [
+    {
+     "id": "e0ff489d-c65e-4a93-be27-ecdae633254f",
+     "subphase": "1.3",
+     "status": "awaiting_review",
+     "plan_version": 1,
+     "outputs": [
+      "d597db1d-39cd-4085-a7ff-5bbd62eea859"
+     ]
+    }
+   ],
+   "reviews": []
+  },
+  {
+   "id": "6962d14d-3d47-454d-a3cc-8d883234a7cc",
+   "definition": "spdlc-1-2",
+   "level": "specialist",
+   "parent_id": "0bcef1a5-36b3-483b-9918-1c9a5d4e029c",
+   "subphases": [
+    "1.2"
+   ],
+   "event_count": 0,
+   "event_kinds": {},
+   "last_event": null,
+   "activities": [
+    {
+     "id": "141b9a6d-ef72-4b0c-8351-010a9c3d18da",
+     "subphase": "1.2",
+     "status": "awaiting_plan_approval",
+     "plan_version": 1,
+     "outputs": []
+    }
+   ],
+   "reviews": []
+  }
+ ]
+}
