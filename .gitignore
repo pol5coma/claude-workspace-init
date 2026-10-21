@@ -16,3 +16,5 @@ drafts/
 # SPADO local runtime data (project configuration remains versionable)
 .spado/local/
 .spado/backups/
+
+node_modules/
