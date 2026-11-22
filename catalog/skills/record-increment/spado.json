@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "id": "record-increment",
+  "type": "skill",
+  "name": "Record increment",
+  "description": "Record implementation increments under .dev/increments/. Use when starting an increment, approving a revised plan, or handing back completed, partial or blocked implementation work. Preserve the original prompt, version approved plans and final outputs, and invoke update-agent-notes after implementation and verification.",
+  "categories": [
+    "workflow"
+  ],
+  "dependencies": [],
+  "conflicts": []
+}
