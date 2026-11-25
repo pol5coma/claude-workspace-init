@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "id": "feature-roadmap",
+  "type": "skill",
+  "name": "Feature Roadmap",
+  "description": "Plan the technical milestones of one approved SDD feature and commission an independent senior audit.",
+  "categories": [
+    "workflow"
+  ],
+  "tags": [
+    "sdd"
+  ],
+  "hosts": [
+    "claude",
+    "codex"
+  ],
+  "dependencies": [
+    "hook:sdd-guard",
+    "agent:sdd-worker",
+    "agent:architect-reviewer"
+  ],
+  "conflicts": []
+}

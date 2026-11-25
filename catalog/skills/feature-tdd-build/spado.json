@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "id": "feature-tdd-build",
+  "type": "skill",
+  "name": "Feature Tdd Build",
+  "description": "Implement exactly one SDD technical milestone without modifying approved tests, and verify acceptance and E2E behavior.",
+  "categories": [
+    "workflow"
+  ],
+  "tags": [
+    "sdd"
+  ],
+  "hosts": [
+    "claude",
+    "codex"
+  ],
+  "dependencies": [
+    "hook:sdd-guard",
+    "agent:sdd-worker"
+  ],
+  "conflicts": []
+}

@@ -7,11 +7,22 @@
   "categories": [
     "security"
   ],
-  "tags": ["security", "review"],
+  "tags": [
+    "security",
+    "review"
+  ],
   "recommendation": {
-    "project_types": ["backend", "fullstack", "ai"],
+    "project_types": [
+      "backend",
+      "fullstack",
+      "ai"
+    ],
     "technologies": []
   },
   "dependencies": [],
-  "conflicts": []
+  "conflicts": [],
+  "hosts": [
+    "claude",
+    "codex"
+  ]
 }

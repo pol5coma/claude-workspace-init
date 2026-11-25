@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "id": "product-roadmap",
+  "type": "skill",
+  "name": "Product Roadmap",
+  "description": "Prepare and prioritize a product backlog from local documents or an interview; explicitly invoked SDD product planning.",
+  "categories": [
+    "workflow"
+  ],
+  "tags": [
+    "sdd"
+  ],
+  "hosts": [
+    "claude",
+    "codex"
+  ],
+  "dependencies": [
+    "hook:sdd-guard",
+    "agent:sdd-worker"
+  ],
+  "conflicts": []
+}

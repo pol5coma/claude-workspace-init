@@ -65,11 +65,35 @@ def render_capabilities(
     if find_conflicts(refs, catalog):
         raise ValueError("Selected capabilities have conflicting dependencies")
     output = {}
-    mcp, settings = {}, {}
+    mcp, settings, codex_hooks = {}, {}, {}
     for ref in refs:
         capability = catalog.require(ref)
         if set(hosts) - set(capability.manifest.hosts):
             raise ValueError(f"{ref} is not declared compatible with all selected hosts")
+        if capability.id == "sdd-guard":
+            from spado.sdd.install import guard
+
+            for host in hosts:
+                payload, fragment = guard(root, host, capability)
+                output.update(payload)
+                if host == "claude":
+                    settings, conflicts = deep_merge(settings, fragment)
+                else:
+                    codex_hooks, conflicts = deep_merge(codex_hooks, fragment)
+                if conflicts:
+                    raise ValueError("Conflicting SDD hook definitions")
+            continue
+        if capability.type.value == "agent" and capability.id in {
+            "sdd-worker",
+            "architect-reviewer",
+            "code-reviewer",
+            "security-reviewer",
+        }:
+            from spado.sdd.install import native_agent
+
+            for host in hosts:
+                output.update(native_agent(capability, host))
+            continue
         for host in hosts:
             for rel in capability.payload_files:
                 target = rel
@@ -93,6 +117,13 @@ def render_capabilities(
             if conflicts:
                 raise ValueError("Conflicting MCP server definitions")
     fs = FileSystem(root)
+    if codex_hooks:
+        path = fs.path(".codex/hooks.json")
+        base = json.loads(path.read_text()) if path.exists() else {}
+        merged, conflicts = deep_merge(base, codex_hooks)
+        if conflicts:
+            raise ValueError("Existing Codex hooks conflict with SDD")
+        output[".codex/hooks.json"] = (json.dumps(merged, indent=2) + "\n").encode()
     for relative, fragment in [
         (".mcp.json", {"mcpServers": mcp}),
         (".claude/settings.json", settings),

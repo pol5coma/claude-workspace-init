@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "sdd-guard",
+  "type": "hook",
+  "name": "SDD lifecycle guards",
+  "description": "Enforce SDD phase and frozen-test gates in Claude and Codex.",
+  "categories": [
+    "workflow"
+  ],
+  "hosts": [
+    "claude",
+    "codex"
+  ],
+  "dependencies": [],
+  "conflicts": []
+}

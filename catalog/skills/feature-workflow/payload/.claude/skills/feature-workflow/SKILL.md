@@ -5,6 +5,10 @@ description: Implement a feature end to end from its spec: baseline, explore, pl
 
 # Feature workflow
 
+If `.workflow/state.json` contains an active SDD feature, do not execute this alternate workflow.
+Read `spado sdd status` and direct the user to the corresponding explicit SDD phase skill.
+Do not advance it automatically or bypass its approvals.
+
 Deliver a feature in small, verified steps. Follow the phases in order; do not skip the baseline or the review.
 
 ## Before anything: the architecture must exist

@@ -7,11 +7,28 @@
   "categories": [
     "quality"
   ],
-  "tags": ["review", "quality"],
+  "tags": [
+    "review",
+    "quality"
+  ],
   "recommendation": {
-    "project_types": ["backend", "frontend", "fullstack", "ai", "cli", "library", "data_ml"],
+    "project_types": [
+      "backend",
+      "frontend",
+      "fullstack",
+      "ai",
+      "cli",
+      "library",
+      "data_ml"
+    ],
     "technologies": []
   },
-  "dependencies": ["script:run-quality-checks"],
-  "conflicts": []
+  "dependencies": [
+    "script:run-quality-checks"
+  ],
+  "conflicts": [],
+  "hosts": [
+    "claude",
+    "codex"
+  ]
 }

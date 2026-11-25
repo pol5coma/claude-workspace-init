@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "id": "feature-close",
+  "type": "skill",
+  "name": "Feature Close",
+  "description": "Close one SDD feature with full acceptance/E2E evidence, independent code/security reviews and Human acceptance.",
+  "categories": [
+    "workflow"
+  ],
+  "tags": [
+    "sdd"
+  ],
+  "hosts": [
+    "claude",
+    "codex"
+  ],
+  "dependencies": [
+    "hook:sdd-guard",
+    "agent:sdd-worker",
+    "agent:code-reviewer",
+    "agent:security-reviewer"
+  ],
+  "conflicts": []
+}

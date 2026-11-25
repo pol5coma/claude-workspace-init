@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "sdd-worker",
+  "type": "agent",
+  "name": "SDD worker",
+  "description": "Executes one bounded SDD assignment in fresh context.",
+  "categories": [
+    "workflow"
+  ],
+  "hosts": [
+    "claude",
+    "codex"
+  ],
+  "dependencies": [],
+  "conflicts": []
+}

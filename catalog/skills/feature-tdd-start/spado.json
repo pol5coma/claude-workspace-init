@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "id": "feature-tdd-start",
+  "type": "skill",
+  "name": "Feature Tdd Start",
+  "description": "Establish a green baseline, write all SDD feature tests and present verified Red evidence for assertion approval.",
+  "categories": [
+    "workflow"
+  ],
+  "tags": [
+    "sdd"
+  ],
+  "hosts": [
+    "claude",
+    "codex"
+  ],
+  "dependencies": [
+    "hook:sdd-guard",
+    "agent:sdd-worker"
+  ],
+  "conflicts": []
+}

@@ -1,9 +1,16 @@
 ---
 name: feature-spec
-description: Turn a feature request into a written spec in docs/specs/<feature-slug>.md before any code is written. Use when the user describes a new feature, change request or user story, or asks to "spec", "define" or "plan" a feature.
+description: Turn a feature request into a written spec before code is written. In SDD, guide one feature through interview and independent architecture review. Outside SDD, use docs/specs/ by slug.
 ---
 
 # Feature spec
+
+## SDD mode
+
+If `.workflow/state.json` exists and this invocation requests SDD feature work, follow
+[the SDD procedure](references/sdd.md) instead of the standalone procedure below.
+Do not require an architecture document in SDD mode: review existing code if present,
+or review the coherence of a new project's proposal. Outside SDD retain this procedure.
 
 Write down what to build before building it. The spec is the contract that planning, tests and review are checked against.
 

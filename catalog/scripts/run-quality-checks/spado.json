@@ -26,5 +26,9 @@
     "require_technology": true
   },
   "dependencies": [],
-  "conflicts": []
+  "conflicts": [],
+  "hosts": [
+    "claude",
+    "codex"
+  ]
 }

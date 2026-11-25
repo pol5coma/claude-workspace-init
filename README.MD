@@ -8,6 +8,8 @@ It configures **Claude Code and Codex** with native agents, skills, workflows an
 
 For setup, everyday operation and **every command and parameter**, use the [usage manual](USAGE.md). Start with its [setup guide](USAGE.md#choose-your-setup) or [first-run walkthrough](docs/manual/first-run.md). The [implementation notes](docs/manual/implementation.md) describe current limits.
 
+For a feature by feature spec driven workflow, `spado init --sdd --host claude` (or `--host codex`) installs local skills, state and hooks without the SPDLC database. Work manually through explicit skills or run one feature under supervision, stopping for Human acceptance before the next. See the [SDD manual](USAGE.md#sdd-workflow).
+
 ## The agentic organization paradigm
 
 SPADO applies an organizational model to software product work. **Chief [Role] Agentic Officers**, collectively called **C-Agents**, lead business and technical domains. Each officer has a mandate: objectives, decision responsibilities, delegation boundaries and required reviews. Specialists carry out bounded assignments and return deliverables with evidence.

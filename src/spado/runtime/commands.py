@@ -215,6 +215,9 @@ def initialize(
         ),
     ] = True,
     dry_run: Annotated[bool, typer.Option("--dry-run")] = False,
+    sdd: Annotated[
+        bool, typer.Option("--sdd", help="Install the independent SDD workflow.")
+    ] = False,
 ):
     """Install the SPDLC organization or selected standalone capabilities.
 
@@ -224,6 +227,15 @@ def initialize(
     root = root.resolve()
     if not root.is_dir():
         raise ValueError("Project root must already exist")
+    if sdd:
+        from spado.sdd.install import setup
+
+        if mode or embeddings or model or category or capability:
+            raise ValueError(
+                "SDD selects its mode at execution; install extra capabilities separately"
+            )
+        typer.echo(dump(setup(root, catalog or config.default_catalog(), host, dry_run)))
+        return
     from spado.adapters.capabilities import render_capabilities
     from spado.install.filesystem import FileSystem
     from spado.runtime.install import sha

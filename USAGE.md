@@ -1,6 +1,6 @@
 # SPADO usage manual
 
-The operating manual for **SPADO 0.2.0**: repository structure, setup, daily use and **all 29 terminal commands and their parameters**. This describes the implementation in this checkout; check `spado --version` and command-specific `--help` on other versions.
+The operating manual for **SPADO 0.2.0**: repository structure, setup, daily use and terminal commands. This describes the implementation in this checkout; check `spado --version` and command-specific `--help` on other versions.
 
 [Product overview](README.MD) · [Architecture](architecture.md) · [Implementation notes](docs/manual/implementation.md)
 
@@ -12,11 +12,12 @@ The operating manual for **SPADO 0.2.0**: repository structure, setup, daily use
 4. [First execution and everyday use](#first-execution-and-everyday-use)
 5. [Modes, plans, dependencies and states](#modes-plans-dependencies-and-states)
 6. [CLI reference](#cli-reference)
-7. [Host invocation reference](#host-invocation-reference)
-8. [Agent recording and event reference](#agent-recording-and-event-reference)
-9. [Configuration and environment](#configuration-and-environment)
-10. [Updates and maintenance](#updates-and-maintenance)
-11. [Troubleshooting](#troubleshooting)
+7. [SDD workflow](#sdd-workflow)
+8. [Host invocation reference](#host-invocation-reference)
+9. [Agent recording and event reference](#agent-recording-and-event-reference)
+10. [Configuration and environment](#configuration-and-environment)
+11. [Updates and maintenance](#updates-and-maintenance)
+12. [Troubleshooting](#troubleshooting)
 
 Supplemental chapters: [first-run and advanced event walkthrough](docs/manual/first-run.md), [capability catalog walkthrough](docs/manual/capabilities.md), [implementation notes](docs/manual/implementation.md). The complete command reference stays in this file.
 
@@ -27,6 +28,7 @@ SPADO uses one package and one project installer, `spado init`. Select a whole S
 | Your goal | Use | Result |
 |---|---|---|
 | Work through Full SPDLC | `spado init`, `spado db up`, then the host's `spdlc` entry skill | Installs the organization and runtime configuration, starts PostgreSQL and lets the host coordinate agents. |
+| Develop features with SDD | `spado init --sdd --host claude` or `--host codex` (repeat for both) | Installs the six explicit skills, state, agents and hooks locally. No PostgreSQL, Docker or embeddings required. |
 | Pick skills, agents and MCP by category | `spado init --no-workflow` in a terminal | Interactive picker: choose hosts, browse categories, tick capabilities, confirm. No workflow state or PostgreSQL. |
 | Install selected capabilities for Claude/Codex | `spado init --no-workflow --host HOST --capability TYPE:ID` or `--category CATEGORY` | Installs compatible skills, agents, scripts, hooks or MCP without workflow state or PostgreSQL. |
 | Add capabilities to Full SPDLC | Repeat `--capability TYPE:ID` during workflow setup | Installs optional resources alongside the organization. |
@@ -34,7 +36,7 @@ SPADO uses one package and one project installer, `spado init`. Select a whole S
 | Inspect or record execution | `status`, `review`, `workflow`, `actor`, `docs` commands | Authenticated reads and writes against a configured workflow project. |
 | Maintain the reusable catalog | `spado catalog …` | Edits source definitions; installed projects update when `spado init` is repeated. |
 
-SPADO supports **Claude Code and Codex**. More hosts and workflows need implementation work. There is no autonomous scheduler, graphical runtime UI or background document watcher.
+SPADO supports **Claude Code and Codex**. SDD has a bounded supervised runner for one feature at a time; Full SPDLC still has no autonomous scheduler. There is no background document watcher.
 
 The organization consists of the Human, **CAOAO** (execution coordination), nine **Chief [Role] Agentic Officers** (domain decisions) and specialists (bounded assignments). CEAO owns executive direction; CAOAO coordinates execution. Skills provide behavioral instructions. See the [complete officer mapping](README.MD#chief-role-agentic-officers).
 
@@ -814,6 +816,95 @@ spado catalog group defaults agent development-agents backend ''
 ```
 
 **Effects/output:** replaces that type's family defaults, validates and restores prior metadata on failure; prints selection. No installed-project changes. **Errors:** unknown group/member, invalid/multiple project types.
+
+## SDD workflow
+
+SDD is a separate local workflow. Install it in the **product repository**, then reload Claude Code
+or Codex so it sees the new skills and hooks. Installation prints an `inventory` containing every
+file and whether it was created, updated or preserved; `--dry-run` prints the same preview without
+writing. It never starts work, alters SPDLC runs or requires a database:
+
+```bash
+spado init --sdd --host claude --host codex --dry-run
+spado init --sdd --host claude --host codex
+```
+
+The project receives `.workflow/state.json` (local and Git ignored), `.workflow/config.json`,
+`.workflow/PROTOCOL.md`, native hooks and skills, `AGENTS.md` and `CLAUDE.md` guidance. Host-specific
+project hooks may require an explicit trust review. The installer never bypasses that review. Commit
+the installation files before starting a feature: `spado sdd start` requires a clean Git worktree
+and an initial commit. Repeating `init --sdd` preserves the execution state. The exact installed
+file list is in the `inventory` output; no global skills are installed.
+
+The product may already have a `backlog.md`, `requirements.md`, a folder of requirements or other
+source files. Invoke `/product-roadmap` in Claude Code (or `$product-roadmap` in Codex), identify the
+authoritative sources, and review its proposed order. With no documents, the skill interviews you
+one question at a time and writes an agreed `backlog.md`. The resulting
+`feature-roadmap-implementation.md` contains stable feature IDs, dependencies, priorities and status.
+This product roadmap is optional for an independent feature. After approval, commit the planning
+documents before starting a feature.
+
+### Manual sequence
+
+For example, suppose the product roadmap has `FEAT-002` with slug `projects`:
+
+```text
+/feature-spec FEAT-002      → clarify requirements, independent architecture review; approve
+/feature-roadmap            → technical ROADMAP.md, independent plan audit; approve
+/feature-tdd-start          → baseline, all new tests Red; validate assertions
+/feature-tdd-build 1        → implement milestone 1; acceptance and E2E; approve, then commit
+/feature-tdd-build 2        → new worker, milestone 2; acceptance and E2E; approve, then commit
+/feature-close              → full suite, code/security review, cleanup; final approval
+```
+
+Each step returns control. `feature-tdd-build` implements production code; approved tests are frozen.
+The technical `docs/features/projects/ROADMAP.md` divides that one feature into milestones. The
+product roadmap orders all features. In Codex use `$feature-spec`, `$feature-tdd-build`, etc.
+The main chat holds questions and approvals; fresh workers receive bounded assignments and return
+results. If the current host cannot provide isolated context, use a new conversation for that step.
+
+### Supervised sequence
+
+With an approved product roadmap, start the next ready feature automatically, or select a feature
+with `/feature-spec FEAT-002` and explicitly choose supervised mode:
+
+```bash
+spado sdd run --roadmap --host claude
+# or: spado sdd run --roadmap --host codex
+```
+
+The controller launches a new host CLI process for each author and reviewer, uses independent
+reviews for spec, roadmap, assertions, code and security, and works through technical milestones.
+After each build it runs unit, integration, acceptance and E2E checks for completed milestones.
+The final milestone and Close run the full configured suite. Failed checks feed a bounded retry;
+failed or missing E2E evidence blocks acceptance. The controller records intermediate decisions as
+delegated and **stops before final feature acceptance**. Review the result and explicitly approve
+with `spado sdd approve --response "your approval"`. To accept and immediately launch the next
+ready feature in the roadmap, use `spado sdd approve --response "your approval" --continue-roadmap
+--host claude` (or `codex`). This explicit action is the checkpoint between features.
+Worker host authentication and permissions must already work. The controller does not bypass host
+approvals or hook trust; an unavailable permission is reported as a blocker.
+
+The shared `.workflow/config.json` sets worker timeout, run timeout, retry count and maximum worker
+calls. `.workflow/results/` stores local logs, JUnit reports and structured worker results. Lessons
+record verified failure/correction evidence scoped to that feature; they are not new requirements.
+
+### State and recovery commands
+
+`spado sdd status` shows the exact state; `spado sdd context` supplies a bounded worker context and
+report schema. The skills use `begin`, `check`, `submit` and `approve` internally. `check --baseline`
+must pass before Red edits. `pause --reason TEXT` returns control; `reopen PHASE --reason TEXT`
+invalidates dependent approvals without resetting code or rewriting commits. `recover` inspects an
+interrupted commit journal. Changing the approved product sources requires resubmitting and approving
+the product roadmap; an active feature then returns to spec. The `## Assumptions` section of a README
+source is treated as feature working notes and excluded from its requirement hash.
+
+The full command contract, report schema and test configuration format are in the installed
+`.workflow/PROTOCOL.md`. A milestone must map every acceptance criterion to executable acceptance
+and E2E checks; missing environments and empty/missing reports are failures. Hooks guard tool calls
+but are not a filesystem security boundary. Runtime checks, snapshots, Git evidence and independent
+reviews are required before recording progress. Tests and reviewers can still miss defects, so final
+acceptance remains a Human decision.
 
 ## Host invocation reference
 

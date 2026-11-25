@@ -45,3 +45,7 @@ def main() -> None:
 from spado.runtime.commands import register  # noqa: E402
 
 register(app)
+
+from spado.sdd.commands import app as sdd_app  # noqa: E402
+
+app.add_typer(sdd_app, name="sdd")
